@@ -1,81 +1,126 @@
-# Sparko — digitalni pomočnik za SPAR katalog (MVP)
+<div align="center">
 
-Mobilni slovenski nakupovalni pomočnik **Sparko** z osebnim katalogom (»Moj katalog«) in interaktivnim originalnim SPAR letakom. Demo uporablja zgodovinski katalog **SPAR 40/26 (30. 9. 2026)**; cene in datumi so iz tega kataloga, ne aktualne cene v trgovini.
+# SPARko
 
-Osrednja pot: vprašaš za skuto → preverjena kartica izdelka → »Dodaj v Moj katalog« → izdelek je v Mojem katalogu s pojasnjenimi priporočili → »Poglej v SPAR katalogu« odpre originalno stran letaka z označenim izdelkom → dodajanje/odstranjevanje v letaku se takoj pokaže povsod → po osvežitvi vse ostane.
+### AI-powered digital catalog assistant for SPAR
 
-## Lokalni zagon
+SPARko turns a printed promotional leaflet into an interactive shopping experience.<br>
+Ask in plain Slovenian, get verified prices, build your own catalog and jump straight from the conversation to the exact product in the original leaflet.
 
-Zahteve: Node.js ≥ 20.9 (preizkušeno z 22.17), npm.
+<a href="https://sparko-digital-catalog-assistant.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-sparko--digital--catalog--assistant.vercel.app-1a7f3c?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"></a>
+
+**[Live Demo → sparko-digital-catalog-assistant.vercel.app](https://sparko-digital-catalog-assistant.vercel.app)**
+
+<br>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/showcase/sparko-chat.png" width="200" alt="Sparko welcome screen"></td>
+    <td align="center"><img src="docs/showcase/product-result.png" width="200" alt="Verified product result in chat"></td>
+    <td align="center"><img src="docs/showcase/moj-katalog.png" width="200" alt="Moj katalog with saved products and recommendations"></td>
+    <td align="center"><img src="docs/showcase/digital-leaflet.png" width="200" alt="Original SPAR leaflet with the saved product highlighted"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub><b>Ask Sparko</b></sub></td>
+    <td align="center"><sub><b>Verified product card</b></sub></td>
+    <td align="center"><sub><b>Moj katalog</b></sub></td>
+    <td align="center"><sub><b>Highlighted in the leaflet</b></sub></td>
+  </tr>
+</table>
+
+</div>
+
+---
+
+## What is SPARko?
+
+SPARko is a mobile-first **prototype** of a conversational shopping assistant built on top of a real SPAR Slovenija promotional leaflet (catalog 40/26, valid from 30 Sep 2026).
+
+Instead of flipping through 38 pages of a PDF, shoppers talk to **Sparko**: they ask what something costs, what's discounted, what to cook, or what fits a budget. Every answer is backed by structured catalog data, every product can be saved to a personal **Moj katalog**, and every product links back to its exact spot in the original leaflet.
+
+## Why SPARko is different
+
+This is not a chatbot placed next to a PDF. The assistant, the structured catalog data and the visual leaflet are wired together.
+
+> **Ask:** *"Koliko stane skuta?"*
+>
+> **→** Sparko answers with a verified product card: S-BUDGET Lahka skuta, 1 kg, **3,38 €**, PDF page 5
+> **→** One tap saves it to **Moj katalog**
+> **→** *"Poglej v SPAR katalogu"* opens the original leaflet on the right page, with the product visually highlighted
+
+The language model writes the sentence. It never decides the price.
+
+## Key features
+
+| | |
+| --- | --- |
+| **Natural Slovenian conversation** | Free-form questions with contextual follow-ups and suggested next questions |
+| **Verified catalog pricing** | Prices, package sizes, discounts and validity dates come from the catalog data, not from the model |
+| **Moj katalog** | Save products from chat or leaflet and get explained recommendations based on your picks |
+| **Leaflet navigation** | Jump from any product to its exact location in the original SPAR leaflet |
+| **Product highlighting** | Saved products are marked directly on the leaflet pages; save/remove there too |
+| **Recipes & budget ideas** | Verified recipes built from leaflet products and budget-aware shopping suggestions |
+| **Typo & morphology tolerance** | Handles Slovenian inflection and misspellings (*skuto*, *skute*, *skta* …) |
+| **Persistent state** | Saved products and conversations survive a page reload |
+| **Responsive, mobile-first UI** | Designed for phones first, works on desktop |
+| **Live AI + limited fallback** | If the model is unavailable, search, product cards, saving, recipes and the leaflet keep working |
+
+## AI + verified catalog data
+
+SPARko separates conversational AI from trusted catalog facts.
+
+- The model (Anthropic Claude, server-side only) interprets the question and writes a short natural-language reply.
+- **Prices, package sizes, discounts, dates, totals and catalog pages** are inserted from `src/data/catalog.json`, never generated.
+- Model output is validated against a schema; it may only reference product IDs that the deterministic search actually retrieved.
+- Responses that try to **invent a price** or **falsely claim a product was saved** are rejected, and SPARko falls back to a clearly labelled *limited mode* answer.
+- Saving, removing and navigating are application actions; clicking a product never needs the model.
+
+API keys stay on the server. No AI keys are exposed to the browser.
+
+More detail on the data pipeline: [docs/DATA.md](docs/DATA.md) · full QA log: [planning/QA-REPORT.md](planning/QA-REPORT.md)
+
+## Quality
+
+| Check | Result |
+| --- | --- |
+| Data validation | ✅ PASS (32 products, 38 pages, 3 recipes) |
+| TypeScript typecheck | ✅ PASS |
+| Lint | ✅ PASS |
+| Unit tests (Vitest) | ✅ 153 / 153 |
+| E2E tests (Playwright) | ✅ 38 / 38 |
+| Production build | ✅ PASS |
+| Browser-exposed AI keys | ✅ 0 |
+
+Responsive layout checked at **360 / 390 / 430 px** and desktop.
+
+## Tech stack
+
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Anthropic SDK** (Claude) for the conversational layer
+- **Zod** for schema validation of catalog data and model output
+- **Vitest** (unit) · **Playwright** (E2E) · **ESLint**
+- Deployed on **Vercel**
+
+## Run locally
+
+Requires Node.js ≥ 20.9.
 
 ```bash
 npm ci
-cp .env.example .env.local   # neobvezno – brez ključa deluje omejeni način
-npm run dev                  # http://localhost:3000
+npm run dev        # http://localhost:3000
 ```
 
-## Skripte
+Without any environment variables SPARko runs in **limited mode** (deterministic search, product cards, Moj katalog, recipes and the leaflet all work). To enable live AI, copy `.env.example` to `.env.local` and set:
 
-| Ukaz | Namen |
+| Variable | Purpose |
 | --- | --- |
-| `npm run dev` | razvojni strežnik |
-| `npm run build` / `npm start` | produkcijska gradnja / zagon |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript (`tsc --noEmit`) |
-| `npm test` | enotni testi (Vitest) |
-| `npm run test:e2e` | E2E testi (Playwright; najprej `npm run build`, nato zažene `next start` na vratih 3100) |
-| `npm run validate:data` | preveri `src/data/catalog.json` (sheme, ID-ji, poti slik, meje pravokotnikov, recepti) |
+| `ANTHROPIC_API_KEY` | Server-side key for live AI answers |
+| `AI_MODEL` | Optional model override (default `claude-haiku-4-5`) |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Persistent rate limiting, required for live AI in production |
+| `ALLOW_UNLIMITED_AI` | `true` enables live AI in production without rate limiting (private demos only) |
 
-Za E2E prvič namesti brskalnik: `npx playwright install chromium`.
+Other scripts: `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run validate:data`.
 
-## Okoljske spremenljivke
+## Project status & disclaimer
 
-| Spremenljivka | Obvezna | Pomen |
-| --- | --- | --- |
-| `ANTHROPIC_API_KEY` | za živi AI | strežniški ključ za Anthropic API. Brez njega Sparko deluje v **omejenem načinu**. |
-| `AI_MODEL` | ne | model, privzeto `claude-haiku-4-5` (hiter). Kakovostnejša možnost: `claude-sonnet-5-5`. |
-| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | za živi AI v produkciji | trajna omejitev uporabe (Upstash Redis REST). Brez njiju je živi AI v produkciji izklopljen. |
-| `ALLOW_UNLIMITED_AI` | ne | `true` vklopi živi AI v produkciji brez trajne omejitve (samo za zaprte predstavitve). |
-
-Ključi ostanejo na strežniku; nikoli jih ne dodaj v `NEXT_PUBLIC_*` spremenljivke ali v repozitorij.
-
-## Živi AI in omejeni način
-
-- **Živi način** (`ANTHROPIC_API_KEY` + omejevalnik ali `ALLOW_UNLIMITED_AI=true`): model razume vprašanje in sestavi kratek odgovor. Cene, odstotki, datumi in seštevki se vedno vstavijo iz preverjenih podatkov; izhod modela se preveri s shemo, dovoljeni so le ID-ji pridobljenih izdelkov.
-- **Omejeni način** (brez ključa, ob izpadu, časovni omejitvi ali neveljavnem izhodu): deterministično iskanje, kartice izdelkov, shranjevanje, priporočila, preverjeni recepti in letak delujejo naprej. Odgovor je jasno označen kot »Omejen način«.
-- Klik na izdelek nikoli ne potrebuje modela.
-
-## Podatki
-
-- En vir podatkov: `src/data/catalog.json` (Catalog, Product, Offer, Placement, Recipe; cene v centih, normalizirani pravokotniki 0–1, PDF-indeks ločen od natisnjene številke strani).
-- Pripravljene slike strani: `public/catalog/pages/`, sličice `public/catalog/thumbs/`, slike izdelkov `public/products/`, izvirni PDF `public/catalog/spar-katalog-40-26.pdf`.
-- Postopek priprave, preverjanja in zamenjave kataloga: [`docs/DATA.md`](docs/DATA.md). Po vsaki spremembi zaženi `npm run validate:data`.
-- Produkcija ne potrebuje Pythona, OCR-ja ali zapisljivega diska.
-
-## Ponastavitev demo stanja
-
-Podatki testerja so samo v brskalniku (`localStorage`, ključ `sparko:v1`). V meniju → Nastavitve:
-- »Ponastavi Moj katalog« izprazni shranjene izdelke (pogovori ostanejo),
-- »Izbriši moje pogovore« izbriše testerjeve pogovore (izbor ostane).
-Primeri pogovorov so statični in vedno ponovljivi.
-
-## Objava na Vercelu
-
-1. Na Vercelu izberi **Add New → Project** in uvozi GitHub repozitorij `gabercmatej/sparko-digital-catalog-assistant`.
-2. Framework: Next.js (samodejno), Root Directory: koren repozitorija, privzeti ukazi (`npm run build`).
-3. V **Settings → Environment Variables** dodaj po želji `ANTHROPIC_API_KEY`, `AI_MODEL` ter `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (ali začasno `ALLOW_UNLIMITED_AI=true`).
-4. Deploy. Za predstavitev preveri **Deployment Protection**, da povezava deluje v zasebnem oknu na telefonu brez prijave v Vercel.
-
-Brez ključa aplikacija deluje v omejenem načinu.
-
-## Struktura
-
-```
-src/app/            strani: / (Sparko), /moj-katalog, /letak, /domov, /api/chat
-src/components/     shell, product (kartica, ploščica, gumba), chat, sidebar, collection, leaflet
-src/lib/            types, schemas, catalog, store (localStorage), assessment, recommendations, assistant (iskanje, nameni, model)
-src/data/           catalog.json
-scripts/            priprava in preverjanje podatkov
-tests/              unit (Vitest), e2e (Playwright)
-planning/           načrt, status izvedbe, QA poročilo
-```
+SPARko is an independent **prototype / showcase implementation**, not an official SPAR product. It uses a historical SPAR Slovenija leaflet (catalog 40/26) as demo data; prices and dates reflect that leaflet, not current in-store prices. SPAR and related brand names belong to their respective owners.
