@@ -29,7 +29,8 @@ Next.js 16.3.8 App Router + React 19.2 + TypeScript, CSS Modules + tokens in `sr
 - [x] validate:data OK, typecheck, lint, unit 131/131, production build, e2e 11/11 on `next start`
 - [x] Visual QA at 360/390/430/desktop (planning/qa-screenshots), QA report (planning/QA-REPORT.md), README
 - [x] Local git commit on `main`
-- [ ] Push to GitHub (see final notes), Vercel deploy by user, live Anthropic smoke test (needs key), real-phone test
+- [x] Pushed to GitHub `gabercmatej/sparko-digital-catalog-assistant`, branch `main`
+- [ ] Vercel deploy by user, live Anthropic smoke test (needs key), real-phone test
 
 Lead fixes during integration: tile name caron clipping + full-width names, toasts moved below header,
 assessment "Dobra izbira zate" hidden for already-saved items, zod refine guard, Message.actions/modeNotice,
