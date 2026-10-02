@@ -7,10 +7,6 @@
 SPARko turns a printed promotional leaflet into an interactive shopping experience.<br>
 Ask in plain Slovenian, get verified prices, build your own catalog and jump straight from the conversation to the exact product in the original leaflet.
 
-<a href="https://sparko-digital-catalog-assistant.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-sparko--digital--catalog--assistant.vercel.app-1a7f3c?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"></a>
-
-**[Live Demo → sparko-digital-catalog-assistant.vercel.app](https://sparko-digital-catalog-assistant.vercel.app)**
-
 <br>
 
 <table>
