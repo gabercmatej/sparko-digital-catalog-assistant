@@ -1,0 +1,119 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 440px;
+}
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.title {
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+.meta {
+  font-size: var(--text-sm);
+  color: var(--c-ink-3);
+}
+.lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.line {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.lineText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--c-ink-2);
+  line-height: 1.4;
+}
+.lineName {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--c-ink);
+  overflow-wrap: anywhere;
+}
+.lineCost strong {
+  color: var(--c-ink);
+}
+.lineNote {
+  font-size: var(--text-xs);
+  color: var(--c-ink-3);
+}
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--c-border);
+}
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: var(--text-md);
+}
+.totalRow strong {
+  font-size: 17px;
+}
+.unknown {
+  font-size: var(--text-sm);
+  color: var(--c-ink-3);
+  text-align: right;
+}
+.budget {
+  align-self: flex-start;
+  margin-top: 4px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--c-green);
+  background: var(--c-green-050);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.budgetNote {
+  font-size: var(--text-sm);
+  color: var(--c-ink-3);
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.subTitle {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+.assumptions,
+.steps {
+  margin: 0;
+  padding-left: 20px;
+  font-size: var(--text-md);
+  color: var(--c-ink-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.footnote,
+.missing {
+  font-size: var(--text-xs);
+  color: var(--c-ink-3);
+}
+.missing {
+  font-size: var(--text-sm);
+}

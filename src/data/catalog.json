@@ -1,0 +1,3225 @@
+{
+  "version": 1,
+  "catalog": {
+    "id": "spar-4026",
+    "title": "SPAR katalog 40/26",
+    "issueLabel": "40/26",
+    "publishedDate": "2026-09-30",
+    "sourceFile": "260930-1-Katalog_4026.pdf",
+    "pdfUrl": "/catalog/spar-katalog-40-26.pdf",
+    "pageCount": 38,
+    "pages": [
+      {
+        "pdfPageIndex": 0,
+        "pdfPageNumber": 1,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-01.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-01.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Naslovnica"
+      },
+      {
+        "pdfPageIndex": 1,
+        "pdfPageNumber": 2,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-02.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-02.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Jesenska pojedina"
+      },
+      {
+        "pdfPageIndex": 2,
+        "pdfPageNumber": 3,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-03.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-03.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "XXL ponudba"
+      },
+      {
+        "pdfPageIndex": 3,
+        "pdfPageNumber": 4,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-04.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-04.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Okusi Azije"
+      },
+      {
+        "pdfPageIndex": 4,
+        "pdfPageNumber": 5,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-05.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-05.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "S-BUDGET"
+      },
+      {
+        "pdfPageIndex": 5,
+        "pdfPageNumber": 6,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-06.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-06.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "MasterChef recept"
+      },
+      {
+        "pdfPageIndex": 6,
+        "pdfPageNumber": 7,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-07.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-07.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "MasterChef recept"
+      },
+      {
+        "pdfPageIndex": 7,
+        "pdfPageNumber": 8,
+        "printedPageLabel": "4",
+        "image": {
+          "src": "/catalog/pages/page-08.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-08.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Sadje in zelenjava"
+      },
+      {
+        "pdfPageIndex": 8,
+        "pdfPageNumber": 9,
+        "printedPageLabel": "5",
+        "image": {
+          "src": "/catalog/pages/page-09.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-09.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Sadje in zelenjava"
+      },
+      {
+        "pdfPageIndex": 9,
+        "pdfPageNumber": 10,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-10.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-10.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Sveži nakupi"
+      },
+      {
+        "pdfPageIndex": 10,
+        "pdfPageNumber": 11,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-11.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-11.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Tuja kuhinja"
+      },
+      {
+        "pdfPageIndex": 11,
+        "pdfPageNumber": 12,
+        "printedPageLabel": "6",
+        "image": {
+          "src": "/catalog/pages/page-12.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-12.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Mesnica"
+      },
+      {
+        "pdfPageIndex": 12,
+        "pdfPageNumber": 13,
+        "printedPageLabel": "7",
+        "image": {
+          "src": "/catalog/pages/page-13.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-13.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Mesnine"
+      },
+      {
+        "pdfPageIndex": 13,
+        "pdfPageNumber": 14,
+        "printedPageLabel": "8",
+        "image": {
+          "src": "/catalog/pages/page-14.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-14.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Ribarnica"
+      },
+      {
+        "pdfPageIndex": 14,
+        "pdfPageNumber": 15,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-15.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-15.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Mlade družine"
+      },
+      {
+        "pdfPageIndex": 15,
+        "pdfPageNumber": 16,
+        "printedPageLabel": "9",
+        "image": {
+          "src": "/catalog/pages/page-16.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-16.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Sveže iz pekarne"
+      },
+      {
+        "pdfPageIndex": 16,
+        "pdfPageNumber": 17,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-17.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-17.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Za dober kruh"
+      },
+      {
+        "pdfPageIndex": 17,
+        "pdfPageNumber": 18,
+        "printedPageLabel": "10",
+        "image": {
+          "src": "/catalog/pages/page-18.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-18.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Mlečni izdelki"
+      },
+      {
+        "pdfPageIndex": 18,
+        "pdfPageNumber": 19,
+        "printedPageLabel": "11",
+        "image": {
+          "src": "/catalog/pages/page-19.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-19.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Mlečni izdelki"
+      },
+      {
+        "pdfPageIndex": 19,
+        "pdfPageNumber": 20,
+        "printedPageLabel": "12",
+        "image": {
+          "src": "/catalog/pages/page-20.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-20.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Shramba"
+      },
+      {
+        "pdfPageIndex": 20,
+        "pdfPageNumber": 21,
+        "printedPageLabel": "13",
+        "image": {
+          "src": "/catalog/pages/page-21.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-21.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Shramba"
+      },
+      {
+        "pdfPageIndex": 21,
+        "pdfPageNumber": 22,
+        "printedPageLabel": "14",
+        "image": {
+          "src": "/catalog/pages/page-22.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-22.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Sladko"
+      },
+      {
+        "pdfPageIndex": 22,
+        "pdfPageNumber": 23,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-23.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-23.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Kava"
+      },
+      {
+        "pdfPageIndex": 23,
+        "pdfPageNumber": 24,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-24.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-24.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Smoothiji"
+      },
+      {
+        "pdfPageIndex": 24,
+        "pdfPageNumber": 25,
+        "printedPageLabel": "15",
+        "image": {
+          "src": "/catalog/pages/page-25.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-25.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Pijača"
+      },
+      {
+        "pdfPageIndex": 25,
+        "pdfPageNumber": 26,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-26.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-26.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Napitki"
+      },
+      {
+        "pdfPageIndex": 26,
+        "pdfPageNumber": 27,
+        "printedPageLabel": "16",
+        "image": {
+          "src": "/catalog/pages/page-27.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-27.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Pivo in slani prigrizki"
+      },
+      {
+        "pdfPageIndex": 27,
+        "pdfPageNumber": 28,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-28.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-28.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Vina in izbrana ponudba"
+      },
+      {
+        "pdfPageIndex": 28,
+        "pdfPageNumber": 29,
+        "printedPageLabel": "18",
+        "image": {
+          "src": "/catalog/pages/page-29.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-29.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Noč čarovnic"
+      },
+      {
+        "pdfPageIndex": 29,
+        "pdfPageNumber": 30,
+        "printedPageLabel": "19",
+        "image": {
+          "src": "/catalog/pages/page-30.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-30.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Za ljubljenčke"
+      },
+      {
+        "pdfPageIndex": 30,
+        "pdfPageNumber": 31,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-31.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-31.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Za ljubljenčke"
+      },
+      {
+        "pdfPageIndex": 31,
+        "pdfPageNumber": 32,
+        "printedPageLabel": "20",
+        "image": {
+          "src": "/catalog/pages/page-32.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-32.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Nega in razvajanje"
+      },
+      {
+        "pdfPageIndex": 32,
+        "pdfPageNumber": 33,
+        "printedPageLabel": "21",
+        "image": {
+          "src": "/catalog/pages/page-33.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-33.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Čisto in urejeno"
+      },
+      {
+        "pdfPageIndex": 33,
+        "pdfPageNumber": 34,
+        "printedPageLabel": "22",
+        "image": {
+          "src": "/catalog/pages/page-34.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-34.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Nagrobne sveče"
+      },
+      {
+        "pdfPageIndex": 34,
+        "pdfPageNumber": 35,
+        "printedPageLabel": "23",
+        "image": {
+          "src": "/catalog/pages/page-35.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-35.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Tekstil in dodatki"
+      },
+      {
+        "pdfPageIndex": 35,
+        "pdfPageNumber": 36,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-36.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-36.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "SPAR online"
+      },
+      {
+        "pdfPageIndex": 36,
+        "pdfPageNumber": 37,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-37.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-37.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "SPAR online"
+      },
+      {
+        "pdfPageIndex": 37,
+        "pdfPageNumber": 38,
+        "printedPageLabel": null,
+        "image": {
+          "src": "/catalog/pages/page-38.webp",
+          "width": 1400,
+          "height": 1900
+        },
+        "thumb": {
+          "src": "/catalog/thumbs/page-38.webp",
+          "width": 240,
+          "height": 326
+        },
+        "theme": "Kuponi"
+      }
+    ]
+  },
+  "products": [
+    {
+      "id": "sb-skuta-1kg",
+      "name": "Lahka skuta",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "10 % m. m.",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "mlecni-izdelki",
+        "zajtrk"
+      ],
+      "aliases": [
+        "skuta",
+        "skute",
+        "skuto",
+        "skuti",
+        "lahka skuta",
+        "lahke skute",
+        "sbudget skuta",
+        "s-budget skuta",
+        "sir skuta",
+        "cottage",
+        "s-budget lahka skuta"
+      ],
+      "image": {
+        "src": "/products/sb-skuta-1kg.webp",
+        "width": 142,
+        "height": 168,
+        "provenance": "Embedded PDF image xref 495 (native 158×174 px), PDF page 5; flat background (#fdfdfd) flood-filled from the edges to transparency."
+      },
+      "theme": "S-BUDGET",
+      "editorialRank": 1
+    },
+    {
+      "id": "sb-pommes-1kg",
+      "name": "Pommes frites",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "valovit, za peko v pečici, zamrznjeno",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "zamrznjeno",
+        "prilogi",
+        "vecerja"
+      ],
+      "aliases": [
+        "pommes",
+        "pomfri",
+        "pomfrit",
+        "pomfrita",
+        "krompirček",
+        "krompircek",
+        "krompirčka",
+        "krompircka",
+        "frites",
+        "pommes frites",
+        "zamrznjen krompir",
+        "ocvrt krompir",
+        "s-budget pommes frites"
+      ],
+      "image": {
+        "src": "/products/sb-pommes-1kg.webp",
+        "width": 324,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 5 at 309 dpi (embedded image xref 494); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "S-BUDGET",
+      "editorialRank": 2
+    },
+    {
+      "id": "sb-salama-400g",
+      "name": "Piščančja posebna salama",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "Panvita Mir",
+      "packSize": "400 g",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "categories": [
+        "mesni-izdelki",
+        "zajtrk"
+      ],
+      "aliases": [
+        "salama",
+        "salame",
+        "salamo",
+        "piščančja salama",
+        "piscancja salama",
+        "piščančje salame",
+        "piscancje salame",
+        "posebna salama",
+        "posebne salame",
+        "narezek",
+        "piščančja posebna",
+        "piscancja posebna",
+        "piščančja posebna salama",
+        "piscancja posebna salama",
+        "s-budget piščančja posebna salama",
+        "s-budget piscancja posebna salama"
+      ],
+      "image": {
+        "src": "/products/sb-salama-400g.webp",
+        "width": 400,
+        "height": 131,
+        "provenance": "Clip render of the packshot on PDF page 5 at 370 dpi (embedded image xref 493); shadow layers, text and vector badges removed, background (#ffffff, #ffffff) flood-filled from the edges to transparency."
+      },
+      "theme": "S-BUDGET",
+      "editorialRank": 3
+    },
+    {
+      "id": "sb-zrezki-500g",
+      "name": "Svinjski zrezki",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "tanki, pakirano",
+      "packSize": "500 g",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "categories": [
+        "meso",
+        "vecerja"
+      ],
+      "aliases": [
+        "zrezki",
+        "zrezek",
+        "zrezke",
+        "zrezkov",
+        "svinjski zrezki",
+        "svinjske zrezke",
+        "svinjina",
+        "svinjino",
+        "svinjsko meso",
+        "meso",
+        "s-budget svinjski zrezki"
+      ],
+      "image": {
+        "src": "/products/sb-zrezki-500g.webp",
+        "width": 400,
+        "height": 323,
+        "provenance": "Clip render of the packshot on PDF page 5 at 325 dpi (embedded image xref 496); shadow layers, text and vector badges removed, background (#ffffff, #ffffff) flood-filled from the edges to transparency."
+      },
+      "theme": "S-BUDGET",
+      "editorialRank": 4
+    },
+    {
+      "id": "jagode-250g",
+      "name": "Jagode",
+      "brand": null,
+      "line": null,
+      "descriptor": "pakirano",
+      "packSize": "250 g",
+      "quantity": {
+        "amount": 250,
+        "unit": "g"
+      },
+      "categories": [
+        "sadje",
+        "zajtrk"
+      ],
+      "aliases": [
+        "jagode",
+        "jagod",
+        "jagoda",
+        "jagodami",
+        "sveže jagode",
+        "sveze jagode"
+      ],
+      "image": {
+        "src": "/products/jagode-250g.webp",
+        "width": 400,
+        "height": 241,
+        "provenance": "Clip render of the packshot on PDF page 10 at 355 dpi (embedded image xref 802); shadow layers, text and vector badges removed, background (#ffffff, #ffffff) flood-filled from the edges to transparency."
+      },
+      "theme": "Sveži nakupi",
+      "editorialRank": 5
+    },
+    {
+      "id": "jajca-xl-10",
+      "name": "Debela jajca",
+      "brand": "Jata Emona",
+      "line": null,
+      "descriptor": "hlevske reje, XL",
+      "packSize": "10 kosov",
+      "quantity": {
+        "amount": 10,
+        "unit": "kos"
+      },
+      "categories": [
+        "zajtrk",
+        "osnovna-zivila"
+      ],
+      "aliases": [
+        "jajca",
+        "jajce",
+        "jajc",
+        "jajci",
+        "jajcem",
+        "debela jajca",
+        "jajca xl",
+        "jata jajca",
+        "jata emona debela jajca"
+      ],
+      "image": {
+        "src": "/products/jajca-xl-10.webp",
+        "width": 400,
+        "height": 204,
+        "provenance": "Clip render of the packshot on PDF page 19 at 361 dpi (embedded image xref 1953); shadow layers, text and vector badges removed, background (#ffffff, #cae8dc) flood-filled from the edges to transparency."
+      },
+      "theme": "Mlečni izdelki",
+      "editorialRank": 6
+    },
+    {
+      "id": "maslo-250g",
+      "name": "Maslo",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "Ljubljanske mlekarne",
+      "packSize": "250 g",
+      "quantity": {
+        "amount": 250,
+        "unit": "g"
+      },
+      "categories": [
+        "mlecni-izdelki",
+        "zajtrk"
+      ],
+      "aliases": [
+        "maslo",
+        "masla",
+        "maslom",
+        "maslu",
+        "surovo maslo",
+        "putr",
+        "spar maslo"
+      ],
+      "image": {
+        "src": "/products/maslo-250g.webp",
+        "width": 297,
+        "height": 203,
+        "provenance": "Rectangular crop of the butter pack from the cover photo (PDF page 1, embedded hero image xref 7431); wooden photo background kept because the pack is part of a photographed scene."
+      },
+      "theme": "Naslovnica",
+      "editorialRank": 7
+    },
+    {
+      "id": "sb-borovnice-300g",
+      "name": "Borovnice",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "pakirano",
+      "packSize": "300 g",
+      "quantity": {
+        "amount": 300,
+        "unit": "g"
+      },
+      "categories": [
+        "sadje",
+        "zajtrk"
+      ],
+      "aliases": [
+        "borovnice",
+        "borovnic",
+        "borovnicami",
+        "borovnica",
+        "gozdne borovnice",
+        "sbudget borovnice",
+        "s-budget borovnice"
+      ],
+      "image": {
+        "src": "/products/sb-borovnice-300g.webp",
+        "width": 345,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 8 at 425 dpi (embedded image xref 709); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 8
+    },
+    {
+      "id": "moka-manitoba-1kg",
+      "name": "Moka Manitoba",
+      "brand": "Mlinotest",
+      "line": null,
+      "descriptor": "»0« ali »00«",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "osnovna-zivila",
+        "pekovsko"
+      ],
+      "aliases": [
+        "moka",
+        "moke",
+        "moko",
+        "manitoba",
+        "moka manitoba",
+        "pšenična moka",
+        "psenicna moka",
+        "bela moka",
+        "mlinotest",
+        "mlinotest moka manitoba"
+      ],
+      "image": {
+        "src": "/products/moka-manitoba-1kg.webp",
+        "width": 319,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 20 at 472 dpi (embedded image xref 2159, 2156, 2155); shadow layers, text and vector badges removed, background (#ffffff, #fefefe, #ffffff) flood-filled from the edges to transparency."
+      },
+      "theme": "Shramba",
+      "editorialRank": 9
+    },
+    {
+      "id": "avokado-kos",
+      "name": "Predzorjen avokado",
+      "brand": null,
+      "line": null,
+      "descriptor": null,
+      "packSize": "1 kos",
+      "quantity": {
+        "amount": 1,
+        "unit": "kos"
+      },
+      "categories": [
+        "sadje",
+        "zajtrk"
+      ],
+      "aliases": [
+        "avokado",
+        "avokada",
+        "avokadom",
+        "avokadi",
+        "predzorjen avokado",
+        "avocado"
+      ],
+      "image": {
+        "src": "/products/avokado-kos.webp",
+        "width": 400,
+        "height": 277,
+        "provenance": "Clip render of the packshot on PDF page 8 at 372 dpi (embedded image xref 705, 704); shadow layers, text and vector badges removed, background (#ffffff, #ebf2d9, #eaf2d8) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 10
+    },
+    {
+      "id": "mleko-trajno-1l",
+      "name": "Trajno mleko",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "Pomurske mlekarne, 1,5 % m. m.",
+      "packSize": "1 l",
+      "quantity": {
+        "amount": 1,
+        "unit": "l"
+      },
+      "categories": [
+        "mlecni-izdelki",
+        "zajtrk",
+        "pijace"
+      ],
+      "aliases": [
+        "mleko",
+        "mleka",
+        "mlekom",
+        "trajno mleko",
+        "trajnega mleka",
+        "polnomastno mleko",
+        "uht mleko",
+        "pomurske mlekarne",
+        "spar trajno mleko"
+      ],
+      "image": {
+        "src": "/products/mleko-trajno-1l.webp",
+        "width": 137,
+        "height": 320,
+        "provenance": "Embedded PDF image xref 1857 (native 141×325 px), PDF page 18; flat background (#fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Mlečni izdelki",
+      "editorialRank": 11
+    },
+    {
+      "id": "jogurt-mu-1kg",
+      "name": "Navadni jogurt Mu",
+      "brand": "Ljubljanske mlekarne",
+      "line": "Mu",
+      "descriptor": "1,3 % ali 3,2 % m. m., PET",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "mlecni-izdelki",
+        "zajtrk"
+      ],
+      "aliases": [
+        "jogurt",
+        "jogurta",
+        "jogurtom",
+        "navadni jogurt",
+        "tekoči jogurt",
+        "tekoci jogurt",
+        "mu jogurt",
+        "jogurt mu",
+        "navadni jogurt mu",
+        "ljubljanske mlekarne navadni jogurt mu"
+      ],
+      "image": {
+        "src": "/products/jogurt-mu-1kg.webp",
+        "width": 233,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 18 at 408 dpi (embedded image xref 1824, 1811, 1810); shadow layers, text and vector badges removed, background (#ffffff, #fefefe, #fefdfd, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Mlečni izdelki",
+      "editorialRank": 12
+    },
+    {
+      "id": "smetana-kuho-200g",
+      "name": "Smetana za kuho",
+      "brand": "Dukat",
+      "line": null,
+      "descriptor": "Brzo & Fino",
+      "packSize": "200 g",
+      "quantity": {
+        "amount": 200,
+        "unit": "g"
+      },
+      "categories": [
+        "mlecni-izdelki",
+        "vecerja"
+      ],
+      "aliases": [
+        "smetana",
+        "smetane",
+        "smetano",
+        "smetana za kuho",
+        "kuhinjska smetana",
+        "sladka smetana za kuhanje",
+        "dukat",
+        "dukat smetana za kuho"
+      ],
+      "image": {
+        "src": "/products/smetana-kuho-200g.webp",
+        "width": 219,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 18 at 446 dpi (embedded image xref 1790); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Mlečni izdelki",
+      "editorialRank": 13
+    },
+    {
+      "id": "sir-rezine-150g",
+      "name": "Sir v rezinah",
+      "brand": "DESPAR",
+      "line": "DESPAR",
+      "descriptor": "v rezinah",
+      "packSize": "150 g",
+      "quantity": {
+        "amount": 150,
+        "unit": "g"
+      },
+      "categories": [
+        "mlecni-izdelki",
+        "zajtrk"
+      ],
+      "aliases": [
+        "sir",
+        "sira",
+        "sirom",
+        "sir v rezinah",
+        "narezan sir",
+        "rezine sira",
+        "despar sir",
+        "despar sir v rezinah"
+      ],
+      "image": {
+        "src": "/products/sir-rezine-150g.webp",
+        "width": 400,
+        "height": 397,
+        "provenance": "Clip render of the packshot on PDF page 19 at 446 dpi (embedded image xref 2023, 2009, 2005, 1992, 1983); shadow layers, text and vector badges removed, background (#ffffff, #fefefe, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Mlečni izdelki",
+      "editorialRank": 14
+    },
+    {
+      "id": "kruh-sendvic-250g",
+      "name": "Kruh za sendviče",
+      "brand": "DESPAR",
+      "line": "DESPAR",
+      "descriptor": "Pane per tramezzini, pakirano",
+      "packSize": "250 g",
+      "quantity": {
+        "amount": 250,
+        "unit": "g"
+      },
+      "categories": [
+        "pekovsko",
+        "zajtrk"
+      ],
+      "aliases": [
+        "kruh",
+        "kruha",
+        "kruhom",
+        "toast",
+        "toast kruh",
+        "kruh za sendviče",
+        "kruh za sendvice",
+        "kruh za sendvič",
+        "kruh za sendvic",
+        "sendvič",
+        "sendvic",
+        "tramezzini",
+        "despar kruh za sendviče",
+        "despar kruh za sendvice"
+      ],
+      "image": {
+        "src": "/products/kruh-sendvic-250g.webp",
+        "width": 400,
+        "height": 213,
+        "provenance": "Clip render of the packshot on PDF page 10 at 365 dpi (embedded image xref 814); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Sveži nakupi",
+      "editorialRank": 15
+    },
+    {
+      "id": "kakav-nesquik-400g",
+      "name": "Kakav Nesquik",
+      "brand": "Nestlé",
+      "line": null,
+      "descriptor": null,
+      "packSize": "400 g",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "categories": [
+        "zajtrk",
+        "pijace"
+      ],
+      "aliases": [
+        "kakav",
+        "kakava",
+        "nesquik",
+        "kakav v prahu",
+        "čokoladni napitek",
+        "cokoladni napitek",
+        "nestle",
+        "kakav nesquik",
+        "nestlé kakav nesquik",
+        "nestle kakav nesquik"
+      ],
+      "image": {
+        "src": "/products/kakav-nesquik-400g.webp",
+        "width": 334,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 21 at 491 dpi (embedded image xref 2301); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Shramba",
+      "editorialRank": 16
+    },
+    {
+      "id": "sb-kava-500g",
+      "name": "Mleta pražena kava",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": null,
+      "packSize": "500 g",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "categories": [
+        "pijace",
+        "zajtrk"
+      ],
+      "aliases": [
+        "kava",
+        "kave",
+        "kavo",
+        "mleta kava",
+        "pražena kava",
+        "prazena kava",
+        "mleta pražena kava",
+        "mleta prazena kava",
+        "sbudget kava",
+        "s-budget mleta pražena kava",
+        "s-budget mleta prazena kava"
+      ],
+      "image": {
+        "src": "/products/sb-kava-500g.webp",
+        "width": 100,
+        "height": 197,
+        "provenance": "Embedded PDF image xref 2710 (native 100×197 px, with its soft mask as alpha), PDF page 23."
+      },
+      "theme": "Kava",
+      "editorialRank": 17
+    },
+    {
+      "id": "barilla-gran-ruote-500g",
+      "name": "Testenine Gran Ruote F1",
+      "brand": "Barilla",
+      "line": null,
+      "descriptor": null,
+      "packSize": "500 g",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "categories": [
+        "osnovna-zivila",
+        "vecerja"
+      ],
+      "aliases": [
+        "testenine",
+        "testenin",
+        "testeninami",
+        "pašta",
+        "pasta",
+        "barilla",
+        "gran ruote",
+        "kolesca",
+        "testenine gran ruote f1",
+        "barilla testenine gran ruote f1"
+      ],
+      "image": {
+        "src": "/products/barilla-gran-ruote-500g.webp",
+        "width": 316,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 20 at 489 dpi (embedded image xref 2150); shadow layers, text and vector badges removed, background (#ffffff, #fbe6ea) flood-filled from the edges to transparency."
+      },
+      "theme": "Shramba",
+      "editorialRank": 18
+    },
+    {
+      "id": "barilla-omaka-olive-400g",
+      "name": "Paradižnikova omaka z olivami",
+      "brand": "Barilla",
+      "line": null,
+      "descriptor": "Olive",
+      "packSize": "400 g",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "categories": [
+        "osnovna-zivila",
+        "vecerja"
+      ],
+      "aliases": [
+        "omaka",
+        "omake",
+        "omako",
+        "paradižnikova omaka",
+        "paradiznikova omaka",
+        "paradižnikove omake",
+        "paradiznikove omake",
+        "omaka za testenine",
+        "pelati",
+        "barilla omaka",
+        "paradižnikova omaka z olivami",
+        "paradiznikova omaka z olivami",
+        "barilla paradižnikova omaka z olivami",
+        "barilla paradiznikova omaka z olivami"
+      ],
+      "image": {
+        "src": "/products/barilla-omaka-olive-400g.webp",
+        "width": 208,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 20 at 453 dpi (embedded image xref 2130); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Shramba",
+      "editorialRank": 19
+    },
+    {
+      "id": "olje-cekin-1l",
+      "name": "Sončnično olje Cekin",
+      "brand": "Tovarna olja Gea",
+      "line": null,
+      "descriptor": "PET",
+      "packSize": "1 l",
+      "quantity": {
+        "amount": 1,
+        "unit": "l"
+      },
+      "categories": [
+        "osnovna-zivila"
+      ],
+      "aliases": [
+        "olje",
+        "olja",
+        "oljem",
+        "sončnično olje",
+        "soncnicno olje",
+        "sončničnega olja",
+        "soncnicnega olja",
+        "jedilno olje",
+        "cekin",
+        "sončnično olje cekin",
+        "soncnicno olje cekin",
+        "tovarna olja gea sončnično olje cekin",
+        "tovarna olja gea soncnicno olje cekin"
+      ],
+      "image": {
+        "src": "/products/olje-cekin-1l.webp",
+        "width": 93,
+        "height": 345,
+        "provenance": "Embedded PDF image xref 1306 (native 97×348 px), PDF page 14; flat background (#fefefd) flood-filled from the edges to transparency."
+      },
+      "theme": "Ribarnica",
+      "editorialRank": 20
+    },
+    {
+      "id": "riz-lepljivi-1kg",
+      "name": "Beli lepljivi riž",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "Klebreis / sticky rice",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "osnovna-zivila",
+        "prilogi"
+      ],
+      "aliases": [
+        "riž",
+        "riz",
+        "riža",
+        "riza",
+        "rižem",
+        "rizem",
+        "lepljivi riž",
+        "lepljivi riz",
+        "beli riž",
+        "beli riz",
+        "sticky rice",
+        "beli lepljivi riž",
+        "beli lepljivi riz",
+        "spar beli lepljivi riž",
+        "spar beli lepljivi riz"
+      ],
+      "image": {
+        "src": "/products/riz-lepljivi-1kg.webp",
+        "width": 124,
+        "height": 173,
+        "provenance": "Embedded PDF image xref 360 (native 135×183 px, with its soft mask as alpha), PDF page 4."
+      },
+      "theme": "Okusi Azije",
+      "editorialRank": 21
+    },
+    {
+      "id": "koruza-340g",
+      "name": "Koruza",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "Sweet corn, pločevinka",
+      "packSize": "340 g",
+      "quantity": {
+        "amount": 340,
+        "unit": "g"
+      },
+      "categories": [
+        "zelenjava",
+        "osnovna-zivila"
+      ],
+      "aliases": [
+        "koruza",
+        "koruze",
+        "koruzo",
+        "sladka koruza",
+        "koruza v pločevinki",
+        "koruza v plocevinki",
+        "sweet corn",
+        "spar koruza"
+      ],
+      "image": {
+        "src": "/products/koruza-340g.webp",
+        "width": 320,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 11 at 565 dpi (embedded image xref 883); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Tuja kuhinja",
+      "editorialRank": 22
+    },
+    {
+      "id": "sb-krompir-5kg",
+      "name": "Slovenski krompir",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "pakirano",
+      "packSize": "5 kg",
+      "quantity": {
+        "amount": 5,
+        "unit": "kg"
+      },
+      "categories": [
+        "zelenjava",
+        "prilogi"
+      ],
+      "aliases": [
+        "krompir",
+        "krompirja",
+        "krompirjem",
+        "slovenski krompir",
+        "vreča krompirja",
+        "vreca krompirja",
+        "sbudget krompir",
+        "s-budget slovenski krompir"
+      ],
+      "image": {
+        "src": "/products/sb-krompir-5kg.webp",
+        "width": 346,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 9 at 446 dpi (embedded image xref 762); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 23
+    },
+    {
+      "id": "jabolka-gala-1kg",
+      "name": "Slovenska jabolka Gala",
+      "brand": null,
+      "line": null,
+      "descriptor": "Pridelano v Sloveniji",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "sadje"
+      ],
+      "aliases": [
+        "jabolka",
+        "jabolko",
+        "jabolk",
+        "jabolki",
+        "jabolka gala",
+        "gala",
+        "slovenska jabolka",
+        "slovenska jabolka gala"
+      ],
+      "image": {
+        "src": "/products/jabolka-gala-1kg.webp",
+        "width": 400,
+        "height": 356,
+        "provenance": "Clip render of the packshot on PDF page 8 at 453 dpi (embedded image xref 707); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 24
+    },
+    {
+      "id": "sampinjoni-250g",
+      "name": "Slovenski šampinjoni",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "pakirano",
+      "packSize": "250 g",
+      "quantity": {
+        "amount": 250,
+        "unit": "g"
+      },
+      "categories": [
+        "zelenjava",
+        "vecerja"
+      ],
+      "aliases": [
+        "šampinjoni",
+        "sampinjoni",
+        "šampinjone",
+        "sampinjone",
+        "šampinjonov",
+        "sampinjonov",
+        "gobe",
+        "gob",
+        "gobami",
+        "slovenski šampinjoni",
+        "slovenski sampinjoni",
+        "spar slovenski šampinjoni",
+        "spar slovenski sampinjoni"
+      ],
+      "image": {
+        "src": "/products/sampinjoni-250g.webp",
+        "width": 400,
+        "height": 293,
+        "provenance": "Clip render of the packshot on PDF page 9 at 460 dpi (embedded image xref 731); shadow layers, text and vector badges removed, background (#ffffff, #ebf3d9) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 25
+    },
+    {
+      "id": "zelje-1kg",
+      "name": "Slovensko sveže zelje",
+      "brand": null,
+      "line": null,
+      "descriptor": "Pridelano v Sloveniji",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "zelenjava"
+      ],
+      "aliases": [
+        "zelje",
+        "zelja",
+        "zeljem",
+        "sveže zelje",
+        "sveze zelje",
+        "belo zelje",
+        "glava zelja",
+        "slovensko sveže zelje",
+        "slovensko sveze zelje"
+      ],
+      "image": {
+        "src": "/products/zelje-1kg.webp",
+        "width": 400,
+        "height": 307,
+        "provenance": "Clip render of the packshot on PDF page 9 at 428 dpi (embedded image xref 772); shadow layers, text and vector badges removed, background (#ffffff, #ebf3d9) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 26
+    },
+    {
+      "id": "solata-frisno-kos",
+      "name": "Slovenske solate Frišno",
+      "brand": "Frišno",
+      "line": null,
+      "descriptor": "Pridelano v Sloveniji",
+      "packSize": "1 kos",
+      "quantity": {
+        "amount": 1,
+        "unit": "kos"
+      },
+      "categories": [
+        "zelenjava",
+        "vecerja"
+      ],
+      "aliases": [
+        "solata",
+        "solate",
+        "solato",
+        "zelena solata",
+        "glavnata solata",
+        "frišno",
+        "frisno",
+        "slovenske solate frišno",
+        "slovenske solate frisno",
+        "frišno slovenske solate frišno",
+        "frisno slovenske solate frisno"
+      ],
+      "image": {
+        "src": "/products/solata-frisno-kos.webp",
+        "width": 400,
+        "height": 315,
+        "provenance": "Clip render of the packshot on PDF page 9 at 362 dpi (embedded image xref 770, 755, 741, 736, 735); shadow layers, text and vector badges removed, background (#ffffff, #fefefe, #eaf2d9, #eaf2d9, #eaf2d9) flood-filled from the edges to transparency."
+      },
+      "theme": "Sadje in zelenjava",
+      "editorialRank": 27
+    },
+    {
+      "id": "sb-grozdje-500g",
+      "name": "Belo grozdje brez pečk",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": "pakirano",
+      "packSize": "500 g",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "categories": [
+        "sadje"
+      ],
+      "aliases": [
+        "grozdje",
+        "grozdja",
+        "belo grozdje",
+        "grozdje brez pečk",
+        "grozdje brez peck",
+        "belo grozdje brez pečk",
+        "belo grozdje brez peck",
+        "s-budget belo grozdje brez pečk",
+        "s-budget belo grozdje brez peck"
+      ],
+      "image": {
+        "src": "/products/sb-grozdje-500g.webp",
+        "width": 349,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 10 at 430 dpi (embedded image xref 801); shadow layers, text and vector badges removed, background (#ffffff, #ffffff) flood-filled from the edges to transparency."
+      },
+      "theme": "Sveži nakupi",
+      "editorialRank": 28
+    },
+    {
+      "id": "piscancji-file-1kg",
+      "name": "Slovenski piščančji file IK",
+      "brand": null,
+      "line": null,
+      "descriptor": "postrežno",
+      "packSize": "1 kg",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "categories": [
+        "meso",
+        "vecerja"
+      ],
+      "aliases": [
+        "piščanec",
+        "piscanec",
+        "piščančji file",
+        "piscancji file",
+        "piščančje prsi",
+        "piscancje prsi",
+        "file",
+        "piščančjega fileja",
+        "piscancjega fileja",
+        "piščančje meso",
+        "piscancje meso",
+        "slovenski piščančji file ik",
+        "slovenski piscancji file ik"
+      ],
+      "image": {
+        "src": "/products/piscancji-file-1kg.webp",
+        "width": 400,
+        "height": 217,
+        "provenance": "Clip render of the packshot on PDF page 12 at 363 dpi (embedded image xref 1075); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Mesnica",
+      "editorialRank": 29
+    },
+    {
+      "id": "mleto-meso-480g",
+      "name": "Mleto mešano meso",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "svinjsko in goveje, pakirano",
+      "packSize": "480 g",
+      "quantity": {
+        "amount": 480,
+        "unit": "g"
+      },
+      "categories": [
+        "meso",
+        "vecerja"
+      ],
+      "aliases": [
+        "mleto meso",
+        "mletega mesa",
+        "mleto",
+        "mešano meso",
+        "mesano meso",
+        "meso za bolognese",
+        "mleto mešano meso",
+        "mleto mesano meso",
+        "faširano",
+        "fasirano",
+        "spar mleto mešano meso",
+        "spar mleto mesano meso"
+      ],
+      "image": {
+        "src": "/products/mleto-meso-480g.webp",
+        "width": 400,
+        "height": 322,
+        "provenance": "Clip render of the packshot on PDF page 11 at 427 dpi (embedded image xref 884); shadow layers, text and vector badges removed, background (#ffffff, #ffffff) flood-filled from the edges to transparency."
+      },
+      "theme": "Tuja kuhinja",
+      "editorialRank": 30
+    },
+    {
+      "id": "sb-hrenovke-500g",
+      "name": "Hrenovke Party hot dog",
+      "brand": "S-BUDGET",
+      "line": "S-BUDGET",
+      "descriptor": null,
+      "packSize": "500 g",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "categories": [
+        "mesni-izdelki",
+        "vecerja"
+      ],
+      "aliases": [
+        "hrenovke",
+        "hrenovk",
+        "hrenovka",
+        "hrenovko",
+        "hot dog",
+        "party hrenovke",
+        "sbudget hrenovke",
+        "hrenovke party hot dog",
+        "s-budget hrenovke party hot dog"
+      ],
+      "image": {
+        "src": "/products/sb-hrenovke-500g.webp",
+        "width": 225,
+        "height": 400,
+        "provenance": "Clip render of the packshot on PDF page 13 at 424 dpi (embedded image xref 1199); shadow layers, text and vector badges removed, background (#ffffff, #fefefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Mesnine",
+      "editorialRank": 31
+    },
+    {
+      "id": "piscancji-mini-file-400g",
+      "name": "Piščančji mini file IK",
+      "brand": "SPAR",
+      "line": "SPAR",
+      "descriptor": "pakirano",
+      "packSize": "400 g",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "categories": [
+        "meso",
+        "vecerja"
+      ],
+      "aliases": [
+        "mini file",
+        "piščančji mini file",
+        "piscancji mini file",
+        "piščančji fileji",
+        "piscancji fileji",
+        "piščanec",
+        "piscanec",
+        "piščančje meso",
+        "piscancje meso",
+        "piscancji file",
+        "piščančji mini file ik",
+        "piscancji mini file ik",
+        "spar piščančji mini file ik",
+        "spar piscancji mini file ik"
+      ],
+      "image": {
+        "src": "/products/piscancji-mini-file-400g.webp",
+        "width": 400,
+        "height": 303,
+        "provenance": "Clip render of the packshot on PDF page 11 at 486 dpi (embedded image xref 900); shadow layers, text and vector badges removed, background (#ffffff, #fffefe) flood-filled from the edges to transparency."
+      },
+      "theme": "Tuja kuhinja",
+      "editorialRank": 32
+    }
+  ],
+  "offers": [
+    {
+      "id": "offer-sb-skuta-1kg-4026",
+      "productId": "sb-skuta-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 338,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "catalog_default",
+        "from": "2026-09-30",
+        "to": null,
+        "evidence": "Na strani ni posebnega roka; splošna veljavnost kataloga – naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«. Končni datum ni natisnjen."
+      },
+      "sourceQuote": "S-BUDGET LAHKA SKUTA 10 % m. m., 1 kg 3,38",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 5 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-sb-pommes-1kg-4026",
+      "productId": "sb-pommes-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 159,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "catalog_default",
+        "from": "2026-09-30",
+        "to": null,
+        "evidence": "Na strani ni posebnega roka; splošna veljavnost kataloga – naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«. Končni datum ni natisnjen."
+      },
+      "sourceQuote": "S-BUDGET POMMES FRITES valovit, za peko v pečici, zamrznjeno, 1 kg 1,59",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 5 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-sb-salama-400g-4026",
+      "productId": "sb-salama-400g",
+      "catalogId": "spar-4026",
+      "priceCents": 99,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "catalog_default",
+        "from": "2026-09-30",
+        "to": null,
+        "evidence": "Na strani ni posebnega roka; splošna veljavnost kataloga – naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«. Končni datum ni natisnjen."
+      },
+      "sourceQuote": "S-BUDGET PIŠČANČJA POSEBNA SALAMA Panvita Mir, 400 g 0,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 5 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-sb-zrezki-500g-4026",
+      "productId": "sb-zrezki-500g",
+      "catalogId": "spar-4026",
+      "priceCents": 409,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "catalog_default",
+        "from": "2026-09-30",
+        "to": null,
+        "evidence": "Na strani ni posebnega roka; splošna veljavnost kataloga – naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«. Končni datum ni natisnjen."
+      },
+      "sourceQuote": "S-BUDGET SVINJSKI ZREZKI tanki, pakirano, 500 g 4,09",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 5 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-jagode-250g-4026",
+      "productId": "jagode-250g",
+      "catalogId": "spar-4026",
+      "priceCents": 279,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 10: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "JAGODE pakirano, 250 g 2,79",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 10 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": null
+      }
+    },
+    {
+      "id": "offer-jajca-xl-10-4026",
+      "productId": "jajca-xl-10",
+      "catalogId": "spar-4026",
+      "priceCents": 389,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 569,
+      "discountPercent": 31,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 5,69«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 19: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "DEBELA JAJCA hlevske reje, Jata Emona, XL 10/1 CENEJE 31% redna cena 5,69 PC 5,69 s SPAR plus kartico 3,89",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 19 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-maslo-250g-4026",
+      "productId": "maslo-250g",
+      "catalogId": "spar-4026",
+      "priceCents": 199,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 256,
+      "discountPercent": 22,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "catalog_default",
+        "from": "2026-09-30",
+        "to": null,
+        "evidence": "Na strani ni posebnega roka; splošna veljavnost kataloga – naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«. Končni datum ni natisnjen."
+      },
+      "sourceQuote": "SPAR MASLO Ljubljanske mlekarne, 250 g CENEJE 22% redna cena 2,56 s SPAR plus kartico 1,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 1 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-sb-borovnice-300g-4026",
+      "productId": "sb-borovnice-300g",
+      "catalogId": "spar-4026",
+      "priceCents": 399,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 8–9 (na str. 9): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "S-BUDGET BOROVNICE pakirano, 300 g 3,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 8 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-moka-manitoba-1kg-4026",
+      "productId": "moka-manitoba-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 75,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 139,
+      "discountPercent": 46,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 0,89«; oznaka »MEGA CENA«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 20–21 (na str. 21): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "MOKA MANITOBA »0« ali »00«, Mlinotest, 1 kg MEGA CENA CENEJE 46% redna cena 1,39 PC 0,89 s SPAR plus kartico 0,75",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 20 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-avokado-kos-4026",
+      "productId": "avokado-kos",
+      "catalogId": "spar-4026",
+      "priceCents": 129,
+      "priceUnit": "kos",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 8–9 (na str. 9): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "PREDZORJEN AVOKADO 1 kos 1,29",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 8 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": null
+      }
+    },
+    {
+      "id": "offer-mleko-trajno-1l-4026",
+      "productId": "mleko-trajno-1l",
+      "catalogId": "spar-4026",
+      "priceCents": 75,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 89,
+      "discountPercent": 15,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 0,79«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 18–19 (na str. 19): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SPAR TRAJNO MLEKO Pomurske mlekarne, 1,5 % m. m., 1 l CENEJE 15% redna cena 0,89 PC 0,79 s SPAR plus kartico 0,75",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 18 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-jogurt-mu-1kg-4026",
+      "productId": "jogurt-mu-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 149,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 195,
+      "discountPercent": 23,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 18–19 (na str. 19): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "NAVADNI JOGURT MU 1,3 % m. m., 3,2 % m. m., Ljubljanske mlekarne, PET, 1 kg CENEJE 23% redna cena 1,95 s SPAR plus kartico 1,49",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 18 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-smetana-kuho-200g-4026",
+      "productId": "smetana-kuho-200g",
+      "catalogId": "spar-4026",
+      "priceCents": 129,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 189,
+      "discountPercent": 31,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 1,29«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 18–19 (na str. 19): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SMETANA ZA KUHO Dukat, 200 g CENEJE 31% redna cena 1,89 PC 1,29 s SPAR plus kartico 1,29",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 18 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-sir-rezine-150g-4026",
+      "productId": "sir-rezine-150g",
+      "catalogId": "spar-4026",
+      "priceCents": 149,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 219,
+      "discountPercent": 31,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 19: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "DESPAR SIR v rezinah, 150 g CENEJE 31% redna cena 2,19 s SPAR plus kartico 1,49",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 19 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku. Na sliki je več vrst sira (npr. maasdam, edamec, ementalec); natisnjeno je le »SIR v rezinah, 150 g«."
+      }
+    },
+    {
+      "id": "offer-kruh-sendvic-250g-4026",
+      "productId": "kruh-sendvic-250g",
+      "catalogId": "spar-4026",
+      "priceCents": 119,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 139,
+      "discountPercent": 14,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 10: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "DESPAR KRUH ZA SENDVIČE pakirano, 250 g CENEJE 14% redna cena 1,39 s SPAR plus kartico 1,19",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 10 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-kakav-nesquik-400g-4026",
+      "productId": "kakav-nesquik-400g",
+      "catalogId": "spar-4026",
+      "priceCents": 339,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 458,
+      "discountPercent": 25,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 4,58«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 21: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "KAKAV NESQUIK Nestlé, 400 g CENEJE 25% redna cena 4,58 PC 4,58 s SPAR plus kartico 3,39",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 21 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-sb-kava-500g-4026",
+      "productId": "sb-kava-500g",
+      "catalogId": "spar-4026",
+      "priceCents": 429,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 23: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "S-BUDGET MLETA PRAŽENA KAVA 500 g 4,29",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 23 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-barilla-gran-ruote-500g-4026",
+      "productId": "barilla-gran-ruote-500g",
+      "catalogId": "spar-4026",
+      "priceCents": 189,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 20–21 (na str. 21): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "TESTENINE GRAN RUOTE F1 Barilla, 500 g 1,89 (NOVO)",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 20 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": null
+      }
+    },
+    {
+      "id": "offer-barilla-omaka-olive-400g-4026",
+      "productId": "barilla-omaka-olive-400g",
+      "catalogId": "spar-4026",
+      "priceCents": 259,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 349,
+      "discountPercent": 25,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 3,49«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 20–21 (na str. 21): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "PARADIŽNIKOVA OMAKA z olivami, Barilla, 400 g CENEJE 25% redna cena 3,49 PC 3,49 s SPAR plus kartico 2,59",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 20 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-olje-cekin-1l-4026",
+      "productId": "olje-cekin-1l",
+      "catalogId": "spar-4026",
+      "priceCents": 184,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 299,
+      "discountPercent": 38,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 1,84«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 14: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SONČNIČNO OLJE CEKIN Tovarna olja Gea, PET, 1 l CENEJE 38% redna cena 2,99 PC 1,84 s SPAR plus kartico 1,84",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 14 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-riz-lepljivi-1kg-4026",
+      "productId": "riz-lepljivi-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 299,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 4: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SPAR BELI LEPLJIVI RIŽ 1 kg 2,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 4 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": null
+      }
+    },
+    {
+      "id": "offer-koruza-340g-4026",
+      "productId": "koruza-340g",
+      "catalogId": "spar-4026",
+      "priceCents": 79,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 99,
+      "discountPercent": 20,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico; natisnjeno tudi »PC 0,99«"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 11: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SPAR KORUZA 340 g CENEJE 20% redna cena 0,99 PC 0,99 s SPAR plus kartico 0,79",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 11 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-sb-krompir-5kg-4026",
+      "productId": "sb-krompir-5kg",
+      "catalogId": "spar-4026",
+      "priceCents": 299,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 9: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "S-BUDGET SLOVENSKI KROMPIR pakirano, 5 kg 2,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 9 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-jabolka-gala-1kg-4026",
+      "productId": "jabolka-gala-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 149,
+      "priceUnit": "kg",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 199,
+      "discountPercent": 25,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 8–9 (na str. 9): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SLOVENSKA JABOLKA GALA 1 kg CENEJE 25% redna cena 1,99 s SPAR plus kartico 1,49",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 8 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku. Cena velja za 1 kg (tehtano sadje)."
+      }
+    },
+    {
+      "id": "offer-sampinjoni-250g-4026",
+      "productId": "sampinjoni-250g",
+      "catalogId": "spar-4026",
+      "priceCents": 139,
+      "priceUnit": "pack",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 179,
+      "discountPercent": 22,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 9: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SPAR SLOVENSKI ŠAMPINJONI pakirano, 250 g CENEJE 22% redna cena 1,79 s SPAR plus kartico 1,39",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 9 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-zelje-1kg-4026",
+      "productId": "zelje-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 89,
+      "priceUnit": "kg",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 129,
+      "discountPercent": 31,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 9: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SLOVENSKO SVEŽE ZELJE 1 kg CENEJE 31% redna cena 1,29 s SPAR plus kartico 0,89",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 9 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku. Cena velja za 1 kg (tehtana zelenjava)."
+      }
+    },
+    {
+      "id": "offer-solata-frisno-kos-4026",
+      "productId": "solata-frisno-kos",
+      "catalogId": "spar-4026",
+      "priceCents": 99,
+      "priceUnit": "kos",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 139,
+      "discountPercent": 28,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 9: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SLOVENSKE SOLATE FRIŠNO 1 kos CENEJE 28% redna cena 1,39 s SPAR plus kartico 0,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 9 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku."
+      }
+    },
+    {
+      "id": "offer-sb-grozdje-500g-4026",
+      "productId": "sb-grozdje-500g",
+      "catalogId": "spar-4026",
+      "priceCents": 169,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 10: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "S-BUDGET BELO GROZDJE BREZ PEČK pakirano, 500 g 1,69",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 10 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-piscancji-file-1kg-4026",
+      "productId": "piscancji-file-1kg",
+      "catalogId": "spar-4026",
+      "priceCents": 849,
+      "priceUnit": "kg",
+      "priceKind": "loyalty_price",
+      "regularPriceCents": 1179,
+      "discountPercent": 27,
+      "conditions": {
+        "spPlusRequired": true,
+        "couponRequired": false,
+        "note": "Velja s SPAR plus kartico"
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "skupna glava razpona strani 12–13 (na str. 13): »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SLOVENSKI PIŠČANČJI FILE IK postrežno, 1 kg CENEJE 27% redna cena 11,79 s SPAR plus kartico 8,49",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 12 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku. Postrežno: cena velja za 1 kg."
+      }
+    },
+    {
+      "id": "offer-mleto-meso-480g-4026",
+      "productId": "mleto-meso-480g",
+      "catalogId": "spar-4026",
+      "priceCents": 399,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 11: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SPAR MLETO MEŠANO MESO pakirano, 480 g 3,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 11 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": null
+      }
+    },
+    {
+      "id": "offer-sb-hrenovke-500g-4026",
+      "productId": "sb-hrenovke-500g",
+      "catalogId": "spar-4026",
+      "priceCents": 299,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 13: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "S-BUDGET HRENOVKE PARTY HOT DOG 500 g 2,99",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 13 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
+      }
+    },
+    {
+      "id": "offer-piscancji-mini-file-400g-4026",
+      "productId": "piscancji-mini-file-400g",
+      "catalogId": "spar-4026",
+      "priceCents": 479,
+      "priceUnit": "pack",
+      "priceKind": "catalog_price",
+      "regularPriceCents": null,
+      "discountPercent": null,
+      "conditions": {
+        "spPlusRequired": false,
+        "couponRequired": false,
+        "note": null
+      },
+      "validity": {
+        "status": "explicit",
+        "from": "2026-09-30",
+        "to": "2026-10-06",
+        "evidence": "glava strani 11: »DO TORKA 6. 10.«; začetek: naslovnica (str. 1): »40/26 PONUDBA KATALOGA VELJA OD SREDE 30.9.2026«"
+      },
+      "sourceQuote": "SPAR PIŠČANČJI MINI FILE IK pakirano, 400 g 4,79",
+      "verification": {
+        "status": "verified",
+        "checkedOn": "2026-10-02",
+        "method": "Visual check of rendered PDF page 11 (200 dpi crop of the offer block) cross-checked with the PDF text layer",
+        "notes": null
+      }
+    }
+  ],
+  "placements": [
+    {
+      "id": "pl-sb-skuta-1kg-p05",
+      "offerId": "offer-sb-skuta-1kg-4026",
+      "pdfPageIndex": 4,
+      "pdfPageNumber": 5,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.6651,
+        "y": 0.7377,
+        "width": 0.3349,
+        "height": 0.2307
+      }
+    },
+    {
+      "id": "pl-sb-pommes-1kg-p05",
+      "offerId": "offer-sb-pommes-1kg-4026",
+      "pdfPageIndex": 4,
+      "pdfPageNumber": 5,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.0,
+        "y": 0.5588,
+        "width": 0.3348,
+        "height": 0.4097
+      }
+    },
+    {
+      "id": "pl-sb-salama-400g-p05",
+      "offerId": "offer-sb-salama-400g-4026",
+      "pdfPageIndex": 4,
+      "pdfPageNumber": 5,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.3444,
+        "y": 0.7857,
+        "width": 0.3111,
+        "height": 0.1827
+      }
+    },
+    {
+      "id": "pl-sb-zrezki-500g-p05",
+      "offerId": "offer-sb-zrezki-500g-4026",
+      "pdfPageIndex": 4,
+      "pdfPageNumber": 5,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.3444,
+        "y": 0.4982,
+        "width": 0.6554,
+        "height": 0.2316
+      }
+    },
+    {
+      "id": "pl-jagode-250g-p10",
+      "offerId": "offer-jagode-250g-4026",
+      "pdfPageIndex": 9,
+      "pdfPageNumber": 10,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.3444,
+        "y": 0.5118,
+        "width": 0.3111,
+        "height": 0.2181
+      }
+    },
+    {
+      "id": "pl-jajca-xl-10-p19",
+      "offerId": "offer-jajca-xl-10-4026",
+      "pdfPageIndex": 18,
+      "pdfPageNumber": 19,
+      "printedPageLabel": "11",
+      "bbox": {
+        "x": 0.3508,
+        "y": 0.5483,
+        "width": 0.3079,
+        "height": 0.1903
+      }
+    },
+    {
+      "id": "pl-maslo-250g-p01",
+      "offerId": "offer-maslo-250g-4026",
+      "pdfPageIndex": 0,
+      "pdfPageNumber": 1,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.712,
+        "y": 0.372,
+        "width": 0.273,
+        "height": 0.14
+      }
+    },
+    {
+      "id": "pl-sb-borovnice-300g-p08",
+      "offerId": "offer-sb-borovnice-300g-4026",
+      "pdfPageIndex": 7,
+      "pdfPageNumber": 8,
+      "printedPageLabel": "4",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.0682,
+        "width": 0.3317,
+        "height": 0.2107
+      }
+    },
+    {
+      "id": "pl-moka-manitoba-1kg-p20",
+      "offerId": "offer-moka-manitoba-1kg-4026",
+      "pdfPageIndex": 19,
+      "pdfPageNumber": 20,
+      "printedPageLabel": "12",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.06,
+        "width": 0.3317,
+        "height": 0.219
+      }
+    },
+    {
+      "id": "pl-avokado-kos-p08",
+      "offerId": "offer-avokado-kos-4026",
+      "pdfPageIndex": 7,
+      "pdfPageNumber": 8,
+      "printedPageLabel": "4",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.2985,
+        "width": 0.3317,
+        "height": 0.2102
+      }
+    },
+    {
+      "id": "pl-mleko-trajno-1l-p18",
+      "offerId": "offer-mleko-trajno-1l-4026",
+      "pdfPageIndex": 17,
+      "pdfPageNumber": 18,
+      "printedPageLabel": "10",
+      "bbox": {
+        "x": 0.6587,
+        "y": 0.0587,
+        "width": 0.3413,
+        "height": 0.2202
+      }
+    },
+    {
+      "id": "pl-jogurt-mu-1kg-p18",
+      "offerId": "offer-jogurt-mu-1kg-4026",
+      "pdfPageIndex": 17,
+      "pdfPageNumber": 18,
+      "printedPageLabel": "10",
+      "bbox": {
+        "x": 0.6587,
+        "y": 0.7544,
+        "width": 0.3413,
+        "height": 0.2141
+      }
+    },
+    {
+      "id": "pl-smetana-kuho-200g-p18",
+      "offerId": "offer-smetana-kuho-200g-4026",
+      "pdfPageIndex": 17,
+      "pdfPageNumber": 18,
+      "printedPageLabel": "10",
+      "bbox": {
+        "x": 0.6587,
+        "y": 0.3128,
+        "width": 0.3413,
+        "height": 0.196
+      }
+    },
+    {
+      "id": "pl-sir-rezine-150g-p19",
+      "offerId": "offer-sir-rezine-150g-4026",
+      "pdfPageIndex": 18,
+      "pdfPageNumber": 19,
+      "printedPageLabel": "11",
+      "bbox": {
+        "x": 0.3508,
+        "y": 0.2978,
+        "width": 0.3079,
+        "height": 0.211
+      }
+    },
+    {
+      "id": "pl-kruh-sendvic-250g-p10",
+      "offerId": "offer-kruh-sendvic-250g-4026",
+      "pdfPageIndex": 9,
+      "pdfPageNumber": 10,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.0,
+        "y": 0.5329,
+        "width": 0.3349,
+        "height": 0.197
+      }
+    },
+    {
+      "id": "pl-kakav-nesquik-400g-p21",
+      "offerId": "offer-kakav-nesquik-400g-4026",
+      "pdfPageIndex": 20,
+      "pdfPageNumber": 21,
+      "printedPageLabel": "13",
+      "bbox": {
+        "x": 0.3508,
+        "y": 0.3049,
+        "width": 0.3079,
+        "height": 0.2039
+      }
+    },
+    {
+      "id": "pl-sb-kava-500g-p23",
+      "offerId": "offer-sb-kava-500g-4026",
+      "pdfPageIndex": 22,
+      "pdfPageNumber": 23,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.344,
+        "y": 0.745,
+        "width": 0.311,
+        "height": 0.224
+      }
+    },
+    {
+      "id": "pl-barilla-gran-ruote-500g-p20",
+      "offerId": "offer-barilla-gran-ruote-500g-4026",
+      "pdfPageIndex": 19,
+      "pdfPageNumber": 20,
+      "printedPageLabel": "12",
+      "bbox": {
+        "x": 0.3413,
+        "y": 0.0639,
+        "width": 0.3079,
+        "height": 0.2151
+      }
+    },
+    {
+      "id": "pl-barilla-omaka-olive-400g-p20",
+      "offerId": "offer-barilla-omaka-olive-400g-4026",
+      "pdfPageIndex": 19,
+      "pdfPageNumber": 20,
+      "printedPageLabel": "12",
+      "bbox": {
+        "x": 0.6587,
+        "y": 0.5351,
+        "width": 0.3413,
+        "height": 0.2035
+      }
+    },
+    {
+      "id": "pl-olje-cekin-1l-p14",
+      "offerId": "offer-olje-cekin-1l-4026",
+      "pdfPageIndex": 13,
+      "pdfPageNumber": 14,
+      "printedPageLabel": "8",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.745,
+        "width": 0.334,
+        "height": 0.224
+      }
+    },
+    {
+      "id": "pl-riz-lepljivi-1kg-p04",
+      "offerId": "offer-riz-lepljivi-1kg-4026",
+      "pdfPageIndex": 3,
+      "pdfPageNumber": 4,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.0,
+        "y": 0.498,
+        "width": 0.335,
+        "height": 0.232
+      }
+    },
+    {
+      "id": "pl-koruza-340g-p11",
+      "offerId": "offer-koruza-340g-4026",
+      "pdfPageIndex": 10,
+      "pdfPageNumber": 11,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.6651,
+        "y": 0.5315,
+        "width": 0.3349,
+        "height": 0.2071
+      }
+    },
+    {
+      "id": "pl-sb-krompir-5kg-p09",
+      "offerId": "offer-sb-krompir-5kg-4026",
+      "pdfPageIndex": 8,
+      "pdfPageNumber": 9,
+      "printedPageLabel": "5",
+      "bbox": {
+        "x": 0.3508,
+        "y": 0.5197,
+        "width": 0.3079,
+        "height": 0.2189
+      }
+    },
+    {
+      "id": "pl-jabolka-gala-1kg-p08",
+      "offerId": "offer-jabolka-gala-1kg-4026",
+      "pdfPageIndex": 7,
+      "pdfPageNumber": 8,
+      "printedPageLabel": "4",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.528,
+        "width": 0.3317,
+        "height": 0.2106
+      }
+    },
+    {
+      "id": "pl-sampinjoni-250g-p09",
+      "offerId": "offer-sampinjoni-250g-4026",
+      "pdfPageIndex": 8,
+      "pdfPageNumber": 9,
+      "printedPageLabel": "5",
+      "bbox": {
+        "x": 0.6683,
+        "y": 0.0908,
+        "width": 0.3317,
+        "height": 0.1882
+      }
+    },
+    {
+      "id": "pl-zelje-1kg-p09",
+      "offerId": "offer-zelje-1kg-4026",
+      "pdfPageIndex": 8,
+      "pdfPageNumber": 9,
+      "printedPageLabel": "5",
+      "bbox": {
+        "x": 0.6683,
+        "y": 0.547,
+        "width": 0.3317,
+        "height": 0.1916
+      }
+    },
+    {
+      "id": "pl-solata-frisno-kos-p09",
+      "offerId": "offer-solata-frisno-kos-4026",
+      "pdfPageIndex": 8,
+      "pdfPageNumber": 9,
+      "printedPageLabel": "5",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.5256,
+        "width": 0.3413,
+        "height": 0.213
+      }
+    },
+    {
+      "id": "pl-sb-grozdje-500g-p10",
+      "offerId": "offer-sb-grozdje-500g-4026",
+      "pdfPageIndex": 9,
+      "pdfPageNumber": 10,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.3444,
+        "y": 0.7432,
+        "width": 0.3111,
+        "height": 0.2252
+      }
+    },
+    {
+      "id": "pl-piscancji-file-1kg-p12",
+      "offerId": "offer-piscancji-file-1kg-4026",
+      "pdfPageIndex": 11,
+      "pdfPageNumber": 12,
+      "printedPageLabel": "6",
+      "bbox": {
+        "x": 0.3413,
+        "y": 0.0917,
+        "width": 0.3079,
+        "height": 0.1872
+      }
+    },
+    {
+      "id": "pl-mleto-meso-480g-p11",
+      "offerId": "offer-mleto-meso-480g-4026",
+      "pdfPageIndex": 10,
+      "pdfPageNumber": 11,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.3444,
+        "y": 0.7563,
+        "width": 0.3111,
+        "height": 0.2121
+      }
+    },
+    {
+      "id": "pl-sb-hrenovke-500g-p13",
+      "offerId": "offer-sb-hrenovke-500g-4026",
+      "pdfPageIndex": 12,
+      "pdfPageNumber": 13,
+      "printedPageLabel": "7",
+      "bbox": {
+        "x": 0.0,
+        "y": 0.0673,
+        "width": 0.3413,
+        "height": 0.2116
+      }
+    },
+    {
+      "id": "pl-piscancji-mini-file-400g-p11",
+      "offerId": "offer-piscancji-mini-file-400g-4026",
+      "pdfPageIndex": 10,
+      "pdfPageNumber": 11,
+      "printedPageLabel": null,
+      "bbox": {
+        "x": 0.0,
+        "y": 0.7465,
+        "width": 0.3349,
+        "height": 0.2219
+      }
+    }
+  ],
+  "recipes": [
+    {
+      "id": "vecerja-za-dva-zrezki-gobova-omaka",
+      "title": "Svinjski zrezki v gobovi omaki s pečenim krompirčkom",
+      "kind": "dinner",
+      "servings": 2,
+      "budgetCents": 1000,
+      "minutes": 35,
+      "ingredients": [
+        {
+          "offerId": "offer-sb-zrezki-500g-4026",
+          "requiredQuantity": "500 g (2 × 250 g)",
+          "packsNeeded": 1,
+          "conversionNote": "En 500 g paket zadošča za dve porciji po 250 g."
+        },
+        {
+          "offerId": "offer-sb-pommes-1kg-4026",
+          "requiredQuantity": "približno 400 g",
+          "packsNeeded": 1,
+          "conversionNote": "Kupiti je treba cel 1 kg paket; približno 600 g ostane v zamrzovalniku."
+        },
+        {
+          "offerId": "offer-sampinjoni-250g-4026",
+          "requiredQuantity": "250 g",
+          "packsNeeded": 1,
+          "conversionNote": "Porabiš cel 250 g paket."
+        },
+        {
+          "offerId": "offer-smetana-kuho-200g-4026",
+          "requiredQuantity": "200 g",
+          "packsNeeded": 1,
+          "conversionNote": "Porabiš celo 200 g embalažo."
+        }
+      ],
+      "pantryAssumptions": [
+        "olje, sol in poper imaš doma",
+        "žlica moke za zgostitev omake je neobvezna"
+      ],
+      "steps": [
+        "Pečico segrej na 220 °C in na pekač razporedi približno 400 g krompirčka; peci po navodilih na embalaži (okoli 20–25 minut).",
+        "Zrezke rahlo potolči, solí in popopraj.",
+        "V ponvi segrej žlico olja in zrezke na vsaki strani peci 2–3 minute, nato jih odstavi in pokrij.",
+        "V isti ponvi na kratko popraži narezane šampinjone, da spustijo in povrejo sok.",
+        "Prilij smetano za kuho, po okusu solí in popopraj ter 2–3 minute kuhaj, da se omaka zgosti.",
+        "Zrezke vrni v omako za minuto in postrezi s pečenim krompirčkom."
+      ]
+    },
+    {
+      "id": "hiter-zajtrk-skuta-jagode",
+      "title": "Hiter zajtrk: kruh s skuto in jagodami",
+      "kind": "breakfast",
+      "servings": 2,
+      "budgetCents": null,
+      "minutes": 10,
+      "ingredients": [
+        {
+          "offerId": "offer-kruh-sendvic-250g-4026",
+          "requiredQuantity": "4 rezine (približno 100 g)",
+          "packsNeeded": 1,
+          "conversionNote": "Kupiti je treba cel 250 g paket; ostanek porabiš za naslednji zajtrk."
+        },
+        {
+          "offerId": "offer-sb-skuta-1kg-4026",
+          "requiredQuantity": "približno 200 g",
+          "packsNeeded": 1,
+          "conversionNote": "Kupiti je treba celo 1 kg embalažo; približno 800 g ostane v hladilniku."
+        },
+        {
+          "offerId": "offer-jagode-250g-4026",
+          "requiredQuantity": "250 g",
+          "packsNeeded": 1,
+          "conversionNote": "Porabiš cel 250 g paket."
+        }
+      ],
+      "pantryAssumptions": [
+        "med ali sladkor po okusu imaš doma (neobvezno)"
+      ],
+      "steps": [
+        "Jagode operi, odstrani peclje in jih nareži na rezine.",
+        "Skuto v skledi premešaj z vilicami; po želji dodaj malo medu.",
+        "Kruh po želji na kratko popeci v toasterju ali ponvi.",
+        "Rezine kruha namaži s skuto, obloži z jagodami in takoj postrezi."
+      ]
+    },
+    {
+      "id": "testenine-z-mesno-omako",
+      "title": "Testenine z mesno paradižnikovo omako",
+      "kind": "lunch",
+      "servings": 4,
+      "budgetCents": 1000,
+      "minutes": 30,
+      "ingredients": [
+        {
+          "offerId": "offer-barilla-gran-ruote-500g-4026",
+          "requiredQuantity": "500 g",
+          "packsNeeded": 1,
+          "conversionNote": "En 500 g paket zadošča za štiri porcije."
+        },
+        {
+          "offerId": "offer-mleto-meso-480g-4026",
+          "requiredQuantity": "480 g",
+          "packsNeeded": 1,
+          "conversionNote": "Porabiš cel 480 g paket."
+        },
+        {
+          "offerId": "offer-barilla-omaka-olive-400g-4026",
+          "requiredQuantity": "400 g",
+          "packsNeeded": 1,
+          "conversionNote": "Porabiš cel 400 g kozarec."
+        }
+      ],
+      "pantryAssumptions": [
+        "olje, sol in poper imaš doma",
+        "čebula ali česen sta neobvezna"
+      ],
+      "steps": [
+        "V velikem loncu zavri osoljeno vodo in skuhaj testenine po navodilih na embalaži.",
+        "Medtem v ponvi segrej žlico olja in na njem 6–8 minut praži mleto meso, da porjavi in razpade.",
+        "Mesu prilij paradižnikovo omako, solí, popopraj in na nizkem ognju kuhaj 5 minut.",
+        "Testenine odcedi, jih premešaj z omako in postrezi."
+      ]
+    }
+  ]
+}

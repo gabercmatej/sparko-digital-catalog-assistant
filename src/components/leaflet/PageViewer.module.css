@@ -1,0 +1,168 @@
+.wrap {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 240px;
+  display: flex;
+}
+.viewport {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background: var(--c-page-outside);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: grab;
+  outline: none;
+}
+.viewport[data-zoomed] {
+  cursor: move;
+}
+.viewport:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--c-focus);
+}
+.stage {
+  --s: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  background: #fff;
+}
+.pageImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.overlays {
+  position: absolute;
+  inset: 0;
+}
+
+/* ------------------------------------------------------------ hit targets */
+
+.hit {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: calc(4px / var(--s));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.hit:focus-visible {
+  outline: calc(2.5px / var(--s)) solid var(--c-focus);
+  outline-offset: calc(2px / var(--s));
+}
+@media (hover: hover) {
+  .hit:not(.saved):hover {
+    background: rgb(255 255 255 / 10%);
+    box-shadow: inset 0 0 0 calc(1.5px / var(--s)) rgb(19 58 42 / 55%), 0 0 0 calc(1px / var(--s)) rgb(255 255 255 / 85%);
+  }
+}
+
+/* Saved: permanent strong green 3 CSS px outline, thin white contrast edge (outside and inside)
+   so it reads on green catalog pages, subtle translucent fill. Widths are divided by the zoom
+   scale so they stay ~3 CSS px on screen. The page image itself is never dimmed or animated. */
+.saved {
+  border: calc(3px / var(--s)) solid var(--c-green); /* deep SPAR green: reads against both white and green page areas */
+  background: rgb(31 160 69 / 12%);
+  box-shadow:
+    0 0 0 calc(1.5px / var(--s)) #fff,
+    inset 0 0 0 calc(1px / var(--s)) rgb(255 255 255 / 85%);
+}
+
+/* Glow layer animated (opacity only) via the Web Animations API: twice × 1.2 s, then gone. */
+.pulse {
+  position: absolute;
+  inset: calc(-3px / var(--s));
+  border-radius: inherit;
+  background: rgb(31 160 69 / 22%);
+  box-shadow:
+    0 0 0 calc(3px / var(--s)) rgb(31 160 69 / 70%),
+    0 0 calc(18px / var(--s)) calc(4px / var(--s)) rgb(31 160 69 / 65%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Temporary focus outline for an unsaved target opened from chat — neutral, dashed, never the saved style. */
+.focusRing {
+  position: absolute;
+  inset: calc(-3px / var(--s));
+  border-radius: calc(5px / var(--s));
+  border: calc(2.5px / var(--s)) dashed var(--c-ink);
+  box-shadow:
+    0 0 0 calc(2px / var(--s)) rgb(255 255 255 / 95%),
+    inset 0 0 0 calc(2px / var(--s)) rgb(255 255 255 / 95%);
+  background: rgb(255 255 255 / 8%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Badge keeps a constant on-screen size (counter-scaled), sits top-left away from the price block. */
+.badge {
+  position: absolute;
+  left: calc(4px / var(--s));
+  top: calc(4px / var(--s));
+  max-width: calc(100% * var(--s) - 8px);
+  transform: scale(calc(1 / var(--s)));
+  transform-origin: 0 0;
+  display: inline-block;
+  padding: 2px 6px 2px 5px;
+  border-radius: 5px;
+  background: var(--c-green);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 0 0 1.5px #fff, 0 1px 4px rgb(0 0 0 / 25%);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------ states */
+
+.loading {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 55%) 50%, transparent 70%) var(--c-page-outside);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  pointer-events: none;
+}
+.error {
+  position: absolute;
+  inset: auto 16px 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--c-warning-bg);
+  color: var(--c-warning-ink);
+  font-size: var(--text-sm);
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation: none;
+  }
+  .pulse,
+  .focusRing {
+    animation: none;
+  }
+}

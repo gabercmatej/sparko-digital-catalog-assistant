@@ -1,0 +1,14 @@
+/* V2 overrides: these supersede the previous UI proposal. */
+:root {
+  --color-canvas: #ffffff;
+  --color-surface: #ffffff;
+  --color-product-tile: #f1f2f1;
+  --radius-product: 0;
+}
+.product-tile { aspect-ratio: 1 / 1; border-radius: 0; background: var(--color-product-tile); overflow: hidden; }
+.product-tile img { object-fit: contain; width: 100%; height: 100%; }
+.product-carousel .product-tile { width: 108px; height: 108px; flex: 0 0 108px; }
+/* Keep the product image in a bounded media region; name and price are separate
+   layout slots within the square. Never stretch an image to fill its region.
+   SPAR logo: use official SVG or high-resolution original, preserve aspect ratio.
+   Generated mockup is a visual reference, not a source of brand/product assets. */

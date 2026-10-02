@@ -1,0 +1,224 @@
+.root {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.scroll {
+  /* room for the floating leaflet button so it never covers the last products */
+  padding-bottom: 104px;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.header {
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+}
+.subtitle {
+  font-size: var(--text-md);
+  color: var(--c-ink-3);
+}
+.demo {
+  margin-top: 6px;
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.section {
+  margin-top: var(--gap-section);
+}
+.h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--c-ink);
+}
+.dot {
+  color: var(--c-ink-3);
+  font-weight: 500;
+}
+.count {
+  font-variant-numeric: tabular-nums;
+}
+.h3 {
+  font-size: var(--text-sm);
+  font-weight: 650;
+  color: var(--c-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+}
+.group {
+  margin-top: 16px;
+}
+.group + .group {
+  margin-top: 24px;
+}
+.sectionNote {
+  margin-top: 4px;
+  font-size: var(--text-sm);
+  color: var(--c-ink-3);
+  line-height: 1.4;
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 16px;
+}
+.recoBand .grid {
+  margin-top: 16px;
+  row-gap: 24px;
+}
+
+/* ---------------------------------------------------------------- saved items */
+
+.item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  scroll-margin: 24px 0 112px;
+}
+.tileWrap {
+  position: relative;
+  display: flex;
+}
+.tileWrap::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 3px solid var(--c-green-bright);
+  opacity: 0;
+  pointer-events: none;
+}
+.item[data-flash] .tileWrap::after {
+  animation: flash 1.1s ease-in-out 2;
+}
+.itemRow {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2px;
+}
+.remove {
+  min-height: var(--tap);
+  margin-left: -10px;
+  color: var(--c-ink-2);
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item[data-flash] .tileWrap::after {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------- empty state */
+
+.empty {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.empty p {
+  font-size: var(--text-body);
+  color: var(--c-ink-2);
+  line-height: 1.5;
+  max-width: 34ch;
+}
+
+/* ---------------------------------------------------------------- recommendations */
+
+.recoBand {
+  margin-top: 24px;
+  padding-top: 28px;
+  padding-bottom: 32px;
+  background: color-mix(in srgb, var(--c-green-050) 55%, #fff);
+  border-top: 1px solid var(--c-green-100);
+}
+.recoItem {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.reason {
+  margin-top: 8px;
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  color: var(--c-ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.add {
+  margin-top: auto;
+  min-height: var(--tap);
+  padding: 4px 6px;
+  font-size: 13px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+  background: #fff;
+}
+.addLabel {
+  display: block;
+}
+.addIcon {
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+.reason + .add,
+.recoItem > :first-child + .add {
+  margin-top: 10px;
+}
+
+/* ---------------------------------------------------------------- leaflet dock */
+
+.dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  padding: 20px var(--pad-x) 12px;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0%), #fff 45%);
+  pointer-events: none;
+}
+.leafletBtn {
+  pointer-events: auto;
+  min-height: 52px;
+  font-size: var(--text-body);
+  box-shadow: var(--shadow-float);
+}
+
+.loading {
+  min-height: 50vh;
+}

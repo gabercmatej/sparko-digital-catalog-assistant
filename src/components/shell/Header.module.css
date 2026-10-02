@@ -1,0 +1,23 @@
+.header {
+  flex: none;
+  display: grid;
+  grid-template-columns: var(--tap) 1fr var(--tap);
+  align-items: center;
+  height: calc(var(--header-h) + var(--safe-top));
+  padding: var(--safe-top) calc(var(--pad-x) - 10px) 0;
+  background: var(--c-canvas);
+  border-bottom: 1px solid var(--c-border);
+  position: relative;
+  z-index: 20;
+}
+.logoLink {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  height: var(--tap);
+  padding: 0 8px;
+}
+.logo {
+  height: 22px;
+  width: auto;
+}

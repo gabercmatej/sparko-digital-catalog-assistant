@@ -1,0 +1,248 @@
+/* Sparko design tokens — approved UI revision 03 + final overrides. */
+:root {
+  --c-canvas: #ffffff;
+  --c-page-outside: #f3f5f4;
+  --c-tile: #f1f2f1;
+  --c-surface-muted: #f5f7f6;
+  --c-ink: #133a2a;
+  --c-ink-2: #46594f;
+  --c-ink-3: #6f7f76;
+  --c-border: #e3e8e5;
+  --c-border-strong: #cfd8d3;
+  --c-green: #0d6b3b; /* primary buttons / active */
+  --c-green-600: #0f7a44;
+  --c-green-050: #eaf5ee;
+  --c-green-100: #d6ecdd;
+  --c-green-bright: #1fa045; /* saved highlight on leaflet */
+  --c-red: #e30613; /* SPAR price red */
+  --c-red-ink: #b8000f;
+  --c-yellow: #ffe500;
+  --c-focus: #0b5d33;
+  --c-bubble-user: #e7f4ec;
+  --c-bubble-bot: #f4f5f4;
+  --c-warning-bg: #fff6e0;
+  --c-warning-ink: #6b4a00;
+
+  --font-ui: var(--font-inter), "Segoe UI", system-ui, -apple-system, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 13.5px;
+  --text-md: 15px;
+  --text-body: 16px;
+  --text-lg: 19px;
+  --text-xl: 24px;
+
+  --radius-control: 12px;
+  --radius-bubble: 16px;
+  --radius-sm: 8px;
+
+  --pad-x: 24px;
+  --gap-section: 28px;
+  --tap: 44px;
+  --header-h: 56px;
+  --nav-h: 60px;
+  --app-max: 520px;
+  --tile-carousel: 96px;
+  --tile-card: 160px;
+  --shadow-sheet: 0 -8px 32px rgb(10 40 25 / 14%);
+  --shadow-float: 0 6px 20px rgb(10 40 25 / 18%);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+@media (max-width: 370px) {
+  :root {
+    --pad-x: 16px;
+    --tile-card: 148px;
+    --tile-carousel: 90px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--text-body);
+  line-height: 1.45;
+  color: var(--c-ink);
+  background: var(--c-page-outside);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* the app shell owns scrolling */
+  overscroll-behavior: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--c-green);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--tap);
+  padding: 0 18px;
+  border-radius: var(--radius-control);
+  border: 1.5px solid transparent;
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn svg {
+  flex: none;
+}
+.btn-primary {
+  background: var(--c-green);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--c-green-600);
+}
+.btn-secondary {
+  background: #fff;
+  color: var(--c-green);
+  border-color: var(--c-green);
+}
+.btn-secondary:hover {
+  background: var(--c-green-050);
+}
+.btn-saved {
+  background: var(--c-green-050);
+  color: var(--c-green);
+  border-color: var(--c-green-100);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--c-ink-2);
+  padding: 0 10px;
+  font-weight: 500;
+}
+.btn-ghost:hover {
+  background: var(--c-surface-muted);
+}
+.btn-block {
+  width: 100%;
+}
+.btn-sm {
+  min-height: 36px;
+  font-size: var(--text-sm);
+  padding: 0 12px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--c-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.icon-btn:hover {
+  background: var(--c-surface-muted);
+}
+
+/* ---------------------------------------------------------------- layout helpers */
+
+.page-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.page-pad {
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.demo-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--c-ink-3);
+  letter-spacing: 0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,72 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 50; /* above bottom nav (20), below toasts (60) so undo stays reachable */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(10 30 20 / 38%);
+  animation: fade-in 0.2s ease-out;
+}
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: var(--app-max);
+  max-height: 85%;
+  max-height: 85dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-canvas);
+  border-radius: 16px 16px 0 0;
+  box-shadow: var(--shadow-sheet);
+  animation: slide-up 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.head {
+  position: relative;
+  flex: none;
+  height: 48px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.handle {
+  margin-top: 10px;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--c-border-strong);
+}
+.close {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  color: var(--c-ink-2);
+}
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px var(--pad-x) calc(24px + var(--safe-bottom));
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
