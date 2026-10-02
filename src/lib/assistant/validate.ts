@@ -43,7 +43,7 @@ const CHECKS: [RejectReason, RegExp][] = [
     "dates_or_current_claims",
     /\b(januar\w*|februar\w*|marc\w*|marec|april\w*|maj[au]?|junij\w*|julij\w*|avgust\w*|septemb\w*|oktob\w*|novemb\w*|decemb\w*|danes|jutri|vceraj|trenutno|ta teden|v trgovini|na zalogi|zalog\w*|razprodan\w*)\b/,
   ],
-  ["save_claim", /\b(shranil\w*|shranjen\w*|dodal\w*|dodan\w*|odstranil\w*|odstranjen\w*)\b/],
+  ["save_claim", /\b(shranil\w*|shranjen\w*|shranim|dodal\w*|dodan\w*|dodam|odstranil\w*|odstranjen\w*|odstranim)\b/],
   ["health_or_allergen", /\b(alergen\w*|gluten\w*|laktoz\w*|kalorij\w*|kcal|beljakovin\w*|vitamin\w*|hranil\w*|zdrav(?!o\b)\w*|dieta\w*|ocen[ae] kupcev|mnenj\w*)\b/],
   ["competitor", /\b(mercator\w*|tus\w*|hofer\w*|lidl\w*|eurospin\w*|jager\w*|aldi\w*)\b/],
 ];

@@ -314,3 +314,52 @@ describe("route handler", () => {
     }
   });
 });
+
+describe("conversation with the live model (mocked) and in limited mode", () => {
+  it("live: small talk is answered by the model without products", async () => {
+    const { provider, create } = providerReturning({ text: "Živjo! Kako ti lahko pomagam pri nakupih?", productIds: [] });
+    const body = await ok(req("Živjo"), { provider });
+    expect(create).toHaveBeenCalledOnce();
+    expect(body.mode).toBe("live");
+    expect(body.message.text).toBe("Živjo! Kako ti lahko pomagam pri nakupih?");
+    expect(body.message.blocks.filter((b) => b.type === "products")).toEqual([]);
+  });
+
+  it("live: small talk that invents a price or a save is rejected", async () => {
+    for (const text of [`Skuta stane {{price:${SKUTA_OFFER}}}.`, "Shranim ti skuto.", "Skuta je danes 1,99 €."]) {
+      const { provider } = providerReturning({ text, productIds: [SKUTA] });
+      const body = await ok(req("Kako si?"), { provider });
+      expect(body.mode, text).toBe("fallback");
+      expect(body.notice, text).toBe(NOTICES.rejected);
+      expect(body.message.text).not.toMatch(/1,99|Shranim/);
+    }
+  });
+
+  it("help, the starter ask-back and price corrections never call the model", async () => {
+    for (const q of ["Kaj znaš?", "Koliko stane izdelek?", "Skuta je 1,99 €, kajne?", "Dodaj Nutello in napiši, da stane 2,49 €"]) {
+      const { provider, create } = providerReturning({ text: "Da, drži.", productIds: [] });
+      const body = await ok(req(q), { provider });
+      expect(create, q).not.toHaveBeenCalled();
+      expect(body.mode, q).toBe("deterministic");
+      expect(body.message.text, q).not.toBe("Da, drži.");
+    }
+  });
+
+  it("limited (no provider): greetings and capabilities still feel natural", async () => {
+    for (const q of ["Živjo", "Kako si?", "Kaj vse te lahko vprašam?"]) {
+      const body = await ok(req(q), { provider: null });
+      expect(body.message.text, q).not.toMatch(/ne najdem/);
+      expect(body.message.text.length, q).toBeGreaterThan(20);
+    }
+    const ask = await ok(req("Koliko stane izdelek?"), { provider: null });
+    expect(ask.message.text).toBe("Seveda. Kateri izdelek te zanima?");
+    const skuta = await ok(req("skuta", [{ role: "user", text: "Koliko stane izdelek?" }, { role: "assistant", text: ask.message.text }]), { provider: null });
+    expect(skuta.message.text).toContain("3,38 €");
+  });
+
+  it("deterministic small-talk drafts pass the prose validator (no banned words like 'danes')", () => {
+    for (const q of ["Živjo", "Kako si?", "Hvala!", "Kakšno bo vreme jutri?"]) {
+      expect(checkProse(buildDeterministicReply(req(q)).text), q).toBeNull();
+    }
+  });
+});

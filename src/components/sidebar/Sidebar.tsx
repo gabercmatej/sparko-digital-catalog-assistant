@@ -6,6 +6,7 @@ import { relativeDate } from "@/lib/chat/messages";
 import { DEMO_CONVERSATIONS } from "@/lib/demo-conversations";
 import { setActiveConversation, startNewChat, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
+import { FullscreenToggle } from "./FullscreenToggle";
 import { SettingsPanel } from "./SettingsPanel";
 import styles from "./Sidebar.module.css";
 
@@ -156,6 +157,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
               </section>
             </div>
             <div className={styles.bottom}>
+              <FullscreenToggle className={styles.navItem} onDone={onClose} />
               <button type="button" className={styles.navItem} onClick={() => setView("settings")}>
                 <Icon name="settings" size={21} />
                 <span>Nastavitve</span>

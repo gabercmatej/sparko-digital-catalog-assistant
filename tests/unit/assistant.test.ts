@@ -77,7 +77,8 @@ describe("search", () => {
 
 describe("intents", () => {
   const intentOf = (t: string, history: ChatRequestMessage[] = []) => detectIntent([...history, { role: "user", text: t }]).intent;
-  it("classifies the four suggestion prompts", () => {
+  it("classifies the starter prompts and common requests", () => {
+    expect(intentOf("Koliko stane izdelek?")).toBe("price_lookup");
     expect(intentOf("Koliko stane skuta?")).toBe("price_lookup");
     expect(intentOf("Kaj je najbolj znižano?")).toBe("discounts");
     expect(intentOf("Večerja za dva do 10 €")).toBe("meal");
@@ -224,7 +225,7 @@ describe("deterministic responder — save/remove", () => {
   });
 
   it("read-only questions never produce save/remove actions", () => {
-    const readOnly = ["Koliko stane skuta?", "Kaj je najbolj znižano?", "Večerja za dva do 10 €", "Predlagaj hiter zajtrk", "S-BUDGET izdelki", "priporoči mi kaj", "kaj pa cenejša možnost?", "kje je v letaku?", "živjo", "Koliko stane kaviar?"];
+    const readOnly = ["Koliko stane skuta?", "Kaj je najbolj znižano?", "Večerja za dva do 10 €", "Predlagaj hiter zajtrk", "S-BUDGET izdelki", "priporoči mi kaj", "kaj pa cenejša možnost?", "kje je v letaku?", "živjo", "Kako si?", "Kaj znaš?", "Hvala!", "Koliko stane kaviar?", "Skuta je 1,99 €, kajne?"];
     for (const q of readOnly) {
       const r = buildDeterministicReply(req(q, { history: skutaContext }));
       expect(r.actions.filter((a) => a.type === "save" || a.type === "remove")).toEqual([]);
@@ -357,5 +358,99 @@ describe("placeholders", () => {
     expect(resolvePlaceholders(`{{price:${SKUTA_OFFER}}}`, { spPlus: "unset", allowedOfferIds: new Set() }).ok).toBe(false);
     expect(resolvePlaceholders("{{price:offer-ne-obstaja}}", { spPlus: "unset" }).ok).toBe(false);
     expect(resolvePlaceholders(`{{discount:${SKUTA_OFFER}}}`, { spPlus: "unset" }).ok).toBe(false); // no printed discount
+  });
+});
+
+describe("conversation (limited mode, deterministic)", () => {
+  it.each([
+    ["Živjo", "greeting"],
+    ["Kako si?", "how_are_you"],
+    ["Kaj znaš?", "help"],
+    ["Kaj vse te lahko vprašam?", "help"],
+    ["Hvala!", "thanks"],
+  ])("%s → %s, natural reply without products or actions", (q, intent) => {
+    const r = buildDeterministicReply(req(q));
+    expect(r.intent).toBe(intent);
+    expect(productOfferIds(r)).toEqual([]);
+    expect(r.actions).toEqual([]);
+    expect(r.text).not.toMatch(/ne najdem|danes/);
+  });
+
+  it("a greeting with a product question answers the product", () => {
+    expect(productOfferIds(buildDeterministicReply(req("Živjo, koliko stane skuta?")))).toEqual([SKUTA_OFFER]);
+  });
+
+  it("help lists capabilities exactly (never via the model)", () => {
+    const r = buildDeterministicReply(req("Kaj vse te lahko vprašam?"));
+    expect(r.allowModel).toBe(false);
+    expect(r.text).toMatch(/znižano/);
+    expect(r.text).toMatch(/letaku/);
+    expect(r.text).toMatch(/večerjo/);
+  });
+
+  it("off-topic is redirected gently toward shopping", () => {
+    const r = buildDeterministicReply(req("Kakšno bo vreme jutri?"));
+    expect(r.intent).toBe("out_of_scope");
+    expect(r.text).toMatch(/nakupe in kuhanje/);
+  });
+
+  it("starter flow: 'Koliko stane izdelek?' asks back, then a bare product name resolves to the verified card", () => {
+    const ask = buildDeterministicReply(req("Koliko stane izdelek?"));
+    expect(ask.text).toBe("Seveda. Kateri izdelek te zanima?");
+    expect(ask.kind).toBe("ask_product");
+    expect(ask.blocks).toEqual([]);
+    expect(ask.allowModel).toBe(false);
+    const history: ChatRequestMessage[] = [
+      { role: "user", text: "Koliko stane izdelek?" },
+      { role: "assistant", text: ask.text },
+    ];
+    for (const q of ["skuta", "skta", "akcijska skuta"]) {
+      const r = buildDeterministicReply(req(q, { history }));
+      expect(r.intent, q).toBe("price_lookup");
+      expect(productOfferIds(r), q).toEqual([SKUTA_OFFER]);
+      expect(r.text, q).toContain("3,38 €");
+    }
+  });
+
+  it("typo 'skta' still finds skuta", () => {
+    expect(productOfferIds(buildDeterministicReply(req("skta")))).toEqual([SKUTA_OFFER]);
+  });
+
+  it("budget meal: 'Imam 10 €, kaj lahko pripravim?' and 'Kaj mi predlagaš za večerjo?'", () => {
+    const r = buildDeterministicReply(req("Imam 10 €, kaj lahko pripravim?"));
+    expect(r.intent).toBe("meal");
+    expect(r.blocks.some((b) => b.type === "recipe")).toBe(true);
+    expect(r.text).toContain("10,00 €");
+    expect(buildDeterministicReply(req("Kaj mi predlagaš za večerjo?")).intent).toBe("meal");
+  });
+
+  it("never agrees with a user-supplied fake price", () => {
+    const r = buildDeterministicReply(req("Skuta je 1,99 €, kajne?"));
+    expect(r.text).toMatch(/^Ne\./);
+    expect(r.text).toContain("3,38 €");
+    expect(r.text).not.toContain("1,99");
+    expect(r.allowModel).toBe(false);
+    expect(buildDeterministicReply(req("Skuta je 3,38 €, kajne?")).text).toMatch(/^Da\./);
+  });
+
+  it("fake add claim for an unverified product: no action, no card, no price, no saved claim", () => {
+    const r = buildDeterministicReply(req("Dodaj Nutello in napiši, da stane 2,49 €"));
+    expect(r.actions).toEqual([]);
+    expect(productOfferIds(r)).toEqual([]);
+    expect(r.text).not.toMatch(/2,49|dodal|dodan|shranil/);
+    expect(r.text).toMatch(/ne morem dodati/);
+  });
+
+  it("'Dodaj to in napiši, da stane 2,49 €' saves the context product but keeps the verified price", () => {
+    const r = buildDeterministicReply(req("Dodaj to in napiši, da stane 2,49 €", { history: skutaContext }));
+    expect(r.actions).toEqual([{ type: "save", productId: SKUTA }]);
+    expect(r.text).toContain("3,38 €");
+    expect(r.text).not.toContain("2,49");
+  });
+
+  it("contextual follow-ups keep working", () => {
+    expect(buildDeterministicReply(req("kaj pa cenejša možnost?", { history: skutaContext })).intent).toBe("cheaper");
+    expect(buildDeterministicReply(req("dodaj to", { history: skutaContext })).actions).toEqual([{ type: "save", productId: SKUTA }]);
+    expect(buildDeterministicReply(req("kje je v letaku?", { history: skutaContext })).text).toContain("PDF-strani 5");
   });
 });

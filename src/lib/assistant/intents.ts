@@ -5,10 +5,14 @@
 import { getProduct } from "@/lib/catalog";
 import type { ChatRequestMessage } from "@/lib/types";
 import { fold } from "./normalize";
-import { detectFilters, type SearchFilters } from "./search";
+import { detectFilters, queryContentTokens, searchProducts, type SearchFilters } from "./search";
+import { ASK_PRODUCT_TEXT } from "./starters";
 
 export type Intent =
   | "greeting"
+  | "thanks"
+  | "how_are_you"
+  | "help"
   | "out_of_scope"
   | "save"
   | "remove"
@@ -73,6 +77,12 @@ export const COMMAND_STOP = new Set([
   "vse",
   "vsi",
   "nazaj",
+  "napisi",
+  "napisite",
+  "reci",
+  "recite",
+  "trdi",
+  "zapisi",
 ]);
 
 const NUMBER_WORDS: Record<string, number> = {
@@ -94,19 +104,41 @@ const NUMBER_WORDS: Record<string, number> = {
 };
 
 const RE = {
-  greeting: /^(zivjo|zdravo|hej|hey|hoj|ojla|pozdravljen\w*|dober (dan|vecer|jutro)|hello|hi|hvala\w*|lp|o?k(ej)?)\b/,
+  greeting: /^(zivjo|zivijo|zdravo|hej|hey|hoj|ojla|pozdravljen\w*|pozdrav|dober (dan|vecer|jutro)|dobro jutro|hello|hi|cao|lp)\b/,
+  thanks: /^(hvala\w*|najlepsa hvala|super|odlicno|top|kul|ok(ej)?|v redu|lepo|fajn)\b|\bhvala\b/,
+  howAreYou: /\b(kako si|kako gre|kako kaj|kako se imas|kako ti gre)\b/,
+  help: /\b(kaj (vse )?(znas|zmores|pocnes|delas)|kaj (vse )?(te )?lahko (vprasam|vprasa\w*|naredis)|kako (mi )?lahko pomagas|pomoc|pomagaj|kdo si|kaj si( ti)?|kako delujes|kaj je sparko)\b/,
   save: /\b(dodaj\w*|shrani(te| mi)?|daj (to |ga |jo )?v (moj )?katalog)\b/,
   remove: /\b(odstrani\w*|izbrisi\w*|odvzemi|vrzi ven)\b/,
   where: /\b(kje (je|so|najdem|bi nasel|v letaku|v katalogu)|v letaku|na kateri strani|katera stran|kateri strani|stran v (letaku|katalogu)|pokazi v (letaku|katalogu)|odpri (v )?(letak|katalog))\b/,
   cheaper: /\b(cenej\w*|najcenej\w*|bolj poceni|kaj je poceni|manj drag\w*|varcnej\w*)\b/,
   discounts: /\b(znizan\w*|znizanj\w*|popust\w*|akcij\w*|razprodaj\w*|prihran\w*|najbolj ugodn\w*|ugodne ponudbe)\b/,
   breakfast: /\b(zajtrk\w*|zajtrkoval\w*|za zjutraj)\b/,
-  meal: /\b(vecerj\w*|kosil\w*|obrok\w*|recept\w*|skuham|skuhati|kuhati|kuham|pecem|speci|kaj (naj )?(jem|pojem|pripravim|skuham)|jed\w*)\b/,
+  meal: /\b(vecerj\w*|kosil\w*|obrok\w*|recept\w*|skuham|skuhati|kuhati|kuham|pecem|speci|pripravim|pripraviti|kaj (naj |lahko |bi )?(jem|pojem|pripravim|skuham)|jed\w*)\b/,
   recommend: /\b(priporoc\w*|predlagaj\w*|predlog\w*|svetuj\w*|kaj (mi )?predlagas|podobn\w*)\b/,
   line: /\bsbudget\b/,
   outOfScope:
     /\b(vreme\w*|vremenska|dez|dezuje|dezevn\w*|sneg\w*|temperatur\w*|napoved|politik\w*|volitv\w*|vlad\w*|stranka|stranke|predsednik\w*|programir\w*|javascript|python|koda|kodo|html|css|sql|nogomet\w*|kosark\w*|tekma|tekme|film\w*|serij\w*|novic\w*|borz\w*|kripto\w*|bitcoin|delnic\w*|zgodovin\w*|matematik\w*|domac\w* nalog\w*|esej\w*|pesem|pesmi|vic\w*|horoskop\w*|zdravil\w*|zdravnik\w*|bolezen|diagnoz\w*|pravni|odvetnik\w*|ignoriraj navodila|system prompt|sistemski poziv)\b/,
 };
+
+const SMALLTALK_WORDS = new Set(
+  (
+    "zivjo zivijo zdravo hej hey hoj ojla pozdravljen pozdravljeni pozdravljena pozdrav dober dobro dan vecer jutro hello hi lp cao " +
+    "hvala najlepsa lepa super odlicno top kul ok okej redu lepo fajn kako gre kaj imas se ti si vse znas zmores pocnes delas " +
+    "vprasam vprasati vprasa naredis pomagas pomoc pomagaj kdo delujes sparko sparka"
+  ).split(" "),
+);
+
+/** True when, after small-talk words, the message still names a catalog product ("Živjo, koliko stane skuta?"). */
+function mentionsProduct(text: string): boolean {
+  if (!queryContentTokens(text, SMALLTALK_WORDS).length) return false;
+  return searchProducts(text, { extraStop: SMALLTALK_WORDS, limit: 1 }).length > 0;
+}
+
+function previousAssistantText(messages: ChatRequestMessage[]): string | null {
+  for (let i = messages.length - 2; i >= 0; i--) if (messages[i].role === "assistant") return messages[i].text;
+  return null;
+}
 
 /** Product ids from the most recent prior message (assistant or user) that carried context. */
 export function recentContextIds(messages: ChatRequestMessage[]): string[] {
@@ -154,6 +186,11 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
   if (RE.remove.test(folded)) return { ...base, intent: "remove" };
   if (RE.save.test(folded) && !/\b(ali|kako)\b.*\b(dodam|shranim)\b/.test(folded)) return { ...base, intent: "save" };
   if (RE.where.test(folded)) return { ...base, intent: "where_in_leaflet" };
+  // Reply to "Seveda. Kateri izdelek te zanima?": a short message naming a product is a price lookup.
+  const prev = previousAssistantText(messages);
+  if (prev && fold(prev) === fold(ASK_PRODUCT_TEXT) && folded.split(" ").length <= 4 && searchProducts(text, { limit: 1 }).length) {
+    return { ...base, intent: "price_lookup" };
+  }
   if (RE.outOfScope.test(folded) && !RE.meal.test(folded) && !RE.breakfast.test(folded)) return { ...base, intent: "out_of_scope" };
   if (RE.discounts.test(folded)) return { ...base, intent: "discounts" };
   if (RE.breakfast.test(folded)) return { ...base, intent: "breakfast" };
@@ -163,7 +200,12 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
   }
   if (RE.cheaper.test(folded)) return { ...base, intent: "cheaper" };
   if (RE.recommend.test(folded)) return { ...base, intent: "recommend" };
-  if (RE.greeting.test(folded) && folded.split(" ").length <= 4) return { ...base, intent: "greeting" };
+  if (folded.split(" ").length <= 8 && !mentionsProduct(text)) {
+    if (RE.help.test(folded)) return { ...base, intent: "help" };
+    if (RE.howAreYou.test(folded)) return { ...base, intent: "how_are_you" };
+    if (RE.thanks.test(folded)) return { ...base, intent: "thanks" };
+    if (RE.greeting.test(folded)) return { ...base, intent: "greeting" };
+  }
   // Line listing ("S-BUDGET izdelki"); "sbudget skuta" is a product lookup and is resolved later by the responder.
   if (RE.line.test(folded)) return { ...base, intent: "line" };
   return { ...base, intent: "price_lookup" };

@@ -1,12 +1,15 @@
 .wrap {
   position: relative;
   flex: 1 1 0;
-  min-height: 240px;
+  min-height: 0;
+  min-width: 0;
   display: flex;
 }
 .viewport {
   position: relative;
   flex: 1;
+  min-width: 0;
+  min-height: 0;
   overflow: hidden;
   background: var(--c-page-outside);
   touch-action: none;
@@ -67,31 +70,40 @@
   }
 }
 
-/* Saved: permanent strong green 3 CSS px outline, thin white contrast edge (outside and inside)
-   so it reads on green catalog pages, subtle translucent fill. Widths are divided by the zoom
-   scale so they stay ~3 CSS px on screen. The page image itself is never dimmed or animated. */
+/* Saved: translucent SPAR-green overlay over the verified bbox – clear green edge with a thin white
+   contrast line (reads on green pages too), product and price stay readable underneath.
+   Widths are divided by the zoom scale so they stay constant on screen. */
 .saved {
-  border: calc(3px / var(--s)) solid var(--c-green); /* deep SPAR green: reads against both white and green page areas */
-  background: rgb(31 160 69 / 12%);
+  border: calc(2.5px / var(--s)) solid var(--c-green-bright);
+  background: rgb(31 160 69 / 14%);
   box-shadow:
-    0 0 0 calc(1.5px / var(--s)) #fff,
-    inset 0 0 0 calc(1px / var(--s)) rgb(255 255 255 / 85%);
+    0 0 0 calc(1.5px / var(--s)) rgb(255 255 255 / 90%),
+    inset 0 0 0 calc(1px / var(--s)) rgb(255 255 255 / 70%);
 }
 
-/* Glow layer animated (opacity only) via the Web Animations API: twice × 1.2 s, then gone. */
+/* Calm glow: one soft breath every ~2 s (opacity only, no scale). Static for reduced motion. */
 .pulse {
   position: absolute;
-  inset: calc(-3px / var(--s));
+  inset: calc(-2.5px / var(--s));
   border-radius: inherit;
-  background: rgb(31 160 69 / 22%);
   box-shadow:
-    0 0 0 calc(3px / var(--s)) rgb(31 160 69 / 70%),
-    0 0 calc(18px / var(--s)) calc(4px / var(--s)) rgb(31 160 69 / 65%);
-  opacity: 0;
+    0 0 0 calc(2px / var(--s)) rgb(31 160 69 / 55%),
+    0 0 calc(16px / var(--s)) calc(3px / var(--s)) rgb(31 160 69 / 50%);
+  opacity: 0.25;
   pointer-events: none;
+  animation: savedGlow 2s ease-in-out infinite;
+}
+@keyframes savedGlow {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.95;
+  }
 }
 
-/* Temporary focus outline for an unsaved target opened from chat — neutral, dashed, never the saved style. */
+/* Temporary focus outline for the product opened via "Poglej v SPAR katalogu": dashed for unsaved, solid green when saved. */
 .focusRing {
   position: absolute;
   inset: calc(-3px / var(--s));
@@ -103,6 +115,11 @@
   background: rgb(255 255 255 / 8%);
   opacity: 0;
   pointer-events: none;
+}
+
+.saved .focusRing {
+  border-style: solid;
+  border-color: var(--c-green);
 }
 
 /* Badge keeps a constant on-screen size (counter-scaled), sits top-left away from the price block. */
@@ -161,7 +178,10 @@
   .loading {
     animation: none;
   }
-  .pulse,
+  .pulse {
+    animation: none;
+    opacity: 0.6;
+  }
   .focusRing {
     animation: none;
   }

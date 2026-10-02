@@ -4,6 +4,7 @@
   grid-template-columns: repeat(3, 1fr);
   height: calc(var(--nav-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
+  padding-inline: max(0px, calc((100% - var(--app-max)) / 2));
   background: var(--c-canvas);
   border-top: 1px solid var(--c-border);
   position: relative;

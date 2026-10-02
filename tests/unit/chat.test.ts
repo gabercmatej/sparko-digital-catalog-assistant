@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { buildRequest, displayText, productClickMessages, relativeDate, sanitizeBlocks, saveResultLine } from "@/lib/chat/messages";
+import { buildRequest, composerAction, displayText, productClickMessages, relativeDate, sanitizeBlocks, saveResultLine } from "@/lib/chat/messages";
 import { DEMO_CONVERSATIONS } from "@/lib/demo-conversations";
 import { retryMessage, sendMessage, showProduct } from "@/lib/chat/useChat";
 import { __resetForTests, createConversation, getConversation, getState, setActiveConversation } from "@/lib/store/store";
@@ -158,5 +158,13 @@ describe("chat flow (send / retry / product click)", () => {
     const conv = getConversation(getState().activeConversationId!)!;
     expect(conv.messages[1].blocks?.[0]).toMatchObject({ type: "products" });
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("composer action (single mic/send button)", () => {
+  it("empty or whitespace input shows the inactive microphone; text turns it into send", () => {
+    expect(composerAction("")).toBe("mic");
+    expect(composerAction("   \n ")).toBe("mic");
+    expect(composerAction("skuta")).toBe("send");
   });
 });

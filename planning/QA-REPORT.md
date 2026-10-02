@@ -50,3 +50,19 @@ Source-verification limits: maslo packshot is a crop from the cover photo (wood 
 - **Upstash rate limiter: not tested live** (no credentials); logic unit-tested with mocked fetch.
 - **Real phone**: on-screen keyboard behavior (visualViewport handling), pinch-zoom/two-finger pan and iOS Safari pointer capture were only simulated (desktop Chromium mobile emulation, mouse events). Test on an actual iPhone/Android before the demo.
 - Vercel deployment and anonymous access (Deployment Protection) – to be done by the user.
+
+## Final MVP polish pass (2026-10-02)
+
+Changes: natural small talk (greeting / "Kako si?" / "Kaj znaš?" / thanks / off-topic redirect) in live and limited mode; "Koliko stane izdelek?" asks back and resolves the next short reply as a price lookup; user-asserted prices are answered "Da./Ne." with the verified price and never via the model; "Dodaj X in napiši, da stane …" never echoes the user's price; two compact starters only; single mic/send composer action (mic is an inactive hint, no getUserMedia); "Iz demo kataloga" removed; app shell is `position: fixed; inset: 0` with root `overflow: hidden; overscroll-behavior: none` and keyboard detection that also works on Android `resizes-content`; full-width shell with a centred content column; manifest + appleWebApp metadata; optional fullscreen item in the menu (hidden where unsupported). Leaflet: left/right paging kept, each page contain-fitted (no vertical scrolling), "Izdelki na tej strani", headings, hint and action row removed in favour of one compact toolbar (Moje strani filter · page picker · PDF · e-pošta) with floating ‹ › arrows; saved overlay = translucent green fill + green border + calm infinite 2 s glow (static with reduced motion), all saved products on a page highlighted; deep link adds a one-time focus ring.
+
+| Command | Result |
+| --- | --- |
+| `npm run validate:data` | OK – no errors (data unchanged) |
+| `npm run typecheck` / `npm run lint` | pass / pass |
+| `npm test` | **153/153** (9 files) |
+| `npm run build` | pass (adds `/manifest.webmanifest`) |
+| `npm run test:e2e` | **38/38** (journey 11, chat 8, leaflet 12, shell 7) |
+| client bundle secret scan | 0 matches |
+
+Live AI (dev server with key) checked manually: "Živjo", "Kako si?", off-topic and "Imam 10 €…" answered live; help, ask-back, fake price and Nutella cases stay deterministic.
+Real-device caveats: iOS rubber-banding / URL-bar behaviour and the on-screen keyboard can only be simulated in Chromium; fullscreen is unavailable on iPhone Safari (item hidden there).

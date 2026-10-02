@@ -171,3 +171,8 @@ export function relativeDate(ts: number, now = Date.now()): string {
   if (days === 1) return "Včeraj";
   return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}`;
 }
+
+/** The composer's single trailing action: an inactive voice hint while empty, Send once there is text. */
+export function composerAction(value: string): "mic" | "send" {
+  return value.trim().length > 0 ? "send" : "mic";
+}

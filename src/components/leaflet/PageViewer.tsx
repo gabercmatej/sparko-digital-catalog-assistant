@@ -7,7 +7,7 @@ import {
   clampView,
   distance,
   DOUBLE_TAP_SCALE,
-  fitToWidth,
+  fitContain,
   initialView,
   isTap,
   midpoint,
@@ -47,7 +47,6 @@ type Gesture = {
   swipeDx: number;
 };
 
-const SAVED_PULSE: Keyframe[] = [{ opacity: 0 }, { opacity: 1, offset: 0.45 }, { opacity: 0 }];
 const FOCUS_PULSE: Keyframe[] = [
   { opacity: 0, offset: 0 },
   { opacity: 1, offset: 0.125 },
@@ -58,8 +57,8 @@ const FOCUS_PULSE: Keyframe[] = [
 ];
 
 /**
- * First view of a page: the target (from chat) centered; otherwise fit-to-width from the top,
- * unless no saved product would be visible there — then the first saved product is brought into view.
+ * First view of a page: the whole page fitted (contain). At scale 1 the page is fully visible, so
+ * the target and saved products are always in view; kept generic in case the fit changes.
  */
 function startView(vp: Size, content: Size, items: OverlayItem[], targetProductId: string | null): View {
   const target = targetProductId ? items.find((i) => i.productId === targetProductId) : undefined;
@@ -76,7 +75,7 @@ function prefersReducedMotion(): boolean {
 }
 
 /**
- * One leaflet page with zoom/pan. A SINGLE transformed stage holds both the page image and
+ * One leaflet page, fitted whole into the available area (contain), with zoom/pan. A SINGLE transformed stage holds both the page image and
  * the overlay buttons, so they always share the same transform and coordinate space
  * (overlays are positioned in % of the page box). Mounted fresh per page navigation
  * (parent uses `key`), so the "page opened" pulse runs exactly once per navigation.
@@ -129,7 +128,7 @@ export function PageViewer({
     latest.current = { items, targetProductId, onOpenPlacement, onSwipe, canSwipe, onScaleChange, image: page.image };
   });
 
-  const content = size ? fitToWidth(size.width, page.image) : null;
+  const content = size ? fitContain(size, page.image) : null;
 
   // The image may finish loading before React attaches onLoad (SSR/cache) — check on mount.
   const imgRef = useCallback((img: HTMLImageElement | null) => {
@@ -167,7 +166,7 @@ export function PageViewer({
 
   const contentSize = useCallback((): Size | null => {
     const vp = sizeRef.current;
-    return vp ? fitToWidth(vp.width, latest.current.image) : null;
+    return vp ? fitContain(vp, latest.current.image) : null;
   }, []);
 
   // Measure viewport; recompute on resize / orientation change.
@@ -179,12 +178,12 @@ export function PageViewer({
       const vp = { width: Math.round(r.width * 100) / 100, height: Math.round(r.height * 100) / 100 };
       if (vp.width <= 0 || vp.height <= 0) return;
       const img = latest.current.image;
-      const nextContent = fitToWidth(vp.width, img);
+      const nextContent = fitContain(vp, img);
       const prev = sizeRef.current;
       if (!viewRef.current) {
         viewRef.current = startView(vp, nextContent, latest.current.items, latest.current.targetProductId);
       } else if (prev) {
-        viewRef.current = rescaleOnResize(viewRef.current, fitToWidth(prev.width, img), nextContent, vp);
+        viewRef.current = rescaleOnResize(viewRef.current, fitContain(prev, img), nextContent, vp);
       }
       sizeRef.current = vp;
       setSize(vp);
@@ -200,18 +199,6 @@ export function PageViewer({
   }, [size, apply]);
 
   // ------------------------------------------------------------ pulses
-
-  const pulseProducts = useCallback((productIds: string[]) => {
-    if (prefersReducedMotion()) return;
-    const stage = stageRef.current;
-    if (!stage) return;
-    for (const pid of productIds) {
-      stage.querySelectorAll<HTMLElement>(`[data-product-id="${CSS.escape(pid)}"] [data-pulse]`).forEach((el) => {
-        el.getAnimations().forEach((a) => a.cancel());
-        el.animate(SAVED_PULSE, { duration: 1200, iterations: 2, easing: "ease-in-out" });
-      });
-    }
-  }, []);
 
   const focusProduct = useCallback((productId: string) => {
     const stage = stageRef.current;
@@ -233,10 +220,8 @@ export function PageViewer({
     if (!pageReady || navPulseDoneRef.current) return;
     navPulseDoneRef.current = true;
     const { items: list, targetProductId: target } = latest.current;
-    const savedIds = [...new Set(list.filter((i) => i.saved).map((i) => i.productId))];
-    if (savedIds.length) pulseProducts(savedIds);
-    if (target && !list.some((i) => i.productId === target && i.saved)) focusProduct(target);
-  }, [pageReady, pulseProducts, focusProduct]);
+    if (target && list.some((i) => i.productId === target)) focusProduct(target);
+  }, [pageReady, focusProduct]);
 
   // Store highlight events (save from the sheet, etc.) — once per nonce.
   const nonce = highlight?.nonce ?? null;
@@ -246,8 +231,7 @@ export function PageViewer({
     const list = latest.current.items;
     const onPage = list.filter((i) => i.productId === highlight.productId);
     if (!onPage.length) return;
-    if (onPage.some((i) => i.saved)) pulseProducts([highlight.productId]);
-    else if (highlight.reason === "navigate") focusProduct(highlight.productId);
+    if (highlight.reason === "navigate") focusProduct(highlight.productId);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the nonce only
   }, [nonce, pageReady]);
 
@@ -491,7 +475,7 @@ export function PageViewer({
         tabIndex={0}
         role="region"
         aria-roledescription="stran letaka"
-        aria-label={`${pageLabel}. Povečaj z dvojnim dotikom, gumboma ali tipkama + in −.`}
+        aria-label={`${pageLabel}. Povečaj z dvojnim dotikom ali tipkama + in −.`}
         onKeyDown={onKeyDown}
       >
         <div

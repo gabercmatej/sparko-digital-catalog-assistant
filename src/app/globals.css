@@ -47,6 +47,9 @@
   --shadow-float: 0 6px 20px rgb(10 40 25 / 18%);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
+  /* Full-width shell; content keeps a readable centred column on wide screens. */
+  --content-max: 680px;
+  --gutter: max(var(--pad-x), calc((100% - var(--content-max)) / 2));
 }
 
 @media (max-width: 370px) {
@@ -63,27 +66,27 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
 html {
+  height: 100%;
+  overflow: hidden; /* nothing outside the app shell may scroll the viewport */
+  overscroll-behavior: none; /* Safari/Firefox honour this only on the root */
+  background: var(--c-canvas);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
 body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* the app shell owns scrolling */
+  overscroll-behavior: none; /* no pull-to-refresh / rubber-banding of the whole app */
   font-family: var(--font-ui);
   font-size: var(--text-body);
   line-height: 1.45;
   color: var(--c-ink);
-  background: var(--c-page-outside);
+  background: var(--c-canvas);
   -webkit-font-smoothing: antialiased;
-  overflow: hidden; /* the app shell owns scrolling */
-  overscroll-behavior: none;
 }
 
 img {
@@ -223,8 +226,8 @@ p {
 }
 
 .page-pad {
-  padding-left: var(--pad-x);
-  padding-right: var(--pad-x);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 
 .demo-label {

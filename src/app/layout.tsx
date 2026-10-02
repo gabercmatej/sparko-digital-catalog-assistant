@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Sparko · SPAR pomočnik",
   description: "Sparko – pomočnik za demo SPAR katalog: poišči izdelek, shrani ga v Moj katalog in ga poglej v originalnem letaku.",
   robots: { index: false, follow: false },
+  appleWebApp: { capable: true, title: "Sparko", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
@@ -21,6 +22,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   interactiveWidget: "resizes-content",
   themeColor: "#ffffff",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

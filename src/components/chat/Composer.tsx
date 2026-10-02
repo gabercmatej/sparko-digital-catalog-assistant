@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { MAX_INPUT_CHARS } from "@/lib/chat/messages";
+import { useLayoutEffect, useRef, useState } from "react";
+import { composerAction, MAX_INPUT_CHARS } from "@/lib/chat/messages";
 import { Icon } from "../ui/Icon";
 import { useShell } from "../shell/AppShell";
 import styles from "./Composer.module.css";
@@ -9,14 +9,14 @@ const COUNTER_FROM = MAX_INPUT_CHARS - 100;
 
 /**
  * Chat input. Enter sends, Shift+Enter adds a newline. Auto-grows up to ~4 lines.
- * The microphone is a visible "coming soon" control and never requests permission.
+ * Empty input shows an inactive voice hint (never requests the microphone); typed text turns it into Send.
  */
 export function Composer({ onSend, busy }: { onSend: (text: string) => boolean; busy: boolean }) {
   const [value, setValue] = useState("");
-  const [micHint, setMicHint] = useState(false);
   const ref = useRef<HTMLTextAreaElement>(null);
   const { keyboardOpen } = useShell();
-  const canSend = value.trim().length > 0 && !busy;
+  const action = composerAction(value);
+  const canSend = action === "send" && !busy;
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -24,12 +24,6 @@ export function Composer({ onSend, busy }: { onSend: (text: string) => boolean; 
     el.style.height = "auto";
     el.style.height = `${Math.min(el.scrollHeight, 4 * 22 + 20)}px`;
   }, [value]);
-
-  useEffect(() => {
-    if (!micHint) return;
-    const t = window.setTimeout(() => setMicHint(false), 2200);
-    return () => window.clearTimeout(t);
-  }, [micHint]);
 
   const submit = () => {
     if (!canSend) return;
@@ -73,25 +67,18 @@ export function Composer({ onSend, busy }: { onSend: (text: string) => boolean; 
           }}
           aria-describedby={value.length >= COUNTER_FROM ? "chat-counter" : undefined}
         />
-        <div className={styles.micWrap}>
-          <button
-            type="button"
-            className={styles.mic}
-            aria-disabled="true"
-            aria-label="Glasovni vnos – kmalu"
-            aria-describedby={micHint ? "mic-hint" : undefined}
-            onClick={() => setMicHint(true)}
-          >
-            <Icon name="mic" size={20} />
-          </button>
-          {micHint && (
-            <span id="mic-hint" role="status" className={styles.micHint}>
-              Kmalu
-            </span>
-          )}
-        </div>
-        <button type="submit" className={styles.send} disabled={!canSend} aria-label={busy ? "Sparko odgovarja …" : "Pošlji"}>
-          <Icon name="send" size={20} strokeWidth={2.4} />
+        {/* One trailing action: inactive voice hint while empty, Send once there is text. */}
+        <button
+          type={action === "send" ? "submit" : "button"}
+          className={action === "send" ? styles.send : styles.mic}
+          data-action={action}
+          disabled={action === "send" ? !canSend : undefined}
+          aria-disabled={action === "mic" ? "true" : undefined}
+          aria-label={action === "mic" ? "Glasovni vnos bo na voljo kmalu" : busy ? "Sparko odgovarja …" : "Pošlji"}
+          title={action === "mic" ? "Glasovni vnos bo na voljo kmalu" : undefined}
+          onClick={action === "mic" ? (e) => e.preventDefault() : undefined}
+        >
+          {action === "mic" ? <Icon name="mic" size={20} /> : <Icon name="send" size={20} strokeWidth={2.4} />}
         </button>
       </div>
     </form>

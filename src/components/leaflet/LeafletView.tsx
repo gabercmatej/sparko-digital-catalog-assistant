@@ -1,8 +1,8 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { catalog, DEMO_LABEL, formatPrice, getOffer, getPage, getPlacementsForProduct, getPlacementsOnPage, getProduct, placements as allPlacements } from "@/lib/catalog";
-import { markLeafletHintSeen, useStore } from "@/lib/store/store";
+import { catalog, formatPrice, getOffer, getPage, getPlacementsForProduct, getPlacementsOnPage, getProduct, placements as allPlacements } from "@/lib/catalog";
+import { useStore } from "@/lib/store/store";
 import { ProductCard } from "../product/ProductCard";
 import { Icon } from "../ui/Icon";
 import { PageViewer, type OverlayItem, type ViewerControls } from "./PageViewer";
@@ -39,8 +39,9 @@ function initialFromParams(sp: URLSearchParams): { nav: Nav; pendingMine: boolea
 }
 
 /**
- * Interactive SPAR leaflet: one original page at a time with zoom/pan, product hit targets,
- * saved highlights, page picker, "Samo strani z mojimi izdelki" filter and PDF actions.
+ * Interactive SPAR leaflet: swipe left/right through the original pages, each fitted whole into the
+ * available area (no vertical scrolling). One compact toolbar: "Moj katalog" page filter, page picker,
+ * PDF actions. Saved products get a green overlay; tapping a product box opens its card.
  */
 export function LeafletView() {
   const sp = useSearchParams();
@@ -59,7 +60,6 @@ export function LeafletView() {
   const [sheet, setSheet] = useState<{ productId: string; offerId: string } | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
-  const [listOpen, setListOpen] = useState(true);
   // Zoom level reported by the viewer, tagged with the navigation token it belongs to.
   const [zoom, setZoom] = useState({ token: 0, scale: 1 });
   const viewerRef = useRef<ViewerControls>(null);
@@ -201,7 +201,6 @@ export function LeafletView() {
       },
     ];
   });
-  const listed = items.filter((it, i) => items.findIndex((o) => o.productId === it.productId) === i);
 
   const openPlacement = useCallback((placementId: string) => {
     const pl = getPlacementsOnPage(nav.page).find((p) => p.id === placementId);
@@ -209,49 +208,27 @@ export function LeafletView() {
     if (offer) setSheet({ productId: offer.productId, offerId: offer.id });
   }, [nav.page]);
 
+
   const onScaleChange = useCallback((scale: number) => setZoom({ token: nav.token, scale }), [nav.token]);
   const zoomScale = zoom.token === nav.token ? zoom.scale : 1;
 
   const onSwipe = useCallback((dir: "next" | "prev") => (dir === "next" ? goNext() : goPrev()), [goNext, goPrev]);
 
   const pageLabel = pageLabelFor(nav.page);
-  const position = filterActive && savedPages.includes(nav.page) ? `${savedPages.indexOf(nav.page) + 1}. od ${savedPages.length} mojih strani` : null;
-  const showHint = hydrated && !store.settings.leafletHintSeen;
+  const position = filterActive && savedPages.includes(nav.page) ? `${savedPages.indexOf(nav.page) + 1}/${savedPages.length}` : null;
   const filterDisabled = !hydrated || savedPages.length === 0;
 
   return (
     <div className={styles.root}>
-      <div className={styles.head}>
-        <div className={styles.titleRow}>
-          <h1 className={styles.title}>SPAR letak</h1>
-          <span className={`demo-label ${styles.demo}`}>{DEMO_LABEL}</span>
-        </div>
-        <p className={styles.subtitle}>Originalni katalog z označenim tvojim izborom</p>
-      </div>
-
-      <div className={styles.navRow}>
-        <button type="button" className={`icon-btn ${styles.navBtn}`} onClick={goPrev} disabled={prevPage === null} aria-label="Prejšnja stran">
-          <Icon name="chevron-left" size={24} />
-        </button>
-        <button type="button" className={styles.pickerBtn} onClick={() => setPickerOpen(true)} aria-haspopup="dialog" aria-label={`${pageLabel} od ${catalog.pageCount}. Izberi stran`}>
-          <Icon name="grid" size={18} />
-          <span className={styles.pageIndicator} aria-live="polite" data-testid="page-indicator">
-            PDF-stran {nav.page + 1} / {catalog.pageCount}
-            {page?.printedPageLabel && <span className={styles.printed}> · str. {page.printedPageLabel}</span>}
-          </span>
-          <Icon name="chevron-down" size={16} />
-        </button>
-        <button type="button" className={`icon-btn ${styles.navBtn}`} onClick={goNext} disabled={nextPage === null} aria-label="Naslednja stran">
-          <Icon name="chevron-right" size={24} />
-        </button>
-      </div>
-
-      <div className={styles.filterRow}>
+      <h1 className="sr-only">SPAR letak</h1>
+      <div className={styles.toolbar}>
         <button
           type="button"
           role="switch"
           aria-checked={filterActive}
-          aria-describedby={filterDisabled ? "leaflet-filter-help" : undefined}
+          aria-label="Samo strani z mojimi izdelki"
+          aria-describedby={filterDisabled && hydrated ? "leaflet-filter-help" : undefined}
+          title={filterDisabled && hydrated ? "Najprej dodaj izdelek v Moj katalog." : "Samo strani z mojimi izdelki"}
           className={styles.switchBtn}
           onClick={toggleFilter}
           disabled={filterDisabled}
@@ -260,114 +237,77 @@ export function LeafletView() {
           <span className={styles.switchTrack} data-on={filterActive || undefined} aria-hidden="true">
             <span className={styles.switchThumb} />
           </span>
-          <span>Samo strani z mojimi izdelki</span>
+          <span className={styles.switchLabel} aria-hidden="true">
+            Moje strani
+          </span>
         </button>
         {filterDisabled && hydrated && (
-          <span id="leaflet-filter-help" className={styles.filterHelp}>
+          <span id="leaflet-filter-help" className="sr-only">
             Najprej dodaj izdelek v Moj katalog.
           </span>
         )}
-        {position && <span className={styles.filterHelp}>{position}</span>}
-      </div>
-
-      {(filterNotice || onFilteredPageWithoutSaved) && (
-        <p className={styles.notice} role="status">
-          {filterNotice ?? "Na tej strani ni več izdelkov iz Mojega kataloga. Puščici vodita na strani z mojimi izdelki."}
-        </p>
-      )}
-
-      {showHint && (
-        <div className={styles.hint} role="note">
-          <Icon name="info" size={16} />
-          <span>V demo različici lahko dodajaš označene izdelke.</span>
-          <button type="button" className={styles.hintClose} onClick={markLeafletHintSeen} aria-label="Skrij obvestilo">
-            <Icon name="close" size={16} />
+        <button type="button" className={styles.pickerBtn} onClick={() => setPickerOpen(true)} aria-haspopup="dialog" aria-label={`${pageLabel} od ${catalog.pageCount}. Izberi stran`}>
+          <span className={styles.pageIndicator} aria-live="polite" data-testid="page-indicator">
+            {nav.page + 1} / {catalog.pageCount}
+            {position && <span className={styles.printed}> · moje {position}</span>}
+          </span>
+          <Icon name="chevron-down" size={16} />
+        </button>
+        <div className={styles.tools}>
+          <a href={catalog.pdfUrl} target="_blank" rel="noopener" className="icon-btn" aria-label="Izvirni PDF" title="Izvirni PDF">
+            <Icon name="external" size={20} />
+          </a>
+          <button type="button" className="icon-btn" onClick={() => setEmailOpen(true)} aria-haspopup="dialog" aria-label="Pošlji PDF na e-pošto" title="Pošlji PDF na e-pošto">
+            <Icon name="mail" size={20} />
           </button>
         </div>
-      )}
+      </div>
 
-      {page ? (
-        <PageViewer
-          key={nav.token}
-          page={page}
-          pageLabel={pageLabel}
-          items={items}
-          targetProductId={nav.target}
-          hydrated={hydrated}
-          highlight={store.highlight}
-          claimNonce={claimNonce}
-          onOpenPlacement={openPlacement}
-          onSwipe={onSwipe}
-          canSwipe={{ next: nextPage !== null, prev: prevPage !== null }}
-          onScaleChange={onScaleChange}
-          ref={viewerRef}
-        />
-      ) : (
-        <div className={styles.missing} role="status">
-          <Icon name="leaflet" size={28} />
-          <strong>Stran ni na voljo</strong>
-          <span>{pageLabel} v tej demo različici še ni pripravljena. Odpri izvirni PDF ali izberi drugo stran.</span>
-        </div>
-      )}
-
-      <section className={styles.products} aria-label="Izdelki na tej strani">
-        <div className={styles.productsHead}>
-          {listed.length > 0 ? (
-            <button type="button" className={styles.listToggle} aria-expanded={listOpen} aria-controls="leaflet-page-products" onClick={() => setListOpen((o) => !o)}>
-              <span>Izdelki na tej strani ({listed.length})</span>
-              <Icon name="chevron-down" size={18} className={listOpen ? styles.chevOpen : undefined} />
-            </button>
-          ) : (
-            <p className={styles.noProducts}>{page ? "Na tej strani ni izbranih izdelkov za interaktivni ogled." : "Ni izdelkov za prikaz."}</p>
-          )}
-          {page && (
-            <div className={styles.zoomGroup} role="group" aria-label="Povečava">
-              <button type="button" className={styles.zoomBtn} onClick={() => viewerRef.current?.zoomOut()} disabled={zoomScale <= 1.01} aria-label="Pomanjšaj">
-                <Icon name="zoom-out" size={20} />
-              </button>
-              <button type="button" className={`${styles.zoomBtn} ${styles.zoomReset}`} onClick={() => viewerRef.current?.reset()} disabled={zoomScale <= 1.01} aria-label="Prilagodi širini">
-                {zoomScale > 1.01 ? `${Math.round(zoomScale * 10) / 10}×` : "1×"}
-              </button>
-              <button type="button" className={styles.zoomBtn} onClick={() => viewerRef.current?.zoomIn()} disabled={zoomScale >= 3.99} aria-label="Povečaj">
-                <Icon name="zoom-in" size={20} />
-              </button>
-            </div>
-          )}
-        </div>
-        {listed.length > 0 && listOpen && (
-          <ul className={styles.chips} id="leaflet-page-products">
-            {listed.map((it) => {
-              const product = getProduct(it.productId);
-              const pl = pagePlacements.find((p) => p.id === it.placementId);
-              const offer = pl && getOffer(pl.offerId);
-              if (!product || !offer) return null;
-              return (
-                <li key={it.productId}>
-                  <button type="button" className={styles.chip} data-saved={it.saved || undefined} onClick={() => setSheet({ productId: product.id, offerId: offer.id })} aria-label={it.label}>
-                    {it.saved && (
-                      <span className={styles.chipCheck} aria-hidden="true">
-                        <Icon name="check" size={14} strokeWidth={2.6} />
-                      </span>
-                    )}
-                    <span className={styles.chipName}>{product.name}</span>
-                    <span className={styles.chipPrice}>{formatPrice(offer.priceCents)}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+      <div className={styles.viewer}>
+        {page ? (
+          <PageViewer
+            key={nav.token}
+            page={page}
+            pageLabel={pageLabel}
+            items={items}
+            targetProductId={nav.target}
+            hydrated={hydrated}
+            highlight={store.highlight}
+            claimNonce={claimNonce}
+            onOpenPlacement={openPlacement}
+            onSwipe={onSwipe}
+            canSwipe={{ next: nextPage !== null, prev: prevPage !== null }}
+            onScaleChange={onScaleChange}
+            ref={viewerRef}
+          />
+        ) : (
+          <div className={styles.missing} role="status">
+            <Icon name="leaflet" size={28} />
+            <strong>Stran ni na voljo</strong>
+            <span>{pageLabel} v tej demo različici še ni pripravljena. Odpri izvirni PDF ali izberi drugo stran.</span>
+          </div>
         )}
-      </section>
-
-      <div className={styles.actions}>
-        <a href={catalog.pdfUrl} target="_blank" rel="noopener" className={`btn btn-secondary btn-sm ${styles.action}`}>
-          <Icon name="external" size={16} />
-          <span>Izvirni PDF</span>
-        </a>
-        <button type="button" className={`btn btn-secondary btn-sm ${styles.action}`} onClick={() => setEmailOpen(true)} aria-haspopup="dialog">
-          <Icon name="mail" size={16} />
-          <span>Pošlji PDF na e-pošto</span>
-        </button>
+        {prevPage !== null && (
+          <button type="button" className={`${styles.navBtn} ${styles.navPrev}`} onClick={goPrev} aria-label="Prejšnja stran">
+            <Icon name="chevron-left" size={22} strokeWidth={2.2} />
+          </button>
+        )}
+        {nextPage !== null && (
+          <button type="button" className={`${styles.navBtn} ${styles.navNext}`} onClick={goNext} aria-label="Naslednja stran">
+            <Icon name="chevron-right" size={22} strokeWidth={2.2} />
+          </button>
+        )}
+        {zoomScale > 1.01 && (
+          <button type="button" className={styles.zoomReset} onClick={() => viewerRef.current?.reset()} aria-label="Pomanjšaj na celo stran">
+            <Icon name="zoom-out" size={16} />
+            <span>{Math.round(zoomScale * 10) / 10}×</span>
+          </button>
+        )}
+        {(filterNotice || onFilteredPageWithoutSaved) && (
+          <p className={styles.notice} role="status">
+            {filterNotice ?? "Na tej strani ni več izdelkov iz Mojega kataloga. Puščici vodita na strani z mojimi izdelki."}
+          </p>
+        )}
       </div>
 
       <Sheet open={sheet !== null} onClose={() => setSheet(null)} title="Izdelek iz letaka">

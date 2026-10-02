@@ -1,30 +1,6 @@
 .wrap {
   padding-top: 12px;
 }
-.head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 calc(var(--pad-x) - 12px) 0 var(--pad-x);
-  min-height: var(--tap);
-}
-.title {
-  font-size: var(--text-md);
-  font-weight: 600;
-  color: var(--c-ink);
-}
-.headLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--tap);
-  height: var(--tap);
-  color: var(--c-ink);
-  border-radius: 50%;
-}
-.headLink:hover {
-  background: var(--c-surface-muted);
-}
 .trackWrap {
   position: relative;
 }
@@ -33,8 +9,8 @@
   gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2px var(--pad-x) 4px;
-  scroll-padding-inline: var(--pad-x);
+  padding: 2px var(--gutter) 4px;
+  scroll-padding-inline: var(--gutter);
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   overscroll-behavior-x: contain;

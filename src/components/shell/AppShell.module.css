@@ -1,20 +1,21 @@
+/*
+ * App shell: fixed to the visible viewport (follows the mobile URL bar and the Android keyboard),
+ * so the document itself never has anything to scroll. Only inner page areas scroll.
+ */
 .shell {
-  position: relative;
+  position: fixed;
+  top: var(--app-top, 0px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--app-h, auto); /* set only while the iOS keyboard is open */
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: var(--app-h, 100dvh);
-  max-width: var(--app-max);
-  margin: 0 auto;
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
   background: var(--c-canvas);
   overflow: hidden;
-}
-
-/* Intentional centered desktop layout. */
-@media (min-width: 640px) {
-  .shell {
-    box-shadow: 0 0 0 1px var(--c-border), 0 20px 60px rgb(10 40 25 / 8%);
-  }
+  overscroll-behavior: none;
 }
 
 .main {

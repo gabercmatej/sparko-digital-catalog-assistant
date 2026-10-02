@@ -4,7 +4,7 @@
   grid-template-columns: var(--tap) 1fr var(--tap);
   align-items: center;
   height: calc(var(--header-h) + var(--safe-top));
-  padding: var(--safe-top) calc(var(--pad-x) - 10px) 0;
+  padding: var(--safe-top) calc(var(--gutter) - 10px) 0;
   background: var(--c-canvas);
   border-bottom: 1px solid var(--c-border);
   position: relative;

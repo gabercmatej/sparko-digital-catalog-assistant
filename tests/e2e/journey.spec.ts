@@ -13,8 +13,12 @@ const chatLog = (page: Page) => page.getByRole("log", { name: "Pogovor s Sparkom
 test("core journey: ask → save → Moj katalog → leaflet highlight → add/remove there → all views consistent → reload", async ({ page }) => {
   await fresh(page);
 
-  // Ask about skuta via the suggestion.
-  await page.getByRole("button", { name: "Koliko stane skuta?" }).click();
+  // Ask via the generic starter: Sparko asks which product, a bare "skuta" answers it.
+  await page.getByRole("button", { name: "Koliko stane izdelek?" }).click();
+  await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("Seveda. Kateri izdelek te zanima?");
+  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  await input.fill("skuta");
+  await input.press("Enter");
   const card = chatLog(page).locator(`[data-product-card="${SKUTA}"]`).first();
   await expect(card).toBeVisible();
   await expect(card).toContainText("3,38 €");
@@ -81,25 +85,28 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
 
   // Reload: conversation and selection persist.
   await page.reload();
-  await expect(chatLog(page).getByText("Koliko stane skuta?")).toBeVisible();
+  await expect(chatLog(page).locator('[data-role="user"]').first()).toHaveText("Koliko stane izdelek?");
   await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: /Moj katalog/ }).click();
   await expect(page.locator("#izdelek-sb-pommes-1kg")).toBeVisible();
 });
 
-test("all four suggestions send a real message and get an answer", async ({ page }) => {
-  for (const q of ["Koliko stane skuta?", "Kaj je najbolj znižano?", "Večerja za dva do 10 €", "Predlagaj hiter zajtrk"]) {
-    await fresh(page);
-    await page.getByRole("button", { name: q }).click();
-    const log = chatLog(page);
-    await expect(log.locator('[data-role="user"]')).toContainText(q);
-    await expect(log.locator('[data-role="assistant"]').last()).not.toContainText("Sparko piše", { timeout: 15_000 });
-    await expect(log.locator('[data-role="assistant"]').last()).toContainText(/€/);
-  }
+test("both starters send a real message and get an answer", async ({ page }) => {
+  await fresh(page);
+  await page.getByRole("button", { name: "Kaj je najbolj znižano?" }).click();
+  const last = chatLog(page).locator('[data-role="assistant"]').last();
+  await expect(last).toContainText(/€/, { timeout: 15_000 });
+  await expect(last).toContainText(/ceneje/);
+  await fresh(page);
+  await page.getByRole("button", { name: "Koliko stane izdelek?" }).click();
+  await expect(chatLog(page).locator('[data-role="assistant"]').last()).toHaveText(/Seveda\. Kateri izdelek te zanima\?/);
+  await expect(chatLog(page).locator("[data-product-card]")).toHaveCount(0);
 });
 
 test("dinner for two stays within 10 € using whole packs with visible assumptions", async ({ page }) => {
   await fresh(page);
-  await page.getByRole("button", { name: "Večerja za dva do 10 €" }).click();
+  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  await input.fill("Večerja za dva do 10 €");
+  await input.press("Enter");
   const last = chatLog(page).locator('[data-role="assistant"]').last();
   await expect(last).toContainText(/V tvojem proračunu|v okviru/i, { timeout: 15_000 });
   await expect(last).toContainText(/doma/i); // pantry assumption
@@ -184,7 +191,9 @@ for (const width of [360, 390, 430]) {
       expect(overflow, `${path} overflows`).toBe(false);
     }
     await page.goto("/");
-    await page.getByRole("button", { name: "Koliko stane skuta?" }).click();
+    const input = page.getByPlaceholder("Vprašaj Sparka …");
+    await input.fill("Koliko stane skuta?");
+    await input.press("Enter");
     await expect(chatLog(page).locator("[data-product-card]").first()).toBeVisible();
     const tiles = await page.evaluate(() =>
       [...document.querySelectorAll<HTMLElement>("[data-product-id]")]
@@ -209,7 +218,7 @@ for (const width of [360, 390, 430]) {
     // Composer does not overlap the bottom navigation.
     const overlap = await page.evaluate(() => {
       const nav = document.querySelector('nav[aria-label="Glavna navigacija"]')!.getBoundingClientRect();
-      const form = document.querySelector("form")!.getBoundingClientRect();
+      const form = document.querySelector("form:has(#chat-input)")!.getBoundingClientRect();
       return form.bottom > nav.top + 0.5;
     });
     expect(overlap).toBe(false);

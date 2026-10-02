@@ -10,11 +10,12 @@ import { discountTemplate, rankDiscounts } from "./discounts";
 import { COMMAND_STOP, detectIntent, type DetectedIntent, type Intent } from "./intents";
 import { breakfastProducts, mealTemplate, recipeProductIds, suggestMeal, type MealRequest } from "./meals";
 import { displayName, render, type PlaceholderContext } from "./placeholders";
+import { ASK_PRODUCT_TEXT, STARTER_PROMPTS } from "./starters";
 import { cheaperAlternatives, comparablePrice, productsInLine, queryContentTokens, searchProducts, type SearchHit } from "./search";
 
 export const MAX_PRODUCTS_SHOWN = 4;
 
-export type ReplyKind = Intent | "ambiguous";
+export type ReplyKind = Intent | "ambiguous" | "ask_product" | "price_check";
 
 export type DeterministicReply = {
   intent: Intent;
@@ -39,12 +40,7 @@ export type RecommendFn = (savedProductIds: string[], opts: { limit?: number; ex
 
 export type ResponderDeps = { recommend?: RecommendFn };
 
-export const SUGGESTION_CHOICES: { label: string; message: string }[] = [
-  { label: "Koliko stane skuta?", message: "Koliko stane skuta?" },
-  { label: "Kaj je najbolj znižano?", message: "Kaj je najbolj znižano?" },
-  { label: "Večerja za dva do 10 €", message: "Večerja za dva do 10 €" },
-  { label: "Predlagaj hiter zajtrk", message: "Predlagaj hiter zajtrk" },
-];
+export const SUGGESTION_CHOICES: { label: string; message: string }[] = STARTER_PROMPTS;
 
 type Draft = Omit<DeterministicReply, "text" | "intent" | "placeholderCtx" | "kind"> & { kind?: ReplyKind };
 
@@ -137,16 +133,18 @@ function resolveTargets(d: DetectedIntent, preferIds?: string[], strict = false)
   return { explicit: false, hits: hitsOf(ids), unknownMention: false };
 }
 
-function unknownDraft(d: DetectedIntent): Draft {
+function unknownDraft(d: DetectedIntent, verb?: "save" | "remove"): Draft {
   const weak = searchProducts(d.text, { minScore: 0.6, limit: 3 });
   const blocks: MessageBlock[] = [];
-  let template = "Tega izdelka v preverjenem delu demo kataloga ne najdem.";
+  let template =
+    "Tega izdelka v preverjenem delu demo kataloga ne najdem" +
+    (verb === "save" ? ", zato ga ne morem dodati v Moj katalog." : verb === "remove" ? ", zato ga ne morem odstraniti." : ".");
   if (weak.length) {
     template += " Morda te zanima kaj od tega:";
     template += `\n${weak.map((h) => listLine(h.product, h.offer)).join("\n")}`;
     blocks.push(productsBlock(weak.map((h) => h.offer.id), "list"));
   } else {
-    template += " Lahko ti pokažem podobne izdelke.";
+    template += " Lahko ti poiščem drug izdelek, pokažem popuste ali predlagam obrok.";
     blocks.push({ type: "choices", options: [{ label: "Pokaži izdelke S-BUDGET", message: "Pokaži S-BUDGET izdelke" }, SUGGESTION_CHOICES[1]] });
   }
   return {
@@ -202,15 +200,16 @@ function handleLookup(d: DetectedIntent, req: ChatRequest): Draft {
       if (listed.length) return listDraft("V preverjenem izboru demo kataloga sem našel:", listed);
     }
     if (!content.length) {
+      // "Koliko stane izdelek?" – ask back; the next short reply is resolved as a price lookup (see detectIntent).
       return {
-        template: "Kateri izdelek te zanima? Napiši ime izdelka, pa ti povem ceno iz demo kataloga.",
-        blocks: [{ type: "choices", options: SUGGESTION_CHOICES }],
+        template: ASK_PRODUCT_TEXT,
+        blocks: [],
         contextProductIds: [],
         actions: [],
         candidateProductIds: [],
         candidateRecipeIds: [],
         allowModel: false,
-        kind: "unknown_product",
+        kind: "ask_product",
       };
     }
     return unknownDraft(d);
@@ -219,7 +218,19 @@ function handleLookup(d: DetectedIntent, req: ChatRequest): Draft {
   if (strong.length >= 2) {
     return ambiguousDraft(strong, "Katerega imaš v mislih?", (p) => `Koliko stane ${displayName(p)}, ${p.packSize}?`);
   }
-  return singleDraft(strong[0], req.spPlus);
+  const single = singleDraft(strong[0], req.spPlus);
+  const claimed = claimedPriceCents(d);
+  if (claimed == null) return single;
+  // The user asserted a price ("Skuta je 1,99 €, kajne?"): answer with the verified price, never with agreement by the model.
+  const agrees = claimed === strong[0].offer.priceCents;
+  return { ...single, template: `${agrees ? "Da." : "Ne."} ${single.template}`, allowModel: false, kind: "price_check" };
+}
+
+/** A price the user asserted ("Skuta je 1,99 €"); ignored when it is a filter ("do 5 €"). */
+function claimedPriceCents(d: DetectedIntent): number | null {
+  if (d.filters.maxPriceCents != null) return null;
+  const m = d.folded.match(/\b(\d{1,3},\d{1,2})\b|\b(\d{1,3})\s*eur\b/);
+  return m ? Math.round(parseFloat((m[1] ?? m[2]).replace(",", ".")) * 100) : null;
 }
 
 function handleLine(d: DetectedIntent, req: ChatRequest): Draft {
@@ -270,7 +281,7 @@ function handleCheaper(d: DetectedIntent, req: ChatRequest): Draft {
 
 function handleSave(d: DetectedIntent): Draft {
   const t = resolveTargets(d, undefined, true);
-  if (t.unknownMention) return unknownDraft(d);
+  if (t.unknownMention) return unknownDraft(d, "save");
   if (!t.hits.length) {
     return {
       template: "Kateri izdelek želiš dodati v Moj katalog? Napiši njegovo ime.",
@@ -287,8 +298,10 @@ function handleSave(d: DetectedIntent): Draft {
     return ambiguousDraft(t.hits, "Kateri izdelek naj dodam v Moj katalog?", (p) => `Dodaj ${displayName(p)}, ${p.packSize}`, false);
   }
   const h = t.hits[0];
+  const claimed = claimedPriceCents(d);
+  const priceNote = claimed != null && claimed !== h.offer.priceCents ? ` Cene ne morem spremeniti: v demo katalogu stane {{price:${h.offer.id}}}.` : "";
   return {
-    template: `{{name:${h.product.id}}}, {{pack:${h.product.id}}}.`,
+    template: `{{name:${h.product.id}}}, {{pack:${h.product.id}}}.${priceNote}`,
     blocks: [productsBlock([h.offer.id], "card")],
     contextProductIds: [h.product.id],
     actions: [{ type: "save", productId: h.product.id }],
@@ -300,7 +313,7 @@ function handleSave(d: DetectedIntent): Draft {
 
 function handleRemove(d: DetectedIntent, req: ChatRequest): Draft {
   const t = resolveTargets(d, req.savedProductIds.filter((id) => !!getProduct(id)), true);
-  if (t.unknownMention) return unknownDraft(d);
+  if (t.unknownMention) return unknownDraft(d, "remove");
   if (!t.hits.length) {
     return {
       template: "Kateri izdelek želiš odstraniti iz Mojega kataloga?",
@@ -448,14 +461,14 @@ function handleRecommend(req: ChatRequest, deps: ResponderDeps): Draft {
     const o = getPrimaryOffer(r.productId);
     if (o && r.reason) reasons[o.id] = r.reason;
   }
-  const intro = saved.length ? "Glede na tvoj Moj katalog predlagam:" : "Iz demo kataloga predlagam:";
+  const intro = saved.length ? "Glede na tvoj Moj katalog predlagam:" : "Predlagam ti:";
   return listDraft(intro, hits, { reasons });
 }
 
 function simpleDraft(template: string, choices = SUGGESTION_CHOICES, allowModel = true): Draft {
   return {
     template,
-    blocks: [{ type: "choices", options: choices }],
+    blocks: choices.length ? [{ type: "choices", options: choices }] : [],
     contextProductIds: [],
     actions: [],
     candidateProductIds: [],
@@ -472,11 +485,26 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
   let draft: Draft;
   const ctx: PlaceholderContext = { spPlus: req.spPlus, budgetCents: null, servings: null };
   switch (d.intent) {
+    // Small talk: no numbers, no products, no dates – a live model may rephrase these within the guardrails.
     case "greeting":
-      draft = simpleDraft("Živjo! Sem Sparko. Pomagam ti poiskati izdelke, cene in ideje za obroke iz demo kataloga SPAR. Kaj dobrega poiščeva danes?");
+      draft = simpleDraft("Živjo! Sem Sparko. Pomagam ti najti izdelke in cene iz kataloga SPAR ter predlagam ideje za obroke. Kaj te zanima?");
+      break;
+    case "how_are_you":
+      draft = simpleDraft("Hvala, dobro! Pripravljen sem na nakupovanje. Ti poiščem ceno kakšnega izdelka ali predlagam večerjo?");
+      break;
+    case "thanks":
+      draft = simpleDraft(/hvala/.test(d.folded) ? "Ni za kaj! Če potrebuješ še kaj, kar vprašaj." : "Super. Če te zanima še kaj, kar vprašaj.", []);
+      break;
+    case "help":
+      // Kept exact (no model) so the capability list is always accurate.
+      draft = simpleDraft(
+        "Lahko me vprašaš:\n• koliko stane izdelek, npr. skuta ali jajca,\n• kaj je najbolj znižano,\n• kje je izdelek v letaku,\n• kaj skuhati za večerjo ali kaj pripraviti z določenim zneskom.\nIzdelek lahko tudi dodaš v Moj katalog. Cene so iz kataloga SPAR.",
+        SUGGESTION_CHOICES,
+        false,
+      );
       break;
     case "out_of_scope":
-      draft = simpleDraft("Pri tem ti žal ne morem pomagati. Sem Sparko in pomagam pri nakupih in kuhanju iz demo kataloga SPAR. Lahko ti poiščem ceno izdelka ali predlagam obrok.");
+      draft = simpleDraft("Pri tem ti žal ne znam pomagati – sem Sparko, pomočnik za nakupe in kuhanje. Lahko ti poiščem ceno izdelka, pokažem popuste ali predlagam obrok.");
       break;
     case "save":
       draft = handleSave(d);

@@ -33,6 +33,13 @@ export function fitToWidth(viewportWidth: number, image: Size): Size {
   return { width: viewportWidth, height: (viewportWidth * image.height) / image.width };
 }
 
+/** Size of the stage when the whole page is fitted inside the viewport (contain): no scrolling at scale 1. */
+export function fitContain(viewport: Size, image: Size): Size {
+  if (viewport.width <= 0 || viewport.height <= 0 || image.width <= 0 || image.height <= 0) return { width: 0, height: 0 };
+  const k = Math.min(viewport.width / image.width, viewport.height / image.height);
+  return { width: image.width * k, height: image.height * k };
+}
+
 /**
  * Keeps the page on screen: along an axis where the scaled page is smaller than the
  * viewport it is centered; otherwise its edges may not move inside the viewport.

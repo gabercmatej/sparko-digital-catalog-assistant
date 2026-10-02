@@ -3,6 +3,7 @@ import {
   centerOnRect,
   clamp,
   clampView,
+  fitContain,
   fitToWidth,
   initialView,
   isTap,
@@ -113,5 +114,22 @@ describe("leaflet geometry", () => {
     const v = rescaleOnResize({ scale: 2, x: -100, y: -100 }, content, newContent, { width: 800, height: 300 });
     expect(v.scale).toBe(2);
     expect(v.x).toBeCloseTo(-100 * (800 / 390), 5);
+  });
+});
+
+describe("leaflet contain fit", () => {
+  it("fitContain shows the whole page as large as possible (no vertical scrolling at scale 1)", () => {
+    const img = { width: 1400, height: 1900 };
+    const w = fitContain({ width: 390, height: 700 }, img); // width-limited
+    expect(w.width).toBeCloseTo(390);
+    expect(w.height).toBeCloseTo(529.29, 1);
+    const h = fitContain({ width: 390, height: 450 }, img); // height-limited
+    expect(h.height).toBeCloseTo(450);
+    expect(h.width).toBeCloseTo((450 * 1400) / 1900);
+    expect(fitContain({ width: 0, height: 10 }, img)).toEqual({ width: 0, height: 0 });
+    const v = initialView({ width: 390, height: 450 }, h);
+    expect(v.scale).toBe(1);
+    expect(v.y).toBeCloseTo(0);
+    expect(v.x).toBeCloseTo((390 - h.width) / 2);
   });
 });

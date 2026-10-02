@@ -208,7 +208,7 @@
   right: 0;
   bottom: 0;
   z-index: 5;
-  padding: 20px var(--pad-x) 12px;
+  padding: 20px var(--gutter) 12px;
   background: linear-gradient(to bottom, rgb(255 255 255 / 0%), #fff 45%);
   pointer-events: none;
 }

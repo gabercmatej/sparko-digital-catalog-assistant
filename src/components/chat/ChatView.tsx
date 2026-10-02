@@ -103,7 +103,7 @@ export function ChatView() {
 
   return (
     <div className={styles.page}>
-      <div ref={scrollRef} className={`page-scroll ${styles.scroll}`} onScroll={onScroll}>
+      <div ref={scrollRef} className={`page-scroll ${styles.scroll}`} onScroll={onScroll} data-testid="chat-scroll">
         <ProductCarousel onSelect={handleProduct} />
         {!hydrated ? (
           <div className={styles.flexFill} />

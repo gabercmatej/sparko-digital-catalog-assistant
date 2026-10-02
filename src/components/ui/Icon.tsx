@@ -30,6 +30,8 @@ const PATHS: Record<string, string> = {
   filter: "M4 5h16l-6 7.5V19l-4 1.5v-8z",
   info: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 7.5h.01",
   refresh: "M20 11a8 8 0 0 0-14.7-4.3M4 4v3.5h3.5M4 13a8 8 0 0 0 14.7 4.3M20 20v-3.5h-3.5",
+  maximize: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5",
+  minimize: "M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5",
   grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
 };
 

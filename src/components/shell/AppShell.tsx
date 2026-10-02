@@ -31,28 +31,65 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     hydrate();
   }, []);
 
-  // Track the visual viewport so the composer stays above the keyboard and the nav hides.
+  // Track the visual viewport: detect the on-screen keyboard (iOS overlays it; Android with
+  // interactive-widget=resizes-content shrinks innerHeight too, so compare against the tallest
+  // unzoomed height seen at this width). Only while the iOS keyboard is open does the shell get an
+  // explicit height; otherwise CSS (position: fixed; inset: 0) sizes it to the visible area.
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
     const root = document.documentElement;
-    const update = () => {
-      root.style.setProperty("--app-h", `${Math.round(vv.height)}px`);
-      const kb = window.innerHeight - vv.height > 140 && document.activeElement instanceof HTMLElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
-      setKeyboardOpen(kb);
-      // iOS scrolls the layout viewport when focusing inputs; keep the shell pinned.
-      if (vv.offsetTop > 0) window.scrollTo(0, 0);
+    let baseline = 0;
+    let baseWidth = window.innerWidth;
+    let raf = 0;
+    const isTyping = () => {
+      const a = document.activeElement;
+      if (!(a instanceof HTMLElement)) return false;
+      if (a.isContentEditable || a.tagName === "TEXTAREA") return true;
+      return a instanceof HTMLInputElement && !/^(button|checkbox|radio|range|submit|reset|file|color)$/.test(a.type);
     };
-    update();
+    const apply = () => {
+      raf = 0;
+      if (window.innerWidth !== baseWidth) {
+        baseWidth = window.innerWidth;
+        baseline = 0;
+      }
+      const zoomed = vv.scale > 1.01;
+      if (!zoomed) baseline = Math.max(baseline, vv.height);
+      const kb = !zoomed && isTyping() && baseline - vv.height > 140;
+      setKeyboardOpen(kb);
+      if (kb) {
+        // iOS pans the layout viewport when focusing inputs; keep the shell pinned.
+        if (vv.offsetTop > 0) window.scrollTo(0, 0);
+        root.style.setProperty("--app-h", `${Math.floor(vv.height)}px`);
+        root.style.setProperty("--app-top", `${Math.max(0, Math.round(vv.offsetTop))}px`);
+      } else {
+        root.style.removeProperty("--app-h");
+        root.style.removeProperty("--app-top");
+      }
+    };
+    const update = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    const resetBaseline = () => {
+      baseline = 0;
+      update();
+    };
+    apply();
     vv.addEventListener("resize", update);
     vv.addEventListener("scroll", update);
     window.addEventListener("focusin", update);
     window.addEventListener("focusout", update);
+    document.addEventListener("fullscreenchange", resetBaseline);
     return () => {
+      cancelAnimationFrame(raf);
       vv.removeEventListener("resize", update);
       vv.removeEventListener("scroll", update);
       window.removeEventListener("focusin", update);
       window.removeEventListener("focusout", update);
+      document.removeEventListener("fullscreenchange", resetBaseline);
+      root.style.removeProperty("--app-h");
+      root.style.removeProperty("--app-top");
     };
   }, []);
 
