@@ -1,0 +1,40 @@
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+  color: var(--c-ink);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.brand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-ink-3);
+}
+.name {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--c-ink);
+  overflow-wrap: anywhere;
+}
+.pack {
+  font-size: var(--text-sm);
+  color: var(--c-ink-2);
+  line-height: 1.35;
+}
+.note {
+  font-size: var(--text-xs);
+  color: var(--c-ink-3);
+  line-height: 1.35;
+}

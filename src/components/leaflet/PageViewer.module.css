@@ -70,37 +70,37 @@
   }
 }
 
-/* Saved: bright light-green overlay over the verified bbox with a strong green edge and a thin white
-   contrast line (reads on green pages too); product and price stay readable underneath.
-   Widths are divided by the zoom scale so they stay constant on screen. */
+/* Saved: the printed product stays fully visible — only a faint 6% green tint inside the verified bbox,
+   a bright green edge with a thin white contrast line (reads on green pages too) and the pulsing glow
+   below. Widths are divided by the zoom scale so they stay constant on screen. */
 .saved {
   border: calc(3px / var(--s)) solid #22c55e;
-  background: rgb(74 222 128 / 20%);
+  background: rgb(74 222 128 / 6%);
   box-shadow:
     0 0 0 calc(1.5px / var(--s)) rgb(255 255 255 / 95%),
     inset 0 0 0 calc(1px / var(--s)) rgb(255 255 255 / 70%);
 }
 
-/* Flashing pulse: the green fill + outer glow flash in and out (opacity only, no scale), so saved items
-   are impossible to miss. Peak fill stays ~0.4 green so the product beneath remains readable.
+/* Flashing pulse: a transparent ring whose bright green edge and outer glow flash in and out
+   (opacity only, no fill, no scale), so saved items are impossible to miss without covering them.
    Static, fully-on for reduced motion. */
 .pulse {
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: rgb(134 239 172 / 26%);
+  inset: calc(-3px / var(--s));
+  border-radius: calc(6px / var(--s));
+  background: transparent;
   box-shadow:
-    inset 0 0 0 calc(3px / var(--s)) rgb(187 247 208 / 95%),
-    0 0 0 calc(3px / var(--s)) rgb(34 197 94 / 95%),
-    0 0 calc(24px / var(--s)) calc(6px / var(--s)) rgb(134 239 172 / 85%);
-  opacity: 0.15;
+    0 0 0 calc(3px / var(--s)) rgb(34 197 94 / 100%),
+    0 0 calc(18px / var(--s)) calc(7px / var(--s)) rgb(74 222 128 / 90%),
+    inset 0 0 calc(10px / var(--s)) calc(1px / var(--s)) rgb(134 239 172 / 70%);
+  opacity: 0.2;
   pointer-events: none;
-  animation: savedGlow 1.3s ease-in-out infinite;
+  animation: savedGlow 1.2s ease-in-out infinite;
 }
 @keyframes savedGlow {
   0%,
   100% {
-    opacity: 0.15;
+    opacity: 0.2;
   }
   50% {
     opacity: 1;
@@ -128,13 +128,13 @@
   border-color: var(--c-ink);
 }
 
-/* Badge keeps a constant on-screen size (counter-scaled), sits top-left away from the price block. */
+/* Badge keeps a constant on-screen size (counter-scaled) and straddles the top-left edge of the box,
+   so it marks the product without covering the packshot or the price block. */
 .badge {
   position: absolute;
   left: calc(4px / var(--s));
-  top: calc(4px / var(--s));
-  max-width: calc(100% * var(--s) - 8px);
-  transform: scale(calc(1 / var(--s)));
+  top: 0;
+  transform: scale(calc(1 / var(--s))) translateY(-55%);
   transform-origin: 0 0;
   display: inline-block;
   padding: 2px 6px 2px 5px;
@@ -146,7 +146,7 @@
   line-height: 1.2;
   letter-spacing: 0.01em;
   text-align: left;
-  white-space: normal;
+  white-space: nowrap;
   box-shadow: 0 0 0 1.5px #fff, 0 1px 4px rgb(0 0 0 / 25%);
   pointer-events: none;
   z-index: 2;
@@ -187,7 +187,7 @@
   }
   .pulse {
     animation: none;
-    opacity: 0.85;
+    opacity: 1;
   }
   .focusRing {
     animation: none;

@@ -4,9 +4,10 @@
   --c-page-outside: #f3f5f4;
   --c-tile: #f1f2f1;
   --c-surface-muted: #f5f7f6;
-  --c-ink: #133a2a;
-  --c-ink-2: #46594f;
-  --c-ink-3: #6f7f76;
+  /* Text is neutral near-black; green is reserved for actions, accents and brand states. */
+  --c-ink: #141414;
+  --c-ink-2: #474747;
+  --c-ink-3: #6b6b6b;
   --c-border: #e3e8e5;
   --c-border-strong: #cfd8d3;
   --c-green: #0d6b3b; /* primary buttons / active */
@@ -23,7 +24,11 @@
   --c-warning-bg: #fff6e0;
   --c-warning-ink: #6b4a00;
 
-  --font-ui: var(--font-inter), "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* Brand typeface slot. No licensed Gilroy file ships with the repo, so Inter (next/font) is the
+     fallback. To switch: add an @font-face for "Gilroy" (licensed .woff2 in /public/fonts) and
+     prepend "Gilroy" here — every component reads --font-ui. */
+  --font-brand: var(--font-inter);
+  --font-ui: var(--font-brand), "Segoe UI", system-ui, -apple-system, sans-serif;
   --text-xs: 12px;
   --text-sm: 13.5px;
   --text-md: 15px;

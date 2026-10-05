@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getOffer, getProduct } from "@/lib/catalog";
 import { ProductActions } from "../product/ProductActions";
 import { ProductCard } from "../product/ProductCard";
-import { ProductTile } from "../product/ProductTile";
+import { ProductSummary } from "../product/ProductSummary";
 import { Icon } from "../ui/Icon";
 import styles from "./Chat.module.css";
 
@@ -47,13 +47,7 @@ function ProductRow({ productId, offerId, reason }: { productId: string; offerId
   return (
     <li className={styles.row}>
       <button type="button" className={styles.rowBtn} aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((o) => !o)}>
-        <ProductTile productId={productId} size="carousel" minimal />
-        <span className={styles.rowText}>
-          {product.brand && <span className={styles.rowBrand}>{product.brand}</span>}
-          <span className={styles.rowName}>{product.name}</span>
-          <span className={styles.rowMeta}>{product.packSize}</span>
-          {reason && <span className={styles.rowReason}>{reason}</span>}
-        </span>
+        <ProductSummary productId={productId} offerId={offerId} note={reason} />
         <Icon name="chevron-down" size={18} className={styles.rowChevron} />
       </button>
       {open && (
