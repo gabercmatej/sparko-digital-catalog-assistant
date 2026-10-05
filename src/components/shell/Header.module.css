@@ -30,8 +30,8 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--c-red);
+  color: var(--c-ink);
 }
 .ko {
-  color: var(--c-green);
+  color: inherit;
 }

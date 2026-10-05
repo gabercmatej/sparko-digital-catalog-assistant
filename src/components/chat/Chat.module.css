@@ -92,11 +92,15 @@
   color: var(--c-ink-3);
 }
 .text {
+  background: var(--c-bubble-bot);
+  color: var(--c-ink);
+  border-radius: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) 4px;
+  padding: 10px 15px;
   font-size: var(--text-md);
-  line-height: 1.5;
+  line-height: 1.45;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  max-width: 100%;
+  max-width: 85%;
 }
 .errorText {
   display: flex;
