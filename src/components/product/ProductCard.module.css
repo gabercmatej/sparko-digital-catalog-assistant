@@ -1,21 +1,20 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
   max-width: 400px;
 }
 .top {
   display: flex;
   gap: 14px;
-  align-items: flex-start;
+  align-items: center;
 }
 .details {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
-  padding-top: 2px;
 }
 .brand {
   font-size: var(--text-xs);
@@ -35,46 +34,8 @@
   color: var(--c-ink-2);
   line-height: 1.35;
 }
-.price {
-  margin-top: 6px;
-  font-size: var(--text-lg);
-  font-weight: 750;
-  color: var(--c-red-ink);
-  font-variant-numeric: tabular-nums;
-}
-.unit {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--c-ink-2);
-}
 .cond {
   font-size: var(--text-xs);
   color: var(--c-ink-2);
   line-height: 1.35;
-}
-.reason {
-  font-size: var(--text-sm);
-  color: var(--c-ink-2);
-}
-.assessments {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.assessment {
-  font-size: var(--text-sm);
-  color: var(--c-ink-2);
-  line-height: 1.35;
-}
-.assessment strong {
-  color: var(--c-green);
-  font-weight: 650;
-}
-.validity {
-  font-size: var(--text-xs);
-  color: var(--c-ink-3);
-  margin-top: -4px;
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { formatPrice, getOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { getOffer, getProduct } from "@/lib/catalog";
+import { ProductActions } from "../product/ProductActions";
 import { ProductCard } from "../product/ProductCard";
 import { ProductTile } from "../product/ProductTile";
 import { Icon } from "../ui/Icon";
@@ -9,7 +10,7 @@ import styles from "./Chat.module.css";
 const MAX_CARDS = 3;
 const MAX_ROWS = 8;
 
-/** Renders a `products` block: featured cards, or compact rows that expand into a card. */
+/** Renders a `products` block: featured cards, or compact rows that expand into their actions. */
 export function ProductsBlock({ offerIds, reasons, layout = "card" }: { offerIds: string[]; reasons?: Record<string, string>; layout?: "card" | "list" }) {
   const items = offerIds
     .map((offerId) => {
@@ -26,7 +27,7 @@ export function ProductsBlock({ offerIds, reasons, layout = "card" }: { offerIds
   return (
     <div className={styles.products}>
       {cards.map(({ offer, product }) => (
-        <ProductCard key={offer.id} productId={product.id} offerId={offer.id} reason={reasons?.[offer.id]} />
+        <ProductCard key={offer.id} productId={product.id} offerId={offer.id} />
       ))}
       {rows.length > 0 && (
         <ul className={styles.rows}>
@@ -42,27 +43,22 @@ export function ProductsBlock({ offerIds, reasons, layout = "card" }: { offerIds
 function ProductRow({ productId, offerId, reason }: { productId: string; offerId: string; reason?: string }) {
   const [open, setOpen] = useState(false);
   const product = getProduct(productId)!;
-  const offer = getOffer(offerId)!;
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
   const panelId = `row-${offerId}`;
   return (
     <li className={styles.row}>
       <button type="button" className={styles.rowBtn} aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((o) => !o)}>
-        <ProductTile productId={productId} size="carousel" />
+        <ProductTile productId={productId} size="carousel" minimal />
         <span className={styles.rowText}>
           {product.brand && <span className={styles.rowBrand}>{product.brand}</span>}
           <span className={styles.rowName}>{product.name}</span>
-          <span className={styles.rowMeta}>
-            {product.packSize} · <strong>{formatPrice(offer.priceCents)}</strong>
-            {unit ? ` ${unit}` : ""}
-          </span>
+          <span className={styles.rowMeta}>{product.packSize}</span>
           {reason && <span className={styles.rowReason}>{reason}</span>}
         </span>
         <Icon name="chevron-down" size={18} className={styles.rowChevron} />
       </button>
       {open && (
-        <div id={panelId} className={styles.rowPanel}>
-          <ProductCard productId={productId} offerId={offerId} />
+        <div id={panelId} className={styles.rowPanel} role="region" aria-label={`Dejanja: ${product.name}`}>
+          <ProductActions productId={productId} />
         </div>
       )}
     </li>

@@ -23,13 +23,9 @@
 .footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-height: 36px;
   gap: 8px;
-}
-.caption {
-  font-size: var(--text-xs);
-  color: var(--c-ink-3);
 }
 .remove {
   color: var(--c-ink-2);

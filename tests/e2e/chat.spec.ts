@@ -37,7 +37,7 @@ test("starter flow: 'Koliko stane izdelek?' → which product? → 'skuta' → v
   await ask(page, "skuta");
   const card = chatLog(page).locator(`[data-product-card="${SKUTA}"]`).first();
   await expect(card).toContainText("3,38 €");
-  await expect(card).toContainText("PDF-stran 5");
+  await expect(card).not.toContainText("PDF-stran");
 });
 
 test("single composer action: mic when empty (no permission request), send arrow when typing, Enter sends", async ({ page }) => {

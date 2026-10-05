@@ -34,6 +34,9 @@ button.tile:active {
 .grid {
   width: 100%;
 }
+.minimal {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
 
 .media {
   min-height: 0;

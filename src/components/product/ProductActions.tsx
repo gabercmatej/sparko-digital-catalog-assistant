@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { collectionHref, leafletHref, pageCaption } from "@/lib/catalog";
+import { collectionHref, leafletHref } from "@/lib/catalog";
 import { isSaved, removeProduct, requestHighlight, saveProduct, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import styles from "./ProductActions.module.css";
@@ -10,13 +10,12 @@ import styles from "./ProductActions.module.css";
  * The two equal-sized product actions (final UI override #2):
  *  1. "Dodaj v Moj katalog" (filled green) / "✓ V Mojem katalogu" (saved, links to the item)
  *  2. "Poglej v SPAR katalogu" (green outline) → opens the original leaflet at the product.
- * Source caption and the separate remove action sit outside the buttons.
+ * The separate remove action sits below the buttons once the product is saved.
  */
-export function ProductActions({ productId, showLeaflet = true, showCaption = true }: { productId: string; showLeaflet?: boolean; showCaption?: boolean }) {
+export function ProductActions({ productId, showLeaflet = true }: { productId: string; showLeaflet?: boolean }) {
   const store = useStore();
   const router = useRouter();
   const saved = isSaved(productId, store);
-  const caption = pageCaption(productId);
 
   return (
     <div className={styles.wrap}>
@@ -46,14 +45,11 @@ export function ProductActions({ productId, showLeaflet = true, showCaption = tr
           </button>
         )}
       </div>
-      {(showCaption || saved) && (
+      {saved && (
         <div className={styles.footer}>
-          {showCaption && caption ? <span className={styles.caption}>{caption}</span> : <span />}
-          {saved && (
-            <button type="button" className={`btn btn-ghost btn-sm ${styles.remove}`} onClick={() => removeProduct(productId)}>
-              Odstrani
-            </button>
-          )}
+          <button type="button" className={`btn btn-ghost btn-sm ${styles.remove}`} onClick={() => removeProduct(productId)}>
+            Odstrani
+          </button>
         </div>
       )}
     </div>

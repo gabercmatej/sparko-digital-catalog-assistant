@@ -267,9 +267,6 @@
   color: var(--c-ink);
   overflow-wrap: anywhere;
 }
-.rowMeta strong {
-  color: var(--c-ink);
-}
 .rowReason {
   font-size: var(--text-xs);
   color: var(--c-ink-3);
@@ -283,7 +280,7 @@
   transform: rotate(180deg);
 }
 .rowPanel {
-  padding: 12px 0 20px;
+  padding: 8px 0 16px;
 }
 
 /* ---------------------------------------------------------------- new messages pill */

@@ -9,7 +9,8 @@ type Size = "carousel" | "card" | "grid";
 /**
  * The canonical square product tile: exact 1:1, sharp corners, light gray,
  * contained (never stretched) packshot, catalog-style red price block.
- * Interactive when `onSelect` is given.
+ * Interactive when `onSelect` is given. `minimal` drops the printed name and pack size for
+ * layouts that already show them next to the tile, so nothing is repeated.
  */
 export function ProductTile({
   productId,
@@ -17,12 +18,14 @@ export function ProductTile({
   onSelect,
   showSaved = true,
   ariaLabelPrefix,
+  minimal = false,
 }: {
   productId: string;
   size?: Size;
   onSelect?: () => void;
   showSaved?: boolean;
   ariaLabelPrefix?: string;
+  minimal?: boolean;
 }) {
   const store = useStore();
   const product = getProduct(productId);
@@ -39,11 +42,9 @@ export function ProductTile({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={product.image.src} width={product.image.width} height={product.image.height} alt="" loading={size === "carousel" ? "eager" : "lazy"} decoding="async" draggable={false} />
       </span>
-      <span className={styles.name}>{product.name}</span>
+      {!minimal && <span className={styles.name}>{product.name}</span>}
       <span className={styles.meta}>
-        <span className={styles.text}>
-          <span className={styles.pack}>{product.packSize}</span>
-        </span>
+        <span className={styles.text}>{!minimal && <span className={styles.pack}>{product.packSize}</span>}</span>
         <span className={styles.priceWrap}>
           {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
           <span className={styles.price} aria-hidden="true">
@@ -63,7 +64,7 @@ export function ProductTile({
     </>
   );
 
-  const cls = `${styles.tile} ${styles[size]}`;
+  const cls = `${styles.tile} ${styles[size]}${minimal ? ` ${styles.minimal}` : ""}`;
   if (onSelect) {
     return (
       <button type="button" className={cls} onClick={onSelect} aria-label={label} data-product-id={productId} data-saved={saved || undefined}>

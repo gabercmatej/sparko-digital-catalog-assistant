@@ -153,7 +153,7 @@ test("all saved products on one page are highlighted together; add/remove update
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("3");
 });
 
-test("saved overlay: translucent green with a calm infinite pulse", async ({ page }) => {
+test("saved overlay: light-green overlay with a flashing infinite pulse", async ({ page }) => {
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
   const pulse = box(page, "sb-skuta-1kg").locator("[data-pulse]");
   await expect(pulse).toBeAttached();
@@ -164,8 +164,9 @@ test("saved overlay: translucent green with a calm infinite pulse", async ({ pag
   });
   expect(s.name).toContain("savedGlow");
   expect(s.iter).toBe("infinite");
-  expect(parseFloat(s.dur)).toBeGreaterThanOrEqual(1.5);
-  expect(s.bg).toMatch(/rgba\(31, 160, 69, 0\.1\d*\)/);
+  expect(parseFloat(s.dur)).toBeGreaterThanOrEqual(0.8);
+  expect(parseFloat(s.dur)).toBeLessThanOrEqual(1.6);
+  expect(s.bg).toMatch(/rgba\(74, 222, 128, 0\.2\d*\)/);
 });
 
 test("reduced motion: saved overlay is static", async ({ page }) => {

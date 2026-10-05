@@ -108,12 +108,6 @@ export function validityText(o: Offer): string {
   return "Veljavnost v katalogu ni navedena; preveri v letaku";
 }
 
-export function pageCaption(productId: string): string | null {
-  const pl = getPlacementsForProduct(productId)[0];
-  if (!pl) return null;
-  return `Cena iz demo kataloga · PDF-stran ${pl.pdfPageNumber}`;
-}
-
 export const DEMO_LABEL = "Demo katalog · 30. 9. 2026";
 
 // ---------------------------------------------------------------- links

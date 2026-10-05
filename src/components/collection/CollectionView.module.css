@@ -82,7 +82,7 @@
   row-gap: 16px;
 }
 .recoBand .grid {
-  margin-top: 16px;
+  margin-top: 20px;
   row-gap: 24px;
 }
 
@@ -154,12 +154,23 @@
 
 /* ---------------------------------------------------------------- recommendations */
 
+/* dark green band so the recommendation zone reads as its own space */
 .recoBand {
-  margin-top: 24px;
+  margin-top: 32px;
   padding-top: 28px;
   padding-bottom: 32px;
-  background: color-mix(in srgb, var(--c-green-050) 55%, #fff);
-  border-top: 1px solid var(--c-green-100);
+  background: var(--c-green);
+  color: #fff;
+}
+.recoBand .h2 {
+  color: #fff;
+}
+.recoBand .sectionNote {
+  margin-top: 6px;
+  color: rgb(255 255 255 / 80%);
+}
+.recoBand :focus-visible {
+  outline-color: #fff;
 }
 .recoItem {
   min-width: 0;
@@ -170,7 +181,7 @@
   margin-top: 8px;
   font-size: var(--text-sm);
   line-height: 1.35;
-  color: var(--c-ink-2);
+  color: rgb(255 255 255 / 85%);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -186,6 +197,7 @@
   text-align: center;
   line-height: 1.25;
   background: #fff;
+  border-color: #fff;
 }
 .addLabel {
   display: block;

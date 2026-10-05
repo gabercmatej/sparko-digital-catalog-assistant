@@ -14,10 +14,24 @@
   justify-self: center;
   display: flex;
   align-items: center;
+  gap: 6px;
   height: var(--tap);
   padding: 0 8px;
+  text-decoration: none;
 }
-.logo {
-  height: 22px;
-  width: auto;
+.mark {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex: none;
+}
+.wordmark {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--c-red);
+}
+.ko {
+  color: var(--c-green);
 }

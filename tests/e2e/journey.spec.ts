@@ -23,7 +23,9 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
   await expect(card).toBeVisible();
   await expect(card).toContainText("3,38 €");
   await expect(card).toContainText("1 kg");
-  await expect(card).toContainText("PDF-stran 5");
+  // Compact card: each fact once, no validity / source footer clutter.
+  await expect(card).not.toContainText("Velja");
+  await expect(card).not.toContainText("PDF-stran");
 
   // Two equal product actions.
   const add = card.getByRole("button", { name: "Dodaj v Moj katalog" });

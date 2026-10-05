@@ -14,10 +14,20 @@ export function Header() {
       <button type="button" className="icon-btn" onClick={openSidebar} aria-label="Odpri meni">
         <Icon name="menu" size={24} />
       </button>
-      <Link href="/" className={styles.logoLink} aria-label="SPAR – Sparko">
-        {/* Official SPAR logo extracted as vector from the source catalog PDF. */}
+      <Link href="/" className={styles.logoLink} aria-label="SPARko">
+        {/* Official SPARko mascot, derived from sparko_logo.png (trimmed, transparent background). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/spar-logo.svg" alt="SPAR" className={styles.logo} width={112} height={22} />
+        <img
+          src="/brand/sparko-logo-128.webp"
+          srcSet="/brand/sparko-logo-128.webp 1x, /brand/sparko-logo-256.webp 2x"
+          alt=""
+          className={styles.mark}
+          width={40}
+          height={40}
+        />
+        <span className={styles.wordmark} aria-hidden="true">
+          SPAR<span className={styles.ko}>ko</span>
+        </span>
       </Link>
       <button
         type="button"
