@@ -135,13 +135,14 @@ test("contextual follow-up: kje je v letaku?", async ({ page }) => {
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("PDF-strani 5", { timeout: 15_000 });
 });
 
-test("Domov placeholder keeps state", async ({ page }) => {
+test("Domov home page keeps state", async ({ page }) => {
   await fresh(page);
   await page.locator(`button[data-product-id="${SKUTA}"]`).first().click();
   await chatLog(page).getByRole("button", { name: "Dodaj v Moj katalog" }).first().click();
   await page.getByRole("link", { name: "Domov" }).click();
-  await expect(page.getByText("Demo domača stran je v pripravi.")).toBeVisible();
-  await page.getByRole("link", { name: "Nazaj k Sparku" }).click();
+  await expect(page.getByRole("heading", { name: "Pozdravljeni!" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "SPAR katalogi" })).toBeVisible();
+  await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: "Sparko" }).click();
   await expect(chatLog(page).locator(`[data-product-card="${SKUTA}"]`)).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("1");
 });
