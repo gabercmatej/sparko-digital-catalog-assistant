@@ -14,7 +14,7 @@ export function Header() {
       <button type="button" className="icon-btn" onClick={openSidebar} aria-label="Odpri meni">
         <Icon name="menu" size={24} />
       </button>
-      <Link href="/" className={styles.logoLink} aria-label="SPARko">
+      <Link href="/" className={styles.logoLink} aria-label="Sparko">
         {/* Official SPARko mascot, derived from sparko_logo.png (trimmed, transparent background). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -26,7 +26,7 @@ export function Header() {
           height={40}
         />
         <span className={styles.wordmark} aria-hidden="true">
-          SPAR<span className={styles.ko}>ko</span>
+          Sparko
         </span>
       </Link>
       <button

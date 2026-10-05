@@ -4,4 +4,8 @@
   gap: 12px;
   width: 100%;
   max-width: 440px;
+  padding: 12px;
+  border: 1.5px solid var(--c-green);
+  border-radius: 14px;
+  background: var(--c-canvas);
 }

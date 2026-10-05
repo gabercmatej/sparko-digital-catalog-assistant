@@ -20,7 +20,7 @@ const Ctx = createContext<ShellCtx>({ sidebarOpen: false, openSidebar: () => {},
 export const useShell = () => useContext(Ctx);
 
 /**
- * Persistent mobile shell: header (menu · SPARko logo · new chat), page area, bottom nav.
+ * Persistent mobile shell: header (menu · Sparko logo · new chat), page area, bottom nav.
  * Lives in the root layout so state survives navigation between Domov / Sparko / Moj katalog / letak.
  */
 export function AppShell({ children }: { children: React.ReactNode }) {
