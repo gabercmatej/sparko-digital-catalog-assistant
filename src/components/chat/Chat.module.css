@@ -314,3 +314,18 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Compact rows inside the bubble (e.g. "Kaj je najbolj znižano?"): each product is its own white
+   rectangle on the grey message, evenly spaced, still expanding into its actions. */
+.bubble .rows {
+  gap: 8px;
+}
+.bubble .row {
+  background: #ffffff;
+}
+.bubble .rowBtn {
+  padding: 8px 10px 8px 8px;
+}
+.bubble .rowPanel {
+  padding: 2px 10px 12px;
+}

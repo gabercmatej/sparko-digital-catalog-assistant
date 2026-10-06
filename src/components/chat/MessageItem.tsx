@@ -62,8 +62,8 @@ export function MessageItem({
     );
   }
 
-  const cardBlocks = (m.blocks ?? []).filter(isCardBlock);
-  const grouped = cardBlocks.length > 0;
+  const productBlocks = (m.blocks ?? []).filter(isProductsBlock);
+  const grouped = productBlocks.length > 0;
   const leafletProducts = (m.actions ?? []).filter((a) => a.type === "open_leaflet" && getProduct(a.productId)).map((a) => a.productId);
 
   return (
@@ -77,10 +77,11 @@ export function MessageItem({
         )}
       </div>
       {grouped ? (
-        // One Sparko message: the reply text and the product presentation share a single grey bubble.
+        // One Sparko message: the reply text and every returned product (cards and expandable rows)
+        // share a single grey bubble.
         <div className={styles.bubble} data-message-bubble>
           {m.text && <p className={styles.bubbleText}>{displayText(m.text)}</p>}
-          {cardBlocks.map((b, i) => (
+          {productBlocks.map((b, i) => (
             <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />
           ))}
         </div>
@@ -90,8 +91,8 @@ export function MessageItem({
       {m.blocks?.map((b, i) => {
         switch (b.type) {
           case "products":
-            if (grouped && isCardBlock(b)) return null;
-            return <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />;
+            // Already rendered inside the message bubble above.
+            return null;
           case "recipe":
             return <RecipeCard key={i} recipeId={b.recipeId} />;
           case "choices":
@@ -141,7 +142,7 @@ export function MessageItem({
 }
 
 type ProductsBlockData = Extract<MessageBlock, { type: "products" }>;
-/** A products block rendered as cards (the default layout) — shown inside the message bubble. */
-function isCardBlock(b: MessageBlock): b is ProductsBlockData {
-  return b.type === "products" && (b.layout ?? "card") === "card";
+/** A products block (cards or compact rows) — always shown inside the message bubble. */
+function isProductsBlock(b: MessageBlock): b is ProductsBlockData {
+  return b.type === "products";
 }

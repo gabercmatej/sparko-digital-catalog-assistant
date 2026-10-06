@@ -153,7 +153,7 @@ test("all saved products on one page are highlighted together; add/remove update
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("3");
 });
 
-test("saved overlay: the whole box breathes 100% ↔ 85% around its centre with a gold overlay; no orbs", async ({ page }) => {
+test("saved overlay: fixed size, only the golden light pulses (A bright ↔ B calm, 2 s); no scaling, no orbs", async ({ page }) => {
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
   const host = box(page, "sb-skuta-1kg");
   await expect(host.locator("[data-saved-ring]")).toBeAttached();
@@ -164,59 +164,76 @@ test("saved overlay: the whole box breathes 100% ↔ 85% around its centre with 
     const boxEl = el.querySelector<HTMLElement>("[data-saved-box]")!;
     const crop = el.querySelector<HTMLElement>("[data-saved-crop]")!;
     const overlay = el.querySelector<HTMLElement>("[data-gold-overlay]")!;
+    const ring = el.querySelector<HTMLElement>("[data-saved-ring]")!;
     const anim = (e: HTMLElement) => {
       const c = getComputedStyle(e);
       return { name: c.animationName, dur: parseFloat(c.animationDuration), iter: c.animationIterationCount, ease: c.animationTimingFunction };
     };
-    // Freeze every breathing animation at time t and measure.
+    const animated = [boxEl, crop, overlay];
+    // No keyframe of any saved-box animation may touch size or position.
+    const animatedProps = animated.flatMap((e) =>
+      e.getAnimations().flatMap((a) => (a.effect as KeyframeEffect).getKeyframes().flatMap((k) => Object.keys(k))),
+    );
+    // Freeze every pulse animation at time t and measure.
     const at = (t: number) => {
-      for (const e of [boxEl, crop, overlay])
+      for (const e of animated)
         for (const a of e.getAnimations()) {
           a.pause();
           a.currentTime = t;
         }
       const h = el.getBoundingClientRect();
       const r = boxEl.getBoundingClientRect();
+      const g = ring.getBoundingClientRect();
       return {
-        w: r.width / h.width,
-        h: r.height / h.height,
-        cx: r.left + r.width / 2 - (h.left + h.width / 2),
-        cy: r.top + r.height / 2 - (h.top + h.height / 2),
+        rect: [r.left - h.left, r.top - h.top, r.width - h.width, r.height - h.height],
+        ringW: g.width,
+        transform: getComputedStyle(boxEl).transform,
         overlay: parseFloat(getComputedStyle(overlay).opacity),
         filter: getComputedStyle(crop).filter,
+        shadow: getComputedStyle(boxEl).boxShadow,
       };
     };
+    const samples = [0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000].map(at);
     return {
       box: anim(boxEl),
       overlayAnim: anim(overlay),
-      a: at(0),
-      b: at(1000),
-      a2: at(2000),
+      cropAnim: anim(crop),
+      animatedProps,
+      samples,
       hostBg: getComputedStyle(el).backgroundColor,
       cropSrc: crop.querySelector("img")!.getAttribute("src"),
       pageSrc: document.querySelector('[data-testid="leaflet-stage"] > img')!.getAttribute("src"),
     };
   });
-  expect(s.box.name).toContain("savedBreath");
+  expect(s.box.name).toContain("savedGlow");
   expect(s.box.iter).toBe("infinite");
   expect(s.box.dur).toBe(2); // 1 s each way
   expect(s.box.ease).toBe("ease-in-out");
   expect(s.overlayAnim.name).toContain("savedOverlay");
-  // State A: full size, gold overlay, brighter.
-  expect(s.a.w).toBeCloseTo(1, 3);
-  expect(s.a.h).toBeCloseTo(1, 3);
-  expect(s.a.overlay).toBeCloseTo(1, 2);
-  expect(s.a.filter).toContain("brightness(1.08)");
-  // State B: exactly 85 %, same centre, overlay gone, normal brightness.
-  expect(s.b.w).toBeCloseTo(0.85, 3);
-  expect(s.b.h).toBeCloseTo(0.85, 3);
-  expect(Math.abs(s.b.cx)).toBeLessThan(0.5);
-  expect(Math.abs(s.b.cy)).toBeLessThan(0.5);
-  expect(s.b.overlay).toBeCloseTo(0, 2);
-  expect(s.b.filter).toBe("brightness(1)");
+  expect(s.cropAnim.name).toContain("savedBright");
+  // Only light is animated: never transform / scale / size / position.
+  for (const p of ["transform", "scale", "translate", "width", "height", "inset", "top", "left"]) expect(s.animatedProps).not.toContain(p);
+  expect(s.animatedProps).toContain("boxShadow");
+  // Throughout the whole cycle the box sits exactly on the verified bbox: no transform, no size change.
+  for (const x of s.samples) {
+    expect(x.transform).toBe("none");
+    for (const d of x.rect) expect(Math.abs(d)).toBeLessThan(0.01);
+    expect(x.ringW).toBeCloseTo(s.samples[0].ringW, 2);
+  }
+  const [a, , , , b, , , , a2] = s.samples;
+  // State A: gold overlay, brighter, strong glow (inner halo at 64 % gold — ~10 % stronger than before).
+  expect(a.overlay).toBeCloseTo(1, 2);
+  expect(a.filter).toContain("brightness(1.08)");
+  expect(a.shadow).toContain("rgba(245, 197, 66, 0.64)");
+  // State B: subtler overlay (still present), normal brightness, softer glow.
+  expect(b.overlay).toBeCloseTo(0.35, 2);
+  expect(b.filter).toBe("brightness(1)");
+  expect(b.shadow).not.toBe(a.shadow);
+  expect(b.shadow).toContain("rgba(245, 197, 66, 0.3)");
   // Back to A.
-  expect(s.a2.w).toBeCloseTo(1, 3);
-  // The scaled box carries the printed product itself (a crop of the same page image), not just the frame.
+  expect(a2.overlay).toBeCloseTo(1, 2);
+  expect(a2.shadow).toBe(a.shadow);
+  // The box carries the printed product itself (a crop of the same page image) for the brightness lift.
   expect(s.cropSrc).toBe(s.pageSrc);
   // The hit target (and so the page) never moves: it keeps the verified bbox, unfilled.
   const alpha = (c: string) => Number(/rgba?\([^)]*?,\s*([\d.]+)\)$/.exec(c)?.[1] ?? 1);
@@ -227,26 +244,30 @@ test("only saved products animate; unsaved neighbours stay untouched", async ({ 
   await seed(page, ["sb-salama-400g", "sb-zrezki-500g"], "/letak?stran=5");
   for (const id of ["sb-salama-400g", "sb-zrezki-500g"]) {
     await expect(box(page, id).locator("[data-saved-box]")).toHaveCount(1);
-    await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("animation-name", /savedBreath/);
+    await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("animation-name", /savedGlow/);
+    await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("transform", "none");
   }
   for (const id of ["sb-skuta-1kg", "sb-pommes-1kg"]) {
     const b = box(page, id);
     await expect(b).not.toHaveAttribute("data-saved", "true");
-    await expect(b.locator("[data-saved-box], [data-saved-ring], [data-gold-overlay], [data-saved-plate]")).toHaveCount(0);
+    await expect(b.locator("[data-saved-box], [data-saved-ring], [data-gold-overlay], [data-saved-crop]")).toHaveCount(0);
     await expect(b).not.toContainText("V Mojem katalogu");
     await expect(b).toHaveCSS("transform", "none");
     await expect(b).toHaveCSS("animation-name", "none");
   }
 });
 
-test("reduced motion: saved overlay is the static full-size gold state (no breathing)", async ({ page }) => {
+test("reduced motion: saved overlay is the static gold state A (no pulse, no transform)", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
   const host = box(page, "sb-skuta-1kg");
   const boxEl = host.locator("[data-saved-box]");
   await expect(host.locator("[data-saved-ring]")).toBeVisible();
   await expect(boxEl).toHaveCSS("animation-name", "none");
-  await expect(boxEl).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+  await expect(boxEl).toHaveCSS("transform", "none");
+  await expect(boxEl).toHaveCSS("box-shadow", /rgba\(245, 197, 66, 0\.64\)/);
+  await expect(host.locator("[data-saved-crop]")).toHaveCSS("animation-name", "none");
+  await expect(host.locator("[data-saved-crop]")).toHaveCSS("filter", "brightness(1.08)");
   await expect(host.locator("[data-gold-overlay]")).toHaveCSS("animation-name", "none");
   await expect(host.locator("[data-gold-overlay]")).toHaveCSS("opacity", "1");
   await expect(host).toContainText("V Mojem katalogu");

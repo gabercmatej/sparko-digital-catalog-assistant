@@ -21,7 +21,6 @@ import {
   type Size,
   type View,
 } from "./geometry";
-import { ringColor } from "./plate";
 import styles from "./PageViewer.module.css";
 
 /** Zoom controls exposed to the parent toolbar (so no floating buttons cover the page). */
@@ -56,29 +55,6 @@ const FOCUS_PULSE: Keyframe[] = [
   { opacity: 1, offset: 0.72 },
   { opacity: 0, offset: 1 },
 ];
-
-/** Page colour around each product box (keyed by placement); empty when the canvas is unavailable. */
-function samplePlates(img: HTMLImageElement, items: OverlayItem[]): Record<string, string> {
-  const plates: Record<string, string> = {};
-  try {
-    const w = 480;
-    const h = Math.round((w * img.naturalHeight) / img.naturalWidth);
-    const canvas = document.createElement("canvas");
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return plates;
-    ctx.drawImage(img, 0, 0, w, h);
-    const { data } = ctx.getImageData(0, 0, w, h);
-    for (const it of items) {
-      const c = ringColor(data, w, h, it.bbox);
-      if (c) plates[it.placementId] = c;
-    }
-  } catch {
-    // No canvas access: plates stay transparent (the printed page shows around the shrunk box).
-  }
-  return plates;
-}
 
 /**
  * First view of a page: the whole page fitted (contain). At scale 1 the page is fully visible, so
@@ -145,7 +121,6 @@ export function PageViewer({
 
   const [size, setSize] = useState<Size | null>(null);
   const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
-  const [plates, setPlates] = useState<Record<string, string>>({});
 
   // Latest props for native listeners / effects without re-subscribing.
   const latest = useRef({ items, targetProductId, onOpenPlacement, onSwipe, canSwipe, onScaleChange, image: page.image });
@@ -155,17 +130,13 @@ export function PageViewer({
 
   const content = size ? fitContain(size, page.image) : null;
 
-  // Page colour around every product box, sampled once per loaded page image (see plate.ts).
-  const onImageLoaded = useCallback((img: HTMLImageElement) => {
-    setImgState("loaded");
-    setPlates(samplePlates(img, latest.current.items));
-  }, []);
+  const onImageLoaded = useCallback(() => setImgState("loaded"), []);
 
   // The image may finish loading before React attaches onLoad (SSR/cache) — check on mount.
   const imgRef = useCallback(
     (img: HTMLImageElement | null) => {
       if (!img?.complete) return;
-      if (img.naturalWidth > 0) onImageLoaded(img);
+      if (img.naturalWidth > 0) onImageLoaded();
       else setImgState("error");
     },
     [onImageLoaded],
@@ -533,7 +504,7 @@ export function PageViewer({
             loading="eager"
             fetchPriority="high"
             decoding="async"
-            onLoad={(e) => onImageLoaded(e.currentTarget)}
+            onLoad={onImageLoaded}
             onError={() => setImgState("error")}
           />
           <div className={styles.overlays}>
@@ -564,9 +535,7 @@ export function PageViewer({
                   <span className={styles.focusRing} data-focus-ring aria-hidden="true" />
                   {it.saved && (
                     <>
-                      {/* Static plate in the page colour around the box: what the shrinking box reveals. */}
-                      <span className={styles.savedPlate} style={plates[it.placementId] ? { background: plates[it.placementId] } : undefined} data-saved-plate aria-hidden="true" />
-                      {/* The whole saved box (printed product, gold overlay, frame, label) scales as ONE object around its centre. */}
+                      {/* The saved box (printed product, gold overlay, frame, label): fixed at the bbox, only its light pulses. */}
                       <span className={styles.savedBox} data-saved-box aria-hidden="true">
                         <span className={styles.savedCrop} data-saved-crop>
                           {/* eslint-disable-next-line @next/next/no-img-element -- crop of the same pre-rendered page image */}

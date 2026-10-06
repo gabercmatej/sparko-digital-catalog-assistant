@@ -197,6 +197,66 @@ test("product reply: one grey Sparko message with a white product row, one Moj k
   await expect(page).toHaveURL(/\/letak/);
 });
 
+test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey Sparko message; rows stay white and expandable", async ({ page }) => {
+  for (const [w, h] of [
+    [360, 740],
+    [390, 844],
+    [430, 932],
+    [1280, 900],
+  ]) {
+    await page.setViewportSize({ width: w, height: h });
+    await fresh(page);
+    await input(page).fill("Kaj je najbolj znižano?");
+    await input(page).press("Enter");
+    const reply = lastReply(page);
+    const bubble = reply.locator("[data-message-bubble]");
+    await expect(bubble).toHaveCount(1);
+    const rows = bubble.locator("li");
+    await expect(rows.first()).toBeVisible();
+    const n = await rows.count();
+    expect(n, `${w}px`).toBeGreaterThanOrEqual(2);
+    const st = await reply.evaluate((el) => {
+      const b = el.querySelector("[data-message-bubble]")!;
+      const br = b.getBoundingClientRect();
+      const text = b.querySelector(":scope > p")!.getBoundingClientRect();
+      const lis = [...b.querySelectorAll("li")];
+      const rr = lis.map((li) => li.getBoundingClientRect());
+      return {
+        bubbleBg: getComputedStyle(b).backgroundColor,
+        textInside: text.top >= br.top && text.bottom <= br.bottom,
+        rowBgs: lis.map((li) => getComputedStyle(li).backgroundColor),
+        rowsInside: rr.every((r) => r.left >= br.left && r.right <= br.right && r.top >= br.top && r.bottom <= br.bottom),
+        firstGap: rr[0].top - text.bottom,
+        gaps: rr.slice(1).map((r, i) => r.top - rr[i].bottom),
+        // Nothing product-like rendered outside the bubble.
+        outside: [...el.querySelectorAll("li, [data-product-card]")].filter((x) => !b.contains(x)).length,
+        bubbleLeft: br.left,
+        bubbleWidth: br.width,
+      };
+    });
+    expect(st.bubbleBg).toBe("rgb(239, 241, 240)");
+    expect(st.textInside).toBe(true);
+    expect(st.rowsInside, `${w}px`).toBe(true);
+    for (const bg of st.rowBgs) expect(bg).toBe("rgb(255, 255, 255)");
+    expect(st.outside).toBe(0);
+    // Compact, even rhythm: no big gap between text and products, equal gaps between products.
+    expect(st.firstGap).toBeLessThan(24);
+    for (const g of st.gaps) expect(g).toBeCloseTo(st.gaps[0], 0);
+    // Still a left-aligned chat message, capped on wide screens.
+    expect(st.bubbleWidth).toBeLessThanOrEqual(441);
+    if (w === 1280) expect(st.bubbleLeft).toBeLessThan(w / 2);
+    // The text is not repeated anywhere else in the reply.
+    expect(await reply.locator("p").count()).toBe(1);
+  }
+  // Rows keep working: expanding the first one reveals its actions inside the same message.
+  const bubble = lastReply(page).locator("[data-message-bubble]");
+  const first = bubble.locator("li").first();
+  await first.locator("button[aria-expanded]").click();
+  await expect(first.locator("button[aria-expanded]")).toHaveAttribute("aria-expanded", "true");
+  await first.getByRole("button", { name: "Dodaj v Moj katalog" }).click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length)).toBe(1);
+});
+
 test("single composer action: mic when empty (no permission request), send arrow when typing, Enter sends", async ({ page }) => {
   await page.addInitScript(() => {
     (window as unknown as { __gum: number }).__gum = 0;
