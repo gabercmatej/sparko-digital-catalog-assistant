@@ -99,6 +99,19 @@ export function conditionText(o: Offer): string | null {
   return parts.length ? parts.join(" · ") : null;
 }
 
+/**
+ * Short discount line for compact chat rows, built only from verified offer fields:
+ * "S kartico SPAR plus · 46 % znižano · redna cena 1,39 €". Parts without data are omitted;
+ * printed notes, labels and validity are deliberately left out. Null when nothing is known.
+ */
+export function discountLine(o: Offer): string | null {
+  const parts: string[] = [];
+  if (o.conditions.spPlusRequired) parts.push("S kartico SPAR plus");
+  if (o.discountPercent != null) parts.push(`${o.discountPercent} % znižano`);
+  if (o.regularPriceCents != null) parts.push(`redna cena ${formatPrice(o.regularPriceCents)}`);
+  return parts.length ? parts.join(" · ") : null;
+}
+
 /** Plain validity statement that never claims the offer is current in a real store. */
 export function validityText(o: Offer): string {
   const { status, from, to } = o.validity;

@@ -247,14 +247,83 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
     if (w === 1280) expect(st.bubbleLeft).toBeLessThan(w / 2);
     // The text is not repeated anywhere else in the reply.
     expect(await reply.locator("p").count()).toBe(1);
+
+    // Each row matches the approved chat card: white, borderless, image left, one short discount
+    // line, a large red price block flush in the row's bottom-right corner, a visible chevron.
+    const rowsInfo = await bubble.evaluate((b) =>
+      [...b.querySelectorAll("li")].map((li) => {
+        const cs = getComputedStyle(li);
+        const head = li.querySelector("[data-row-header]")!;
+        const hr = head.getBoundingClientRect();
+        const price = li.querySelector("[data-price]")!;
+        const pr = price.getBoundingClientRect();
+        const img = li.querySelector("img")!.getBoundingClientRect();
+        const chev = li.querySelector("svg")!.getBoundingClientRect();
+        const texts = [...li.querySelectorAll("[data-row-header] span")]
+          .filter((s) => !s.closest("[data-price-block]") && !s.querySelector("span") && s.textContent?.trim())
+          .map((s) => s.getBoundingClientRect());
+        return {
+          bg: cs.backgroundColor,
+          border: [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].join(" "),
+          discount: li.querySelector("[data-discount-line]")?.textContent ?? null,
+          rowText: li.textContent ?? "",
+          priceRightGap: hr.right - pr.right,
+          priceBottomGap: hr.bottom - pr.bottom,
+          priceFont: parseFloat(getComputedStyle(price).fontSize),
+          imgLeft: img.right <= pr.left && img.left - hr.left < 24,
+          chevVisible: chev.width > 0 && chev.height > 0 && chev.right <= hr.right && chev.top < pr.top,
+          // No text box overlaps the price block, and nothing spills out of the row.
+          collide: texts.some((t) => t.right > pr.left + 0.5 && t.left < pr.right && t.bottom > pr.top + 0.5 && t.top < pr.bottom),
+          overflow: texts.some((t) => t.right > hr.right + 0.5) || head.scrollWidth > head.clientWidth + 1,
+        };
+      }),
+    );
+    for (const r of rowsInfo) {
+      expect(r.bg, `${w}px`).toBe("rgb(255, 255, 255)");
+      expect(r.border, `${w}px`).toBe("0px 0px 0px 0px");
+      expect(r.discount, `${w}px`).toMatch(/^(S kartico SPAR plus · )?\d+ % znižano · redna cena \d+,\d{2} €$/);
+      expect(r.rowText).not.toMatch(/natisnjeno|MEGA|Velja/);
+      expect(Math.abs(r.priceRightGap), `${w}px price right`).toBeLessThanOrEqual(2);
+      expect(Math.abs(r.priceBottomGap), `${w}px price bottom`).toBeLessThanOrEqual(2);
+      expect(r.priceFont).toBeGreaterThanOrEqual(24);
+      expect(r.imgLeft, `${w}px image left`).toBe(true);
+      expect(r.chevVisible, `${w}px chevron`).toBe(true);
+      expect(r.collide, `${w}px price collision`).toBe(false);
+      expect(r.overflow, `${w}px overflow`).toBe(false);
+    }
   }
-  // Rows keep working: expanding the first one reveals its actions inside the same message.
+  // Rows keep working: tapping a row expands ONLY its action area (the approved toggle actions).
   const bubble = lastReply(page).locator("[data-message-bubble]");
   const first = bubble.locator("li").first();
-  await first.locator("button[aria-expanded]").click();
-  await expect(first.locator("button[aria-expanded]")).toHaveAttribute("aria-expanded", "true");
-  await first.getByRole("button", { name: "Dodaj v Moj katalog" }).click();
+  const header = first.locator("button[aria-expanded]");
+  await expect(header).toHaveAttribute("aria-expanded", "false");
+  await expect(first.getByRole("region")).toHaveCount(0);
+  await header.click();
+  await expect(header).toHaveAttribute("aria-expanded", "true");
+  const panel = first.getByRole("region");
+  await expect(panel.getByRole("button")).toHaveCount(2);
+  await expect(panel.getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
+  await expect(panel.getByRole("button", { name: "Poglej v SPAR katalogu" })).toBeVisible();
+  await expect(panel.getByText("Odstrani", { exact: true })).toHaveCount(0);
+  // No duplicated product info in the panel.
+  await expect(panel.locator("img, [data-price]")).toHaveCount(0);
+  // Other rows stay collapsed.
+  await expect(bubble.locator('button[aria-expanded="true"]')).toHaveCount(1);
+  // Save, then unsave via the same toggle button.
+  await panel.getByRole("button", { name: "Dodaj v Moj katalog" }).click();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length)).toBe(1);
+  const savedBtn = panel.getByRole("button", { name: /V mojem katalogu/ });
+  await expect(savedBtn).toBeVisible();
+  await expect(panel.getByRole("button")).toHaveCount(2);
+  await expect(panel.getByText("Odstrani", { exact: true })).toHaveCount(0);
+  await savedBtn.click();
+  await expect(panel.getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length)).toBe(0);
+  // Keyboard: Enter on the focused header collapses the row again.
+  await header.focus();
+  await page.keyboard.press("Enter");
+  await expect(header).toHaveAttribute("aria-expanded", "false");
+  await expect(first.getByRole("region")).toHaveCount(0);
 });
 
 test("single composer action: mic when empty (no permission request), send arrow when typing, Enter sends", async ({ page }) => {

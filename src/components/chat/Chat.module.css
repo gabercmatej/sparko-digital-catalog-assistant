@@ -239,36 +239,119 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   width: 100%;
   max-width: 440px;
 }
+/* Each row is the approved chat card's white rectangle (no border, no rounding) on the grey bubble. */
 .row {
   display: flex;
   flex-direction: column;
-}
-.rowBtn {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding: 6px 0;
+  background: #ffffff;
   border: 0;
+  border-radius: 0;
+}
+/* Same grid as ProductCard variant="chat": packshot left, text in the middle, chevron top-right and
+   the red price block (PriceBlock, grid-area: price) flush in the bottom-right corner. */
+.rowBtn {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "img info info"
+    "img meta meta"
+    "img pack price";
+  column-gap: 12px;
+  width: 100%;
+  position: relative;
+  min-height: 100px;
+  padding: 10px 0 0 10px;
+  border: 0;
+  border-radius: 0;
   background: transparent;
   text-align: left;
+  font: inherit;
   color: var(--c-ink);
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
+.rowBtn:focus-visible {
+  outline: 2px solid var(--c-green);
+  outline-offset: -2px;
+}
+.rowImg {
+  --tile-carousel: 80px;
+  grid-area: img;
+  align-self: center;
+  display: flex;
+  margin-bottom: 10px;
+}
+.rowInfo {
+  grid-area: info;
+  padding-right: 36px; /* room for the chevron */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.rowBrand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-ink-3);
+}
+.rowName {
+  font-size: var(--text-lg);
+  font-weight: 750;
+  line-height: 1.2;
+  color: var(--c-ink);
+  overflow-wrap: anywhere;
+}
+/* Upper right of the row, clear of the price block in the bottom-right corner. */
 .rowChevron {
-  flex: none;
+  position: absolute;
+  top: 12px;
+  right: 10px;
   color: var(--c-ink-3);
   transition: transform 0.2s;
 }
 .rowBtn[aria-expanded="true"] .rowChevron {
   transform: rotate(180deg);
 }
+.rowMeta {
+  grid-area: meta;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 4px 10px 0 0;
+}
+.rowDiscount,
+.rowNote {
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  color: var(--c-ink-2);
+  overflow-wrap: anywhere;
+}
+.rowDiscount {
+  font-weight: 600;
+  color: var(--c-red-ink);
+}
+.rowDiscountPart {
+  white-space: nowrap;
+}
+.rowPack {
+  grid-area: pack;
+  align-self: end;
+  min-width: 0;
+  padding: 2px 0 10px;
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  color: var(--c-ink-2);
+}
 .rowPanel {
-  padding: 8px 0 16px;
+  padding: 10px;
 }
 
 /* ---------------------------------------------------------------- new messages pill */
@@ -313,19 +396,4 @@
   line-height: 1.45;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-}
-
-/* Compact rows inside the bubble (e.g. "Kaj je najbolj znižano?"): each product is its own white
-   rectangle on the grey message, evenly spaced, still expanding into its actions. */
-.bubble .rows {
-  gap: 8px;
-}
-.bubble .row {
-  background: #ffffff;
-}
-.bubble .rowBtn {
-  padding: 8px 10px 8px 8px;
-}
-.bubble .rowPanel {
-  padding: 2px 10px 12px;
 }

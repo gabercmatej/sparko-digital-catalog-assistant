@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DEMO_LABEL, getProduct } from "@/lib/catalog";
+import { DEMO_LABEL, getOffer, getProduct, placements } from "@/lib/catalog";
 import { categoryLabel, getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { removeProduct, saveProduct, useStore } from "@/lib/store/store";
 import type { SavedItem } from "@/lib/types";
 import { ProductCard } from "../product/ProductCard";
 import { ProductTile } from "../product/ProductTile";
 import { Icon } from "../ui/Icon";
+import { leafletQuery, pagesWithProducts } from "../leaflet/pages";
 import { ProductSheet } from "./ProductSheet";
 import styles from "./CollectionView.module.css";
 
@@ -94,7 +95,13 @@ export function CollectionView() {
     }
   };
 
-  const leafletHref = personalised ? "/letak?moji=1" : "/letak";
+  // Open the full leaflet (the "Moje strani" filter stays off; the user switches it on) at the first page
+  // that holds a saved product, so the golden highlight is in view straight away.
+  const firstSavedPage = useMemo(
+    () => pagesWithProducts(savedKey ? savedKey.split("|") : [], placements, (offerId) => getOffer(offerId)?.productId)[0],
+    [savedKey],
+  );
+  const leafletHref = firstSavedPage === undefined ? "/letak" : `/letak${leafletQuery(firstSavedPage)}`;
 
   return (
     <div className={styles.root}>

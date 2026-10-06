@@ -1,5 +1,6 @@
 "use client";
 import { formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL, splitPrice } from "@/lib/catalog";
+import type { Offer } from "@/lib/types";
 import { ProductActions } from "./ProductActions";
 import { ProductSummary } from "./ProductSummary";
 import { ProductTile } from "./ProductTile";
@@ -32,8 +33,6 @@ export function ProductCard({
   if (!product || !offer) return null;
 
   if (variant === "chat") {
-    const { euros, cents } = splitPrice(offer.priceCents);
-    const unit = PRICE_UNIT_LABEL[offer.priceUnit];
     const Name = `h${headingLevel}` as "h3";
     return (
       <article className={styles.chat} aria-label={`${product.name}, ${product.packSize}`} data-product-card={productId} data-variant="chat">
@@ -44,20 +43,7 @@ export function ProductCard({
             <Name className={styles.name}>{product.name}</Name>
           </div>
           <span className={styles.pack}>{product.packSize}</span>
-          <div className={styles.priceWrap}>
-            {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
-            {unit && <span className={styles.unit}>{unit}</span>}
-            <span className={styles.price} aria-hidden="true" data-price>
-              <span>{euros}</span>
-              <span>,</span>
-              <span>{cents}</span>
-              <span className={styles.eur}>€</span>
-            </span>
-            <span className="sr-only">
-              {formatPrice(offer.priceCents)}
-              {unit ? ` ${unit}` : ""}
-            </span>
-          </div>
+          <PriceBlock offer={offer} />
         </div>
         <ProductActions productId={productId} showLeaflet={showLeaflet} toggle />
       </article>
@@ -69,5 +55,31 @@ export function ProductCard({
       <ProductSummary productId={productId} offerId={offer.id} heading={headingLevel} />
       <ProductActions productId={productId} showLeaflet={showLeaflet} />
     </article>
+  );
+}
+
+/**
+ * The catalog-style red price block (split euros/cents, small €) with the "SPAR plus" / unit label
+ * above it. Shared by the chat card and the compact chat rows; it occupies the `price` grid area and
+ * is meant to sit flush in the bottom-right corner of its white row. Inline markup only (spans).
+ */
+export function PriceBlock({ offer }: { offer: Offer }) {
+  const { euros, cents } = splitPrice(offer.priceCents);
+  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  return (
+    <span className={styles.priceWrap} data-price-block>
+      {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
+      {unit && <span className={styles.unit}>{unit}</span>}
+      <span className={styles.price} aria-hidden="true" data-price>
+        <span>{euros}</span>
+        <span>,</span>
+        <span>{cents}</span>
+        <span className={styles.eur}>€</span>
+      </span>
+      <span className="sr-only">
+        {formatPrice(offer.priceCents)}
+        {unit ? ` ${unit}` : ""}
+      </span>
+    </span>
   );
 }

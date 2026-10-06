@@ -99,6 +99,36 @@ test("pages flip left/right through all 38 pages in natural order", async ({ pag
   await expect(next(page)).toHaveCount(0);
 });
 
+test("'Moje strani' starts OFF on a fresh open, also with saved items; switching it on still filters", async ({ page }) => {
+  // Clean state: nothing stored at all.
+  await page.goto("/letak");
+  const toggle = page.getByTestId("filter-toggle");
+  await expect(toggle).toHaveAttribute("aria-checked", "false");
+  await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
+
+  // Moj katalog already has items: its leaflet button must NOT switch the filter on.
+  await seed(page, ["sb-skuta-1kg", "sb-pommes-1kg", "jagode-250g"], "/moj-katalog");
+  await page.getByRole("link", { name: /Odpri SPAR letak/ }).click();
+  await expect(page).toHaveURL(/\/letak\?stran=5$/);
+  await expect(toggle).toHaveAttribute("aria-checked", "false");
+  await expect(indicator(page)).toHaveText(/^5 \/ 38$/);
+  await expect(box(page, "sb-skuta-1kg")).toHaveAttribute("data-saved", "true");
+  await next(page).click();
+  await expect(indicator(page)).toHaveText(/^6 \/ 38$/);
+
+  // Plain /letak with saved items: still off.
+  await page.goto("/letak");
+  await expect(toggle).toHaveAttribute("aria-checked", "false");
+
+  // Manually on → only saved pages (5, 10).
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-checked", "true");
+  await expect(indicator(page)).toHaveText(/^5 \/ 38 · moje 1\/2/);
+  await next(page).click();
+  await expect(indicator(page)).toHaveText(/^10 \/ 38 · moje 2\/2/);
+  await expect(next(page)).toHaveCount(0);
+});
+
 test("Moj katalog filter: off = all pages, on = only saved pages (deduped, in order), live updates", async ({ page }) => {
   // skuta + pommes share page 5, jagode is on page 10.
   await seed(page, ["sb-skuta-1kg", "sb-pommes-1kg", "jagode-250g"], "/letak?moji=1");
