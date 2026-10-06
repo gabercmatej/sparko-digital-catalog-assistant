@@ -454,3 +454,80 @@ describe("conversation (limited mode, deterministic)", () => {
     expect(buildDeterministicReply(req("kje je v letaku?", { history: skutaContext })).text).toContain("PDF-strani 5");
   });
 });
+
+describe("demo location features (mocked data, deterministic)", () => {
+  const BREAD_TEXT =
+    "Trenutno si v SPAR trgovini Letališka cesta 26. Kruh najdeš v oddelku Pekarna, desno od glavnega vhoda, pri prehodu med sadjem in mlečnimi izdelki.";
+
+  it.each([
+    "Kje je meni najbližji SPAR?",
+    "Kje je najbližji SPAR?",
+    "Najbližji SPAR",
+    "Kateri SPAR mi je najbližje?",
+    "Kje imam najbližji SPAR?",
+    "kje je najbližja trgovina spar",
+    "show nearest spar",
+    "Kje je SPAR?",
+  ])("routes %s to the nearest-store card", (q) => {
+    const r = buildDeterministicReply(req(q));
+    expect(r.intent).toBe("nearest_store");
+    expect(r.allowModel).toBe(false);
+    expect(r.text).toBe(
+      "Najbližji SPAR je na lokaciji Letališka cesta 26, Ljubljana, kar je približno 15 m stran od tebe. Na zemljevidu vidiš svojo lokacijo, najbližji SPAR in ostale SPAR trgovine.",
+    );
+    expect(r.blocks).toEqual([{ type: "nearest_store" }]);
+  });
+
+  it.each([
+    "Kje v SPAR trgovini je kruh?",
+    "Kje je kruh?",
+    "Kje v moji trgovini je kruh?",
+    "Kje v trgovini je kruh?",
+    "Kje najdem kruh?",
+    "Kje se nahaja kruh?",
+    "kje je kruha",
+  ])("routes %s to the in-store bread map", (q) => {
+    const r = buildDeterministicReply(req(q));
+    expect(r.intent).toBe("store_location");
+    expect(r.allowModel).toBe(false);
+    expect(r.text).toBe(BREAD_TEXT);
+    expect(r.blocks).toEqual([{ type: "store_map", sectionId: "pekarna" }]);
+  });
+
+  it("asks which product for the generic starter, then resolves a short reply", () => {
+    const ask = buildDeterministicReply(req("Kje v trgovini je izdelek?"));
+    expect(ask.intent).toBe("store_location");
+    expect(ask.text).toBe("Seveda. Kateri izdelek iščeš v trgovini?");
+    expect(ask.blocks).toEqual([]);
+    const history: ChatRequestMessage[] = [
+      { role: "user", text: "Kje v trgovini je izdelek?" },
+      { role: "assistant", text: ask.text },
+    ];
+    const bread = buildDeterministicReply(req("Kruh", { history }));
+    expect(bread.intent).toBe("store_location");
+    expect(bread.text).toBe(BREAD_TEXT);
+    const milk = buildDeterministicReply(req("mleko", { history }));
+    expect(milk.blocks).toEqual([{ type: "store_map", sectionId: "mlecni" }]);
+  });
+
+  it("answers honestly for an unmapped product in the store flow", () => {
+    const r = buildDeterministicReply(req("Kje v trgovini je kaviar?"));
+    expect(r.intent).toBe("store_location");
+    expect(r.blocks.some((b) => b.type === "store_map")).toBe(false);
+    expect(r.text).toContain("še nimam označenega");
+  });
+
+  it("keeps leaflet and price questions on their existing flows", () => {
+    expect(buildDeterministicReply(req("kje je v letaku?", { history: skutaContext })).intent).toBe("where_in_leaflet");
+    expect(buildDeterministicReply(req("Kje je kruh v letaku?")).intent).toBe("where_in_leaflet");
+    expect(buildDeterministicReply(req("Koliko stane kruh v sparu?")).intent).toBe("price_lookup");
+    expect(buildDeterministicReply(req("Koliko stane skuta?")).intent).toBe("price_lookup");
+    expect(buildDeterministicReply(req("Kaj je najbolj znižano?")).intent).toBe("discounts");
+    // The price follow-up is unaffected by the store follow-up.
+    const priceHistory: ChatRequestMessage[] = [
+      { role: "user", text: "Koliko stane izdelek?" },
+      { role: "assistant", text: "Seveda. Kateri izdelek te zanima?" },
+    ];
+    expect(buildDeterministicReply(req("skuta", { history: priceHistory })).intent).toBe("price_lookup");
+  });
+});

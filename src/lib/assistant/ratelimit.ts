@@ -55,7 +55,8 @@ export function createBurstLimiter(limit = BURST_LIMIT, windowMs = BURST_WINDOW_
 }
 
 /** Shared per-instance limiter used by the route. */
-export const burstLimiter = createBurstLimiter();
+/** CHAT_BURST_LIMIT overrides the per-minute limit (set only by the E2E test server, which sends many requests from one IP). */
+export const burstLimiter = createBurstLimiter(Number(process.env.CHAT_BURST_LIMIT) || BURST_LIMIT);
 
 // ------------------------------------------------------------- durable live-AI quota
 

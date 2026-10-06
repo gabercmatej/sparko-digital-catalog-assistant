@@ -183,7 +183,11 @@ export type MessageBlock =
       prompt?: string;
       options: { label: string; message: string }[];
     }
-  | { type: "notice"; tone: "info" | "warning"; text: string };
+  | { type: "notice"; tone: "info" | "warning"; text: string }
+  /** Nearest-store map card (mocked store locator, see src/lib/demo/stores.ts). */
+  | { type: "nearest_store" }
+  /** Symbolic in-store map with the product's section marked (mocked, see src/lib/demo/storeMap.ts). */
+  | { type: "store_map"; sectionId: string };
 
 export type MessageStatus = "ok" | "pending" | "error";
 

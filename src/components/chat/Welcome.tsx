@@ -4,9 +4,9 @@ import { STARTER_PROMPTS } from "@/lib/assistant/starters";
 import { Icon, type IconName } from "../ui/Icon";
 import styles from "./Welcome.module.css";
 
-const STARTER_ICONS: IconName[] = ["search", "percent"];
+const STARTER_ICONS: IconName[] = ["search", "percent", "pin", "store"];
 
-/** Exactly two compact, generic starters (no hard-coded product). */
+/** Four compact, generic starters in a 2×2 grid (no hard-coded product). */
 export const SUGGESTIONS: { icon: IconName; text: string }[] = STARTER_PROMPTS.map((s, i) => ({ icon: STARTER_ICONS[i], text: s.message }));
 
 export function Welcome({ onSuggestion, disabled }: { onSuggestion: (text: string) => void; disabled?: boolean }) {
@@ -34,7 +34,9 @@ export function Welcome({ onSuggestion, disabled }: { onSuggestion: (text: strin
         {SUGGESTIONS.map((s) => (
           <li key={s.text}>
             <button type="button" className={styles.suggestion} onClick={() => onSuggestion(s.text)} disabled={disabled}>
-              <Icon name={s.icon} size={18} className={styles.sIcon} />
+              <span className={styles.sIconWrap}>
+                <Icon name={s.icon} size={17} strokeWidth={2} className={styles.sIcon} />
+              </span>
               <span className={styles.sText}>{s.text}</span>
             </button>
           </li>

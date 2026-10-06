@@ -33,6 +33,10 @@ const PATHS: Record<string, string> = {
   maximize: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5",
   minimize: "M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5",
   grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+  pin: "M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11zM12 12.3a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6z",
+  map: "M9 4.5 3.5 6.5v13L9 17.5l6 2 5.5-2v-13L15 6.5zM9 4.5v13M15 6.5v13",
+  navigation: "M20 4 4 10.8l6.8 2.4L13.2 20z",
+  store: "M4 10v10h16V10M3 6.5 5 4h14l2 2.5V8a2.5 2.5 0 0 1-4.5 1.5 2.5 2.5 0 0 1-4.5 0 2.5 2.5 0 0 1-4.5 0A2.5 2.5 0 0 1 3 8zM10 20v-5h4v5",
 };
 
 export type IconName = keyof typeof PATHS;

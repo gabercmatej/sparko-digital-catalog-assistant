@@ -3,7 +3,6 @@
   flex-direction: column;
   gap: 6px;
   width: 100%;
-  max-width: 360px;
 }
 .buttons {
   display: flex;

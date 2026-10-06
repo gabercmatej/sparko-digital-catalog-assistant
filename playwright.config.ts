@@ -28,6 +28,6 @@ export default defineConfig({
         reuseExistingServer: true,
         timeout: 120_000,
         // Ensure the fallback path is exercised deterministically in tests.
-        env: { ANTHROPIC_API_KEY: "", NODE_ENV: "production" },
+        env: { ANTHROPIC_API_KEY: "", NODE_ENV: "production", CHAT_BURST_LIMIT: "200" },
       },
 });

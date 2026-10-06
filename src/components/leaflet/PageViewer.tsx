@@ -527,9 +527,20 @@ export function PageViewer({
                   <span className={styles.focusRing} data-focus-ring aria-hidden="true" />
                   {it.saved && (
                     <>
-                      <span className={styles.pulse} data-pulse aria-hidden="true" />
+                      <span className={styles.goldRing} data-saved-ring aria-hidden="true" />
+                      <span className={styles.orbit} data-orbit aria-hidden="true">
+                        <span className={styles.orb} data-orb />
+                        <span className={styles.orb} data-orb />
+                        <span className={styles.orb} data-orb />
+                        <span className={styles.orb} data-orb />
+                      </span>
                       <span className={styles.badge} aria-hidden="true">
-                        ✓ V Mojem katalogu
+                        <span className={styles.badgeIcon}>
+                          <svg viewBox="0 0 24 24" width="8" height="8" focusable="false">
+                            <path d="M12 21s-8.5-5.1-8.5-11.2A4.8 4.8 0 0 1 12 6.9a4.8 4.8 0 0 1 8.5 2.9C20.5 15.9 12 21 12 21z" />
+                          </svg>
+                        </span>
+                        V Mojem katalogu
                       </span>
                     </>
                   )}

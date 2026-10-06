@@ -5,12 +5,14 @@
  */
 import { getPlacementsForProduct, getPrimaryOffer, getProduct, getRecipe, products as allProducts } from "@/lib/catalog";
 import { getRecommendations } from "@/lib/recommendations";
+import { findStoreSection, storeLocationText } from "@/lib/demo/storeMap";
+import { NEAREST_STORE_TEXT } from "@/lib/demo/stores";
 import type { ChatAction, ChatRequest, MessageBlock, Offer, Product } from "@/lib/types";
 import { discountTemplate, rankDiscounts } from "./discounts";
 import { COMMAND_STOP, detectIntent, type DetectedIntent, type Intent } from "./intents";
 import { breakfastProducts, mealTemplate, recipeProductIds, suggestMeal, type MealRequest } from "./meals";
 import { displayName, render, type PlaceholderContext } from "./placeholders";
-import { ASK_PRODUCT_TEXT, STARTER_PROMPTS } from "./starters";
+import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT, STARTER_PROMPTS } from "./starters";
 import { cheaperAlternatives, comparablePrice, productsInLine, queryContentTokens, searchProducts, type SearchHit } from "./search";
 
 export const MAX_PRODUCTS_SHOWN = 4;
@@ -465,6 +467,41 @@ function handleRecommend(req: ChatRequest, deps: ResponderDeps): Draft {
   return listDraft(intro, hits, { reasons });
 }
 
+// ------------------------------------------------------------------ store location (mocked demo data)
+
+/** Words of an in-store question that do not name a product ("Kje v SPAR trgovini je …?"). */
+const STORE_QUERY_STOP = new Set(
+  (
+    "kje kam najdem najdes najti nahaja nahajajo stoji stojijo lezi spar sparu interspar trgovina trgovini trgovine market marketu prodajalni " +
+    "moji moja tej nasi najblizji oddelek oddelku katerem polica polici policah vrsta vrsti prehodu delu iscem isces"
+  ).split(" "),
+);
+
+function noModelDraft(template: string, blocks: MessageBlock[], kind?: ReplyKind): Draft {
+  return { template, blocks, contextProductIds: [], actions: [], candidateProductIds: [], candidateRecipeIds: [], allowModel: false, ...(kind ? { kind } : {}) };
+}
+
+function handleNearestStore(): Draft {
+  return noModelDraft(NEAREST_STORE_TEXT, [{ type: "nearest_store" }]);
+}
+
+function handleStoreLocation(d: DetectedIntent): Draft {
+  const found = findStoreSection(d.text);
+  if (found) return noModelDraft(storeLocationText(found.productLabel, found.section), [{ type: "store_map", sectionId: found.section.id }]);
+  // "Kje v trgovini je izdelek?" – ask back; the next short reply is resolved as a store location (see detectIntent).
+  if (!queryContentTokens(d.text, STORE_QUERY_STOP).length) return noModelDraft(ASK_STORE_PRODUCT_TEXT, [], "ask_product");
+  return noModelDraft("Tega izdelka na zemljevidu trgovine še nimam označenega. Poskusi z drugim izdelkom, na primer s kruhom, mlekom ali sadjem.", [
+    {
+      type: "choices",
+      options: [
+        { label: "Kje je kruh?", message: "Kje v trgovini je kruh?" },
+        { label: "Kje je mleko?", message: "Kje v trgovini je mleko?" },
+        { label: "Kje je sadje?", message: "Kje v trgovini je sadje?" },
+      ],
+    },
+  ]);
+}
+
 function simpleDraft(template: string, choices = SUGGESTION_CHOICES, allowModel = true): Draft {
   return {
     template,
@@ -498,7 +535,7 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
     case "help":
       // Kept exact (no model) so the capability list is always accurate.
       draft = simpleDraft(
-        "Lahko me vprašaš:\n• koliko stane izdelek, npr. skuta ali jajca,\n• kaj je najbolj znižano,\n• kje je izdelek v letaku,\n• kaj skuhati za večerjo ali kaj pripraviti z določenim zneskom.\nIzdelek lahko tudi dodaš v Moj katalog. Cene so iz kataloga SPAR.",
+        "Lahko me vprašaš:\n• koliko stane izdelek, npr. skuta ali jajca,\n• kaj je najbolj znižano,\n• kje je izdelek v letaku,\n• kje je najbližji SPAR in kje v trgovini najdeš izdelek,\n• kaj skuhati za večerjo ali kaj pripraviti z določenim zneskom.\nIzdelek lahko tudi dodaš v Moj katalog. Cene so iz kataloga SPAR.",
         SUGGESTION_CHOICES,
         false,
       );
@@ -514,6 +551,12 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
       break;
     case "where_in_leaflet":
       draft = handleWhere(d);
+      break;
+    case "nearest_store":
+      draft = handleNearestStore();
+      break;
+    case "store_location":
+      draft = handleStoreLocation(d);
       break;
     case "cheaper":
       draft = handleCheaper(d, req);

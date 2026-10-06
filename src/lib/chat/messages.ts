@@ -98,6 +98,10 @@ export function sanitizeBlocks(blocks: unknown): MessageBlock[] {
       if (options.length) out.push({ type: "choices", ...(typeof b.prompt === "string" ? { prompt: b.prompt } : {}), options });
     } else if (b.type === "notice" && typeof b.text === "string") {
       out.push({ type: "notice", tone: b.tone === "warning" ? "warning" : "info", text: b.text });
+    } else if (b.type === "nearest_store") {
+      out.push({ type: "nearest_store" });
+    } else if (b.type === "store_map" && typeof b.sectionId === "string") {
+      out.push({ type: "store_map", sectionId: b.sectionId });
     }
   }
   return out;

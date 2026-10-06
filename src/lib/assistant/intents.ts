@@ -6,7 +6,8 @@ import { getProduct } from "@/lib/catalog";
 import type { ChatRequestMessage } from "@/lib/types";
 import { fold } from "./normalize";
 import { detectFilters, queryContentTokens, searchProducts, type SearchFilters } from "./search";
-import { ASK_PRODUCT_TEXT } from "./starters";
+import { findStoreSection } from "@/lib/demo/storeMap";
+import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT } from "./starters";
 
 export type Intent =
   | "greeting"
@@ -17,6 +18,8 @@ export type Intent =
   | "save"
   | "remove"
   | "where_in_leaflet"
+  | "nearest_store"
+  | "store_location"
   | "cheaper"
   | "discounts"
   | "breakfast"
@@ -117,6 +120,15 @@ const RE = {
   meal: /\b(vecerj\w*|kosil\w*|obrok\w*|recept\w*|skuham|skuhati|kuhati|kuham|pecem|speci|pripravim|pripraviti|kaj (naj |lahko |bi )?(jem|pojem|pripravim|skuham)|jed\w*)\b/,
   recommend: /\b(priporoc\w*|predlagaj\w*|predlog\w*|svetuj\w*|kaj (mi )?predlagas|podobn\w*)\b/,
   line: /\bsbudget\b/,
+  // Store locator (mocked demo data): "Kje je meni najbližji SPAR?", "Kateri SPAR mi je najbližje?", "nearest spar".
+  nearWord: /\b(najbliz\w*|blizin\w*|blizu|nearest|closest)\b/,
+  storeWord: /\b(spar|sparu|spara|sparov|sparom|interspar\w*|trgovin\w*|prodajaln\w*|market\w*|store|shop)\b/,
+  whereIsSpar: /^(kje|kam)( pa)? (je|imam|najdem|bi nasel|bi nasla|lahko najdem|grem v)( kak\w*| en\w*| nek\w*)? (spar|interspar)( trgovin\w*)?$/,
+  // In-store product location: explicit store phrasing; leaflet phrasing always wins.
+  inStore: /\b(v (spar |interspar |tej |moji |nasi |najblizji )?(trgovini|marketu|prodajalni)|v sparu|v interspar\w*)\b/,
+  inStoreWhere: /\b(v (katerem|kateri) (oddelku|polici|delu|vrsti|prehodu)|na (kateri|katero) polic\w*|kateri oddelek|se nahaja\w*|kje (stoji|stojijo|lezi))\b/,
+  whereWord: /\bkje\b/,
+  leafletWord: /\b(letak\w*|katalog\w*|stran|strani|pdf)\b/,
   outOfScope:
     /\b(vreme\w*|vremenska|dez|dezuje|dezevn\w*|sneg\w*|temperatur\w*|napoved|politik\w*|volitv\w*|vlad\w*|stranka|stranke|predsednik\w*|programir\w*|javascript|python|koda|kodo|html|css|sql|nogomet\w*|kosark\w*|tekma|tekme|film\w*|serij\w*|novic\w*|borz\w*|kripto\w*|bitcoin|delnic\w*|zgodovin\w*|matematik\w*|domac\w* nalog\w*|esej\w*|pesem|pesmi|vic\w*|horoskop\w*|zdravil\w*|zdravnik\w*|bolezen|diagnoz\w*|pravni|odvetnik\w*|ignoriraj navodila|system prompt|sistemski poziv)\b/,
 };
@@ -185,9 +197,18 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
   // Explicit commands first (only explicit verbs mutate anything; the client still performs the mutation).
   if (RE.remove.test(folded)) return { ...base, intent: "remove" };
   if (RE.save.test(folded) && !/\b(ali|kako)\b.*\b(dodam|shranim)\b/.test(folded)) return { ...base, intent: "save" };
+  // Demo location features (mocked data, deterministic): before the leaflet "kje" handling.
+  if ((RE.nearWord.test(folded) && RE.storeWord.test(folded)) || RE.whereIsSpar.test(folded)) return { ...base, intent: "nearest_store" };
+  const prev = previousAssistantText(messages);
+  if (!RE.leafletWord.test(folded)) {
+    // "Kje v trgovini je kruh?", "V katerem oddelku je mleko?", and "Kje je kruh?" for products with a known store section.
+    if (RE.inStoreWhere.test(folded)) return { ...base, intent: "store_location" };
+    if (RE.whereWord.test(folded) && (RE.inStore.test(folded) || findStoreSection(text))) return { ...base, intent: "store_location" };
+    // Reply to "Kateri izdelek iščeš v trgovini?".
+    if (prev && fold(prev) === fold(ASK_STORE_PRODUCT_TEXT) && folded.split(" ").length <= 4) return { ...base, intent: "store_location" };
+  }
   if (RE.where.test(folded)) return { ...base, intent: "where_in_leaflet" };
   // Reply to "Seveda. Kateri izdelek te zanima?": a short message naming a product is a price lookup.
-  const prev = previousAssistantText(messages);
   if (prev && fold(prev) === fold(ASK_PRODUCT_TEXT) && folded.split(" ").length <= 4 && searchProducts(text, { limit: 1 }).length) {
     return { ...base, intent: "price_lookup" };
   }

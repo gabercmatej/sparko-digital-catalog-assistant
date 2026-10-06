@@ -153,31 +153,50 @@ test("all saved products on one page are highlighted together; add/remove update
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("3");
 });
 
-test("saved overlay: product stays visible (near-transparent fill) with a flashing infinite glow", async ({ page }) => {
+test("saved overlay: product stays visible (no fill) with a golden frame and 4 orbs looping around it", async ({ page }) => {
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
-  const pulse = box(page, "sb-skuta-1kg").locator("[data-pulse]");
-  await expect(pulse).toBeAttached();
-  const s = await pulse.evaluate((el) => {
-    const cs = getComputedStyle(el);
-    const host = getComputedStyle(el.parentElement!);
-    return { name: cs.animationName, iter: cs.animationIterationCount, dur: cs.animationDuration, bg: host.backgroundColor, pulseBg: cs.backgroundColor, border: host.borderTopColor };
+  const host = box(page, "sb-skuta-1kg");
+  const ring = host.locator("[data-saved-ring]");
+  await expect(ring).toBeAttached();
+  const orbs = host.locator("[data-orb]");
+  await expect(orbs).toHaveCount(4);
+  await expect(host.locator("[data-orbit]")).toBeVisible();
+  const s = await host.evaluate((el) => {
+    const orbEls = [...el.querySelectorAll<HTMLElement>("[data-orb]")].map((o) => getComputedStyle(o));
+    const r = getComputedStyle(el.querySelector("[data-saved-ring]")!);
+    return {
+      bg: getComputedStyle(el).backgroundColor,
+      ringBorder: parseFloat(r.borderTopWidth),
+      ringMask: r.maskImage || r.webkitMaskImage,
+      names: orbEls.map((c) => c.animationName),
+      iters: orbEls.map((c) => c.animationIterationCount),
+      durs: orbEls.map((c) => parseFloat(c.animationDuration)),
+      delays: orbEls.map((c) => parseFloat(c.animationDelay)),
+    };
   });
-  expect(s.name).toContain("savedGlow");
-  expect(s.iter).toBe("infinite");
-  expect(parseFloat(s.dur)).toBeGreaterThanOrEqual(0.8);
-  expect(parseFloat(s.dur)).toBeLessThanOrEqual(1.6);
-  // Never an opaque rectangle over the product: host tint ≤ 8%, the pulse itself has no fill.
+  for (const n of s.names) expect(n).toContain("savedOrbit");
+  for (const it of s.iters) expect(it).toBe("infinite");
+  for (const d of s.durs) {
+    expect(d).toBeGreaterThanOrEqual(6);
+    expect(d).toBeLessThanOrEqual(8);
+  }
+  // Evenly spaced: 25% of a lap apart.
+  const lap = s.durs[0];
+  expect(s.delays.map((d) => Math.abs(Math.round((d / lap) * 100)))).toEqual([0, 25, 50, 75]);
+  // Never a rectangle over the product: host has no fill, the gold band is masked to the border only.
   const alpha = (c: string) => Number(/rgba?\([^)]*?,\s*([\d.]+)\)$/.exec(c)?.[1] ?? 1);
-  expect(alpha(s.bg)).toBeLessThanOrEqual(0.08);
-  expect(alpha(s.pulseBg)).toBe(0);
-  expect(s.border).toBe("rgb(34, 197, 94)");
+  expect(alpha(s.bg)).toBe(0);
+  expect(s.ringBorder).toBeGreaterThan(0);
+  expect(s.ringMask).toContain("gradient");
 });
 
-test("reduced motion: saved overlay is static", async ({ page }) => {
+test("reduced motion: saved overlay is a static golden frame without moving orbs", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
-  const pulse = box(page, "sb-skuta-1kg").locator("[data-pulse]");
-  await expect(pulse).toHaveCSS("animation-name", "none");
+  const host = box(page, "sb-skuta-1kg");
+  await expect(host.locator("[data-saved-ring]")).toBeVisible();
+  await expect(host.locator("[data-orbit]")).toBeHidden();
+  await expect(host.locator("[data-orb]").first()).toHaveCSS("animation-name", "none");
 });
 
 test("product → 'Poglej v SPAR katalogu' opens the right page, emphasises the product, then pages freely", async ({ page }) => {

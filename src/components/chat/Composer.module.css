@@ -22,6 +22,11 @@
 }
 .field:focus-within {
   border-color: var(--c-green);
+  box-shadow: 0 0 0 1px var(--c-green);
+}
+/* The rounded field shows focus; no rectangular outline inside the pill. */
+.input:focus-visible {
+  outline: none;
 }
 .input {
   flex: 1;

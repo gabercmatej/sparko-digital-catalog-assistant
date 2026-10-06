@@ -5,6 +5,8 @@ import { asChatMessage, displayText } from "@/lib/chat/messages";
 import { requestHighlight } from "@/lib/store/store";
 import type { Message } from "@/lib/types";
 import { Icon } from "../ui/Icon";
+import { NearestStoreCard } from "./demo/NearestStoreCard";
+import { StoreMapCard } from "./demo/StoreMapCard";
 import { ProductsBlock } from "./ProductsBlock";
 import { RecipeCard } from "./RecipeCard";
 import styles from "./Chat.module.css";
@@ -99,6 +101,10 @@ export function MessageItem({
                 <span>{b.text}</span>
               </p>
             );
+          case "nearest_store":
+            return <NearestStoreCard key={i} />;
+          case "store_map":
+            return <StoreMapCard key={i} sectionId={b.sectionId} />;
           default:
             return null;
         }

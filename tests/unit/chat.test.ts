@@ -47,6 +47,12 @@ describe("chat message helpers", () => {
     ]);
   });
 
+  it("keeps the location demo blocks and drops malformed ones", () => {
+    expect(
+      sanitizeBlocks([{ type: "nearest_store", extra: 1 }, { type: "store_map", sectionId: "pekarna" }, { type: "store_map", sectionId: 5 }]),
+    ).toEqual([{ type: "nearest_store" }, { type: "store_map", sectionId: "pekarna" }]);
+  });
+
   it("formats save results from the actual store result", () => {
     expect(saveResultLine("sb-skuta-1kg", "saved")).toBe("✓ Lahka skuta je zdaj v tvojem Mojem katalogu.");
     expect(saveResultLine("sb-skuta-1kg", "already")).toBe("Lahka skuta je že v tvojem Mojem katalogu.");
