@@ -248,7 +248,7 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
     // The text is not repeated anywhere else in the reply.
     expect(await reply.locator("p").count()).toBe(1);
 
-    // Each row matches the approved chat card: white, borderless, image left, one short discount
+    // Each row matches the approved chat card: white, borderless, image left, one grey regular-price
     // line, a large red price block flush in the row's bottom-right corner, a visible chevron.
     const rowsInfo = await bubble.evaluate((b) =>
       [...b.querySelectorAll("li")].map((li) => {
@@ -265,7 +265,30 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
         return {
           bg: cs.backgroundColor,
           border: [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].join(" "),
-          discount: li.querySelector("[data-discount-line]")?.textContent ?? null,
+          regular: (() => {
+            const el = li.querySelector("[data-regular-price]");
+            if (!el) return null;
+            const old = el.querySelector("s")!;
+            const ecs = getComputedStyle(el);
+            return {
+              text: el.textContent,
+              oldText: old.textContent,
+              labelDecoration: ecs.textDecorationLine,
+              oldDecoration: getComputedStyle(old).textDecorationLine,
+              color: ecs.color,
+              // Distinct line boxes of the text itself (padding excluded).
+              lines: (() => {
+                const range = document.createRange();
+                range.selectNodeContents(el);
+                return new Set([...range.getClientRects()].map((q) => Math.round(q.bottom))).size;
+              })(),
+              belowPack: el.getBoundingClientRect().top >= li.querySelector("[data-row-header] [class*='rowPack']")!.getBoundingClientRect().bottom - 0.5,
+            };
+          })(),
+          rowTextOutsidePrice: [...li.querySelectorAll("[data-row-header] > *")]
+            .filter((el) => !el.matches("[data-price-block]"))
+            .map((el) => el.textContent)
+            .join(" "),
           rowText: li.textContent ?? "",
           priceRightGap: hr.right - pr.right,
           priceBottomGap: hr.bottom - pr.bottom,
@@ -281,7 +304,17 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
     for (const r of rowsInfo) {
       expect(r.bg, `${w}px`).toBe("rgb(255, 255, 255)");
       expect(r.border, `${w}px`).toBe("0px 0px 0px 0px");
-      expect(r.discount, `${w}px`).toMatch(/^(S kartico SPAR plus · )?\d+ % znižano · redna cena \d+,\d{2} €$/);
+      // One grey line under the pack size: "Redna cena 1,39 €", only the amount struck through.
+      expect(r.regular, `${w}px regular price`).not.toBeNull();
+      expect(r.regular!.text).toMatch(/^Redna cena \d+,\d{2} €$/);
+      expect(r.regular!.oldText).toMatch(/^\d+,\d{2} €$/);
+      expect(r.regular!.oldDecoration).toBe("line-through");
+      expect(r.regular!.labelDecoration).toBe("none");
+      expect(r.regular!.color, `${w}px grey`).toBe("rgb(107, 107, 107)");
+      expect(r.regular!.lines, `${w}px one line`).toBe(1);
+      expect(r.regular!.belowPack, `${w}px under pack size`).toBe(true);
+      // No SPAR-plus / percentage prose in the row (the small "SPAR plus" tag of the price block stays).
+      expect(r.rowTextOutsidePrice).not.toMatch(/SPAR plus|znižano|%|ceneje/i);
       expect(r.rowText).not.toMatch(/natisnjeno|MEGA|Velja/);
       expect(Math.abs(r.priceRightGap), `${w}px price right`).toBeLessThanOrEqual(2);
       expect(Math.abs(r.priceBottomGap), `${w}px price bottom`).toBeLessThanOrEqual(2);

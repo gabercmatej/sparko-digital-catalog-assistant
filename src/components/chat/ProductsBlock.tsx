@@ -1,6 +1,6 @@
 "use client";
-import { Fragment, useState } from "react";
-import { discountLine, getOffer, getProduct } from "@/lib/catalog";
+import { useState } from "react";
+import { formatPrice, getOffer, getProduct } from "@/lib/catalog";
 import { ProductActions } from "../product/ProductActions";
 import { PriceBlock, ProductCard } from "../product/ProductCard";
 import { ProductTile } from "../product/ProductTile";
@@ -42,14 +42,13 @@ export function ProductsBlock({ offerIds, reasons, layout = "card" }: { offerIds
 
 /**
  * A compact product row inside Sparko's grey message: the same white rectangle as the chat card
- * (packshot left; brand, name, pack size and one short discount line; red price block flush in the
+ * (packshot left; brand, name, pack size and one grey line with the struck-through regular price; red price block flush in the
  * bottom-right corner). Tapping the row toggles ONLY the action area beneath it.
  */
 function ProductRow({ productId, offerId, reason }: { productId: string; offerId: string; reason?: string }) {
   const [open, setOpen] = useState(false);
   const product = getProduct(productId)!;
   const offer = getOffer(offerId)!;
-  const discount = discountLine(offer);
   const panelId = `row-${offerId}`;
   return (
     <li className={styles.row}>
@@ -63,20 +62,15 @@ function ProductRow({ productId, offerId, reason }: { productId: string; offerId
         </span>
         <Icon name="chevron-down" size={20} className={styles.rowChevron} />
         <span className={styles.rowMeta}>
-          {discount && (
-            <span className={styles.rowDiscount} data-discount-line>
-              {/* Each segment stays on one line ("46 % znižano"); the text is the formatter's string. */}
-              {discount.split(" · ").map((part, i) => (
-                <Fragment key={i}>
-                  {i > 0 && " · "}
-                  <span className={styles.rowDiscountPart}>{part}</span>
-                </Fragment>
-              ))}
-            </span>
-          )}
+          <span className={styles.rowPack}>{product.packSize}</span>
           {reason && <span className={styles.rowNote}>{reason}</span>}
         </span>
-        <span className={styles.rowPack}>{product.packSize}</span>
+        {/* One grey line under the pack size: only the regular price, struck through. */}
+        {offer.regularPriceCents != null && (
+          <span className={styles.rowRegular} data-regular-price>
+            Redna cena <s className={styles.rowOldPrice}>{formatPrice(offer.regularPriceCents)}</s>
+          </span>
+        )}
         <PriceBlock offer={offer} />
       </button>
       {open && (

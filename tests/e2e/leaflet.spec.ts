@@ -129,6 +129,86 @@ test("'Moje strani' starts OFF on a fresh open, also with saved items; switching
   await expect(next(page)).toHaveCount(0);
 });
 
+test("fresh open: 'Moje strani' helper microcopy and the first-open swipe hint (passes clicks, auto-hides)", async ({ page }) => {
+  await page.goto("/letak");
+  const toggle = page.getByTestId("filter-toggle");
+  await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
+  await expect(toggle).toHaveAttribute("aria-checked", "false");
+
+  const helper = page.getByTestId("filter-helper");
+  await expect(helper).toBeVisible();
+  await expect(helper).toHaveText("Samo strani s tvojimi izdelki");
+  await expect(toggle).toHaveAttribute("aria-describedby", /leaflet-filter-helper/);
+  const hs = await helper.evaluate((el) => {
+    const cs = getComputedStyle(el);
+    return { fs: parseFloat(cs.fontSize), color: cs.color, overflow: el.scrollWidth > el.clientWidth + 1 };
+  });
+  expect(hs.fs).toBeLessThanOrEqual(11);
+  const [r, g, b] = hs.color.match(/\d+/g)!.map(Number);
+  expect(Math.max(r, g, b) - Math.min(r, g, b)).toBeLessThan(16); // neutral grey
+  expect(r).toBeGreaterThan(70);
+  expect(r).toBeLessThan(180);
+  expect(hs.overflow).toBe(false);
+
+  const hint = page.getByTestId("swipe-hint");
+  await expect(hint).toBeVisible();
+  await expect(hint).toHaveText("Podrsaj levo ali desno za ogled kataloga");
+  await expect(hint).toHaveAttribute("aria-hidden", "true");
+  await expect(hint).not.toHaveAttribute("role", /.+/);
+  expect(await hint.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe("none");
+  // Click-through: the element under the hint's centre is the page, not the hint.
+  const under = await hint.evaluate((el) => {
+    const b = el.getBoundingClientRect();
+    const hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+    return { isHint: !!hit && el.contains(hit), inStage: !!hit?.closest('[data-testid="leaflet-stage"]') };
+  });
+  expect(under.isHint).toBe(false);
+  expect(under.inStage).toBe(true);
+  // Not focusable / no focus stolen.
+  expect(await page.evaluate(() => !!document.activeElement?.closest('[data-testid="swipe-hint"]'))).toBe(false);
+
+  // Gone on its own (~1.9 s) without interaction.
+  await expect(hint).toHaveCount(0, { timeout: 3000 });
+  await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
+});
+
+test("swipe hint hides immediately on interaction and shows only once per session", async ({ page }) => {
+  await page.goto("/letak?stran=5");
+  const hint = page.getByTestId("swipe-hint");
+  await expect(hint).toBeVisible();
+  // Pointer interaction on the page viewport.
+  const vp = await stage(page).boundingBox();
+  await page.mouse.move(vp!.x + vp!.width / 2, vp!.y + vp!.height / 3);
+  const t0 = Date.now();
+  await page.mouse.down();
+  await page.mouse.move(vp!.x + vp!.width / 2 + 5, vp!.y + vp!.height / 3);
+  await page.mouse.up();
+  await expect(hint).toHaveCount(0, { timeout: 300 });
+  expect(Date.now() - t0).toBeLessThan(600);
+
+  // Paging and revisiting in the same session: no hint again.
+  await next(page).click();
+  await expect(indicator(page)).toHaveText(/^6 \/ 38/);
+  await expect(page).toHaveURL(/stran=6/);
+  await page.reload();
+  await expect(indicator(page)).toHaveText(/^6 \/ 38/);
+  await page.waitForTimeout(1500);
+  await expect(hint).toHaveCount(0);
+  await page.goto("/");
+  await page.goto("/letak");
+  await page.waitForTimeout(1500);
+  await expect(hint).toHaveCount(0);
+});
+
+test("swipe hint: the 'Naslednja stran' arrow passes through and dismisses it right away", async ({ page }) => {
+  await page.goto("/letak");
+  const hint = page.getByTestId("swipe-hint");
+  await expect(hint).toBeVisible();
+  await next(page).click();
+  await expect(hint).toHaveCount(0, { timeout: 300 });
+  await expect(indicator(page)).toHaveText(/^2 \/ 38/);
+});
+
 test("Moj katalog filter: off = all pages, on = only saved pages (deduped, in order), live updates", async ({ page }) => {
   // skuta + pommes share page 5, jagode is on page 10.
   await seed(page, ["sb-skuta-1kg", "sb-pommes-1kg", "jagode-250g"], "/letak?moji=1");

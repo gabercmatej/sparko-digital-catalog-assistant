@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import type { CatalogPage } from "@/lib/types";
 import type { HighlightEvent } from "@/lib/store/store";
 import {
@@ -22,6 +22,15 @@ import {
   type View,
 } from "./geometry";
 import styles from "./PageViewer.module.css";
+
+/* "V Mojem katalogu" label geometry (CSS px, see .badge in PageViewer.module.css): rendered width
+   and left inset of the regular and the compact pill; boxes narrower than BADGE_COMPACT_BELOW
+   use the compact one. */
+const BADGE_W = 120;
+const BADGE_INSET = 10;
+const BADGE_W_COMPACT = 104;
+const BADGE_INSET_COMPACT = 6;
+const BADGE_COMPACT_BELOW = 150;
 
 /** Zoom controls exposed to the parent toolbar (so no floating buttons cover the page). */
 export type ViewerControls = { zoomIn: () => void; zoomOut: () => void; reset: () => void };
@@ -510,6 +519,12 @@ export function PageViewer({
           <div className={styles.overlays}>
             {items.map((it) => {
               const isTarget = it.productId === targetProductId;
+              // The label is sized from ITS OWN box (layout width at zoom 1), never from the viewport:
+              // narrow cells get the compact pill, and `--bk` shrinks it a touch more if it would still
+              // reach past the box's right edge.
+              const boxPx = content ? it.bbox.width * content.width : null;
+              const compact = boxPx !== null && boxPx < BADGE_COMPACT_BELOW;
+              const fit = boxPx === null ? 1 : Math.min(1, (boxPx - 2 * (compact ? BADGE_INSET_COMPACT : BADGE_INSET)) / (compact ? BADGE_W_COMPACT : BADGE_W));
               return (
                 <button
                   key={it.placementId}
@@ -554,7 +569,12 @@ export function PageViewer({
                         </span>
                         <span className={styles.goldOverlay} data-gold-overlay />
                         <span className={styles.goldRing} data-saved-ring />
-                        <span className={styles.badge}>
+                        <span
+                          className={styles.badge}
+                          data-badge
+                          data-compact={compact || undefined}
+                          style={fit < 1 ? ({ "--bk": fit.toFixed(3) } as CSSProperties) : undefined}
+                        >
                           <span className={styles.badgeIcon}>
                             <svg viewBox="0 0 24 24" width="8" height="8" focusable="false">
                               <path d="M12 21s-8.5-5.1-8.5-11.2A4.8 4.8 0 0 1 12 6.9a4.8 4.8 0 0 1 8.5 2.9C20.5 15.9 12 21 12 21z" />

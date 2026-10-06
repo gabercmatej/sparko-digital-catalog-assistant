@@ -260,7 +260,7 @@
   grid-template-areas:
     "img info info"
     "img meta meta"
-    "img pack price";
+    "img regular price";
   column-gap: 12px;
   width: 100%;
   position: relative;
@@ -327,28 +327,31 @@
   min-width: 0;
   padding: 4px 10px 0 0;
 }
-.rowDiscount,
+.rowPack {
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  color: var(--c-ink-2);
+}
 .rowNote {
   font-size: var(--text-xs);
   line-height: 1.35;
   color: var(--c-ink-2);
   overflow-wrap: anywhere;
 }
-.rowDiscount {
-  font-weight: 600;
-  color: var(--c-red-ink);
-}
-.rowDiscountPart {
-  white-space: nowrap;
-}
-.rowPack {
-  grid-area: pack;
+/* "Redna cena 1,39 €": one muted line beside the price block; only the amount is struck through. */
+.rowRegular {
+  grid-area: regular;
   align-self: end;
   min-width: 0;
-  padding: 2px 0 10px;
-  font-size: var(--text-sm);
+  padding: 2px 8px 10px 0;
+  font-size: var(--text-xs);
   line-height: 1.35;
-  color: var(--c-ink-2);
+  color: var(--c-ink-3);
+  white-space: nowrap;
+}
+.rowOldPrice {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
 }
 .rowPanel {
   padding: 10px;

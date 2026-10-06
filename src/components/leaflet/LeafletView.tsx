@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { catalog, formatPrice, getOffer, getPage, getPlacementsForProduct, getPlacementsOnPage, getProduct, placements as allPlacements } from "@/lib/catalog";
 import { useStore } from "@/lib/store/store";
@@ -38,6 +38,99 @@ function initialFromParams(sp: URLSearchParams): { nav: Nav; pendingMine: boolea
   return { nav: { page, token: 0, target }, pendingMine, mine };
 }
 
+const SWIPE_HINT_KEY = "sparko:swipeHintSeen";
+/** Fallback when sessionStorage is unavailable: show at most once per page load. */
+let swipeHintClaimedInMemory = false;
+
+/** True exactly once per browser session (first leaflet open); marks the hint as seen. */
+function claimSwipeHint(): boolean {
+  try {
+    if (window.sessionStorage.getItem(SWIPE_HINT_KEY)) return false;
+    window.sessionStorage.setItem(SWIPE_HINT_KEY, "1");
+    return true;
+  } catch {
+    if (swipeHintClaimedInMemory) return false;
+    swipeHintClaimedInMemory = true;
+    return true;
+  }
+}
+
+type HintPhase = "off" | "pre" | "in" | "out" | "leaving";
+const HINT_FADE_IN_MS = 350;
+const HINT_HOLD_MS = 1000;
+const HINT_TOTAL_MS = 1900;
+const HINT_DISMISS_MS = 150;
+
+/**
+ * First-open gesture hint: a small translucent pill over the lower centre of the page that fades in,
+ * stays ~1 s and fades out. Purely visual (aria-hidden, pointer-events: none) and dismissed instantly on
+ * any interaction with the leaflet (pointer, touch, wheel, keys or a page change).
+ */
+function SwipeHint({ areaRef, navToken }: { areaRef: RefObject<HTMLDivElement | null>; navToken: number }) {
+  const [phase, setPhase] = useState<HintPhase>("off");
+  const [startToken] = useState(navToken);
+  const active = phase !== "off";
+  // Claimed once per mount (a ref survives the dev-mode double effect run).
+  const claimed = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    if (claimed.current === null) claimed.current = claimSwipeHint();
+    if (!claimed.current) return;
+    let raf2 = 0;
+    // Render at opacity 0 first, then switch to "in" on a later frame so the fade-in transition runs.
+    const raf1 = requestAnimationFrame(() => {
+      setPhase("pre");
+      raf2 = requestAnimationFrame(() => setPhase("in"));
+    });
+    const tOut = window.setTimeout(() => setPhase((p) => (p === "in" || p === "pre" ? "out" : p)), HINT_FADE_IN_MS + HINT_HOLD_MS);
+    const tEnd = window.setTimeout(() => setPhase("off"), HINT_TOTAL_MS);
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      window.clearTimeout(tOut);
+      window.clearTimeout(tEnd);
+    };
+  }, []);
+
+  const dismiss = useCallback(() => {
+    setPhase((p) => (p === "off" || p === "leaving" ? p : "leaving"));
+  }, []);
+
+  useEffect(() => {
+    if (phase !== "leaving") return;
+    const t = window.setTimeout(() => setPhase("off"), HINT_DISMISS_MS);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  // Paging by any means (arrows, swipe, picker, URL) hides it right away.
+  if (active && phase !== "leaving" && navToken !== startToken) dismiss();
+
+  useEffect(() => {
+    if (!active) return;
+    const area = areaRef.current;
+    const opts = { capture: true, passive: true } as const;
+    area?.addEventListener("pointerdown", dismiss, opts);
+    area?.addEventListener("touchstart", dismiss, opts);
+    area?.addEventListener("wheel", dismiss, opts);
+    window.addEventListener("keydown", dismiss, opts);
+    return () => {
+      area?.removeEventListener("pointerdown", dismiss, opts);
+      area?.removeEventListener("touchstart", dismiss, opts);
+      area?.removeEventListener("wheel", dismiss, opts);
+      window.removeEventListener("keydown", dismiss, opts);
+    };
+  }, [active, areaRef, dismiss]);
+
+  if (!active) return null;
+  return (
+    <div className={styles.swipeHint} data-phase={phase} aria-hidden="true" data-testid="swipe-hint">
+      <Icon name="chevron-left" size={16} strokeWidth={2.2} />
+      <span>Podrsaj levo ali desno za ogled kataloga</span>
+      <Icon name="chevron-right" size={16} strokeWidth={2.2} />
+    </div>
+  );
+}
+
 /**
  * Interactive SPAR leaflet: swipe left/right through the original pages, each fitted whole into the
  * available area (no vertical scrolling). One compact toolbar: "Moj katalog" page filter, page picker,
@@ -63,6 +156,7 @@ export function LeafletView() {
   // Zoom level reported by the viewer, tagged with the navigation token it belongs to.
   const [zoom, setZoom] = useState({ token: 0, scale: 1 });
   const viewerRef = useRef<ViewerControls>(null);
+  const viewerAreaRef = useRef<HTMLDivElement>(null);
 
   // Handled highlight nonces live here (survive per-page remounts of the viewer). The nonce that
   // was already in the store when the leaflet opened is covered by the page-open pulse.
@@ -227,7 +321,7 @@ export function LeafletView() {
           role="switch"
           aria-checked={filterActive}
           aria-label="Samo strani z mojimi izdelki"
-          aria-describedby={filterDisabled && hydrated ? "leaflet-filter-help" : undefined}
+          aria-describedby={filterDisabled && hydrated ? "leaflet-filter-helper leaflet-filter-help" : "leaflet-filter-helper"}
           title={filterDisabled && hydrated ? "Najprej dodaj izdelek v Moj katalog." : "Samo strani z mojimi izdelki"}
           className={styles.switchBtn}
           onClick={toggleFilter}
@@ -237,8 +331,13 @@ export function LeafletView() {
           <span className={styles.switchTrack} data-on={filterActive || undefined} aria-hidden="true">
             <span className={styles.switchThumb} />
           </span>
-          <span className={styles.switchLabel} aria-hidden="true">
-            Moje strani
+          <span className={styles.switchText}>
+            <span className={styles.switchLabel} aria-hidden="true">
+              Moje strani
+            </span>
+            <span id="leaflet-filter-helper" className={styles.switchHelper} data-testid="filter-helper">
+              Samo strani s tvojimi izdelki
+            </span>
           </span>
         </button>
         {filterDisabled && hydrated && (
@@ -263,7 +362,7 @@ export function LeafletView() {
         </div>
       </div>
 
-      <div className={styles.viewer}>
+      <div className={styles.viewer} ref={viewerAreaRef}>
         {page ? (
           <PageViewer
             key={nav.token}
@@ -303,6 +402,7 @@ export function LeafletView() {
             <span>{Math.round(zoomScale * 10) / 10}×</span>
           </button>
         )}
+        <SwipeHint areaRef={viewerAreaRef} navToken={nav.token} />
         {(filterNotice || onFilteredPageWithoutSaved) && (
           <p className={styles.notice} role="status">
             {filterNotice ?? "Na tej strani ni več izdelkov iz Mojega kataloga. Puščici vodita na strani z mojimi izdelki."}

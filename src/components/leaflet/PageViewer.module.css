@@ -206,10 +206,11 @@
    medallion. Constant on-screen size (counter-scaled); straddles the top edge near the left corner,
    so it marks the product without covering the packshot or the price block. */
 .badge {
+  --bk: 1;
   position: absolute;
   left: calc(10px / var(--s));
   top: 0;
-  transform: scale(calc(1 / var(--s))) translateY(-55%);
+  transform: scale(calc(var(--bk) / var(--s))) translateY(-55%);
   transform-origin: 0 0;
   display: inline-flex;
   align-items: center;
@@ -243,6 +244,20 @@
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff3c4 0%, #f5c542 45%, #c98f12 100%);
   box-shadow: 0 0 0 0.5px rgb(255 243 196 / 80%), 0 0 4px rgb(245 197 66 / 70%);
+}
+/* Narrow product cells (sized from the box itself, see PageViewer.tsx): a slightly smaller pill so it
+   stays inside its own box instead of reaching into the neighbour. Same anchor: top-left corner. */
+.badge[data-compact] {
+  left: calc(6px / var(--s));
+  gap: 3px;
+  padding: 2px 6px 2px 2px;
+  font-size: 9px;
+  line-height: 12px;
+  letter-spacing: 0.01em;
+}
+.badge[data-compact] .badgeIcon {
+  width: 12px;
+  height: 12px;
 }
 .badgeIcon svg {
   display: block;
