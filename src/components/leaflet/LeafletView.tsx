@@ -56,15 +56,16 @@ function claimSwipeHint(): boolean {
 }
 
 type HintPhase = "off" | "pre" | "in" | "out" | "leaving";
-const HINT_FADE_IN_MS = 350;
-const HINT_HOLD_MS = 1000;
-const HINT_TOTAL_MS = 1900;
+const HINT_FADE_IN_MS = 300;
+const HINT_HOLD_MS = 2700; // fully visible until ~3 s after opening
+const HINT_TOTAL_MS = 3500; // incl. the 0.5 s fade-out
 const HINT_DISMISS_MS = 150;
 
 /**
- * First-open gesture hint: a small translucent pill over the lower centre of the page that fades in,
- * stays ~1 s and fades out. Purely visual (aria-hidden, pointer-events: none) and dismissed instantly on
- * any interaction with the leaflet (pointer, touch, wheel, keys or a page change).
+ * First-open gesture hint: a semi-transparent grey layer over the whole leaflet with a large centred
+ * swipe gesture and copy. Fades in, stays ~3 s and fades out. Purely visual (aria-hidden,
+ * pointer-events: none) and dismissed instantly on any interaction with the leaflet (pointer, touch,
+ * wheel, keys or a page change).
  */
 function SwipeHint({ areaRef, navToken }: { areaRef: RefObject<HTMLDivElement | null>; navToken: number }) {
   const [phase, setPhase] = useState<HintPhase>("off");
@@ -124,9 +125,14 @@ function SwipeHint({ areaRef, navToken }: { areaRef: RefObject<HTMLDivElement | 
   if (!active) return null;
   return (
     <div className={styles.swipeHint} data-phase={phase} aria-hidden="true" data-testid="swipe-hint">
-      <Icon name="chevron-left" size={16} strokeWidth={2.2} />
-      <span>Podrsaj levo ali desno za ogled kataloga</span>
-      <Icon name="chevron-right" size={16} strokeWidth={2.2} />
+      <div className={styles.swipeHintGesture}>
+        <Icon name="chevron-left" size={34} strokeWidth={2.6} />
+        <span className={styles.swipeHintTrack}>
+          <span className={styles.swipeHintDot} />
+        </span>
+        <Icon name="chevron-right" size={34} strokeWidth={2.6} />
+      </div>
+      <p className={styles.swipeHintText}>Podrsaj levo ali desno za ogled kataloga</p>
     </div>
   );
 }

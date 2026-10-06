@@ -167,10 +167,64 @@ test("fresh open: 'Moje strani' helper microcopy and the first-open swipe hint (
   // Not focusable / no focus stolen.
   expect(await page.evaluate(() => !!document.activeElement?.closest('[data-testid="swipe-hint"]'))).toBe(false);
 
-  // Gone on its own (~1.9 s) without interaction.
-  await expect(hint).toHaveCount(0, { timeout: 3000 });
+  // A large grey semi-transparent layer over the whole leaflet, with big white copy.
+  const look = await hint.evaluate((el) => {
+    const viewer = el.parentElement!.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const text = el.querySelector("p")!;
+    const tcs = getComputedStyle(text);
+    return {
+      covers: Math.abs(r.left - viewer.left) < 1 && Math.abs(r.top - viewer.top) < 1 && Math.abs(r.width - viewer.width) < 1 && Math.abs(r.height - viewer.height) < 1,
+      bg: getComputedStyle(el).backgroundColor,
+      fs: parseFloat(tcs.fontSize),
+      fw: Number(tcs.fontWeight),
+      color: tcs.color,
+    };
+  });
+  expect(look.covers).toBe(true);
+  expect(look.bg).toBe("rgba(60, 60, 60, 0.52)");
+  expect(look.fs).toBeGreaterThanOrEqual(20);
+  expect(look.fw).toBeGreaterThanOrEqual(600);
+  expect(look.color).toBe("rgb(255, 255, 255)");
+
+  // Stays fully visible for ~3 s, then fades out and is removed (~3.5 s) without interaction.
+  await page.waitForTimeout(2500);
+  await expect(hint).toBeVisible();
+  expect(await hint.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+  await expect(hint).toHaveCount(0, { timeout: 2500 });
   await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
 });
+
+for (const width of [360, 390, 430, 1280]) {
+  test(`swipe hint copy fits, centred and prominent @${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width < 1000 ? 780 : 900 });
+    await page.goto("/letak");
+    const hint = page.getByTestId("swipe-hint");
+    await expect(hint).toBeVisible();
+    const m = await hint.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const t = el.querySelector("p")!;
+      const tr = t.getBoundingClientRect();
+      const g = el.firstElementChild!.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(t);
+      return {
+        inside: tr.left >= r.left && tr.right <= r.right && g.left >= r.left && g.right <= r.right,
+        overflow: t.scrollWidth > t.clientWidth + 1 || el.scrollWidth > el.clientWidth + 1,
+        centreDx: Math.abs((tr.left + tr.right) / 2 - (r.left + r.right) / 2),
+        centreDy: Math.abs((g.top + tr.bottom) / 2 - (r.top + r.bottom) / 2),
+        lines: new Set([...range.getClientRects()].map((q) => Math.round(q.bottom))).size,
+        fs: parseFloat(getComputedStyle(t).fontSize),
+      };
+    });
+    expect(m.inside).toBe(true);
+    expect(m.overflow).toBe(false);
+    expect(m.centreDx).toBeLessThan(2);
+    expect(m.centreDy).toBeLessThan(4);
+    expect(m.lines).toBeLessThanOrEqual(2);
+    expect(m.fs).toBeGreaterThanOrEqual(20);
+  });
+}
 
 test("swipe hint hides immediately on interaction and shows only once per session", async ({ page }) => {
   await page.goto("/letak?stran=5");

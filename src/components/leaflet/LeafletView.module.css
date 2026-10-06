@@ -199,38 +199,76 @@
   box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
 }
 
-/* First-open swipe hint: never interactive, sits above the page arrows over the lower centre. */
+/* First-open swipe hint: a semi-transparent grey layer over the whole leaflet (page stays visible
+   underneath) with a large centred gesture + copy. Never interactive; sits below the page arrows. */
 .swipeHint {
   position: absolute;
-  z-index: 4;
-  left: 50%;
-  bottom: 20%;
-  display: inline-flex;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  max-width: calc(100% - 32px);
-  width: max-content;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgb(0 0 0 / 62%);
+  justify-content: center;
+  gap: 14px;
+  padding: 24px 20px;
+  background: rgb(60 60 60 / 52%);
   color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.3;
   text-align: center;
   pointer-events: none;
   user-select: none;
-  transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
-.swipeHint svg {
+.swipeHintGesture {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 35%));
+}
+.swipeHintGesture svg {
   flex: none;
-  opacity: 0.85;
+}
+/* A white "finger" dot gliding left ↔ right along a short track. */
+.swipeHintTrack {
+  position: relative;
+  width: 96px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgb(255 255 255 / 40%);
+}
+.swipeHintDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 6px rgb(255 255 255 / 28%);
+  animation: swipeHintGlide 1.5s ease-in-out infinite;
+}
+@keyframes swipeHintGlide {
+  0%,
+  100% {
+    transform: translateX(-38px);
+  }
+  50% {
+    transform: translateX(38px);
+  }
+}
+.swipeHintText {
+  margin: 0;
+  max-width: 15em;
+  font-size: clamp(20px, 5.6vw, 26px);
+  font-weight: 700;
+  line-height: 1.25;
+  text-wrap: balance;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
 }
 .swipeHint[data-phase="in"] {
   opacity: 1;
-  transition-duration: 0.35s;
+  transition-duration: 0.3s;
   transition-timing-function: ease-out;
 }
 .swipeHint[data-phase="leaving"] {
@@ -243,6 +281,9 @@
   .swipeHint[data-phase="pre"],
   .swipeHint[data-phase="in"] {
     opacity: 1;
+  }
+  .swipeHintDot {
+    animation: none;
   }
 }
 
