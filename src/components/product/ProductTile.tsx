@@ -19,6 +19,7 @@ export function ProductTile({
   showSaved = true,
   ariaLabelPrefix,
   minimal = false,
+  thumb = false,
 }: {
   productId: string;
   size?: Size;
@@ -26,6 +27,8 @@ export function ProductTile({
   showSaved?: boolean;
   ariaLabelPrefix?: string;
   minimal?: boolean;
+  /** Packshot (+ saved check) only, on a transparent ground: for layouts that print the price themselves. */
+  thumb?: boolean;
 }) {
   const store = useStore();
   const product = getProduct(productId);
@@ -42,20 +45,22 @@ export function ProductTile({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={product.image.src} width={product.image.width} height={product.image.height} alt="" loading={size === "carousel" ? "eager" : "lazy"} decoding="async" draggable={false} />
       </span>
-      {!minimal && <span className={styles.name}>{product.name}</span>}
-      <span className={styles.meta}>
-        <span className={styles.text}>{!minimal && <span className={styles.pack}>{product.packSize}</span>}</span>
-        <span className={styles.priceWrap}>
-          {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
-          <span className={styles.price} aria-hidden="true">
-            <span className={styles.euros}>{euros}</span>
-            <span className={styles.comma}>,</span>
-            <span className={styles.cents}>{cents}</span>
-            <span className={styles.eur}>€</span>
+      {!minimal && !thumb && <span className={styles.name}>{product.name}</span>}
+      {!thumb && (
+        <span className={styles.meta}>
+          <span className={styles.text}>{!minimal && <span className={styles.pack}>{product.packSize}</span>}</span>
+          <span className={styles.priceWrap}>
+            {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
+            <span className={styles.price} aria-hidden="true">
+              <span className={styles.euros}>{euros}</span>
+              <span className={styles.comma}>,</span>
+              <span className={styles.cents}>{cents}</span>
+              <span className={styles.eur}>€</span>
+            </span>
           </span>
         </span>
-      </span>
-      {unitLabel && <span className={styles.unit}>{unitLabel}</span>}
+      )}
+      {unitLabel && !thumb && <span className={styles.unit}>{unitLabel}</span>}
       {saved && (
         <span className={styles.savedBadge} aria-hidden="true">
           <Icon name="check" size={size === "carousel" ? 12 : 15} strokeWidth={3} />
@@ -64,7 +69,7 @@ export function ProductTile({
     </>
   );
 
-  const cls = `${styles.tile} ${styles[size]}${minimal ? ` ${styles.minimal}` : ""}`;
+  const cls = `${styles.tile} ${styles[size]}${minimal ? ` ${styles.minimal}` : ""}${thumb ? ` ${styles.thumb}` : ""}`;
   if (onSelect) {
     return (
       <button type="button" className={cls} onClick={onSelect} aria-label={label} data-product-id={productId} data-saved={saved || undefined}>

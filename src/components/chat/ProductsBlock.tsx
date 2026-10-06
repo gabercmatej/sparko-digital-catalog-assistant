@@ -27,7 +27,7 @@ export function ProductsBlock({ offerIds, reasons, layout = "card" }: { offerIds
   return (
     <div className={styles.products}>
       {cards.map(({ offer, product }) => (
-        <ProductCard key={offer.id} productId={product.id} offerId={offer.id} />
+        <ProductCard key={offer.id} productId={product.id} offerId={offer.id} variant="chat" />
       ))}
       {rows.length > 0 && (
         <ul className={styles.rows}>

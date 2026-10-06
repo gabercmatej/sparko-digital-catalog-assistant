@@ -9,3 +9,109 @@
   border-radius: 14px;
   background: var(--c-canvas);
 }
+
+/* ---------------------------------------------------------------- chat variant */
+/* No frame of its own: it lives inside Sparko's grey message bubble. */
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+/* Plain white rectangle: no border, no rounding. Brand + name use the full width; the pack size shares
+   the bottom line with the price block, which sits flush in the bottom-right corner. */
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "img info info"
+    "img pack price";
+  column-gap: 12px;
+  min-height: 100px;
+  padding: 10px 0 0 10px;
+  background: #ffffff;
+  border: 0;
+  border-radius: 0;
+}
+.row > :first-child {
+  --tile-carousel: 80px;
+  grid-area: img;
+  align-self: center;
+  margin-bottom: 10px;
+}
+.info {
+  grid-area: info;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-right: 10px;
+}
+.brand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-ink-3);
+}
+.name {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 750;
+  line-height: 1.2;
+  color: var(--c-ink);
+  overflow-wrap: anywhere;
+}
+.pack {
+  grid-area: pack;
+  align-self: end;
+  padding: 2px 0 10px;
+  font-size: var(--text-sm);
+  color: var(--c-ink-2);
+  line-height: 1.35;
+}
+.priceWrap {
+  grid-area: price;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 2px;
+}
+.cond,
+.unit {
+  margin-right: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--c-red-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.unit {
+  color: var(--c-ink-2);
+  text-transform: none;
+}
+.price {
+  display: inline-flex;
+  align-items: flex-start;
+  background: var(--c-red);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 7px 9px 6px 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.eur {
+  font-size: 0.5em;
+  margin-left: 0.12em;
+  margin-top: 0.05em;
+  font-weight: 700;
+}

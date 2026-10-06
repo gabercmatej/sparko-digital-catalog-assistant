@@ -33,3 +33,10 @@
   min-height: var(--tap);
   margin-right: -10px;
 }
+
+/* Chat: the SPAR katalog action stays white with a green outline in every state (no pale-green tint). */
+.leaflet,
+.leaflet:hover,
+.leaflet:active {
+  background: #fff;
+}

@@ -169,3 +169,12 @@ button.tile:active {
 .unit + .savedBadge {
   top: 22%;
 }
+
+/* Image-only tile (chat product row): no grey ground, the packshot fills the square. */
+.thumb {
+  grid-template-rows: minmax(0, 1fr);
+  background: transparent;
+}
+.thumb .media {
+  padding: 4%;
+}

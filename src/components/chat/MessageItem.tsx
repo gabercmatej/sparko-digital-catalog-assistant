@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { getProduct, leafletHref } from "@/lib/catalog";
 import { asChatMessage, displayText } from "@/lib/chat/messages";
 import { requestHighlight } from "@/lib/store/store";
-import type { Message } from "@/lib/types";
+import type { Message, MessageBlock } from "@/lib/types";
 import { Icon } from "../ui/Icon";
 import { NearestStoreCard } from "./demo/NearestStoreCard";
 import { StoreMapCard } from "./demo/StoreMapCard";
@@ -62,6 +62,8 @@ export function MessageItem({
     );
   }
 
+  const cardBlocks = (m.blocks ?? []).filter(isCardBlock);
+  const grouped = cardBlocks.length > 0;
   const leafletProducts = (m.actions ?? []).filter((a) => a.type === "open_leaflet" && getProduct(a.productId)).map((a) => a.productId);
 
   return (
@@ -74,10 +76,21 @@ export function MessageItem({
           </span>
         )}
       </div>
-      {m.text && <p className={styles.text}>{displayText(m.text)}</p>}
+      {grouped ? (
+        // One Sparko message: the reply text and the product presentation share a single grey bubble.
+        <div className={styles.bubble} data-message-bubble>
+          {m.text && <p className={styles.bubbleText}>{displayText(m.text)}</p>}
+          {cardBlocks.map((b, i) => (
+            <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />
+          ))}
+        </div>
+      ) : (
+        m.text && <p className={styles.text}>{displayText(m.text)}</p>
+      )}
       {m.blocks?.map((b, i) => {
         switch (b.type) {
           case "products":
+            if (grouped && isCardBlock(b)) return null;
             return <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />;
           case "recipe":
             return <RecipeCard key={i} recipeId={b.recipeId} />;
@@ -125,4 +138,10 @@ export function MessageItem({
       ))}
     </div>
   );
+}
+
+type ProductsBlockData = Extract<MessageBlock, { type: "products" }>;
+/** A products block rendered as cards (the default layout) — shown inside the message bubble. */
+function isCardBlock(b: MessageBlock): b is ProductsBlockData {
+  return b.type === "products" && (b.layout ?? "card") === "card";
 }

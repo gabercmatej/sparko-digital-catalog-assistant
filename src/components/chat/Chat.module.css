@@ -291,3 +291,26 @@
   font-weight: 600;
   box-shadow: var(--shadow-float);
 }
+
+/* ---------------------------------------------------------------- product message */
+/* A reply with product cards is ONE Sparko message: text, product row and actions share the grey bubble. */
+.bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  background: var(--c-bubble-bot);
+  border-radius: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) 4px;
+  padding: 10px 12px 12px;
+}
+.assistant > .bubble {
+  max-width: min(100%, 440px);
+}
+.bubbleText {
+  padding: 0 3px;
+  color: var(--c-ink);
+  font-size: var(--text-md);
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -117,20 +117,84 @@ test("in-store location: starter asks which product, 'Kruh' shows the store map;
   await expect(lastReply(page).getByTestId("store-map-card")).toHaveAttribute("data-section", "pekarna");
 });
 
-test("chat layout: bubbles stay on their side, product card fills Sparko's column evenly", async ({ page }) => {
+test("chat layout: bubbles stay on their side, the product reply is one Sparko message filling the column evenly", async ({ page }) => {
   await fresh(page);
   await ask(page, "Koliko stane skuta?");
   const vw = page.viewportSize()!.width;
   const user = (await chatLog(page).locator('[data-role="user"] p').last().boundingBox())!;
-  const bubble = (await lastReply(page).locator("p").first().boundingBox())!;
+  const bubble = (await lastReply(page).locator("[data-message-bubble]").boundingBox())!;
   const card = (await lastReply(page).locator("[data-product-card]").first().boundingBox())!;
-  // User bubble hugs the right gutter; Sparko's text bubble never reaches far into the user's side.
+  // User bubble hugs the right gutter.
   expect(user.x + user.width).toBeGreaterThan(vw - 30);
-  expect(bubble.x + bubble.width).toBeLessThanOrEqual(vw * 0.86);
-  // Card: equal gutters on a phone, and its buttons span the card's inner width.
-  expect(Math.abs(card.x - (vw - card.x - card.width))).toBeLessThan(2);
+  // Sparko's message: equal gutters on a phone; the product card and its buttons sit evenly inside it.
+  expect(Math.abs(bubble.x - (vw - bubble.x - bubble.width))).toBeLessThan(2);
+  expect(Math.abs(card.x - bubble.x - (bubble.x + bubble.width - card.x - card.width))).toBeLessThan(2);
   const btn = (await lastReply(page).locator("[data-product-card] .btn").first().boundingBox())!;
   expect(Math.abs(btn.x - card.x - (card.x + card.width - btn.x - btn.width))).toBeLessThan(2);
+});
+
+test("product reply: one grey Sparko message with a white product row, one Moj katalog toggle and a white SPAR katalog button", async ({ page }) => {
+  await fresh(page);
+  await ask(page, "Koliko stane salama?");
+  const reply = lastReply(page);
+  const bubble = reply.locator("[data-message-bubble]");
+  const card = bubble.locator('[data-product-card="sb-salama-400g"]');
+  // Text, product row and both actions all live inside the one grey bubble.
+  await expect(bubble.locator("p").first()).toContainText("0,99 €");
+  await expect(card).toBeVisible();
+  await expect(card.getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
+  await expect(card.getByRole("button", { name: "Poglej v SPAR katalogu" })).toBeVisible();
+  const st = await reply.evaluate((el) => {
+    const css = (sel: string) => getComputedStyle(el.querySelector(sel)!);
+    const row = el.querySelector("[data-product-row]")!.getBoundingClientRect();
+    const price = el.querySelector("[data-product-row] [data-price]")!.getBoundingClientRect();
+    const name = el.querySelector("[data-product-row] h3")!;
+    const leaflet = [...el.querySelectorAll("button")].find((b) => b.textContent?.includes("Poglej v SPAR katalogu"))!;
+    return {
+      bubbleBg: css("[data-message-bubble]").backgroundColor,
+      rowBg: css("[data-product-row]").backgroundColor,
+      rowBorder: css("[data-product-row]").borderTopWidth,
+      rowRadius: css("[data-product-row]").borderTopLeftRadius,
+      nameSize: parseFloat(getComputedStyle(name).fontSize),
+      priceRight: row.right - price.right,
+      priceBottom: row.bottom - price.bottom,
+      leafletBg: getComputedStyle(leaflet).backgroundColor,
+      leafletBorder: getComputedStyle(leaflet).borderTopColor,
+    };
+  });
+  expect(st.bubbleBg).toBe("rgb(239, 241, 240)");
+  expect(st.rowBg).toBe("rgb(255, 255, 255)");
+  expect(st.rowBorder).toBe("0px");
+  expect(st.rowRadius).toBe("0px");
+  expect(st.nameSize).toBeGreaterThanOrEqual(18);
+  // Price block sits flush in the row's bottom-right corner.
+  expect(Math.abs(st.priceRight)).toBeLessThan(1);
+  expect(Math.abs(st.priceBottom)).toBeLessThan(1);
+  expect(st.leafletBg).toBe("rgb(255, 255, 255)");
+  expect(st.leafletBorder).not.toBe("rgb(255, 255, 255)");
+  // No validity / source clutter, no separate remove.
+  await expect(card).not.toContainText("Velja");
+  await expect(card).not.toContainText("PDF-stran");
+  await expect(card).not.toContainText("Cena iz demo kataloga");
+  await expect(card.getByRole("button", { name: "Odstrani" })).toHaveCount(0);
+
+  // The SAME button toggles: add ...
+  await card.getByRole("button", { name: "Dodaj v Moj katalog" }).click();
+  const savedBtn = card.getByRole("button", { name: /^V mojem katalogu/ });
+  await expect(savedBtn).toBeVisible();
+  await expect(card.locator('[data-product-id="sb-salama-400g"][data-saved]')).toBeVisible();
+  await expect(card.getByText("Odstrani", { exact: true })).toHaveCount(0);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length)).toBe(1);
+  // ... and remove again.
+  await savedBtn.click();
+  await expect(card.getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length)).toBe(0);
+  // Tapped/hovered, the SPAR katalog button stays white.
+  const leaflet = card.getByRole("button", { name: "Poglej v SPAR katalogu" });
+  await leaflet.hover();
+  await expect(leaflet).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await leaflet.click();
+  await expect(page).toHaveURL(/\/letak/);
 });
 
 test("single composer action: mic when empty (no permission request), send arrow when typing, Enter sends", async ({ page }) => {

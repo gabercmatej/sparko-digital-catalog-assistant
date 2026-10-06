@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { collectionHref, leafletHref } from "@/lib/catalog";
-import { isSaved, removeProduct, requestHighlight, saveProduct, useStore } from "@/lib/store/store";
+import { isSaved, removeProduct, requestHighlight, saveProduct, toggleProduct, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import styles from "./ProductActions.module.css";
 
@@ -11,11 +11,39 @@ import styles from "./ProductActions.module.css";
  *  1. "Dodaj v Moj katalog" (filled green) / "✓ V Mojem katalogu" (saved, links to the item)
  *  2. "Poglej v SPAR katalogu" (green outline) → opens the original leaflet at the product.
  * The separate remove action sits below the buttons once the product is saved.
+ * `toggle` (chat messages): the saved button itself removes the product again, no separate remove.
  */
-export function ProductActions({ productId, showLeaflet = true }: { productId: string; showLeaflet?: boolean }) {
+export function ProductActions({ productId, showLeaflet = true, toggle = false }: { productId: string; showLeaflet?: boolean; toggle?: boolean }) {
   const store = useStore();
   const router = useRouter();
   const saved = isSaved(productId, store);
+  const openLeaflet = () => {
+    requestHighlight(productId);
+    router.push(leafletHref(productId));
+  };
+
+  if (toggle) {
+    return (
+      <div className={styles.buttons} data-toggle-actions>
+        <button
+          type="button"
+          className={`btn ${saved ? "btn-saved" : "btn-primary"} ${styles.action}`}
+          onClick={() => toggleProduct(productId)}
+          data-saved={saved || undefined}
+        >
+          <Icon name={saved ? "check" : "plus"} size={18} strokeWidth={saved ? 2.4 : 2.2} />
+          <span>{saved ? "V mojem katalogu" : "Dodaj v Moj katalog"}</span>
+          {saved && <span className="sr-only">, tapni za odstranitev</span>}
+        </button>
+        {showLeaflet && (
+          <button type="button" className={`btn btn-secondary ${styles.action} ${styles.leaflet}`} onClick={openLeaflet}>
+            <Icon name="leaflet" size={18} />
+            <span>Poglej v SPAR katalogu</span>
+          </button>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.wrap}>
@@ -35,10 +63,7 @@ export function ProductActions({ productId, showLeaflet = true }: { productId: s
           <button
             type="button"
             className={`btn btn-secondary ${styles.action}`}
-            onClick={() => {
-              requestHighlight(productId);
-              router.push(leafletHref(productId));
-            }}
+            onClick={openLeaflet}
           >
             <Icon name="leaflet" size={18} />
             <span>Poglej v SPAR katalogu</span>

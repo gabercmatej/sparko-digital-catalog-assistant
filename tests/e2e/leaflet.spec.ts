@@ -63,7 +63,7 @@ for (const [w, h] of [
   test(`page fits whole and as large as possible at ${w}x${h} (no vertical scrolling)`, async ({ page }) => {
     await page.setViewportSize({ width: w, height: h });
     await seed(page, [], "/letak?stran=5");
-    await expect(stage(page).locator("img")).toBeVisible();
+    await expect(stage(page).locator(":scope > img")).toBeVisible();
     await page.waitForLoadState("networkidle");
     const g = await geometry(page);
     expect(g.stage.t).toBeGreaterThanOrEqual(g.viewport.t - 0.5);
@@ -82,7 +82,7 @@ for (const [w, h] of [
 
 test("no 'Izdelki na tej strani' list and no extra chrome above the page", async ({ page }) => {
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
-  await expect(stage(page).locator("img")).toBeVisible();
+  await expect(stage(page).locator(":scope > img")).toBeVisible();
   await expect(page.getByText(/Izdelki na tej strani/)).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Izdelki na tej strani" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "SPAR letak" })).toBeAttached(); // screen-reader heading only
@@ -94,7 +94,7 @@ test("pages flip left/right through all 38 pages in natural order", async ({ pag
   for (let n = 2; n <= 38; n++) {
     await next(page).click();
     await expect(indicator(page)).toHaveText(new RegExp(`^${n} / 38`));
-    await expect(stage(page).locator("img")).toHaveAttribute("src", `/catalog/pages/page-${String(n).padStart(2, "0")}.webp`);
+    await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", `/catalog/pages/page-${String(n).padStart(2, "0")}.webp`);
   }
   await expect(next(page)).toHaveCount(0);
 });
@@ -153,50 +153,103 @@ test("all saved products on one page are highlighted together; add/remove update
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("3");
 });
 
-test("saved overlay: product stays visible (no fill) with a golden frame and 4 orbs looping around it", async ({ page }) => {
+test("saved overlay: the whole box breathes 100% ↔ 85% around its centre with a gold overlay; no orbs", async ({ page }) => {
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
   const host = box(page, "sb-skuta-1kg");
-  const ring = host.locator("[data-saved-ring]");
-  await expect(ring).toBeAttached();
-  const orbs = host.locator("[data-orb]");
-  await expect(orbs).toHaveCount(4);
-  await expect(host.locator("[data-orbit]")).toBeVisible();
+  await expect(host.locator("[data-saved-ring]")).toBeAttached();
+  await expect(host).toContainText("V Mojem katalogu");
+  // The old orbiting lights are gone.
+  await expect(stage(page).locator("[data-orb], [data-orbit]")).toHaveCount(0);
   const s = await host.evaluate((el) => {
-    const orbEls = [...el.querySelectorAll<HTMLElement>("[data-orb]")].map((o) => getComputedStyle(o));
-    const r = getComputedStyle(el.querySelector("[data-saved-ring]")!);
+    const boxEl = el.querySelector<HTMLElement>("[data-saved-box]")!;
+    const crop = el.querySelector<HTMLElement>("[data-saved-crop]")!;
+    const overlay = el.querySelector<HTMLElement>("[data-gold-overlay]")!;
+    const anim = (e: HTMLElement) => {
+      const c = getComputedStyle(e);
+      return { name: c.animationName, dur: parseFloat(c.animationDuration), iter: c.animationIterationCount, ease: c.animationTimingFunction };
+    };
+    // Freeze every breathing animation at time t and measure.
+    const at = (t: number) => {
+      for (const e of [boxEl, crop, overlay])
+        for (const a of e.getAnimations()) {
+          a.pause();
+          a.currentTime = t;
+        }
+      const h = el.getBoundingClientRect();
+      const r = boxEl.getBoundingClientRect();
+      return {
+        w: r.width / h.width,
+        h: r.height / h.height,
+        cx: r.left + r.width / 2 - (h.left + h.width / 2),
+        cy: r.top + r.height / 2 - (h.top + h.height / 2),
+        overlay: parseFloat(getComputedStyle(overlay).opacity),
+        filter: getComputedStyle(crop).filter,
+      };
+    };
     return {
-      bg: getComputedStyle(el).backgroundColor,
-      ringBorder: parseFloat(r.borderTopWidth),
-      ringMask: r.maskImage || r.webkitMaskImage,
-      names: orbEls.map((c) => c.animationName),
-      iters: orbEls.map((c) => c.animationIterationCount),
-      durs: orbEls.map((c) => parseFloat(c.animationDuration)),
-      delays: orbEls.map((c) => parseFloat(c.animationDelay)),
+      box: anim(boxEl),
+      overlayAnim: anim(overlay),
+      a: at(0),
+      b: at(1000),
+      a2: at(2000),
+      hostBg: getComputedStyle(el).backgroundColor,
+      cropSrc: crop.querySelector("img")!.getAttribute("src"),
+      pageSrc: document.querySelector('[data-testid="leaflet-stage"] > img')!.getAttribute("src"),
     };
   });
-  for (const n of s.names) expect(n).toContain("savedOrbit");
-  for (const it of s.iters) expect(it).toBe("infinite");
-  for (const d of s.durs) {
-    expect(d).toBeGreaterThanOrEqual(6);
-    expect(d).toBeLessThanOrEqual(8);
-  }
-  // Evenly spaced: 25% of a lap apart.
-  const lap = s.durs[0];
-  expect(s.delays.map((d) => Math.abs(Math.round((d / lap) * 100)))).toEqual([0, 25, 50, 75]);
-  // Never a rectangle over the product: host has no fill, the gold band is masked to the border only.
+  expect(s.box.name).toContain("savedBreath");
+  expect(s.box.iter).toBe("infinite");
+  expect(s.box.dur).toBe(2); // 1 s each way
+  expect(s.box.ease).toBe("ease-in-out");
+  expect(s.overlayAnim.name).toContain("savedOverlay");
+  // State A: full size, gold overlay, brighter.
+  expect(s.a.w).toBeCloseTo(1, 3);
+  expect(s.a.h).toBeCloseTo(1, 3);
+  expect(s.a.overlay).toBeCloseTo(1, 2);
+  expect(s.a.filter).toContain("brightness(1.08)");
+  // State B: exactly 85 %, same centre, overlay gone, normal brightness.
+  expect(s.b.w).toBeCloseTo(0.85, 3);
+  expect(s.b.h).toBeCloseTo(0.85, 3);
+  expect(Math.abs(s.b.cx)).toBeLessThan(0.5);
+  expect(Math.abs(s.b.cy)).toBeLessThan(0.5);
+  expect(s.b.overlay).toBeCloseTo(0, 2);
+  expect(s.b.filter).toBe("brightness(1)");
+  // Back to A.
+  expect(s.a2.w).toBeCloseTo(1, 3);
+  // The scaled box carries the printed product itself (a crop of the same page image), not just the frame.
+  expect(s.cropSrc).toBe(s.pageSrc);
+  // The hit target (and so the page) never moves: it keeps the verified bbox, unfilled.
   const alpha = (c: string) => Number(/rgba?\([^)]*?,\s*([\d.]+)\)$/.exec(c)?.[1] ?? 1);
-  expect(alpha(s.bg)).toBe(0);
-  expect(s.ringBorder).toBeGreaterThan(0);
-  expect(s.ringMask).toContain("gradient");
+  expect(alpha(s.hostBg)).toBe(0);
 });
 
-test("reduced motion: saved overlay is a static golden frame without moving orbs", async ({ page }) => {
+test("only saved products animate; unsaved neighbours stay untouched", async ({ page }) => {
+  await seed(page, ["sb-salama-400g", "sb-zrezki-500g"], "/letak?stran=5");
+  for (const id of ["sb-salama-400g", "sb-zrezki-500g"]) {
+    await expect(box(page, id).locator("[data-saved-box]")).toHaveCount(1);
+    await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("animation-name", /savedBreath/);
+  }
+  for (const id of ["sb-skuta-1kg", "sb-pommes-1kg"]) {
+    const b = box(page, id);
+    await expect(b).not.toHaveAttribute("data-saved", "true");
+    await expect(b.locator("[data-saved-box], [data-saved-ring], [data-gold-overlay], [data-saved-plate]")).toHaveCount(0);
+    await expect(b).not.toContainText("V Mojem katalogu");
+    await expect(b).toHaveCSS("transform", "none");
+    await expect(b).toHaveCSS("animation-name", "none");
+  }
+});
+
+test("reduced motion: saved overlay is the static full-size gold state (no breathing)", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
   const host = box(page, "sb-skuta-1kg");
+  const boxEl = host.locator("[data-saved-box]");
   await expect(host.locator("[data-saved-ring]")).toBeVisible();
-  await expect(host.locator("[data-orbit]")).toBeHidden();
-  await expect(host.locator("[data-orb]").first()).toHaveCSS("animation-name", "none");
+  await expect(boxEl).toHaveCSS("animation-name", "none");
+  await expect(boxEl).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+  await expect(host.locator("[data-gold-overlay]")).toHaveCSS("animation-name", "none");
+  await expect(host.locator("[data-gold-overlay]")).toHaveCSS("opacity", "1");
+  await expect(host).toContainText("V Mojem katalogu");
 });
 
 test("product → 'Poglej v SPAR katalogu' opens the right page, emphasises the product, then pages freely", async ({ page }) => {

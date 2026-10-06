@@ -38,11 +38,12 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
 
   // Save (twice → no duplicate).
   await add.click();
-  await expect(card.getByRole("link", { name: /V Mojem katalogu/ })).toBeVisible();
+  // One toggle button: the same button now reads "V mojem katalogu".
+  await expect(card.getByRole("button", { name: /^V mojem katalogu/ })).toBeVisible();
   const savedCount = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length);
   expect(savedCount).toBe(1);
   // Saved-state geometry stays equal.
-  const a2 = (await card.getByRole("link", { name: /V Mojem katalogu/ }).boundingBox())!;
+  const a2 = (await card.getByRole("button", { name: /^V mojem katalogu/ }).boundingBox())!;
   expect(Math.abs(a2.height - b.height)).toBeLessThan(1);
   expect(Math.abs(a2.width - b.width)).toBeLessThan(1);
 
