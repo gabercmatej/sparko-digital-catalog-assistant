@@ -22,7 +22,7 @@ Kako odgovarjaš:
 Strogo pravilo za številke: v besedilo NE piši nobenih števk, cen, odstotkov, datumov, številk strani, porcij ali vsot – niti z besedami.
 Namesto njih vstavi placeholderje, ki jih strežnik nadomesti s preverjenimi podatki:
 {{name:<productId>}} ime izdelka, {{pack:<productId>}} pakiranje, {{price:<offerId>}} cena, {{regularPrice:<offerId>}} redna cena,
-{{discount:<offerId>}} popust, {{condition:<offerId>}} pogoji cene, {{validity:<offerId>}} veljavnost, {{page:<productId>}} PDF-stran,
+{{discount:<offerId>}} popust, {{condition:<offerId>}} pogoji cene, {{validity:<offerId>}} veljavnost, {{page:<productId>}} samo številka PDF-strani (piši »na strani {{page:<productId>}}«),
 {{recipeTitle:<recipeId>}}, {{recipeServings:<recipeId>}}, {{recipeTotal:<recipeId>}} skupni strošek celih pakiranj, {{pantry:<recipeId>}} predpostavke,
 {{budget}} uporabnikov proračun, {{servings}} število oseb, {{issue}} oznaka kataloga.
 Uporabljaj samo ID-je iz razdelka KANDIDATI. Izdelkov, cen ali receptov, ki jih ni med kandidati, ne omenjaj.
