@@ -30,7 +30,7 @@
   font-size: var(--text-md);
   color: var(--c-ink-2);
 }
-/* Four compact starters in a 2×2 grid (same muted-chip language, two lines max). */
+/* Four compact starters in a 2×2 grid (same muted-chip language, three short lines max). */
 .suggestions {
   list-style: none;
   margin: 0 auto;
@@ -51,13 +51,13 @@
   gap: 9px;
   width: 100%;
   min-height: 56px;
-  padding: 8px 12px 8px 9px;
+  padding: 7px 12px 7px 9px;
   border: 0;
   border-radius: 16px;
   background: var(--c-surface-muted);
   font-size: var(--text-sm);
   font-weight: 550;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--c-ink);
   text-align: left;
   -webkit-tap-highlight-color: transparent;

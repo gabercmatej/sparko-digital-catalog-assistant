@@ -61,21 +61,31 @@ export function mealTemplate(s: MealSuggestion, req: MealRequest): string {
   const c = s.choice;
   if (!c || !c.totals) {
     return req.kind === "breakfast"
-      ? "Preverjenega recepta za zajtrk v demo katalogu nimam, lahko pa ti pokažem nekaj izdelkov za zajtrk."
-      : "Za to v preverjenem izboru demo kataloga še nimam preverjenega recepta s cenami vseh sestavin. Lahko ti pokažem posamezne izdelke.";
+      ? "Preverjenega recepta za zajtrk iz kataloga nimam, lahko pa ti pokažem nekaj izdelkov za zajtrk iz aktualne ponudbe."
+      : "Za to iz kataloga še nimam preverjenega recepta s cenami vseh sestavin. Lahko ti pokažem posamezne izdelke iz aktualne ponudbe.";
   }
   const id = c.recipe.id;
-  const parts: string[] = [`Predlog iz demo kataloga: {{recipeTitle:${id}}} (porcije: {{recipeServings:${id}}}).`];
+  const dish = `{{recipeTitle:${id}}} (porcije: {{recipeServings:${id}}})`;
+  const lead =
+    req.budgetCents != null && c.fitsBudget
+      ? `Če gledava aktualno ponudbo v katalogu, lahko v okviru {{budget}} pripraviš: ${dish}.`
+      : req.kind === "breakfast"
+        ? `Iz aktualnega kataloga ti za zajtrk predlagam: ${dish}.`
+        : req.kind === "dinner"
+          ? `Seveda – pogledal sem aktualni katalog. Za večerjo ti predlagam: ${dish}.`
+          : req.kind === "lunch"
+            ? `Seveda – pogledal sem aktualni katalog. Za kosilo ti predlagam: ${dish}.`
+            : `Iz aktualnega kataloga ti predlagam: ${dish}.`;
+  const parts: string[] = [lead];
   const cardNote = c.totals.needsCard && req.spPlus !== "no" ? " s kartico SPAR plus" : "";
   if (c.effectiveCents != null) {
     parts.push(`Cela potrebna pakiranja skupaj stanejo {{recipeTotal:${id}}}${cardNote}.`);
   } else {
     parts.push(`Cena brez kartice SPAR plus za vse sestavine v katalogu ni navedena; s kartico skupaj stanejo {{recipeTotalCard:${id}}}.`);
   }
-  if (req.budgetCents != null) {
-    if (c.fitsBudget) parts.push(`To je v okviru {{budget}}.`);
-    else if (c.effectiveCents == null) parts.push(`Zato ne morem potrditi, da je v okviru {{budget}}.`);
-    else parts.push(`Noben preverjen recept iz demo kataloga ne pride v okvir {{budget}}, to je najbližji.`);
+  if (req.budgetCents != null && !c.fitsBudget) {
+    if (c.effectiveCents == null) parts.push(`Zato ne morem potrditi, da je v okviru {{budget}}.`);
+    else parts.push(`Noben preverjen recept iz kataloga ne pride v okvir {{budget}}, to je najbližji.`);
   }
   if (!c.servingsOk) parts.push(`Recept je za manj oseb, kot si želiš, zato bi potreboval več pakiranj.`);
   if (c.recipe.pantryAssumptions.length) parts.push(`Predpostavka: {{pantry:${id}}}.`);

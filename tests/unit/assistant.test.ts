@@ -123,7 +123,7 @@ describe("deterministic responder — product lookups", () => {
   it("exact skuta sentence uses data-rendered price and pack", () => {
     const r = buildDeterministicReply(req("Koliko stane skuta?"));
     if (r.kind !== "ambiguous") {
-      expect(r.text).toBe("V demo katalogu je S-BUDGET lahka skuta, 1 kg, po 3,38 €.");
+      expect(r.text).toBe("V aktualnem katalogu je S-BUDGET lahka skuta, 1 kg, po 3,38 €.");
       expect(r.blocks[0]).toEqual({ type: "products", offerIds: [SKUTA_OFFER], layout: "card" });
     }
   });
@@ -152,7 +152,8 @@ describe("deterministic responder — product lookups", () => {
   it("unknown product → honest text, no invented product", () => {
     const r = buildDeterministicReply(req("Koliko stane kaviar?"));
     expect(r.intent).toBe("unknown_product");
-    expect(r.text).toContain("Tega izdelka v preverjenem delu demo kataloga ne najdem.");
+    expect(r.text).toContain("Tega izdelka ne najdem med preverjenimi izdelki iz kataloga");
+    expect(r.text).toContain("ne morem zanesljivo povedati cene");
     expect(r.text).not.toMatch(/kaviar/i);
     for (const oid of productOfferIds(r)) expect(getOffer(oid)).toBeDefined();
     expect(r.actions).toEqual([]);
@@ -162,7 +163,8 @@ describe("deterministic responder — product lookups", () => {
   it("out-of-scope steers back to shopping without products", () => {
     const r = buildDeterministicReply(req("Kdo bo zmagal na volitvah?"));
     expect(r.intent).toBe("out_of_scope");
-    expect(r.text).toMatch(/nakup|kuhanj/);
+    expect(r.text).toMatch(/^Pri tem ti ne znam zanesljivo pomagati/);
+    expect(r.text).toMatch(/SPAR kataloga/);
     expect(productOfferIds(r)).toEqual([]);
     expect(r.blocks.some((b) => b.type === "choices")).toBe(true);
   });
@@ -247,9 +249,9 @@ describe("discounts", () => {
     expect(ranked.length).toBe(offers.filter(isPercentDiscount).length);
   });
 
-  it("answer is scoped to the demo catalog's verified selection and shows at most 4", () => {
+  it("answer is scoped to the catalog's verified selection and shows at most 4", () => {
     const r = buildDeterministicReply(req("Kaj je najbolj znižano?"));
-    expect(r.text).toContain("V preverjenem izboru demo kataloga");
+    expect(r.text).toContain("Med preverjenimi izdelki v aktualnem katalogu");
     expect(r.text).not.toMatch(/trenutno v trgovini|danes/i);
     const ids = productOfferIds(r);
     expect(ids.length).toBeLessThanOrEqual(4);
@@ -388,10 +390,97 @@ describe("conversation (limited mode, deterministic)", () => {
     expect(r.text).toMatch(/večerjo/);
   });
 
-  it("off-topic is redirected gently toward shopping", () => {
+  it("off-topic is redirected gently toward the SPAR catalog", () => {
     const r = buildDeterministicReply(req("Kakšno bo vreme jutri?"));
     expect(r.intent).toBe("out_of_scope");
-    expect(r.text).toMatch(/nakupe in kuhanje/);
+    expect(r.text).toBe("Za vreme ti ne znam zanesljivo pomagati, lahko pa ti pomagam preveriti izdelke, cene, akcije ali ideje iz SPAR kataloga.");
+    expect(r.text).not.toMatch(/ne najdem/);
+    expect(productOfferIds(r)).toEqual([]);
+  });
+
+  it("small talk is framed around the current catalog", () => {
+    expect(buildDeterministicReply(req("Živjo")).text).toBe("Živjo! 👋 Kaj bi rad preveril v aktualnem SPAR katalogu?");
+    expect(buildDeterministicReply(req("Kako si?")).text).toBe(
+      "Super, hvala 😊 Pripravljen sem ti pomagati z izdelki, cenami, akcijami ali idejami iz aktualnega kataloga.",
+    );
+    expect(buildDeterministicReply(req("Hvala!")).text).toMatch(/katalog/);
+  });
+
+  it("capability answer positions Sparko as the catalog assistant; 'Kaj vse te lahko vprašam?' adds examples", () => {
+    const what = buildDeterministicReply(req("Kaj znaš?"));
+    expect(what.text).toMatch(/^Pomagam ti raziskovati aktualni SPAR katalog/);
+    for (const part of [/cene in akcije/, /proračun/, /Moj katalog/, /letaku/, /najbližji SPAR/, /v trgovini/]) expect(what.text).toMatch(part);
+    expect(what.text).not.toMatch(/Na primer/);
+    expect(buildDeterministicReply(req("Kaj vse te lahko vprašam?")).text).toContain("Na primer: »Koliko stane skuta?«");
+  });
+
+  it("new catalog starters route to the same flows as before", () => {
+    const ask = buildDeterministicReply(req("Koliko stane izdelek v katalogu?"));
+    expect(ask.text).toBe("Seveda. Kateri izdelek te zanima?");
+    const skuta = buildDeterministicReply(
+      req("skuta", { history: [{ role: "user", text: "Koliko stane izdelek v katalogu?" }, { role: "assistant", text: ask.text }] }),
+    );
+    expect(productOfferIds(skuta)).toEqual([SKUTA_OFFER]);
+    expect(buildDeterministicReply(req("Kaj je najbolj znižano v katalogu?")).intent).toBe("discounts");
+    expect(buildDeterministicReply(req("Kje je meni najbližji SPAR?")).intent).toBe("nearest_store");
+    const store = buildDeterministicReply(req("Kje v trgovini je izdelek iz kataloga?"));
+    expect(store.intent).toBe("store_location");
+    expect(store.text).toBe("Seveda. Kateri izdelek iščeš v trgovini?");
+    const bread = buildDeterministicReply(
+      req("kruh", { history: [{ role: "user", text: "Kje v trgovini je izdelek iz kataloga?" }, { role: "assistant", text: store.text }] }),
+    );
+    expect(bread.blocks).toEqual([{ type: "store_map", sectionId: "pekarna" }]);
+    // Asking for a place in the catalog still never routes to the store map.
+    expect(buildDeterministicReply(req("Kje v trgovini je skuta v katalogu?")).intent).not.toBe("store_location");
+    expect(buildDeterministicReply(req("Kje je kruh v letaku?")).intent).toBe("where_in_leaflet");
+  });
+
+  it("recommendations are grounded in the named catalog category", () => {
+    const r = buildDeterministicReply(req("kaj mi priporočaš od mesa"));
+    expect(r.intent).toBe("recommend");
+    expect(r.text).toMatch(/^Med izdelki v aktualnem katalogu ti priporočam:/);
+    const ids = productOfferIds(r);
+    expect(ids.length).toBeGreaterThan(0);
+    for (const oid of ids) expect(getProduct(getOffer(oid)!.productId)!.categories.some((c) => /^mes/.test(c))).toBe(true);
+  });
+
+  it("budget and meal questions answer with verified recipes from the catalog", () => {
+    for (const q of ["imam 10 €, kaj lahko pripravim?", "imam 10 €, kaj lahko kupim?"]) {
+      const r = buildDeterministicReply(req(q));
+      expect(r.intent, q).toBe("meal");
+      expect(r.text, q).toMatch(/aktualno ponudbo v katalogu, lahko v okviru 10,00 €/);
+      expect(r.blocks.some((b) => b.type === "recipe"), q).toBe(true);
+    }
+    expect(buildDeterministicReply(req("Priporoči mi nekaj za večerjo.")).text).toMatch(/^Seveda – pogledal sem aktualni katalog. Za večerjo/);
+    expect(buildDeterministicReply(req("kaj lahko jem za zajtrk?")).text).toMatch(/iz aktualnega kataloga/i);
+  });
+
+  it("multi-turn: product → cheaper → add it → where in catalog keeps the referenced product", () => {
+    const history: ChatRequestMessage[] = [];
+    const turn = (text: string) => {
+      const r = buildDeterministicReply(req(text, { history: [...history] }));
+      history.push({ role: "user", text }, { role: "assistant", text: r.text, contextProductIds: r.contextProductIds });
+      return r;
+    };
+    expect(productOfferIds(turn("Koliko stane skuta?"))).toEqual([SKUTA_OFFER]);
+    const cheaper = turn("kaj pa cenejša?");
+    expect(cheaper.intent).toBe("cheaper");
+    const alt = cheaper.contextProductIds.find((id) => id !== SKUTA)!;
+    expect(alt).toBeDefined();
+    if (cheaper.contextProductIds.length === 1) {
+      expect(turn("dodaj jo").actions).toEqual([{ type: "save", productId: alt }]);
+      const where = turn("kje je v katalogu?");
+      expect(where.intent).toBe("where_in_leaflet");
+      expect(where.actions).toEqual([{ type: "open_leaflet", productId: alt }]);
+    }
+  });
+
+  it("'Pokaži mi nekaj pod 5 €' lists verified catalog products under the limit", () => {
+    const r = buildDeterministicReply(req("Pokaži mi nekaj pod 5 €."));
+    expect(r.intent).not.toBe("unknown_product");
+    const ids = productOfferIds(r);
+    expect(ids.length).toBeGreaterThan(0);
+    for (const oid of ids) expect(getOffer(oid)!.priceCents).toBeLessThanOrEqual(500);
   });
 
   it("starter flow: 'Koliko stane izdelek?' asks back, then a bare product name resolves to the verified card", () => {

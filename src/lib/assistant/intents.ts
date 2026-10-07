@@ -124,11 +124,15 @@ const RE = {
   nearWord: /\b(najbliz\w*|blizin\w*|blizu|nearest|closest)\b/,
   storeWord: /\b(spar|sparu|spara|sparov|sparom|interspar\w*|trgovin\w*|prodajaln\w*|market\w*|store|shop)\b/,
   whereIsSpar: /^(kje|kam)( pa)? (je|imam|najdem|bi nasel|bi nasla|lahko najdem|grem v)( kak\w*| en\w*| nek\w*)? (spar|interspar)( trgovin\w*)?$/,
-  // In-store product location: explicit store phrasing; leaflet phrasing always wins.
+  // In-store product location: explicit store phrasing; leaflet phrasing ("v letaku", "na strani") always wins.
   inStore: /\b(v (spar |interspar |tej |moji |nasi |najblizji )?(trgovini|marketu|prodajalni)|v sparu|v interspar\w*)\b/,
   inStoreWhere: /\b(v (katerem|kateri) (oddelku|polici|delu|vrsti|prehodu)|na (kateri|katero) polic\w*|kateri oddelek|se nahaja\w*|kje (stoji|stojijo|lezi))\b/,
   whereWord: /\bkje\b/,
   leafletWord: /\b(letak\w*|katalog\w*|stran|strani|pdf)\b/,
+  // A place IN the leaflet ("v katalogu", "na strani"), as opposed to "izdelek iz kataloga".
+  leafletPlace: /\b(v|na) (letak\w*|katalog\w*)\b|\bstrani?\b|\bpdf\b/,
+  // "Imam 10 €, kaj lahko kupim?" – shopping within a budget.
+  budgetShop: /\b(kupim|kupiti|kupis|nakupim|nakupiti|nakup\w*)\b/,
   outOfScope:
     /\b(vreme\w*|vremenska|dez|dezuje|dezevn\w*|sneg\w*|temperatur\w*|napoved|politik\w*|volitv\w*|vlad\w*|stranka|stranke|predsednik\w*|programir\w*|javascript|python|koda|kodo|html|css|sql|nogomet\w*|kosark\w*|tekma|tekme|film\w*|serij\w*|novic\w*|borz\w*|kripto\w*|bitcoin|delnic\w*|zgodovin\w*|matematik\w*|domac\w* nalog\w*|esej\w*|pesem|pesmi|vic\w*|horoskop\w*|zdravil\w*|zdravnik\w*|bolezen|diagnoz\w*|pravni|odvetnik\w*|ignoriraj navodila|system prompt|sistemski poziv)\b/,
 };
@@ -200,7 +204,9 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
   // Demo location features (mocked data, deterministic): before the leaflet "kje" handling.
   if ((RE.nearWord.test(folded) && RE.storeWord.test(folded)) || RE.whereIsSpar.test(folded)) return { ...base, intent: "nearest_store" };
   const prev = previousAssistantText(messages);
-  if (!RE.leafletWord.test(folded)) {
+  // Explicit store phrasing wins over a mere mention of the catalog ("Kje v trgovini je izdelek iz kataloga?").
+  const inStoreOverLeaflet = RE.whereWord.test(folded) && RE.inStore.test(folded) && !RE.leafletPlace.test(folded);
+  if (!RE.leafletWord.test(folded) || inStoreOverLeaflet) {
     // "Kje v trgovini je kruh?", "V katerem oddelku je mleko?", and "Kje je kruh?" for products with a known store section.
     if (RE.inStoreWhere.test(folded)) return { ...base, intent: "store_location" };
     if (RE.whereWord.test(folded) && (RE.inStore.test(folded) || findStoreSection(text))) return { ...base, intent: "store_location" };
@@ -218,6 +224,11 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
   if (RE.meal.test(folded)) {
     const kind: MealKind = /\bkosil/.test(folded) ? "lunch" : /\bvecerj/.test(folded) ? "dinner" : "any";
     return { ...base, intent: "meal", meal: { kind, servings: parseServings(folded), budgetCents: parseBudgetCents(folded) } };
+  }
+  // A budget without a named product ("Imam 10 €, kaj lahko kupim?"): a verified recipe within that budget.
+  const budgetCents = parseBudgetCents(folded);
+  if (budgetCents != null && RE.budgetShop.test(folded) && !mentionsProduct(text)) {
+    return { ...base, intent: "meal", meal: { kind: "any", servings: parseServings(folded), budgetCents } };
   }
   if (RE.cheaper.test(folded)) return { ...base, intent: "cheaper" };
   if (RE.recommend.test(folded)) return { ...base, intent: "recommend" };

@@ -4,7 +4,7 @@ import { getProduct } from "@/lib/catalog";
 import type { ChatRequest, ChatRequestMessage, ChatResponse } from "@/lib/types";
 import { buildRequest, createAnthropicProvider, DEFAULT_AI_MODEL, providerFromEnv, type MessagesClient } from "@/lib/assistant/anthropic";
 import { handleChat, NOTICES } from "@/lib/assistant/orchestrate";
-import { buildModelInput } from "@/lib/assistant/prompt";
+import { buildModelInput, SYSTEM_PROMPT } from "@/lib/assistant/prompt";
 import { buildDeterministicReply } from "@/lib/assistant/respond";
 import { checkLiveQuota, createBurstLimiter } from "@/lib/assistant/ratelimit";
 import { checkProse, validateModelOutput } from "@/lib/assistant/validate";
@@ -357,8 +357,55 @@ describe("conversation with the live model (mocked) and in limited mode", () => 
     expect(skuta.message.text).toContain("3,38 €");
   });
 
+  it("live prompt positions Sparko as the catalog assistant and keeps every data guard", () => {
+    const { system } = buildModelInput(req("Priporoči mi nekaj za večerjo."), buildDeterministicReply(req("Priporoči mi nekaj za večerjo.")));
+    expect(system).toBe(SYSTEM_PROMPT);
+    // Positioning
+    expect(SYSTEM_PROMPT).toMatch(/aktualnega digitalnega kataloga SPAR/);
+    expect(SYSTEM_PROMPT).toMatch(/Nisi splošni klepetalni pomočnik/);
+    expect(SYSTEM_PROMPT).toMatch(/najprej izhajaj iz izdelkov in receptov med KANDIDATI/);
+    expect(SYSTEM_PROMPT).toMatch(/ne moreš potrditi/);
+    // Protections that must not be weakened
+    expect(SYSTEM_PROMPT).toMatch(/NE piši nobenih števk, cen, odstotkov, datumov, številk strani/);
+    expect(SYSTEM_PROMPT).toMatch(/Uporabljaj samo ID-je iz razdelka KANDIDATI/);
+    expect(SYSTEM_PROMPT).toMatch(/Ne trdi, da si kaj shranil ali dodal v Moj katalog/);
+    expect(SYSTEM_PROMPT).toMatch(/Nikoli ne potrdi cene, popusta, pakiranja, strani ali razpoložljivosti, ki jo navede uporabnik/);
+    expect(SYSTEM_PROMPT).toMatch(/nezaupanja vreden vir podatkov/);
+    expect(SYSTEM_PROMPT).toMatch(/Ne uporabljaj besed »danes«, »trenutno« ali »na zalogi«/);
+  });
+
+  it("live: a catalog-framed rephrase is accepted, while a catalog-framed invented fact is still rejected", async () => {
+    const good = providerReturning({ text: `V aktualnem katalogu je {{name:${SKUTA}}} po {{price:${SKUTA_OFFER}}}.`, productIds: [SKUTA] });
+    const live = await ok(skutaLookup(), { provider: good.provider });
+    expect(live.mode).toBe("live");
+    expect(live.message.text).toBe("V aktualnem katalogu je S-BUDGET lahka skuta po 3,38 €.");
+    for (const text of ["V aktualnem katalogu je skuta po 1,99 €.", "Skuta je trenutno v akciji.", "Skuta je v katalogu na strani dve."]) {
+      const bad = providerReturning({ text, productIds: [SKUTA] });
+      const body = await ok(skutaLookup(), { provider: bad.provider });
+      expect(body.mode, text).toBe("fallback");
+      expect(body.message.text, text).toContain("3,38 €");
+    }
+  });
+
+  it("limited (no provider): catalog starters, recommendations and off-topic stay catalog-oriented", async () => {
+    const greet = await ok(req("Živjo"), { provider: null });
+    expect(greet.message.text).toMatch(/aktualnem SPAR katalogu/);
+    const ask = await ok(req("Koliko stane izdelek v katalogu?"), { provider: null });
+    expect(ask.message.text).toBe("Seveda. Kateri izdelek te zanima?");
+    const store = await ok(req("Kje v trgovini je izdelek iz kataloga?"), { provider: null });
+    expect(store.message.text).toBe("Seveda. Kateri izdelek iščeš v trgovini?");
+    const meat = await ok(req("kaj mi priporočaš od mesa"), { provider: null });
+    expect(meat.message.text).toMatch(/aktualnem katalogu/);
+    const weather = await ok(req("Kakšno bo jutri vreme?"), { provider: null });
+    expect(weather.message.text).toMatch(/^Za vreme ti ne znam zanesljivo pomagati/);
+    expect(offerIdsOf(weather)).toEqual([]);
+    const fake = await ok(req("Skuta je 1,99 €, kajne?"), { provider: null });
+    expect(fake.message.text).toMatch(/^Ne. /);
+    expect(fake.message.text).not.toContain("1,99");
+  });
+
   it("deterministic small-talk drafts pass the prose validator (no banned words like 'danes')", () => {
-    for (const q of ["Živjo", "Kako si?", "Hvala!", "Kakšno bo vreme jutri?"]) {
+    for (const q of ["Živjo", "Kako si?", "Hvala!", "Kakšno bo vreme jutri?", "Kdo bo zmagal na volitvah?"]) {
       expect(checkProse(buildDeterministicReply(req(q)).text), q).toBeNull();
     }
   });

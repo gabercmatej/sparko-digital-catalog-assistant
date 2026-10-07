@@ -439,8 +439,8 @@ test("reduced motion: saved overlay is the static gold state A (no pulse, no tra
 
 test("product → 'Poglej v SPAR katalogu' opens the right page, emphasises the product, then pages freely", async ({ page }) => {
   await seed(page, [], "/");
-  await page.getByPlaceholder("Vprašaj Sparka …").fill("Koliko stane skuta?");
-  await page.getByPlaceholder("Vprašaj Sparka …").press("Enter");
+  await page.getByPlaceholder("Vprašaj Sparka o katalogu …").fill("Koliko stane skuta?");
+  await page.getByPlaceholder("Vprašaj Sparka o katalogu …").press("Enter");
   const card = page.getByRole("log", { name: "Pogovor s Sparkom" }).locator('[data-product-card="sb-skuta-1kg"]').first();
   await card.getByRole("button", { name: "Poglej v SPAR katalogu" }).click();
   await expect(page).toHaveURL(/\/letak\?stran=5/);

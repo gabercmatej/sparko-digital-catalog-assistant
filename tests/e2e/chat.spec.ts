@@ -10,7 +10,7 @@ async function fresh(page: Page, path = "/") {
 
 const chatLog = (page: Page) => page.getByRole("log", { name: "Pogovor s Sparkom" });
 const lastReply = (page: Page) => chatLog(page).locator('[data-role="assistant"]').last();
-const input = (page: Page) => page.getByPlaceholder("Vprašaj Sparka …");
+const input = (page: Page) => page.getByPlaceholder("Vprašaj Sparka o katalogu …");
 const composer = (page: Page) => page.locator("form:has(#chat-input)");
 
 /** Every action label renders on one line inside its button (no overflow, no wrapping). */
@@ -43,14 +43,17 @@ async function ask(page: Page, text: string) {
   await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
 }
 
-test("initial screen: four generic starters in a 2×2 grid, no demo label, no hard-coded product starter", async ({ page }) => {
+test("initial screen: catalog subtitle, four catalog starters in a 2×2 grid, no demo label, no hard-coded product starter", async ({ page }) => {
   await fresh(page);
+  await expect(page.getByRole("heading", { name: "Tvoj pomočnik Sparko" })).toBeVisible();
+  await expect(page.getByText("Poznam ves aktualni katalog. Vprašaj me o izdelkih, cenah in akcijah.", { exact: true })).toBeVisible();
+  await expect(input(page)).toBeVisible();
   const starters = page.getByRole("list", { name: "Predlogi vprašanj" }).getByRole("button");
   await expect(starters).toHaveCount(4);
-  await expect(starters.nth(0)).toHaveText("Koliko stane izdelek?");
-  await expect(starters.nth(1)).toHaveText("Kaj je najbolj znižano?");
+  await expect(starters.nth(0)).toHaveText("Koliko stane izdelek v katalogu?");
+  await expect(starters.nth(1)).toHaveText("Kaj je najbolj znižano v katalogu?");
   await expect(starters.nth(2)).toHaveText("Kje je meni najbližji SPAR?");
-  await expect(starters.nth(3)).toHaveText("Kje v trgovini je izdelek?");
+  await expect(starters.nth(3)).toHaveText("Kje v trgovini je izdelek iz kataloga?");
   // 2×2: two rows of two equal columns.
   const boxes = await Promise.all([0, 1, 2, 3].map(async (i) => (await starters.nth(i).boundingBox())!));
   expect(Math.abs(boxes[0].y - boxes[1].y)).toBeLessThan(1);
@@ -62,9 +65,30 @@ test("initial screen: four generic starters in a 2×2 grid, no demo label, no ha
   await expect(page.getByText("Iz demo kataloga", { exact: true })).toHaveCount(0);
 });
 
-test("starter flow: 'Koliko stane izdelek?' → which product? → 'skuta' → verified card", async ({ page }) => {
+for (const width of [360, 390, 430]) {
+  test(`catalog starters and subtitle fit compactly at ${width} px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await fresh(page);
+    const starters = page.getByRole("list", { name: "Predlogi vprašanj" }).getByRole("button");
+    await expect(starters).toHaveCount(4);
+    const docWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(docWidth).toBeLessThanOrEqual(width);
+    for (let i = 0; i < 4; i++) {
+      const r = await starters.nth(i).evaluate((el) => {
+        const b = el.getBoundingClientRect();
+        const t = el.querySelector("span:last-child")!.getBoundingClientRect();
+        return { height: b.height, textInside: t.left >= b.left - 0.5 && t.right <= b.right + 0.5 && t.bottom <= b.bottom + 0.5 };
+      });
+      expect(r.textInside, `starter ${i}`).toBe(true);
+      // Max three short lines; never a tall block.
+      expect(r.height, `starter ${i}`).toBeLessThanOrEqual(64);
+    }
+  });
+}
+
+test("starter flow: 'Koliko stane izdelek v katalogu?' → which product? → 'skuta' → verified card", async ({ page }) => {
   await fresh(page);
-  await page.getByRole("button", { name: "Koliko stane izdelek?" }).click();
+  await page.getByRole("button", { name: "Koliko stane izdelek v katalogu?" }).click();
   await expect(lastReply(page)).toContainText("Seveda. Kateri izdelek te zanima?");
   await expect(chatLog(page).locator("[data-product-card]")).toHaveCount(0);
   await ask(page, "skuta");
@@ -97,7 +121,7 @@ test("nearest SPAR starter shows the store map card", async ({ page }) => {
 
 test("in-store location: starter asks which product, 'Kruh' shows the store map; typed variants work", async ({ page }) => {
   await fresh(page);
-  await page.getByRole("button", { name: "Kje v trgovini je izdelek?" }).click();
+  await page.getByRole("button", { name: "Kje v trgovini je izdelek iz kataloga?" }).click();
   await expect(lastReply(page)).toContainText("Kateri izdelek iščeš v trgovini?");
   await expect(lastReply(page).getByTestId("store-map-card")).toHaveCount(0);
   await ask(page, "Kruh");
@@ -413,7 +437,8 @@ test("natural conversation in limited mode", async ({ page }) => {
     await expect(lastReply(page), q).not.toContainText(/ne najdem/i);
     await expect(lastReply(page).locator("[data-product-card]"), q).toHaveCount(0);
   }
-  await expect(lastReply(page)).toContainText("kje je izdelek v letaku");
+  await expect(lastReply(page)).toContainText("Pomagam ti raziskovati aktualni SPAR katalog");
+  await expect(lastReply(page)).toContainText("kje jih najdeš v letaku");
 });
 
 test("catalog facts stay verified: fake price, fake add claim, unknown product", async ({ page }) => {

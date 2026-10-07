@@ -14,9 +14,9 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
   await fresh(page);
 
   // Ask via the generic starter: Sparko asks which product, a bare "skuta" answers it.
-  await page.getByRole("button", { name: "Koliko stane izdelek?" }).click();
+  await page.getByRole("button", { name: "Koliko stane izdelek v katalogu?" }).click();
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("Seveda. Kateri izdelek te zanima?");
-  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   await input.fill("skuta");
   await input.press("Enter");
   const card = chatLog(page).locator(`[data-product-card="${SKUTA}"]`).first();
@@ -88,26 +88,26 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
 
   // Reload: conversation and selection persist.
   await page.reload();
-  await expect(chatLog(page).locator('[data-role="user"]').first()).toHaveText("Koliko stane izdelek?");
+  await expect(chatLog(page).locator('[data-role="user"]').first()).toHaveText("Koliko stane izdelek v katalogu?");
   await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: /Moj katalog/ }).click();
   await expect(page.locator("#izdelek-sb-pommes-1kg")).toBeVisible();
 });
 
 test("both starters send a real message and get an answer", async ({ page }) => {
   await fresh(page);
-  await page.getByRole("button", { name: "Kaj je najbolj znižano?" }).click();
+  await page.getByRole("button", { name: "Kaj je najbolj znižano v katalogu?" }).click();
   const last = chatLog(page).locator('[data-role="assistant"]').last();
   await expect(last).toContainText(/€/, { timeout: 15_000 });
   await expect(last).toContainText(/ceneje/);
   await fresh(page);
-  await page.getByRole("button", { name: "Koliko stane izdelek?" }).click();
+  await page.getByRole("button", { name: "Koliko stane izdelek v katalogu?" }).click();
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toHaveText(/Seveda\. Kateri izdelek te zanima\?/);
   await expect(chatLog(page).locator("[data-product-card]")).toHaveCount(0);
 });
 
 test("dinner for two stays within 10 € using whole packs with visible assumptions", async ({ page }) => {
   await fresh(page);
-  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   await input.fill("Večerja za dva do 10 €");
   await input.press("Enter");
   const last = chatLog(page).locator('[data-role="assistant"]').last();
@@ -117,7 +117,7 @@ test("dinner for two stays within 10 € using whole packs with visible assumpti
 
 test("unknown product does not produce an invented card", async ({ page }) => {
   await fresh(page);
-  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   await input.fill("Koliko stane kaviar?");
   await input.press("Enter");
   const last = chatLog(page).locator('[data-role="assistant"]').last();
@@ -127,7 +127,7 @@ test("unknown product does not produce an invented card", async ({ page }) => {
 
 test("contextual follow-up: kje je v letaku?", async ({ page }) => {
   await fresh(page);
-  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   await input.fill("koliko stane skuto");
   await input.press("Enter");
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("3,38 €", { timeout: 15_000 });
@@ -172,7 +172,7 @@ test("demo conversation can be continued without changing the example", async ({
   expect(userCountBefore).toBeGreaterThan(0);
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1") ?? '{"saved":[]}').saved.length);
   expect(saved).toBe(0);
-  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   await input.fill("Kaj je najbolj znižano?");
   await input.press("Enter");
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText(/€/, { timeout: 15_000 });
@@ -195,7 +195,7 @@ for (const width of [360, 390, 430]) {
       expect(overflow, `${path} overflows`).toBe(false);
     }
     await page.goto("/");
-    const input = page.getByPlaceholder("Vprašaj Sparka …");
+    const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
     await input.fill("Koliko stane skuta?");
     await input.press("Enter");
     await expect(chatLog(page).locator("[data-product-card]").first()).toBeVisible();

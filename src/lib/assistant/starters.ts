@@ -5,8 +5,8 @@ export const ASK_PRODUCT_TEXT = "Seveda. Kateri izdelek te zanima?";
 export const ASK_STORE_PRODUCT_TEXT = "Seveda. Kateri izdelek iščeš v trgovini?";
 
 export const STARTER_PROMPTS: { label: string; message: string }[] = [
-  { label: "Koliko stane izdelek?", message: "Koliko stane izdelek?" },
-  { label: "Kaj je najbolj znižano?", message: "Kaj je najbolj znižano?" },
+  { label: "Koliko stane izdelek v katalogu?", message: "Koliko stane izdelek v katalogu?" },
+  { label: "Kaj je najbolj znižano v katalogu?", message: "Kaj je najbolj znižano v katalogu?" },
   { label: "Kje je meni najbližji SPAR?", message: "Kje je meni najbližji SPAR?" },
-  { label: "Kje v trgovini je izdelek?", message: "Kje v trgovini je izdelek?" },
+  { label: "Kje v trgovini je izdelek iz kataloga?", message: "Kje v trgovini je izdelek iz kataloga?" },
 ];

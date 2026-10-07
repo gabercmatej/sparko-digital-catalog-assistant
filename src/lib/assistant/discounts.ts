@@ -40,7 +40,7 @@ export function rankDiscounts(opts: { limit?: number; offers?: readonly Offer[] 
 /** Template (placeholders) for the discount answer. */
 export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting): string {
   if (!ranked.length) {
-    return `V preverjenem izboru demo kataloga {{issue}} ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
+    return `Med preverjenimi izdelki iz kataloga {{issue}} ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
   }
   const sameValidity = new Set(ranked.map((r) => validityText(r.offer))).size === 1;
   const lines = ranked.map(({ offer, product }) => {
@@ -59,6 +59,6 @@ export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting
   if (anyCard && spPlus === "no") outro = "\nCene, označene s kartico, veljajo le s kartico SPAR plus.";
   else if (anyCard && spPlus === "unset") outro = "\nNekatere cene veljajo s kartico SPAR plus.";
   const validity = sameValidity ? `\n{{validity:${ranked[0].offer.id}}}.` : "";
-  return `V preverjenem izboru demo kataloga {{issue}} so najbolj znižani:\n${lines.join("\n")}${validity}${outro}`;
+  return `Med preverjenimi izdelki v aktualnem katalogu {{issue}} so najbolj znižani:\n${lines.join("\n")}${validity}${outro}`;
 }
 

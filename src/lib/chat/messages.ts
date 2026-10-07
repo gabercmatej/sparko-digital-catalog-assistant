@@ -125,7 +125,7 @@ export function saveResultLine(productId: string, result: "saved" | "already" | 
   const name = getProduct(productId)?.name ?? "Izdelek";
   if (result === "saved") return `✓ ${name} je zdaj v tvojem Mojem katalogu.`;
   if (result === "already") return `${name} je že v tvojem Mojem katalogu.`;
-  return `${name} ni bil dodan v Moj katalog, ker ga v demo katalogu ne najdem.`;
+  return `${name} ni bil dodan v Moj katalog, ker ga med preverjenimi izdelki iz kataloga ne najdem.`;
 }
 
 export function removeResultLine(productId: string, removed: boolean): string {

@@ -24,7 +24,7 @@ export const STOPWORDS = new Set(
   (
     "a ali in pa je so sem si smo ste bo bi da ne kaj kako koliko kje kdaj kateri katera katero katere " +
     "stane stanejo stal cena cene ceno cenah za na v pri po od do iz z s k h o mi me ti te tebi meni " +
-    "imate imas imamo ima imajo lahko prosim hvala mogoce morda se tudi samo ze res zelo kak kaksna kaksen kaksno " +
+    "imam imate imas imamo ima imajo nekaj kupim kupiti kupis nakupim nakupiti lahko prosim hvala mogoce morda se tudi samo ze res zelo kak kaksna kaksen kaksno " +
     "zdaj danes tukaj tu tam ta to ti te tega temu tem tisti tista tisto ena en eno " +
     "pokazi pokaz povej poisci najdi isci iscem zanima zanimajo rad rada bi hocem hotel hotela zelim " +
     "izdelek izdelka izdelki izdelke izdelkov ponudba ponudbe ponudbo katalog katalogu kataloga letak letaku letaka " +

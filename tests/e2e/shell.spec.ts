@@ -66,7 +66,7 @@ for (const vp of [
 test("long conversation scrolls only inside the message area", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await fresh(page);
-  const input = page.getByPlaceholder("Vprašaj Sparka …");
+  const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   for (const q of ["Koliko stane skuta?", "Kaj je najbolj znižano?", "Predlagaj hiter zajtrk", "Večerja za dva do 10 €"]) {
     await input.fill(q);
     await input.press("Enter");
@@ -82,7 +82,7 @@ test("long conversation scrolls only inside the message area", async ({ page }) 
   expect(s.sh).toBeGreaterThan(s.ch);
   expect(s.b).toBeGreaterThan(s.a);
   await expectShellSealed(page);
-  await expect(page.getByPlaceholder("Vprašaj Sparka …")).toBeInViewport();
+  await expect(page.getByPlaceholder("Vprašaj Sparka o katalogu …")).toBeInViewport();
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toBeInViewport();
 });
 
@@ -90,13 +90,13 @@ test("simulated keyboard (viewport shrinks while typing): composer stays visible
   await page.setViewportSize({ width: 390, height: 844 });
   await fresh(page);
   await page.waitForLoadState("networkidle");
-  await page.getByPlaceholder("Vprašaj Sparka …").focus();
+  await page.getByPlaceholder("Vprašaj Sparka o katalogu …").focus();
   await page.setViewportSize({ width: 390, height: 480 });
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toHaveCount(0);
   const r = await page.evaluate(() => ({ ih: innerHeight, f: document.querySelector("form:has(#chat-input)")!.getBoundingClientRect().bottom }));
   expect(r.f).toBeLessThanOrEqual(r.ih + 0.5);
   await expectShellSealed(page);
-  await page.getByPlaceholder("Vprašaj Sparka …").blur();
+  await page.getByPlaceholder("Vprašaj Sparka o katalogu …").blur();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toBeVisible();
 });
