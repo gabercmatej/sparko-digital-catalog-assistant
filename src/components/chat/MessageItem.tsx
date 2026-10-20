@@ -5,6 +5,7 @@ import { asChatMessage, displayText } from "@/lib/chat/messages";
 import { requestHighlight } from "@/lib/store/store";
 import type { Message, MessageBlock } from "@/lib/types";
 import { Icon } from "../ui/Icon";
+import { DiscountTimeline } from "./DiscountTimeline";
 import { NearestStoreCard } from "./demo/NearestStoreCard";
 import { StoreMapCard } from "./demo/StoreMapCard";
 import { ProductsBlock } from "./ProductsBlock";
@@ -62,8 +63,8 @@ export function MessageItem({
     );
   }
 
-  const productBlocks = (m.blocks ?? []).filter(isProductsBlock);
-  const grouped = productBlocks.length > 0;
+  const bubbleBlocks = (m.blocks ?? []).filter(isBubbleBlock);
+  const grouped = bubbleBlocks.length > 0;
   const leafletProducts = (m.actions ?? []).filter((a) => a.type === "open_leaflet" && getProduct(a.productId)).map((a) => a.productId);
 
   return (
@@ -77,13 +78,17 @@ export function MessageItem({
         )}
       </div>
       {grouped ? (
-        // One Sparko message: the reply text and every returned product (cards and expandable rows)
-        // share a single grey bubble.
+        // One Sparko message: the reply text and every returned product (cards, expandable rows and the
+        // discount timeline) share a single grey bubble.
         <div className={styles.bubble} data-message-bubble>
           {m.text && <p className={styles.bubbleText}>{displayText(m.text)}</p>}
-          {productBlocks.map((b, i) => (
-            <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />
-          ))}
+          {bubbleBlocks.map((b, i) =>
+            b.type === "products" ? (
+              <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />
+            ) : (
+              <DiscountTimeline key={i} currentOfferIds={b.currentOfferIds} upcomingPromoIds={b.upcomingPromoIds} />
+            ),
+          )}
         </div>
       ) : (
         m.text && <p className={styles.text}>{displayText(m.text)}</p>
@@ -91,6 +96,7 @@ export function MessageItem({
       {m.blocks?.map((b, i) => {
         switch (b.type) {
           case "products":
+          case "discount_timeline":
             // Already rendered inside the message bubble above.
             return null;
           case "recipe":
@@ -141,8 +147,8 @@ export function MessageItem({
   );
 }
 
-type ProductsBlockData = Extract<MessageBlock, { type: "products" }>;
-/** A products block (cards or compact rows) — always shown inside the message bubble. */
-function isProductsBlock(b: MessageBlock): b is ProductsBlockData {
-  return b.type === "products";
+type BubbleBlock = Extract<MessageBlock, { type: "products" | "discount_timeline" }>;
+/** A products block (cards or compact rows) or discount timeline — always shown inside the message bubble. */
+function isBubbleBlock(b: MessageBlock): b is BubbleBlock {
+  return b.type === "products" || b.type === "discount_timeline";
 }

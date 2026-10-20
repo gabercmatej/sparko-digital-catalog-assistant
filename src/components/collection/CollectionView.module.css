@@ -4,182 +4,282 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  background: var(--c-canvas);
 }
+
+/* header action: the trash icon turns into a clear "Končano" while the removal mode is on */
+.doneBtn {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--c-green-050);
+  color: var(--c-green);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------------------------------------------------------------- tabs */
+
+.tabs {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 var(--gutter);
+  background: var(--c-canvas);
+  border-bottom: 1px solid var(--c-border);
+}
+.tab {
+  position: relative;
+  min-height: 48px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--c-ink-3);
+  font-size: var(--text-md);
+  font-weight: 600;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: transparent;
+}
+.tab[aria-selected="true"] {
+  color: var(--c-ink);
+  font-weight: 700;
+}
+.tab[aria-selected="true"]::after {
+  background: var(--c-green-bright);
+}
+
+/* ---------------------------------------------------------------- body */
+
 .scroll {
-  /* room for the floating leaflet button so it never covers the last products */
-  padding-bottom: 104px;
-}
-
-/* ---------------------------------------------------------------- header */
-
-.header {
-  padding-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  background: var(--c-page-outside);
 }
-.title {
-  font-size: var(--text-xl);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--c-ink);
+.body {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-page-outside);
 }
-.subtitle {
+.loading {
+  min-height: 50vh;
+}
+
+.actions {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  background: var(--c-canvas);
+}
+.action {
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 10px;
+  gap: 8px;
   font-size: var(--text-md);
-  color: var(--c-ink-3);
-}
-.demo {
-  margin-top: 6px;
-}
-
-/* ---------------------------------------------------------------- sections */
-
-.section {
-  margin-top: var(--gap-section);
-}
-.h2 {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--c-ink);
-}
-.dot {
-  color: var(--c-ink-3);
-  font-weight: 500;
-}
-.count {
-  font-variant-numeric: tabular-nums;
-}
-.h3 {
-  font-size: var(--text-sm);
   font-weight: 650;
-  color: var(--c-ink-2);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0 0 12px;
-}
-.group {
-  margin-top: 16px;
-}
-.group + .group {
-  margin-top: 24px;
-}
-.sectionNote {
-  margin-top: 4px;
-  font-size: var(--text-sm);
-  color: var(--c-ink-3);
-  line-height: 1.4;
 }
 
-.grid {
+/* light grey list area so the white rows stand out */
+.listArea {
+  flex: none;
+  padding-top: 14px;
+  padding-bottom: 22px;
+  border-top: 1px solid var(--c-border);
+}
+.rows {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 16px;
-  row-gap: 16px;
-}
-.recoBand .grid {
-  margin-top: 20px;
-  row-gap: 24px;
-}
-
-/* ---------------------------------------------------------------- saved items */
-
-.item {
-  min-width: 0;
   display: flex;
   flex-direction: column;
-  scroll-margin: 24px 0 112px;
+  gap: 8px;
 }
-.tileWrap {
-  position: relative;
-  display: flex;
-}
-.tileWrap::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 3px solid var(--c-green-bright);
-  opacity: 0;
-  pointer-events: none;
-}
-.item[data-flash] .tileWrap::after {
-  animation: flash 1.1s ease-in-out 2;
-}
-.itemRow {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 2px;
-}
-.remove {
-  min-height: var(--tap);
-  margin-left: -10px;
+.editHint {
+  margin: 0 0 10px;
+  font-size: var(--text-sm);
   color: var(--c-ink-2);
 }
-
-@keyframes flash {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  45% {
-    opacity: 1;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .item[data-flash] .tileWrap::after {
-    animation: none;
-    opacity: 1;
-  }
+.demo {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 0;
 }
 
 /* ---------------------------------------------------------------- empty state */
 
 .empty {
-  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 16px 20px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--c-border);
+  text-align: center;
 }
-.empty p {
-  font-size: var(--text-body);
+.emptyIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background: var(--c-green-050);
+  color: var(--c-green);
+}
+.emptyTitle {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--c-ink);
+}
+.emptyText {
+  margin: 0;
+  max-width: 32ch;
+  font-size: var(--text-md);
+  line-height: 1.45;
   color: var(--c-ink-2);
-  line-height: 1.5;
-  max-width: 34ch;
+}
+.emptyCtas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
 }
 
-/* ---------------------------------------------------------------- recommendations */
+/* ---------------------------------------------------------------- recommendations band */
 
-/* dark green band so the recommendation zone reads as its own space */
-.recoBand {
-  margin-top: 32px;
-  padding-top: 28px;
-  padding-bottom: 32px;
-  background: var(--c-green);
+/* rich green sheet with rounded top corners lifting off the grey list area */
+.band {
+  flex: 1 0 auto;
+  margin-top: -2px;
+  padding-top: 20px;
+  padding-bottom: 24px;
+  border-radius: 24px 24px 0 0;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgb(255 255 255 / 10%) 0%, rgb(255 255 255 / 0%) 60%),
+    linear-gradient(165deg, #12804a 0%, var(--c-green) 48%, #084a29 100%);
   color: #fff;
+  box-shadow: 0 -8px 24px rgb(10 40 25 / 14%);
 }
-.recoBand .h2 {
-  color: #fff;
+.bandFull {
+  margin-top: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
-.recoBand .sectionNote {
-  margin-top: 6px;
-  color: rgb(255 255 255 / 80%);
-}
-.recoBand :focus-visible {
+.band :focus-visible {
   outline-color: #fff;
 }
-.recoItem {
+.bandHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.bandTitle {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.infoBtn {
+  display: inline-grid;
+  vertical-align: -6px;
+  margin-left: 2px;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgb(255 255 255 / 85%);
+  -webkit-tap-highlight-color: transparent;
+}
+.seeAll {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.bandNote {
+  margin: 8px 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: rgb(255 255 255 / 82%);
+}
+
+.rail {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 14px calc(-1 * var(--gutter)) 0;
+  padding: 2px var(--gutter) 6px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: var(--gutter);
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.railItem {
+  flex: none;
+  width: 148px;
+  scroll-snap-align: start;
+  display: flex;
+}
+.railItem > * {
+  width: 100%;
+}
+
+.recGrid {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 10px;
+  align-items: start;
+}
+.recItem {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 .reason {
-  margin-top: 8px;
-  font-size: var(--text-sm);
+  margin: 0;
+  font-size: var(--text-xs);
   line-height: 1.35;
   color: rgb(255 255 255 / 85%);
   display: -webkit-box;
@@ -187,50 +287,4 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   overflow-wrap: anywhere;
-}
-.add {
-  margin-top: auto;
-  min-height: var(--tap);
-  padding: 4px 6px;
-  font-size: 13px;
-  white-space: normal;
-  text-align: center;
-  line-height: 1.25;
-  background: #fff;
-  border-color: #fff;
-}
-.addLabel {
-  display: block;
-}
-.addIcon {
-  display: inline-block;
-  vertical-align: -2px;
-  margin-right: 4px;
-}
-.reason + .add,
-.recoItem > :first-child + .add {
-  margin-top: 10px;
-}
-
-/* ---------------------------------------------------------------- leaflet dock */
-
-.dock {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 5;
-  padding: 20px var(--gutter) 12px;
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0%), #fff 45%);
-  pointer-events: none;
-}
-.leafletBtn {
-  pointer-events: auto;
-  min-height: 52px;
-  font-size: var(--text-body);
-  box-shadow: var(--shadow-float);
-}
-
-.loading {
-  min-height: 50vh;
 }

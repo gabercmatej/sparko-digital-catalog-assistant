@@ -110,6 +110,12 @@ export function detectLine(query: string, list: readonly Product[] = allProducts
   const f = fold(query);
   const keys = new Set(buildIndex(list).flatMap((i) => [i.lineKey, i.brandKey]).filter((k): k is string => !!k));
   for (const k of keys) if (containsPhrase(f, k)) return k;
+  // Multi-word brands and lines are written with spaces in a query ("Perutnina Ptuj"); keys have none.
+  for (const i of buildIndex(list)) {
+    for (const [key, label] of [[i.lineKey, i.product.line], [i.brandKey, i.product.brand]] as const) {
+      if (key && label && containsPhrase(f, fold(label))) return key;
+    }
+  }
   return undefined;
 }
 

@@ -178,3 +178,9 @@ button.tile:active {
 .thumb .media {
   padding: 4%;
 }
+.retailer {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 7px;
+}

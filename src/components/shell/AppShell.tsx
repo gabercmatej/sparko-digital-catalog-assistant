@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { hydrate } from "@/lib/store/store";
 import { Sidebar } from "../sidebar/Sidebar";
 import { BottomNav } from "./BottomNav";
@@ -20,12 +21,14 @@ const Ctx = createContext<ShellCtx>({ sidebarOpen: false, openSidebar: () => {},
 export const useShell = () => useContext(Ctx);
 
 /**
- * Persistent mobile shell: header (menu · Sparko logo · new chat), page area, bottom nav.
+ * Persistent mobile shell: header (menu · Sparko logo · new chat; Moj katalog brings its own), page area, bottom nav.
  * Lives in the root layout so state survives navigation between Domov / Sparko / Moj katalog / letak.
  */
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  // Moj katalog renders its own page header (menu · title · actions) instead of the logo header.
+  const ownsHeader = usePathname() === "/moj-katalog";
 
   useEffect(() => {
     hydrate();
@@ -100,7 +103,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <Ctx.Provider value={value}>
       <div className={styles.shell} data-keyboard={keyboardOpen || undefined}>
-        <Header />
+        {!ownsHeader && <Header />}
         <StorageWarning />
         <main className={styles.main} id="main">
           {children}

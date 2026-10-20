@@ -22,6 +22,7 @@ export type Intent =
   | "store_location"
   | "cheaper"
   | "discounts"
+  | "discount_timing"
   | "breakfast"
   | "meal"
   | "recommend"
@@ -116,6 +117,10 @@ const RE = {
   where: /\b(kje (je|so|najdem|bi nasel|v letaku|v katalogu)|v letaku|na kateri strani|katera stran|kateri strani|stran v (letaku|katalogu)|pokazi v (letaku|katalogu)|odpri (v )?(letak|katalog))\b/,
   cheaper: /\b(cenej\w*|najcenej\w*|bolj poceni|kaj je poceni|manj drag\w*|varcnej\w*)\b/,
   discounts: /\b(znizan\w*|znizanj\w*|popust\w*|akcij\w*|razprodaj\w*|prihran\w*|najbolj ugodn\w*|ugodne ponudbe)\b/,
+  // Discount timing: "Kdaj je X znižan?", "Ali bo X v akciji naslednji teden?", "Kaj bo znižano prihodnji teden?".
+  timingTopic: /\b(znizan\w*|znizanj\w*|popust\w*|akcij\w*|ceneje)\b/,
+  timingWhen: /\b(kdaj|bo|bodo)\b/,
+  timingNext: /\b(naslednj\w*|prihodnj\w*)\s+(teden|tedn\w*|katalog\w*)\b/,
   breakfast: /\b(zajtrk\w*|zajtrkoval\w*|za zjutraj)\b/,
   meal: /\b(vecerj\w*|kosil\w*|obrok\w*|recept\w*|skuham|skuhati|kuhati|kuham|pecem|speci|pripravim|pripraviti|kaj (naj |lahko |bi )?(jem|pojem|pripravim|skuham)|jed\w*)\b/,
   recommend: /\b(priporoc\w*|predlagaj\w*|predlog\w*|svetuj\w*|kaj (mi )?predlagas|podobn\w*)\b/,
@@ -212,6 +217,10 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
     if (RE.whereWord.test(folded) && (RE.inStore.test(folded) || findStoreSection(text))) return { ...base, intent: "store_location" };
     // Reply to "Kateri izdelek iščeš v trgovini?".
     if (prev && fold(prev) === fold(ASK_STORE_PRODUCT_TEXT) && folded.split(" ").length <= 4) return { ...base, intent: "store_location" };
+  }
+  // Timing / future discounts (never "kje": that is a leaflet or store question).
+  if (RE.timingTopic.test(folded) && !RE.whereWord.test(folded) && (RE.timingWhen.test(folded) || RE.timingNext.test(folded))) {
+    return { ...base, intent: "discount_timing" };
   }
   if (RE.where.test(folded)) return { ...base, intent: "where_in_leaflet" };
   // Reply to "Seveda. Kateri izdelek te zanima?": a short message naming a product is a price lookup.

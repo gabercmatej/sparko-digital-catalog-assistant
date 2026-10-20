@@ -1,13 +1,19 @@
-import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
+import { busiestPage, offerOf, pageImage, pageNum, pagesWithProducts, placementsOnPage, primary, productName, productsByPage, retailerLabel, secondary } from "./catalog-data";
 
-type Placement = { id: string; offerId: string; pdfPageIndex: number; bbox: { x: number; y: number; width: number; height: number } };
-const data = JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as {
-  offers: { id: string; productId: string }[];
-  placements: Placement[];
-};
-const offerOf = (productId: string) => data.offers.find((o) => o.productId === productId)!.id;
-const PAGE5 = ["sb-skuta-1kg", "sb-pommes-1kg", "sb-salama-400g", "sb-zrezki-500g"];
+const N = primary.pageCount;
+/** The busiest SPAR page: all product ids on it, its 0-based index and 1-based number. */
+const BUSY = busiestPage(primary);
+const BUSY_NO = BUSY.index + 1;
+const PAGE_IDS = BUSY.ids.slice(0, 4);
+const FIRST_ID = PAGE_IDS[0];
+/** Two different SPAR pages that hold products: A (earlier) and B. */
+const [PA, PB] = pagesWithProducts(primary.id);
+const A_IDS = productsByPage(primary.id).get(PA)!;
+const B_ID = productsByPage(primary.id).get(PB)![0];
+/** An INTERSPAR product with its page. */
+const IS_PAGE = pagesWithProducts(secondary.id)[0];
+const IS_ID = productsByPage(secondary.id).get(IS_PAGE)![0];
 
 /** Seed Moj katalog directly (hint already dismissed), then open `path`. */
 async function seed(page: Page, productIds: string[], path: string) {
@@ -15,7 +21,7 @@ async function seed(page: Page, productIds: string[], path: string) {
   await page.evaluate(
     (saved) =>
       localStorage.setItem(
-        "sparko:v1",
+        "sparko:v2",
         JSON.stringify({ v: 1, saved, conversations: [], activeConversationId: null, settings: { spPlus: "unset", leafletHintSeen: true } }),
       ),
     productIds.map((id, i) => ({ productId: id, offerId: offerOf(id), savedAt: 1_700_000_000_000 + i })),
@@ -62,7 +68,7 @@ for (const [w, h] of [
 ]) {
   test(`page fits whole and as large as possible at ${w}x${h} (no vertical scrolling)`, async ({ page }) => {
     await page.setViewportSize({ width: w, height: h });
-    await seed(page, [], "/letak?stran=5");
+    await seed(page, [], `/letak?stran=${BUSY_NO}`);
     await expect(stage(page).locator(":scope > img")).toBeVisible();
     await page.waitForLoadState("networkidle");
     const g = await geometry(page);
@@ -72,7 +78,7 @@ for (const [w, h] of [
     expect(g.stage.r).toBeLessThanOrEqual(g.viewport.r + 0.5);
     // Contain-fit: limited by width or by height.
     expect(Math.abs(g.stage.w - g.viewport.w) < 1 || Math.abs(g.stage.h - g.viewport.h) < 1).toBe(true);
-    expect(g.stage.w / g.stage.h).toBeCloseTo(1400 / 1900, 2);
+    expect(g.stage.w / g.stage.h).toBeCloseTo(pageImage(primary, BUSY.index).width / pageImage(primary, BUSY.index).height, 2);
     expect(g.stage.b).toBeLessThanOrEqual(g.nav.t + 0.5);
     expect(g.vScroll).toBe(false);
     expect(g.docY).toBe(0);
@@ -81,20 +87,20 @@ for (const [w, h] of [
 }
 
 test("no 'Izdelki na tej strani' list and no extra chrome above the page", async ({ page }) => {
-  await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
+  await seed(page, [FIRST_ID], `/letak?stran=${BUSY_NO}`);
   await expect(stage(page).locator(":scope > img")).toBeVisible();
   await expect(page.getByText(/Izdelki na tej strani/)).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Izdelki na tej strani" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "SPAR letak" })).toBeAttached(); // screen-reader heading only
 });
 
-test("pages flip left/right through all 38 pages in natural order", async ({ page }) => {
+test("pages flip left/right through all pages in natural order", async ({ page }) => {
   await seed(page, [], "/letak?stran=1");
   await expect(page.getByRole("button", { name: "Prejšnja stran" })).toHaveCount(0);
-  for (let n = 2; n <= 38; n++) {
+  for (let n = 2; n <= N; n++) {
     await next(page).click();
-    await expect(indicator(page)).toHaveText(new RegExp(`^${n} / 38`));
-    await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", `/catalog/pages/page-${String(n).padStart(2, "0")}.webp`);
+    await expect(indicator(page)).toHaveText(pageNum(n, primary));
+    await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(primary, n - 1).src);
   }
   await expect(next(page)).toHaveCount(0);
 });
@@ -104,35 +110,36 @@ test("'Moje strani' starts OFF on a fresh open, also with saved items; switching
   await page.goto("/letak");
   const toggle = page.getByTestId("filter-toggle");
   await expect(toggle).toHaveAttribute("aria-checked", "false");
-  await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${N}$`));
 
   // Moj katalog already has items: its leaflet button must NOT switch the filter on.
-  await seed(page, ["sb-skuta-1kg", "sb-pommes-1kg", "jagode-250g"], "/moj-katalog");
-  await page.getByRole("link", { name: /Odpri SPAR letak/ }).click();
-  await expect(page).toHaveURL(/\/letak\?stran=5$/);
+  await seed(page, [...A_IDS, B_ID], "/moj-katalog");
+  await page.getByRole("link", { name: "Pokaži na letaku" }).click();
+  await expect(page).toHaveURL(new RegExp(`/letak\\?stran=${PA + 1}$`));
   await expect(toggle).toHaveAttribute("aria-checked", "false");
-  await expect(indicator(page)).toHaveText(/^5 \/ 38$/);
-  await expect(box(page, "sb-skuta-1kg")).toHaveAttribute("data-saved", "true");
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N}$`));
+  await expect(box(page, A_IDS[0])).toHaveAttribute("data-saved", "true");
   await next(page).click();
-  await expect(indicator(page)).toHaveText(/^6 \/ 38$/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 2} / ${N}$`));
 
   // Plain /letak with saved items: still off.
   await page.goto("/letak");
   await expect(toggle).toHaveAttribute("aria-checked", "false");
 
-  // Manually on → only saved pages (5, 10).
+  // Manually on → only the saved pages (A, B).
+  const savedPages = pagesWithProducts(primary.id).filter((i) => i === PA || i === PB);
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-checked", "true");
-  await expect(indicator(page)).toHaveText(/^5 \/ 38 · moje 1\/2/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N} · moje 1/${savedPages.length}`));
   await next(page).click();
-  await expect(indicator(page)).toHaveText(/^10 \/ 38 · moje 2\/2/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PB + 1} / ${N} · moje 2/${savedPages.length}`));
   await expect(next(page)).toHaveCount(0);
 });
 
 test("fresh open: 'Moje strani' helper microcopy and the first-open swipe hint (passes clicks, auto-hides)", async ({ page }) => {
   await page.goto("/letak");
   const toggle = page.getByTestId("filter-toggle");
-  await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${N}$`));
   await expect(toggle).toHaveAttribute("aria-checked", "false");
 
   const helper = page.getByTestId("filter-helper");
@@ -192,7 +199,7 @@ test("fresh open: 'Moje strani' helper microcopy and the first-open swipe hint (
   await expect(hint).toBeVisible();
   expect(await hint.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
   await expect(hint).toHaveCount(0, { timeout: 2500 });
-  await expect(indicator(page)).toHaveText(/^1 \/ 38$/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${N}$`));
 });
 
 for (const width of [360, 390, 430, 1280]) {
@@ -227,7 +234,7 @@ for (const width of [360, 390, 430, 1280]) {
 }
 
 test("swipe hint hides immediately on interaction and shows only once per session", async ({ page }) => {
-  await page.goto("/letak?stran=5");
+  await page.goto(`/letak?stran=${BUSY_NO}`);
   const hint = page.getByTestId("swipe-hint");
   await expect(hint).toBeVisible();
   // Pointer interaction on the page viewport.
@@ -242,10 +249,10 @@ test("swipe hint hides immediately on interaction and shows only once per sessio
 
   // Paging and revisiting in the same session: no hint again.
   await next(page).click();
-  await expect(indicator(page)).toHaveText(/^6 \/ 38/);
-  await expect(page).toHaveURL(/stran=6/);
+  await expect(indicator(page)).toHaveText(pageNum(BUSY_NO + 1, primary));
+  await expect(page).toHaveURL(new RegExp(`stran=${BUSY_NO + 1}`));
   await page.reload();
-  await expect(indicator(page)).toHaveText(/^6 \/ 38/);
+  await expect(indicator(page)).toHaveText(pageNum(BUSY_NO + 1, primary));
   await page.waitForTimeout(1500);
   await expect(hint).toHaveCount(0);
   await page.goto("/");
@@ -260,17 +267,17 @@ test("swipe hint: the 'Naslednja stran' arrow passes through and dismisses it ri
   await expect(hint).toBeVisible();
   await next(page).click();
   await expect(hint).toHaveCount(0, { timeout: 300 });
-  await expect(indicator(page)).toHaveText(/^2 \/ 38/);
+  await expect(indicator(page)).toHaveText(pageNum(2, primary));
 });
 
 test("Moj katalog filter: off = all pages, on = only saved pages (deduped, in order), live updates", async ({ page }) => {
-  // skuta + pommes share page 5, jagode is on page 10.
-  await seed(page, ["sb-skuta-1kg", "sb-pommes-1kg", "jagode-250g"], "/letak?moji=1");
+  // Several products on page A, one on page B.
+  await seed(page, [...A_IDS, B_ID], "/letak?moji=1");
   const toggle = page.getByTestId("filter-toggle");
   await expect(toggle).toHaveAttribute("aria-checked", "true");
-  await expect(indicator(page)).toHaveText(/^5 \/ 38 · moje 1\/2/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N} · moje 1/2`));
   await next(page).click();
-  await expect(indicator(page)).toHaveText(/^10 \/ 38 · moje 2\/2/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PB + 1} / ${N} · moje 2/2`));
   await expect(next(page)).toHaveCount(0);
 
   // Picker lists exactly the two saved pages.
@@ -278,48 +285,51 @@ test("Moj katalog filter: off = all pages, on = only saved pages (deduped, in or
   await expect(page.getByRole("dialog").getByRole("listitem")).toHaveCount(2);
   await page.keyboard.press("Escape");
 
-  // Remove jagode from the leaflet → the page now has no saved items; filter keeps only page 5.
-  await box(page, "jagode-250g").click();
+  // Remove B's product from the leaflet → that page has no saved items; filter keeps only page A.
+  await box(page, B_ID).click();
   await page.getByRole("dialog").getByRole("button", { name: "Odstrani" }).click();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("status").filter({ hasText: "Na tej strani ni več izdelkov" })).toBeVisible();
   await page.getByRole("button", { name: "Prejšnja stran" }).click();
-  await expect(indicator(page)).toHaveText(/^5 \/ 38 · moje 1\/1/);
+  await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N} · moje 1/1`));
 
-  // Filter off → all 38 pages again.
+  // Filter off → all pages again.
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-checked", "false");
   await next(page).click();
-  await expect(indicator(page)).toHaveText(/^6 \/ 38/);
+  await expect(indicator(page)).toHaveText(pageNum(PA + 2, primary));
 });
 
 test("all saved products on one page are highlighted together; add/remove updates immediately; reload keeps them", async ({ page }) => {
-  await seed(page, PAGE5.slice(0, 3), "/letak?stran=5");
+  const k = PAGE_IDS.length;
+  const initial = PAGE_IDS.slice(0, k - 1);
+  const extra = PAGE_IDS[k - 1];
+  await seed(page, initial, `/letak?stran=${BUSY_NO}`);
   const saved = stage(page).locator('[data-saved="true"]');
-  await expect(saved).toHaveCount(3);
-  for (const id of PAGE5.slice(0, 3)) await expect(box(page, id)).toContainText("V Mojem katalogu");
+  await expect(saved).toHaveCount(k - 1);
+  for (const id of initial) await expect(box(page, id)).toContainText("V Mojem katalogu");
 
-  // Add the fourth from the leaflet.
-  await box(page, "sb-zrezki-500g").click();
+  // Add the last one from the leaflet.
+  await box(page, extra).click();
   await page.getByRole("dialog").getByRole("button", { name: "Dodaj v Moj katalog" }).click();
   await page.keyboard.press("Escape");
-  await expect(saved).toHaveCount(4);
+  await expect(saved).toHaveCount(k);
 
   // Remove one.
-  await box(page, "sb-salama-400g").click();
+  await box(page, initial[0]).click();
   await page.getByRole("dialog").getByRole("button", { name: "Odstrani" }).click();
   await page.keyboard.press("Escape");
-  await expect(box(page, "sb-salama-400g")).not.toHaveAttribute("data-saved", "true");
-  await expect(saved).toHaveCount(3);
+  await expect(box(page, initial[0])).not.toHaveAttribute("data-saved", "true");
+  await expect(saved).toHaveCount(k - 1);
 
   await page.reload();
-  await expect(saved).toHaveCount(3);
-  await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("3");
+  await expect(saved).toHaveCount(k - 1);
+  await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText(String(k - 1));
 });
 
 test("saved overlay: fixed size, only the golden light pulses (A bright ↔ B calm, 2 s); no scaling, no orbs", async ({ page }) => {
-  await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
-  const host = box(page, "sb-skuta-1kg");
+  await seed(page, [FIRST_ID], `/letak?stran=${BUSY_NO}`);
+  const host = box(page, FIRST_ID);
   await expect(host.locator("[data-saved-ring]")).toBeAttached();
   await expect(host).toContainText("V Mojem katalogu");
   // The old orbiting lights are gone.
@@ -405,13 +415,15 @@ test("saved overlay: fixed size, only the golden light pulses (A bright ↔ B ca
 });
 
 test("only saved products animate; unsaved neighbours stay untouched", async ({ page }) => {
-  await seed(page, ["sb-salama-400g", "sb-zrezki-500g"], "/letak?stran=5");
-  for (const id of ["sb-salama-400g", "sb-zrezki-500g"]) {
+  const savedIds = PAGE_IDS.slice(-2);
+  const unsavedIds = PAGE_IDS.slice(0, -2);
+  await seed(page, savedIds, `/letak?stran=${BUSY_NO}`);
+  for (const id of savedIds) {
     await expect(box(page, id).locator("[data-saved-box]")).toHaveCount(1);
     await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("animation-name", /savedGlow/);
     await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("transform", "none");
   }
-  for (const id of ["sb-skuta-1kg", "sb-pommes-1kg"]) {
+  for (const id of unsavedIds) {
     const b = box(page, id);
     await expect(b).not.toHaveAttribute("data-saved", "true");
     await expect(b.locator("[data-saved-box], [data-saved-ring], [data-gold-overlay], [data-saved-crop]")).toHaveCount(0);
@@ -423,8 +435,8 @@ test("only saved products animate; unsaved neighbours stay untouched", async ({ 
 
 test("reduced motion: saved overlay is the static gold state A (no pulse, no transform)", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await seed(page, ["sb-skuta-1kg"], "/letak?stran=5");
-  const host = box(page, "sb-skuta-1kg");
+  await seed(page, [FIRST_ID], `/letak?stran=${BUSY_NO}`);
+  const host = box(page, FIRST_ID);
   const boxEl = host.locator("[data-saved-box]");
   await expect(host.locator("[data-saved-ring]")).toBeVisible();
   await expect(boxEl).toHaveCSS("animation-name", "none");
@@ -437,23 +449,90 @@ test("reduced motion: saved overlay is the static gold state A (no pulse, no tra
   await expect(host).toContainText("V Mojem katalogu");
 });
 
-test("product → 'Poglej v SPAR katalogu' opens the right page, emphasises the product, then pages freely", async ({ page }) => {
+test("product → 'Poglej v ... katalogu' opens the right page, emphasises the product, then pages freely", async ({ page }) => {
   await seed(page, [], "/");
-  await page.getByPlaceholder("Vprašaj Sparka o katalogu …").fill("Koliko stane skuta?");
+  await page.getByPlaceholder("Vprašaj Sparka o katalogu …").fill(`Koliko stane ${productName(FIRST_ID).toLowerCase()}?`);
   await page.getByPlaceholder("Vprašaj Sparka o katalogu …").press("Enter");
-  const card = page.getByRole("log", { name: "Pogovor s Sparkom" }).locator('[data-product-card="sb-skuta-1kg"]').first();
-  await card.getByRole("button", { name: "Poglej v SPAR katalogu" }).click();
-  await expect(page).toHaveURL(/\/letak\?stran=5/);
-  await expect(indicator(page)).toHaveText(/^5 \/ 38/);
-  const ring = box(page, "sb-skuta-1kg").locator("[data-focus-ring]");
+  const card = page.getByRole("log", { name: "Pogovor s Sparkom" }).locator(`[data-product-card="${FIRST_ID}"]`).first();
+  await card.getByRole("button", { name: /^Poglej v .* katalogu/ }).click();
+  await expect(page).toHaveURL(new RegExp(`/letak\\?stran=${BUSY_NO}`));
+  await expect(indicator(page)).toHaveText(pageNum(BUSY_NO, primary));
+  const ring = box(page, FIRST_ID).locator("[data-focus-ring]");
   await expect.poll(() => ring.evaluate((e) => e.getAnimations().length)).toBeGreaterThan(0);
   await next(page).click();
-  await expect(indicator(page)).toHaveText(/^6 \/ 38/);
+  await expect(indicator(page)).toHaveText(pageNum(BUSY_NO + 1, primary));
+});
+
+// ---------------------------------------------------------------- multi-catalog
+
+const switchTo = (page: Page, label: string) => page.getByRole("button", { name: label, exact: true });
+const SECONDARY_LABEL = retailerLabel(secondary);
+
+test("INTERSPAR deep link opens the INTERSPAR page with the saved highlight and the product glow", async ({ page }) => {
+  await seed(page, [IS_ID], `/letak?katalog=${secondary.id}&stran=${IS_PAGE + 1}&izdelek=${IS_ID}`);
+  await expect(switchTo(page, SECONDARY_LABEL)).toHaveAttribute("aria-pressed", "true");
+  await expect(switchTo(page, "SPAR")).toHaveAttribute("aria-pressed", "false");
+  await expect(indicator(page)).toHaveText(pageNum(IS_PAGE + 1, secondary));
+  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(secondary, IS_PAGE).src);
+  await expect(page.getByRole("heading", { name: `${SECONDARY_LABEL} letak` })).toBeAttached();
+  await expect(box(page, IS_ID)).toHaveAttribute("data-saved", "true");
+  await expect(box(page, IS_ID)).toContainText("V Mojem katalogu");
+  await expect.poll(() => box(page, IS_ID).locator("[data-focus-ring]").evaluate((e) => e.getAnimations().length)).toBeGreaterThan(0);
+  // Only this catalog's placements are rendered.
+  await expect(stage(page).locator("[data-placement-id]")).toHaveCount(placementsOnPage(secondary, IS_PAGE).length);
+});
+
+test("the product wins over a conflicting katalog parameter; unknown katalog falls back to SPAR", async ({ page }) => {
+  await seed(page, [], `/letak?katalog=${primary.id}&izdelek=${IS_ID}`);
+  await expect(switchTo(page, SECONDARY_LABEL)).toHaveAttribute("aria-pressed", "true");
+  await expect(indicator(page)).toHaveText(pageNum(IS_PAGE + 1, secondary));
+  await page.goto("/letak?katalog=nope");
+  await expect(switchTo(page, "SPAR")).toHaveAttribute("aria-pressed", "true");
+  await expect(indicator(page)).toHaveText(pageNum(1, primary));
+});
+
+test("catalog switch: page 1 of the other catalog, URL follows, switching back drops the parameter", async ({ page }) => {
+  await seed(page, [], `/letak?stran=${BUSY_NO}`);
+  await switchTo(page, SECONDARY_LABEL).click();
+  await expect(indicator(page)).toHaveText(pageNum(1, secondary));
+  await expect(page).toHaveURL(new RegExp(`katalog=${secondary.id}&stran=1`));
+  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(secondary, 0).src);
+  await next(page).click();
+  await expect(indicator(page)).toHaveText(pageNum(2, secondary));
+  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(secondary, 1).src);
+  await page.getByRole("button", { name: /Izberi stran/ }).click();
+  await expect(page.getByRole("dialog").getByRole("listitem")).toHaveCount(secondary.pageCount);
+  await page.keyboard.press("Escape");
+  await switchTo(page, "SPAR").click();
+  await expect(indicator(page)).toHaveText(pageNum(1, primary));
+  await expect(page).not.toHaveURL(/katalog=/);
+  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(primary, 0).src);
+});
+
+test("'Moje strani' is per catalog and survives a catalog switch", async ({ page }) => {
+  await seed(page, [FIRST_ID, IS_ID], "/letak?moji=1");
+  const toggle = page.getByTestId("filter-toggle");
+  await expect(toggle).toHaveAttribute("aria-checked", "true");
+  await expect(indicator(page)).toHaveText(new RegExp(`^${BUSY_NO} / ${N} · moje 1/1`));
+  await switchTo(page, SECONDARY_LABEL).click();
+  await expect(toggle).toHaveAttribute("aria-checked", "true");
+  await expect(indicator(page)).toHaveText(new RegExp(`^${IS_PAGE + 1} / ${secondary.pageCount} · moje 1/1`));
+  await expect(page).toHaveURL(/moji=1/);
+  await expect(box(page, IS_ID)).toHaveAttribute("data-saved", "true");
+});
+
+test("'Moje strani' in a catalog without saved products falls back to all pages with a notice", async ({ page }) => {
+  await seed(page, [FIRST_ID], "/letak?moji=1");
+  await expect(page.getByTestId("filter-toggle")).toHaveAttribute("aria-checked", "true");
+  await switchTo(page, SECONDARY_LABEL).click();
+  await expect(page.getByTestId("filter-toggle")).toHaveAttribute("aria-checked", "false");
+  await expect(page.getByRole("status").filter({ hasText: `V katalogu ${SECONDARY_LABEL} nimaš izdelkov` })).toBeVisible();
+  await expect(indicator(page)).toHaveText(pageNum(1, secondary));
 });
 
 test("overlays stay aligned with the page image across responsive sizes", async ({ page }) => {
-  const pls = data.placements.filter((p) => p.pdfPageIndex === 4);
-  await seed(page, PAGE5, "/letak?stran=5");
+  const pls = placementsOnPage(primary, BUSY.index);
+  await seed(page, PAGE_IDS, `/letak?stran=${BUSY_NO}`);
   for (const [w, h] of [
     [360, 640],
     [390, 844],

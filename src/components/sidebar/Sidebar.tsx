@@ -12,7 +12,7 @@ import styles from "./Sidebar.module.css";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-/** Slide-in navigation panel: new chat, Moj katalog, SPAR letak, history, examples, settings. */
+/** Slide-in navigation panel: new chat, Moj katalog, digital leaflets, history, examples, settings. */
 export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const store = useStore();
   const router = useRouter();
@@ -116,7 +116,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                 </Link>
                 <Link href="/letak" className={styles.navItem} onClick={onClose}>
                   <Icon name="leaflet" size={21} />
-                  <span>SPAR letak</span>
+                  <span>Digitalni letaki</span>
                 </Link>
               </nav>
 

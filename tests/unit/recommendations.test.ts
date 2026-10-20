@@ -12,8 +12,13 @@ import {
 } from "@/lib/recommendations";
 
 const allIds = products.map((p) => p.id);
-const SKUTA = "sb-skuta-1kg";
-const POMMES = "sb-pommes-1kg";
+// Two products of the same named line in the current data (derived, so the test survives data swaps).
+const LINE_PAIR = (() => {
+  const byLine = new Map<string, string[]>();
+  for (const p of products) if (p.line) byLine.set(p.line, [...(byLine.get(p.line) ?? []), p.id]);
+  const [line, ids] = [...byLine.entries()].find(([l, ids]) => l === "S-BUDGET" && ids.length >= 2) ?? [...byLine.entries()].find(([, ids]) => ids.length >= 2)!;
+  return { line, saved: ids[0], other: ids[1] };
+})();
 
 /** Every saved-set we probe: each single product, and a few pairs. */
 const probes: string[][] = [...allIds.map((id) => [id]), allIds.slice(0, 2), allIds.slice(1, 3), allIds.slice(-2)];
@@ -77,13 +82,14 @@ describe("getRecommendations", () => {
     }
   });
 
-  it("uses the S-BUDGET line reason for the seed products", () => {
-    // Use the full ranked list: with a larger dataset pommes may fall outside the top 6.
-    const recs = getRecommendations([SKUTA], { limit: 1000 });
-    const pommes = recs.find((r) => r.productId === POMMES);
-    expect(pommes).toBeDefined();
-    expect(pommes!.reason).toBe("Tudi iz linije S-BUDGET");
-    expect(pommes!.signals[0].kind).toBe("line");
+  it("uses the line reason for two products of the same line (S-BUDGET)", () => {
+    // Use the full ranked list: the sibling may fall outside the top 6.
+    expect(LINE_PAIR.line).toBe("S-BUDGET");
+    const recs = getRecommendations([LINE_PAIR.saved], { limit: 1000 });
+    const sibling = recs.find((r) => r.productId === LINE_PAIR.other);
+    expect(sibling).toBeDefined();
+    expect(sibling!.reason).toBe(`Tudi iz linije ${LINE_PAIR.line}`);
+    expect(sibling!.signals[0].kind).toBe("line");
   });
 
   it("lets a +3 line match dominate over category-only matches", () => {
@@ -148,21 +154,21 @@ describe("getRecommendations", () => {
   });
 
   it("fillEditorial tops up with flagged editorial picks only", () => {
-    const recs = getRecommendations([SKUTA], { fillEditorial: true });
+    const recs = getRecommendations([LINE_PAIR.saved], { fillEditorial: true });
     expect(new Set(recs.map((r) => r.productId)).size).toBe(recs.length);
     for (const r of recs) {
-      expect(r.productId).not.toBe(SKUTA);
+      expect(r.productId).not.toBe(LINE_PAIR.saved);
       if (r.editorial) expect(r.reason).toBe(EDITORIAL_REASON);
     }
   });
 
   it("is pure: does not mutate its inputs or the catalog", () => {
-    const saved = Object.freeze([SKUTA]) as unknown as string[];
-    const exclude = Object.freeze([POMMES]) as unknown as string[];
+    const saved = Object.freeze([LINE_PAIR.saved]) as unknown as string[];
+    const exclude = Object.freeze([LINE_PAIR.other]) as unknown as string[];
     const before = JSON.stringify(products);
     getRecommendations(saved, { excludeIds: exclude });
     getRecommendations([]);
     expect(JSON.stringify(products)).toBe(before);
-    expect(saved).toEqual([SKUTA]);
+    expect(saved).toEqual([LINE_PAIR.saved]);
   });
 });

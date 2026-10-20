@@ -1,57 +1,85 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DEMO_LABEL, getOffer, getProduct, placements } from "@/lib/catalog";
-import { categoryLabel, getRecommendations, type Recommendation } from "@/lib/recommendations";
-import { removeProduct, saveProduct, useStore } from "@/lib/store/store";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { catalogs, DEMO_LABEL, formatPrice, getOffer, getPrimaryOffer, getProduct, placements, PRICE_UNIT_LABEL, RETAILER_LABEL, retailerOf } from "@/lib/catalog";
+import { getRecommendations, type Recommendation } from "@/lib/recommendations";
+import { removeProduct, saveProduct, showToast, useStore } from "@/lib/store/store";
 import type { SavedItem } from "@/lib/types";
 import { ProductCard } from "../product/ProductCard";
-import { ProductTile } from "../product/ProductTile";
+import { ProductMiniCard } from "../product/ProductMiniCard";
 import { Icon } from "../ui/Icon";
+import { PageHeader } from "../shell/Header";
 import { leafletQuery, pagesWithProducts } from "../leaflet/pages";
+import { ListMenu } from "./ListMenu";
 import { ProductSheet } from "./ProductSheet";
+import { SavedRow } from "./SavedRow";
 import styles from "./CollectionView.module.css";
 
-const GROUP_THRESHOLD = 6;
 const FLASH_MS = 2200;
 const ITEM_PREFIX = "izdelek-";
+
+type Tab = "moji" | "priporocila";
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
-/** Saved items, newest first; grouped by primary category (groups ordered by their newest item) when many. */
-function groupSaved(items: SavedItem[]): { key: string; label: string | null; items: SavedItem[] }[] {
-  const sorted = [...items].filter((i) => getProduct(i.productId)).sort((a, b) => b.savedAt - a.savedAt || a.productId.localeCompare(b.productId));
-  if (sorted.length <= GROUP_THRESHOLD) return [{ key: "all", label: null, items: sorted }];
-  const groups = new Map<string, SavedItem[]>();
-  for (const it of sorted) {
-    const cat = getProduct(it.productId)!.categories[0] ?? "drugo";
-    const list = groups.get(cat) ?? [];
-    list.push(it);
-    groups.set(cat, list);
+/** Saved items, newest first (ties by id), skipping products no longer in the catalog data. */
+function sortSaved(items: SavedItem[]): SavedItem[] {
+  return [...items].filter((i) => getProduct(i.productId)).sort((a, b) => b.savedAt - a.savedAt || a.productId.localeCompare(b.productId));
+}
+
+/** Leaflet link at the first page (first catalog that has one) holding a saved product; /letak when none. */
+function firstSavedLeafletHref(productIds: string[]): string {
+  for (const c of catalogs) {
+    const pages = pagesWithProducts(
+      productIds,
+      placements.filter((pl) => pl.catalogId === c.id),
+      (offerId) => getOffer(offerId)?.productId,
+    );
+    if (pages.length) return `/letak${leafletQuery(pages[0], { catalogId: c.id })}`;
   }
-  return [...groups.entries()].map(([cat, list]) => {
-    const label = categoryLabel(cat);
-    return { key: cat, label: label.charAt(0).toLocaleUpperCase("sl") + label.slice(1), items: list };
+  return "/letak";
+}
+
+/** Plain-text list for sharing: "Ime, pakiranje – cena (SPAR/INTERSPAR)". */
+function shareText(items: SavedItem[]): string {
+  const lines = items.flatMap((it) => {
+    const p = getProduct(it.productId);
+    const o = getPrimaryOffer(it.productId);
+    const r = retailerOf(it.productId);
+    if (!p || !o) return [];
+    const unit = PRICE_UNIT_LABEL[o.priceUnit];
+    return [`${p.name}, ${p.packSize} – ${formatPrice(o.priceCents)}${unit ? " " + unit : ""}${r ? ` (${RETAILER_LABEL[r]})` : ""}`];
   });
+  return ["Moj katalog (Sparko)", ...lines.map((l) => `• ${l}`)].join("\n");
 }
 
 export function CollectionView() {
   const store = useStore();
   const { hydrated, saved } = store;
+  const [tab, setTab] = useState<Tab>("moji");
   const [sheetId, setSheetId] = useState<string | null>(null);
   const [flashId, setFlashId] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
   const flashTimer = useRef<number | undefined>(undefined);
+  const uid = useId();
+  const tabId = (t: Tab) => `${uid}-tab-${t}`;
+  const panelId = `${uid}-panel`;
 
   const savedKey = saved.map((s) => s.productId).join("|");
-  const groups = useMemo(() => groupSaved(saved), [saved]);
-  const count = groups.reduce((n, g) => n + g.items.length, 0);
+  const items = useMemo(() => sortSaved(saved), [saved]);
+  const count = items.length;
   const recs: Recommendation[] = useMemo(() => {
     const ids = savedKey ? savedKey.split("|") : [];
     return getRecommendations(ids, { fillEditorial: true });
   }, [savedKey]);
   const personalised = count > 0;
+
+  // The removal mode only makes sense with something to remove.
+  const editing = editMode && count > 0;
+  if (editMode && hydrated && count === 0) setEditMode(false);
 
   const flash = useCallback((productId: string, opts: { scroll?: boolean } = {}) => {
     window.clearTimeout(flashTimer.current);
@@ -70,7 +98,10 @@ export function CollectionView() {
     if (!hydrated) return;
     const fromHash = () => {
       const h = decodeURIComponent(window.location.hash.slice(1));
-      if (h.startsWith(ITEM_PREFIX)) flash(h.slice(ITEM_PREFIX.length));
+      if (h.startsWith(ITEM_PREFIX)) {
+        setTab("moji");
+        flash(h.slice(ITEM_PREFIX.length));
+      }
     };
     fromHash();
     window.addEventListener("hashchange", fromHash);
@@ -91,113 +122,199 @@ export function CollectionView() {
       e.preventDefault();
       const id = decodeURIComponent(href.slice(idx + 1 + ITEM_PREFIX.length));
       setSheetId(null);
+      setTab("moji");
       flash(id);
     }
   };
 
-  // Open the full leaflet (the "Moje strani" filter stays off; the user switches it on) at the first page
-  // that holds a saved product, so the golden highlight is in view straight away.
-  const firstSavedPage = useMemo(
-    () => pagesWithProducts(savedKey ? savedKey.split("|") : [], placements, (offerId) => getOffer(offerId)?.productId)[0],
-    [savedKey],
-  );
-  const leafletHref = firstSavedPage === undefined ? "/letak" : `/letak${leafletQuery(firstSavedPage)}`;
+  const addRecommendation = (productId: string) => {
+    if (saveProduct(productId) === "saved" && tab === "moji") flash(productId, { scroll: false });
+  };
+
+  const leafletHref = useMemo(() => firstSavedLeafletHref(savedKey ? savedKey.split("|") : []), [savedKey]);
+
+  const share = async () => {
+    if (count === 0) return;
+    const text = shareText(items);
+    try {
+      if (typeof navigator.share === "function") {
+        await navigator.share({ title: "Moj katalog", text });
+        return;
+      }
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return; // user closed the share sheet
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast("Seznam je kopiran v odložišče.");
+    } catch {
+      showToast("Seznama ni bilo mogoče deliti.");
+    }
+  };
+
+  // Empties the list in one step; the toast offers to bring everything back.
+  const clearAll = () => {
+    const snapshot = [...saved];
+    if (snapshot.length === 0) return;
+    for (const it of snapshot) removeProduct(it.productId, { toast: false });
+    showToast("Seznam je izpraznjen.", {
+      label: "Razveljavi",
+      run: () => {
+        for (const it of snapshot) saveProduct(it.productId, { toast: false, savedAt: it.savedAt });
+      },
+    });
+  };
+
+  const onTabKey = (e: React.KeyboardEvent) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    const next: Tab = tab === "moji" ? "priporocila" : "moji";
+    setTab(next);
+    document.getElementById(tabId(next))?.focus();
+  };
+
+  const recTitle = personalised ? "Priporočila zate iz kataloga" : "Ideje iz kataloga";
+  const infoText = personalised ? "Glede na tvoj izbor. Dodaš jih sam, ko ti ustrezajo." : "Uredniški izbor, ki ni prilagojen tebi.";
 
   return (
     <div className={styles.root}>
-      <div className={`page-scroll ${styles.scroll}`}>
-        <header className={`page-pad ${styles.header}`}>
-          <h1 className={styles.title}>Moj katalog</h1>
-          <p className={styles.subtitle}>Tvoj izbor. Ideje zate.</p>
-          <span className={`demo-label ${styles.demo}`}>{DEMO_LABEL}</span>
-        </header>
-
-        {!hydrated ? (
-          <div className={styles.loading} aria-busy="true" />
+      <PageHeader title="Moj katalog">
+        {editing ? (
+          <button type="button" className={styles.doneBtn} onClick={() => setEditMode(false)}>
+            Končano
+          </button>
         ) : (
-          <>
-            <section className={`page-pad ${styles.section}`} aria-labelledby="tvoji-izdelki">
-              <h2 id="tvoji-izdelki" className={styles.h2}>
-                Tvoji izdelki <span className={styles.dot}>·</span> <span className={styles.count}>{count}</span>
-              </h2>
-
-              {count === 0 ? (
-                <div className={styles.empty}>
-                  <p>Izberi prvi izdelek. Sparko ti bo nato predlagal še nekaj idej.</p>
-                  <Link href="/" className="btn btn-primary">
-                    <Icon name="chat" size={18} />
-                    Vprašaj Sparka
-                  </Link>
-                </div>
-              ) : (
-                groups.map((g) => (
-                  <div key={g.key} className={styles.group}>
-                    {g.label && <h3 className={styles.h3}>{g.label}</h3>}
-                    <ul className={styles.grid}>
-                      {g.items.map((it) => {
-                        const p = getProduct(it.productId)!;
-                        return (
-                          <li key={it.productId} id={ITEM_PREFIX + it.productId} className={styles.item} data-flash={flashId === it.productId || undefined}>
-                            <div className={styles.tileWrap}>
-                              <ProductTile productId={it.productId} size="grid" onSelect={() => setSheetId(it.productId)} />
-                            </div>
-                            <div className={styles.itemRow}>
-                              <button type="button" className={`btn btn-ghost btn-sm ${styles.remove}`} onClick={() => removeProduct(it.productId)}>
-                                Odstrani<span className="sr-only">: {p.name}</span>
-                              </button>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))
-              )}
-            </section>
-
-            {recs.length > 0 && (
-              <section className={`page-pad ${styles.recoBand}`} aria-labelledby="priporoceno">
-                <h2 id="priporoceno" className={styles.h2}>
-                  {personalised ? "Priporočeno zate" : "Ideje iz demo kataloga"}
-                </h2>
-                <p className={styles.sectionNote}>
-                  {personalised ? "Glede na tvoj izbor. Dodaš jih sam, ko ti ustrezajo." : "Uredniški izbor, ki ni prilagojen tebi."}
-                </p>
-                <ul className={styles.grid}>
-                  {recs.map((r) => {
-                    const p = getProduct(r.productId)!;
-                    return (
-                      <li key={r.productId} className={styles.recoItem} data-editorial={r.editorial || undefined}>
-                        <ProductTile productId={r.productId} size="grid" onSelect={() => setSheetId(r.productId)} />
-                        {(personalised || !r.editorial) && <p className={styles.reason}>{r.reason}</p>}
-                        <button
-                          type="button"
-                          className={`btn btn-secondary btn-sm btn-block ${styles.add}`}
-                          onClick={() => {
-                            if (saveProduct(r.productId) === "saved") flash(r.productId, { scroll: false });
-                          }}
-                        >
-                          <span className={styles.addLabel}>
-                            <Icon name="plus" size={15} strokeWidth={2.4} className={styles.addIcon} />
-                            Dodaj v Moj katalog<span className="sr-only">: {p.name}</span>
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            )}
-          </>
+          <button type="button" className="icon-btn" onClick={() => setEditMode(true)} disabled={!hydrated || count === 0} aria-label="Odstrani izdelke">
+            <Icon name="trash" size={22} />
+          </button>
         )}
+        {/* While removing, "Končano" is the only header action (keeps the centred title clear on narrow phones). */}
+        {!editing && (
+          <ListMenu
+            disabled={!hydrated || count === 0}
+            items={[
+              { label: "Deli seznam", icon: "share", onSelect: share },
+              { label: "Izprazni seznam", icon: "trash", danger: true, onSelect: clearAll },
+            ]}
+          />
+        )}
+      </PageHeader>
+
+      <div className={styles.tabs} role="tablist" aria-label="Moj katalog" onKeyDown={onTabKey}>
+        <button type="button" role="tab" id={tabId("moji")} aria-selected={tab === "moji"} aria-controls={panelId} tabIndex={tab === "moji" ? 0 : -1} className={styles.tab} onClick={() => setTab("moji")}>
+          Moji izdelki{hydrated ? ` (${count})` : ""}
+        </button>
+        <button type="button" role="tab" id={tabId("priporocila")} aria-selected={tab === "priporocila"} aria-controls={panelId} tabIndex={tab === "priporocila" ? 0 : -1} className={styles.tab} onClick={() => setTab("priporocila")}>
+          Priporočila zate
+        </button>
       </div>
 
-      <div className={styles.dock}>
-        <Link href={leafletHref} className={`btn btn-primary btn-block ${styles.leafletBtn}`}>
-          <Icon name="leaflet" size={20} />
-          <span>Odpri SPAR letak</span>
-          <Icon name="arrow-right" size={18} />
-        </Link>
+      <div className={`page-scroll ${styles.scroll}`}>
+        <div className={styles.body} role="tabpanel" id={panelId} aria-labelledby={tabId(tab)}>
+          {!hydrated ? (
+            <div className={styles.loading} aria-busy="true" />
+          ) : tab === "moji" ? (
+            <>
+              {count > 0 && (
+                <div className={`page-pad ${styles.actions}`}>
+                  <Link href={leafletHref} className={`btn btn-secondary ${styles.action}`}>
+                    <Icon name="leaflet" size={19} />
+                    Pokaži na letaku
+                  </Link>
+                  <button type="button" className={`btn btn-secondary ${styles.action}`} onClick={share}>
+                    <Icon name="share" size={19} />
+                    Deli seznam
+                  </button>
+                </div>
+              )}
+
+              <section className={`page-pad ${styles.listArea}`} aria-label="Moji izdelki">
+                {count === 0 ? (
+                  <div className={styles.empty}>
+                    <span className={styles.emptyIcon} aria-hidden="true">
+                      <Icon name="list" size={26} />
+                    </span>
+                    <p className={styles.emptyTitle}>Tvoj katalog je še prazen</p>
+                    <p className={styles.emptyText}>Izberi prvi izdelek, Sparko pa ti bo predlagal še nekaj idej.</p>
+                    <div className={styles.emptyCtas}>
+                      <Link href="/" className="btn btn-primary btn-sm">
+                        <Icon name="chat" size={17} />
+                        Vprašaj Sparka
+                      </Link>
+                      <Link href="/domov" className="btn btn-secondary btn-sm">
+                        Odpri katalog
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {editing && <p className={styles.editHint}>Tapni rdeči minus ob izdelku, ki ga želiš odstraniti.</p>}
+                    <ul className={styles.rows}>
+                      {items.map((it) => (
+                        <SavedRow
+                          key={it.productId}
+                          productId={it.productId}
+                          id={ITEM_PREFIX + it.productId}
+                          flash={flashId === it.productId}
+                          editing={editing}
+                          onOpen={() => setSheetId(it.productId)}
+                          onRemove={() => removeProduct(it.productId)}
+                        />
+                      ))}
+                    </ul>
+                    <p className={`demo-label ${styles.demo}`}>{DEMO_LABEL}</p>
+                  </>
+                )}
+              </section>
+
+              {recs.length > 0 && (
+                <section className={`page-pad ${styles.band}`} aria-labelledby={`${uid}-reco`}>
+                  <div className={styles.bandHead}>
+                    <h2 id={`${uid}-reco`} className={styles.bandTitle}>
+                      {recTitle}
+                      <button type="button" className={styles.infoBtn} aria-expanded={infoOpen} aria-label="Zakaj ta priporočila?" onClick={() => setInfoOpen((o) => !o)}>
+                        <Icon name="info" size={16} />
+                      </button>
+                    </h2>
+                    <button type="button" className={styles.seeAll} onClick={() => setTab("priporocila")}>
+                      Poglej vse
+                      <Icon name="arrow-right" size={16} strokeWidth={2.2} />
+                    </button>
+                  </div>
+                  {infoOpen && <p className={styles.bandNote}>{infoText}</p>}
+                  <ul className={styles.rail}>
+                    {recs.map((r) => (
+                      <li key={r.productId} className={styles.railItem}>
+                        <ProductMiniCard productId={r.productId} onSelect={() => setSheetId(r.productId)} onAdd={() => addRecommendation(r.productId)} />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </>
+          ) : (
+            <section className={`page-pad ${styles.band} ${styles.bandFull}`} aria-labelledby={`${uid}-reco-all`}>
+              <div className={styles.bandHead}>
+                <h2 id={`${uid}-reco-all`} className={styles.bandTitle}>
+                  {recTitle}
+                </h2>
+              </div>
+              <p className={styles.bandNote}>{infoText}</p>
+              {recs.length === 0 ? (
+                <p className={styles.bandNote}>Za zdaj nimamo novih predlogov.</p>
+              ) : (
+                <ul className={styles.recGrid}>
+                  {recs.map((r) => (
+                    <li key={r.productId} className={styles.recItem} data-editorial={r.editorial || undefined}>
+                      <ProductMiniCard productId={r.productId} onSelect={() => setSheetId(r.productId)} onAdd={() => addRecommendation(r.productId)} />
+                      {(personalised || !r.editorial) && <p className={styles.reason}>{r.reason}</p>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
+        </div>
       </div>
 
       <ProductSheet open={!!sheetProduct} onClose={closeSheet} label={sheetProduct ? `${sheetProduct.name}, ${sheetProduct.packSize}` : ""}>

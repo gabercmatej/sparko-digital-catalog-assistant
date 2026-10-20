@@ -5,7 +5,7 @@ import { Icon } from "../ui/Icon";
 import styles from "./PagePicker.module.css";
 
 /** Thumbnail grid of pages (lazy-loaded); pages with saved products carry a check marker. */
-export function PagePicker({ pages, current, savedPages, onPick }: { pages: number[]; current: number; savedPages: number[]; onPick: (pageIndex: number) => void }) {
+export function PagePicker({ catalogId, pages, current, savedPages, onPick }: { catalogId: string; pages: number[]; current: number; savedPages: number[]; onPick: (pageIndex: number) => void }) {
   const saved = new Set(savedPages);
   const gridRef = useRef<HTMLUListElement>(null);
   // Scroll the current page into the middle of the sheet once on open.
@@ -20,7 +20,7 @@ export function PagePicker({ pages, current, savedPages, onPick }: { pages: numb
   return (
     <ul className={styles.grid} ref={gridRef}>
       {pages.map((idx) => {
-        const p = getPage(idx);
+        const p = getPage(idx, catalogId);
         const isCurrent = idx === current;
         const hasSaved = saved.has(idx);
         return (

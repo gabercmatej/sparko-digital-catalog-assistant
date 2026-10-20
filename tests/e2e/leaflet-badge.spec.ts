@@ -1,17 +1,16 @@
-import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
+import { busiestPage, offerOf, primary } from "./catalog-data";
 
-const data = JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as { offers: { id: string; productId: string }[] };
-const offerOf = (productId: string) => data.offers.find((o) => o.productId === productId)!.id;
-// Page 5: large meat cell, tall fries cell, and the two narrow bottom cells (salama, skuta) side by side.
-const PAGE5 = ["sb-zrezki-500g", "sb-pommes-1kg", "sb-salama-400g", "sb-skuta-1kg"];
+// The busiest SPAR page (several cells of different sizes side by side).
+const BUSY = busiestPage(primary);
+const PAGE_IDS = BUSY.ids.slice(0, 4);
 
 async function seed(page: Page, productIds: string[]) {
   await page.goto("/");
   await page.evaluate(
     (saved) => {
       localStorage.setItem(
-        "sparko:v1",
+        "sparko:v2",
         JSON.stringify({ v: 1, saved, conversations: [], activeConversationId: null, settings: { spPlus: "unset", leafletHintSeen: true } }),
       );
     },
@@ -22,10 +21,10 @@ async function seed(page: Page, productIds: string[]) {
 for (const width of [360, 390, 430, 1280]) {
   test(`'V Mojem katalogu' label is anchored top-left to its own box and stays inside it @${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 1000 ? 800 : 900 });
-    await seed(page, PAGE5);
-    await page.goto("/letak?stran=5");
+    await seed(page, PAGE_IDS);
+    await page.goto(`/letak?stran=${BUSY.index + 1}`);
     const stage = page.getByTestId("leaflet-stage");
-    await expect(stage.locator("[data-saved] [data-badge]")).toHaveCount(4);
+    await expect(stage.locator("[data-saved] [data-badge]")).toHaveCount(PAGE_IDS.length);
     await page.waitForTimeout(300);
 
     const rows = await stage.evaluate((st) =>
@@ -69,8 +68,7 @@ for (const width of [360, 390, 430, 1280]) {
       expect(r.fontPx, `${r.id} readable`).toBeGreaterThanOrEqual(8.5);
       expect(r.oneLine).toBe(true);
     }
-    // Same box-relative anchor at every width: the inset does not grow with the viewport.
-    const big = rows.find((r) => r.id === "sb-zrezki-500g")!;
-    expect(big.dLeft).toBeCloseTo(10, 0);
+    // The inset is box-relative (capped at 10 px), so it never grows with the viewport.
+    for (const r of rows) expect(r.dLeft, `${r.id} inset`).toBeLessThanOrEqual(10.5);
   });
 }

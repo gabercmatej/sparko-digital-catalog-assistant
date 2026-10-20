@@ -2,6 +2,7 @@
  * Pure helpers for the Sparko chat client (no React, no store). Unit-testable.
  */
 import { formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "../catalog";
+import { getFuturePromo } from "../futurePromos";
 import type { ChatAction, ChatRequest, ChatRequestMessage, ChatResponse, Message, MessageBlock, SpPlusSetting } from "../types";
 
 export const MAX_INPUT_CHARS = 600;
@@ -24,7 +25,7 @@ export function asChatMessage(m: Message): ChatMessage {
   return m as ChatMessage;
 }
 
-/** "S-BUDGET Lahka skuta 10 % m. m., 1 kg: 3,38 €." */
+/** "Nutella, 1 kg: 7,19 €." */
 export function productSummary(productId: string): string | null {
   const p = getProduct(productId);
   const o = getPrimaryOffer(productId);
@@ -89,6 +90,11 @@ export function sanitizeBlocks(blocks: unknown): MessageBlock[] {
     if (b.type === "products" && Array.isArray(b.offerIds)) {
       const offerIds = (b.offerIds as unknown[]).filter((id): id is string => typeof id === "string" && !!getOffer(id));
       if (offerIds.length) out.push({ ...(b as MessageBlock & { type: "products" }), offerIds });
+    } else if (b.type === "discount_timeline") {
+      const known = (ids: unknown, ok: (id: string) => boolean) => (Array.isArray(ids) ? ids.filter((id): id is string => typeof id === "string" && ok(id)) : []);
+      const currentOfferIds = known(b.currentOfferIds, (id) => !!getOffer(id));
+      const upcomingPromoIds = known(b.upcomingPromoIds, (id) => !!getFuturePromo(id));
+      if (currentOfferIds.length || upcomingPromoIds.length) out.push({ type: "discount_timeline", currentOfferIds, upcomingPromoIds });
     } else if (b.type === "recipe" && typeof b.recipeId === "string") {
       out.push({ type: "recipe", recipeId: b.recipeId });
     } else if (b.type === "choices" && Array.isArray(b.options)) {
@@ -160,9 +166,12 @@ export function statusToFailure(status: number, code?: string): ChatFailure {
   return "server_error";
 }
 
-/** Display-only typography: keep prices/percentages and S-BUDGET from breaking across lines. */
+/** Display-only typography: keep prices/percentages, short dates ("14. 10.") and S-BUDGET from breaking across lines. */
 export function displayText(text: string): string {
-  return text.replace(/(\d) (?=[€%])/g, "$1\u00a0").replace(/S-BUDGET/g, "S\u2011BUDGET");
+  return text
+    .replace(/(\d) (?=[€%])/g, "$1\u00a0")
+    .replace(/\b(\d{1,2}\.) (?=\d{1,2}\.)/g, "$1\u00a0")
+    .replace(/S-BUDGET/g, "S\u2011BUDGET");
 }
 
 /** "Danes, 14:05" / "Včeraj" / "28. 9. 2026" */

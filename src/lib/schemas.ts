@@ -28,6 +28,8 @@ export const productSchema = z.object({
   image: imageRef.extend({ provenance: z.string().min(1) }),
   theme: z.string().nullable(),
   editorialRank: z.number().int(),
+  isNew: z.boolean(),
+  newSource: z.enum(["printed_badge", "demo_editorial"]).nullable(),
 });
 
 export const offerSchema = z.object({
@@ -58,6 +60,7 @@ export const offerSchema = z.object({
 export const placementSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   offerId: z.string(),
+  catalogId: z.string(),
   pdfPageIndex: z.number().int().nonnegative(),
   pdfPageNumber: z.number().int().positive(),
   printedPageLabel: z.string().nullable(),
@@ -85,22 +88,49 @@ export const recipeSchema = z.object({
   minutes: z.number().int().positive().nullable(),
 });
 
+export const catalogSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  retailer: z.enum(["spar", "interspar"]),
+  title: z.string(),
+  issueLabel: z.string(),
+  publishedDate: isoDate,
+  validFrom: isoDate,
+  validTo: isoDate,
+  sourceFile: z.string(),
+  pdfUrl: publicPath,
+  pageCount: z.number().int().positive(),
+  cover: imageRef,
+  pages: z.array(catalogPageSchema),
+});
+
 export const catalogDataSchema = z.object({
-  version: z.number().int(),
-  catalog: z.object({
-    id: z.string(),
-    title: z.string(),
-    issueLabel: z.string(),
-    publishedDate: isoDate,
-    sourceFile: z.string(),
-    pdfUrl: publicPath,
-    pageCount: z.number().int().positive(),
-    pages: z.array(catalogPageSchema),
-  }),
+  version: z.literal(2),
+  catalogs: z.array(catalogSchema).min(1),
   products: z.array(productSchema),
   offers: z.array(offerSchema),
   placements: z.array(placementSchema),
   recipes: z.array(recipeSchema),
+});
+
+/** src/data/future-promos.json — DEMO MOCK of upcoming promotions (see FuturePromo in types.ts). */
+export const futurePromoDataSchema = z.object({
+  version: z.literal(1),
+  mock: z.literal(true),
+  note: z.string().min(1),
+  period: z.object({ from: isoDate, to: isoDate }),
+  promos: z.array(
+    z.object({
+      id: z.string().regex(/^[a-z0-9-]+$/),
+      productId: z.string(),
+      catalogId: z.string(),
+      validFrom: isoDate,
+      validTo: isoDate,
+      priceCents: cents.positive(),
+      regularPriceCents: cents.nullable(),
+      discountPercent: z.number().int().min(1).max(90).nullable(),
+      spPlusRequired: z.boolean(),
+    }),
+  ),
 });
 
 // ---------------------------------------------------------------- chat API

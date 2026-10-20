@@ -4,7 +4,7 @@
  * percentage ranking. Products without a printed percentage (e.g. S-BUDGET everyday prices) are not
  * "discounted". Never claims anything about the current store or today's date.
  */
-import { getProduct, offers as allOffers, validityText } from "@/lib/catalog";
+import { getProduct, offers as allOffers } from "@/lib/catalog";
 import type { Offer, Product, SpPlusSetting } from "@/lib/types";
 
 export type RankedDiscount = { offer: Offer; product: Product };
@@ -37,28 +37,27 @@ export function rankDiscounts(opts: { limit?: number; offers?: readonly Offer[] 
     .slice(0, opts.limit ?? 4);
 }
 
-/** Template (placeholders) for the discount answer. */
-export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting): string {
+/**
+ * Template (placeholders) for the discount answer. The products themselves are shown in the
+ * discount_timeline block (verified price, regular price, SPAR plus label), so the prose is a short
+ * intro naming the single biggest discount instead of repeating every row.
+ */
+export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting, opts: { hasUpcoming?: boolean } = {}): string {
   if (!ranked.length) {
-    return `Med preverjenimi izdelki iz kataloga {{issue}} ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
+    return `Med preverjenimi izdelki iz kataloga ({{catalogs}}) ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
   }
-  const sameValidity = new Set(ranked.map((r) => validityText(r.offer))).size === 1;
-  const lines = ranked.map(({ offer, product }) => {
-    const card = offer.conditions.spPlusRequired;
-    let line = `• {{name:${product.id}}}, {{pack:${product.id}}}: {{price:${offer.id}}} ({{discount:${offer.id}}} ceneje${card ? ", s kartico SPAR plus" : ""})`;
-    if (card && spPlus === "no") {
-      line += offer.regularPriceCents != null ? `; brez kartice redna cena {{regularPrice:${offer.id}}}` : "; cena brez kartice ni navedena";
-    } else if (offer.regularPriceCents != null) {
-      line += `; redna cena {{regularPrice:${offer.id}}}`;
-    }
-    line += sameValidity ? "." : `. {{validity:${offer.id}}}.`;
-    return line;
-  });
-  const anyCard = ranked.some((r) => r.offer.conditions.spPlusRequired);
-  let outro = "";
-  if (anyCard && spPlus === "no") outro = "\nCene, označene s kartico, veljajo le s kartico SPAR plus.";
-  else if (anyCard && spPlus === "unset") outro = "\nNekatere cene veljajo s kartico SPAR plus.";
-  const validity = sameValidity ? `\n{{validity:${ranked[0].offer.id}}}.` : "";
-  return `Med preverjenimi izdelki v aktualnem katalogu {{issue}} so najbolj znižani:\n${lines.join("\n")}${validity}${outro}`;
+  const top = ranked[0];
+  let text = `Med preverjenimi izdelki v aktualnem katalogu ({{catalogs}}) je ta teden najbolj znižan izdelek {{name:${top.product.id}}} ({{discount:${top.offer.id}}} ceneje). Spodaj so najbolj znižani izdelki`;
+  text += opts.hasUpcoming ? ", pod njimi pa še napovedane akcije za naslednji teden." : ".";
+  const card = ranked.filter((r) => r.offer.conditions.spPlusRequired);
+  if (card.length && spPlus === "no") {
+    const lines = card.map(({ offer, product }) =>
+      offer.regularPriceCents != null ? `• {{name:${product.id}}}: brez kartice redna cena {{regularPrice:${offer.id}}}` : `• {{name:${product.id}}}: cena brez kartice ni navedena`,
+    );
+    text += `\nCene, označene s kartico, veljajo le s kartico SPAR plus:\n${lines.join("\n")}`;
+  } else if (card.length && spPlus === "unset") {
+    text += "\nNekatere cene veljajo s kartico SPAR plus.";
+  }
+  return text;
 }
 

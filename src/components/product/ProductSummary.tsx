@@ -1,7 +1,14 @@
 "use client";
 import { conditionText, formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import type { Product } from "@/lib/types";
 import { ProductTile } from "./ProductTile";
+import { RetailerBadge } from "./RetailerBadge";
 import styles from "./ProductSummary.module.css";
+
+/** The brand line above a product name, unless the name already carries the brand ("Perutnina Ptuj piščančje prsi"). */
+export function brandLabel(p: Product): string | null {
+  return p.brand && !p.name.toLowerCase().includes(p.brand.toLowerCase()) ? p.brand : null;
+}
 
 /**
  * The single compact product presentation: small packshot tile (image + red price) on the
@@ -31,7 +38,8 @@ export function ProductSummary({
     <span className={styles.summary}>
       <ProductTile productId={productId} size="carousel" minimal />
       <span className={styles.text}>
-        {product.brand && <span className={styles.brand}>{product.brand}</span>}
+        <RetailerBadge productId={productId} className={styles.badge} />
+        {brandLabel(product) && <span className={styles.brand}>{brandLabel(product)}</span>}
         <Name className={styles.name}>{product.name}</Name>
         <span className={styles.pack}>{product.packSize}</span>
         {/* The visible price is the tile's red badge (aria-hidden); this keeps it for screen readers. */}

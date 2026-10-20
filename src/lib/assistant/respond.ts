@@ -14,6 +14,10 @@ import { breakfastProducts, mealTemplate, recipeProductIds, suggestMeal, type Me
 import { displayName, render, type PlaceholderContext } from "./placeholders";
 import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT, STARTER_PROMPTS } from "./starters";
 import { cheaperAlternatives, comparablePrice, productsInLine, queryContentTokens, searchProducts, type SearchHit } from "./search";
+import { currentDiscountsOf, MAX_UPCOMING, rankUpcoming, TIMING_STOP, timingSubject, timingTemplate } from "./timing";
+
+/** Unambiguous example product for the help text: the first catalog product (editorial order). */
+const HELP_EXAMPLE_PRODUCT = allProducts[0]?.name ?? "izdelek";
 
 export const MAX_PRODUCTS_SHOWN = 4;
 
@@ -33,6 +37,8 @@ export type DeterministicReply = {
   /** Products the model may choose among (blocks are always built from these). */
   candidateProductIds: string[];
   candidateRecipeIds: string[];
+  /** Upcoming-promo ids a model reply may reference through placeholders (empty unless the draft uses them). */
+  candidatePromoIds: string[];
   /** False for commands, clarifying questions and unknown products: answered without the model. */
   allowModel: boolean;
   placeholderCtx: PlaceholderContext;
@@ -44,7 +50,7 @@ export type ResponderDeps = { recommend?: RecommendFn };
 
 export const SUGGESTION_CHOICES: { label: string; message: string }[] = STARTER_PROMPTS;
 
-type Draft = Omit<DeterministicReply, "text" | "intent" | "placeholderCtx" | "kind"> & { kind?: ReplyKind };
+type Draft = Omit<DeterministicReply, "text" | "intent" | "placeholderCtx" | "kind" | "candidatePromoIds"> & { kind?: ReplyKind; candidatePromoIds?: string[] };
 
 // ------------------------------------------------------------------ helpers
 
@@ -390,18 +396,79 @@ function handleWhere(d: DetectedIntent): Draft {
   };
 }
 
+/** Top upcoming promos shown as the secondary section of "Kaj je najbolj znižano?". */
+const DISCOUNTS_UPCOMING_SHOWN = 3;
+
 function handleDiscounts(req: ChatRequest): Draft {
   const ranked = rankDiscounts({ limit: MAX_PRODUCTS_SHOWN });
+  const upcoming = rankUpcoming({ limit: DISCOUNTS_UPCOMING_SHOWN });
   return {
-    template: discountTemplate(ranked, req.spPlus),
+    template: discountTemplate(ranked, req.spPlus, { hasUpcoming: upcoming.length > 0 }),
     blocks: ranked.length
-      ? [productsBlock(ranked.map((r) => r.offer.id), "list")]
+      ? [{ type: "discount_timeline", currentOfferIds: ranked.map((r) => r.offer.id), upcomingPromoIds: upcoming.map((u) => u.promo.id) }]
       : [{ type: "choices", options: [{ label: "Pokaži izdelke S-BUDGET", message: "Pokaži S-BUDGET izdelke" }] }],
     contextProductIds: ranked.map((r) => r.product.id),
     actions: [],
     candidateProductIds: ranked.map((r) => r.product.id),
     candidateRecipeIds: [],
     allowModel: true,
+  };
+}
+
+/**
+ * "Kdaj je Perutnina Ptuj znižana?" / "Kaj bo znižano naslednji teden?": a deterministic answer built from
+ * the verified current discounts and the upcoming demo promos. Never phrased by the model.
+ */
+function handleTiming(d: DetectedIntent): Draft {
+  const lineHits = d.filters.line ? productsInLine(d.filters.line) : [];
+  const lineWords = new Set(lineHits.flatMap((h) => queryContentTokens(`${h.product.brand ?? ""} ${h.product.line ?? ""}`)));
+  const stop = new Set([...TIMING_STOP, ...lineWords]);
+  let products: Product[] | null = null; // null = general question
+  if (queryContentTokens(d.text, stop).length) {
+    const hits = searchProducts(d.text, { extraStop: stop, filters: d.filters.line ? { line: d.filters.line } : {} });
+    if (!hits.length) return unknownDraft(d);
+    products = strongHits(hits).map((h) => h.product);
+  } else if (lineHits.length) {
+    products = lineHits.map((h) => h.product);
+  } else if (d.contextProductIds.length && !/\bkaj\b/.test(d.folded)) {
+    // "Kdaj bo to znižano?" after a product answer.
+    products = d.contextProductIds.map((id) => getProduct(id)).filter((p): p is Product => !!p);
+  }
+  products = products?.slice(0, MAX_UPCOMING) ?? null;
+
+  const ids = products?.map((p) => p.id);
+  const current = ids ? currentDiscountsOf(ids) : [];
+  const upcoming = rankUpcoming(ids ? { productIds: ids } : {});
+  const involved = Array.from(new Map([...current.map((r) => r.product), ...upcoming.map((u) => u.product)].map((p) => [p.id, p])).values());
+  const base = { actions: [], candidateRecipeIds: [], allowModel: false, candidatePromoIds: upcoming.map((u) => u.promo.id) };
+
+  if (current.length || upcoming.length) {
+    return {
+      ...base,
+      template: timingTemplate({ subject: products ? timingSubject(involved) : null, current, upcoming }),
+      blocks: [{ type: "discount_timeline", currentOfferIds: current.map((r) => r.offer.id), upcomingPromoIds: upcoming.map((u) => u.promo.id) }],
+      contextProductIds: involved.map((p) => p.id),
+      candidateProductIds: involved.map((p) => p.id),
+    };
+  }
+  // Nothing discounted now and nothing announced: say so, and show what the product costs in the catalog.
+  if (!products) {
+    return {
+      ...base,
+      template: timingTemplate({ subject: null, current, upcoming }),
+      blocks: [{ type: "choices", options: [SUGGESTION_CHOICES[1]] }],
+      contextProductIds: [],
+      candidateProductIds: [],
+    };
+  }
+  const shown = hitsOf(products.map((p) => p.id)).slice(0, MAX_PRODUCTS_SHOWN);
+  const only = shown.length === 1 ? shown[0] : null;
+  return {
+    ...base,
+    template: `${timingTemplate({ subject: timingSubject(products), current, upcoming })}${only ? ` Trenutna cena je {{price:${only.offer.id}}}.` : ""}`,
+    blocks: [productsBlock(shown.map((h) => h.offer.id), only ? "card" : "list")],
+    contextProductIds: shown.map((h) => h.product.id),
+    candidateProductIds: shown.map((h) => h.product.id),
   };
 }
 
@@ -556,7 +623,7 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
       break;
     case "help": {
       // Kept exact (no model) so the capability list is always accurate.
-      const examples = /\bvprasa/.test(d.folded) ? "\nNa primer: »Koliko stane skuta?«, »Kaj je najbolj znižano?« ali »Kaj lahko skuham za večerjo?«" : "";
+      const examples = /\bvprasa/.test(d.folded) ? `\nNa primer: »Koliko stane ${HELP_EXAMPLE_PRODUCT}?«, »Kaj je najbolj znižano?« ali »Kaj lahko skuham za večerjo?«` : "";
       draft = simpleDraft(
         "Pomagam ti raziskovati aktualni SPAR katalog – preverim cene in akcije, poiščem izdelke, predlagam jedi in izdelke glede na tvoj proračun, dodajam izdelke v Moj katalog in ti pokažem, kje jih najdeš v letaku. Pomagam ti lahko tudi poiskati najbližji SPAR ali izdelek v trgovini." +
           examples,
@@ -590,6 +657,9 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
       break;
     case "discounts":
       draft = handleDiscounts(req);
+      break;
+    case "discount_timing":
+      draft = handleTiming(d);
       break;
     case "breakfast":
     case "meal": {
@@ -627,6 +697,7 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
     actions: draft.actions,
     candidateProductIds: draft.candidateProductIds,
     candidateRecipeIds: draft.candidateRecipeIds,
+    candidatePromoIds: draft.candidatePromoIds ?? [],
     allowModel: draft.allowModel,
     placeholderCtx: ctx,
   };

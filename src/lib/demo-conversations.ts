@@ -3,11 +3,11 @@
  * catalog at module load: prices and pages are computed, never hard-coded.
  * They are static (never persisted); continuing one forks a user conversation.
  */
-import { formatPrice, getOffer, getPlacements, getPrimaryOffer, getProduct, products, recipes, recipeTotals } from "./catalog";
+import { formatPrice, getOffer, getPlacements, getPrimaryOffer, products, recipes, recipeTotals } from "./catalog";
 import { productSummary, type ChatMessage } from "./chat/messages";
 import type { Conversation } from "./types";
 
-const BASE = Date.UTC(2026, 8, 30, 8, 0, 0); // 30. 9. 2026 (catalog date)
+const BASE = Date.UTC(2026, 9, 7, 8, 0, 0); // 7. 10. 2026 (start of the current catalogs)
 
 function conv(id: string, title: string, offsetMin: number, messages: Omit<ChatMessage, "createdAt" | "status">[]): Conversation {
   const created = BASE + offsetMin * 60_000;
@@ -21,35 +21,37 @@ function conv(id: string, title: string, offsetMin: number, messages: Omit<ChatM
   };
 }
 
-// ---------------------------------------------------------------- 1. skuta
+// ---------------------------------------------------------------- 1. price of one product
 
-const SKUTA_OFFER = "offer-sb-skuta-1kg-4026";
-function skutaConversation(): Conversation {
-  const offer = getOffer(SKUTA_OFFER);
-  const product = offer ? getProduct(offer.productId) : undefined;
+/** The first catalog product with an offer (editorial order); no ids are hard-coded. */
+export const DEMO_PRODUCT = products.find((p) => getPrimaryOffer(p.id));
+function priceConversation(): Conversation {
+  const product = DEMO_PRODUCT;
+  const question = `Koliko stane ${product?.name ?? "izdelek"}?`;
+  const offer = product && getPrimaryOffer(product.id);
   if (!offer || !product) {
-    return conv("demo-skuta", "Koliko stane skuta?", 0, [
-      { id: "demo-skuta-1", role: "user", text: "Koliko stane skuta?" },
-      { id: "demo-skuta-2", role: "assistant", mode: "deterministic", text: "Skute v tem demo katalogu trenutno ne najdem." },
+    return conv("demo-cena", question, 0, [
+      { id: "demo-cena-1", role: "user", text: question },
+      { id: "demo-cena-2", role: "assistant", mode: "deterministic", text: "Izdelka v tem demo katalogu trenutno ne najdem." },
     ]);
   }
   const pl = getPlacements(offer.id)[0];
   const where = pl
-    ? `${product.name} je v SPAR letaku na PDF-strani ${pl.pdfPageNumber}${pl.printedPageLabel ? ` (natisnjena stran ${pl.printedPageLabel})` : ""}. Z gumbom spodaj odpreš letak na tej strani.`
+    ? `${product.name} je v katalogu na PDF-strani ${pl.pdfPageNumber}${pl.printedPageLabel ? ` (natisnjena stran ${pl.printedPageLabel})` : ""}. Z gumbom spodaj odpreš letak na tej strani.`
     : `Za ${product.name.toLowerCase()} nimam preverjene lokacije v letaku.`;
-  return conv("demo-skuta", "Koliko stane skuta?", 0, [
-    { id: "demo-skuta-1", role: "user", text: "Koliko stane skuta?" },
+  return conv("demo-cena", question, 0, [
+    { id: "demo-cena-1", role: "user", text: question },
     {
-      id: "demo-skuta-2",
+      id: "demo-cena-2",
       role: "assistant",
       mode: "deterministic",
       text: `${productSummary(product.id) ?? product.name} Cena je iz demo kataloga.`,
       blocks: [{ type: "products", offerIds: [offer.id], layout: "card" }],
       contextProductIds: [product.id],
     },
-    { id: "demo-skuta-3", role: "user", text: "Kje je v letaku?", contextProductIds: [product.id] },
+    { id: "demo-cena-3", role: "user", text: "Kje je v letaku?", contextProductIds: [product.id] },
     {
-      id: "demo-skuta-4",
+      id: "demo-cena-4",
       role: "assistant",
       mode: "deterministic",
       text: where,
@@ -118,7 +120,7 @@ function dinnerConversation(): Conversation {
   ]);
 }
 
-export const DEMO_CONVERSATIONS: Conversation[] = [skutaConversation(), sbudgetConversation(), dinnerConversation()];
+export const DEMO_CONVERSATIONS: Conversation[] = [priceConversation(), sbudgetConversation(), dinnerConversation()];
 
 export function getDemoConversation(id: string | null | undefined): Conversation | undefined {
   return id ? DEMO_CONVERSATIONS.find((c) => c.id === id) : undefined;

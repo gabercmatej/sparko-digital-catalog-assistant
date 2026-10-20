@@ -1,24 +1,31 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { formatPrice, getOffer, getPlacements, getPrimaryOffer, products } from "@/lib/catalog";
 import { buildRequest, composerAction, displayText, productClickMessages, relativeDate, sanitizeBlocks, saveResultLine } from "@/lib/chat/messages";
 import { DEMO_CONVERSATIONS } from "@/lib/demo-conversations";
 import { retryMessage, sendMessage, showProduct } from "@/lib/chat/useChat";
 import { __resetForTests, createConversation, getConversation, getState, setActiveConversation } from "@/lib/store/store";
 import type { Message } from "@/lib/types";
 
+// Data-driven anchors (no ids of the old catalog): a product without a card price and another one for product clicks.
+const ANCHOR = products.find((p) => p.line === "S-BUDGET")!;
+const ANCHOR_ID = ANCHOR.id;
+const ANCHOR_OFFER = getPrimaryOffer(ANCHOR_ID)!.id;
+const OTHER_ID = products.find((p) => p.id !== ANCHOR_ID)!.id;
+
 let n = 0;
 const id = (p: string) => `${p}-${++n}`;
 
 describe("chat message helpers", () => {
   it("builds a deterministic product click pair from catalog data", () => {
-    const pair = productClickMessages("sb-skuta-1kg", id, 1000);
+    const pair = productClickMessages(ANCHOR_ID, id, 1000);
     expect(pair).not.toBeNull();
     const [user, bot] = pair!;
-    expect(user.text).toBe("Pokaži: Lahka skuta");
+    expect(user.text).toBe(`Pokaži: ${ANCHOR.name}`);
     expect(bot.mode).toBe("deterministic");
-    expect(bot.text).toContain("3,38 €");
-    expect(bot.text).toContain("1 kg");
-    expect(bot.blocks).toEqual([{ type: "products", offerIds: ["offer-sb-skuta-1kg-4026"], layout: "card" }]);
-    expect(bot.contextProductIds).toEqual(["sb-skuta-1kg"]);
+    expect(bot.text).toContain(formatPrice(getPrimaryOffer(ANCHOR_ID)!.priceCents));
+    expect(bot.text).toContain(ANCHOR.packSize);
+    expect(bot.blocks).toEqual([{ type: "products", offerIds: [ANCHOR_OFFER], layout: "card" }]);
+    expect(bot.contextProductIds).toEqual([ANCHOR_ID]);
     expect(productClickMessages("does-not-exist", id)).toBeNull();
   });
 
@@ -26,23 +33,23 @@ describe("chat message helpers", () => {
     const msgs: Message[] = Array.from({ length: 20 }, (_, i) => ({ id: `m${i}`, role: i % 2 ? "assistant" : "user", createdAt: i, text: `t${i}`, status: "ok" }));
     msgs[5] = { ...msgs[5], status: "error" };
     msgs.push({ id: "pending", role: "assistant", createdAt: 99, text: "", status: "pending" });
-    const req = buildRequest("c1", msgs, "m18", ["sb-skuta-1kg"], "yes");
+    const req = buildRequest("c1", msgs, "m18", [ANCHOR_ID], "yes");
     expect(req.messages.length).toBe(12);
     expect(req.messages.at(-1)).toEqual({ role: "user", text: "t18" });
     expect(req.messages.some((m) => m.text === "t5")).toBe(false);
-    expect(req.savedProductIds).toEqual(["sb-skuta-1kg"]);
+    expect(req.savedProductIds).toEqual([ANCHOR_ID]);
     expect(req.spPlus).toBe("yes");
   });
 
   it("drops blocks with unknown offers", () => {
     const blocks = sanitizeBlocks([
-      { type: "products", offerIds: ["offer-sb-skuta-1kg-4026", "fake"] },
+      { type: "products", offerIds: [ANCHOR_OFFER, "fake"] },
       { type: "products", offerIds: ["fake"] },
       { type: "notice", tone: "danger", text: "x" },
       { type: "evil" },
     ]);
     expect(blocks).toEqual([
-      { type: "products", offerIds: ["offer-sb-skuta-1kg-4026"] },
+      { type: "products", offerIds: [ANCHOR_OFFER] },
       { type: "notice", tone: "info", text: "x" },
     ]);
   });
@@ -54,9 +61,9 @@ describe("chat message helpers", () => {
   });
 
   it("formats save results from the actual store result", () => {
-    expect(saveResultLine("sb-skuta-1kg", "saved")).toBe("✓ Lahka skuta je zdaj v tvojem Mojem katalogu.");
-    expect(saveResultLine("sb-skuta-1kg", "already")).toBe("Lahka skuta je že v tvojem Mojem katalogu.");
-    expect(saveResultLine("sb-skuta-1kg", "unknown")).toMatch(/ni bil dodan/);
+    expect(saveResultLine(ANCHOR_ID, "saved")).toBe(`✓ ${ANCHOR.name} je zdaj v tvojem Mojem katalogu.`);
+    expect(saveResultLine(ANCHOR_ID, "already")).toBe(`${ANCHOR.name} je že v tvojem Mojem katalogu.`);
+    expect(saveResultLine(ANCHOR_ID, "unknown")).toMatch(/ni bil dodan/);
   });
 
   it("keeps prices together for display", () => {
@@ -73,14 +80,18 @@ describe("chat message helpers", () => {
 
 describe("demo conversations", () => {
   it("are three static demos computed from catalog data", () => {
-    expect(DEMO_CONVERSATIONS.map((c) => c.id)).toEqual(["demo-skuta", "demo-sbudget", "demo-vecerja"]);
+    expect(DEMO_CONVERSATIONS.map((c) => c.id)).toEqual(["demo-cena", "demo-sbudget", "demo-vecerja"]);
     for (const c of DEMO_CONVERSATIONS) {
       expect(c.kind).toBe("demo");
       expect(c.messages.length).toBeGreaterThanOrEqual(2);
     }
+    // Data-driven: the price and page come from the skuta offer the demo itself points at.
     const skuta = DEMO_CONVERSATIONS[0];
-    expect(skuta.messages[1].text).toContain("3,38 €");
-    expect(skuta.messages[3].text).toContain("PDF-strani 5");
+    const block = skuta.messages[1].blocks?.[0];
+    expect(block?.type).toBe("products");
+    const offer = getOffer(block?.type === "products" ? block.offerIds[0] : "")!;
+    expect(skuta.messages[1].text).toContain(formatPrice(offer.priceCents));
+    expect(skuta.messages[3].text).toContain(`PDF-strani ${getPlacements(offer.id)[0].pdfPageNumber}`);
   });
 });
 
@@ -114,8 +125,8 @@ describe("chat flow (send / retry / product click)", () => {
     fetchMock.mockResolvedValueOnce(
       Response.json({
         conversationId: cid,
-        message: { text: "Dodano.", blocks: [], contextProductIds: ["sb-skuta-1kg"] },
-        actions: [{ type: "save", productId: "sb-skuta-1kg" }],
+        message: { text: "Dodano.", blocks: [], contextProductIds: [ANCHOR_ID] },
+        actions: [{ type: "save", productId: ANCHOR_ID }],
         mode: "fallback",
       }),
     );
@@ -126,8 +137,8 @@ describe("chat flow (send / retry / product click)", () => {
     expect(conv.messages.length).toBe(2);
     expect(conv.messages[1].status).toBe("ok");
     expect(conv.messages[1].mode).toBe("fallback");
-    expect(conv.messages[1].text).toContain("✓ Lahka skuta je zdaj v tvojem Mojem katalogu.");
-    expect(getState().saved.map((s) => s.productId)).toEqual(["sb-skuta-1kg"]);
+    expect(conv.messages[1].text).toContain(`✓ ${ANCHOR.name} je zdaj v tvojem Mojem katalogu.`);
+    expect(getState().saved.map((s) => s.productId)).toEqual([ANCHOR_ID]);
   });
 
   it("delivers a late response into its own conversation after switching chats", async () => {
@@ -146,13 +157,13 @@ describe("chat flow (send / retry / product click)", () => {
 
   it("forks a demo when sending from it and leaves the demo intact", async () => {
     fetchMock.mockResolvedValueOnce(new Response("{}", { status: 500 }));
-    setActiveConversation("demo-skuta");
+    setActiveConversation("demo-cena");
     const before = DEMO_CONVERSATIONS[0].messages.length;
     sendMessage("Kaj pa cenejša možnost?");
     const cid = getState().activeConversationId!;
     expect(cid.startsWith("demo-")).toBe(false);
     const conv = getConversation(cid)!;
-    expect(conv.forkedFrom).toBe("demo-skuta");
+    expect(conv.forkedFrom).toBe("demo-cena");
     expect(conv.messages.length).toBe(before + 2);
     expect(DEMO_CONVERSATIONS[0].messages.length).toBe(before);
     expect(getState().saved).toEqual([]);
@@ -160,7 +171,7 @@ describe("chat flow (send / retry / product click)", () => {
   });
 
   it("product click appends a verified card without network", () => {
-    expect(showProduct("sb-pommes-1kg")).toBe(true);
+    expect(showProduct(OTHER_ID)).toBe(true);
     const conv = getConversation(getState().activeConversationId!)!;
     expect(conv.messages[1].blocks?.[0]).toMatchObject({ type: "products" });
     expect(fetchMock).not.toHaveBeenCalled();

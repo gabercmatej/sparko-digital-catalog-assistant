@@ -4,7 +4,7 @@ import { STARTER_PROMPTS } from "@/lib/assistant/starters";
 import { Icon, type IconName } from "../ui/Icon";
 import styles from "./Welcome.module.css";
 
-const STARTER_ICONS: IconName[] = ["search", "percent", "pin", "store"];
+const STARTER_ICONS: IconName[] = ["search", "percent", "pin", "history"];
 
 /** Four compact, catalog-oriented starters in a 2×2 grid (no hard-coded product). */
 export const SUGGESTIONS: { icon: IconName; text: string }[] = STARTER_PROMPTS.map((s, i) => ({ icon: STARTER_ICONS[i], text: s.message }));

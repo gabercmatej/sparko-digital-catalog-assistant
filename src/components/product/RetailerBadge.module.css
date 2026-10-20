@@ -1,0 +1,36 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22em;
+  flex: none;
+  line-height: 1;
+  vertical-align: middle;
+  font-size: 9.5px;
+}
+.xs {
+  font-size: 8px;
+}
+.sm {
+  font-size: 9.5px;
+}
+.md {
+  font-size: 11px;
+}
+.word {
+  display: inline-flex;
+  align-items: center;
+  height: 1.55em;
+  padding: 0 0.55em 0 0.62em;
+  background: var(--c-red);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 1.5px;
+  white-space: nowrap;
+}
+.tree {
+  width: 1.55em;
+  height: 1.55em;
+  flex: none;
+}

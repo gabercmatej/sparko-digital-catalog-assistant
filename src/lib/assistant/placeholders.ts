@@ -4,7 +4,7 @@
  * The deterministic responder and the language model use the same placeholder language, so
  * digits in final text can only come from the catalog or from server-parsed request values.
  *
- *   {{name:<productId>}}       S-BUDGET lahka skuta
+ *   {{name:<productId>}}       S-BUDGET Svinjske kocke
  *   {{pack:<productId>}}       1 kg
  *   {{price:<offerId>}}        3,38 € (+ " za kg" for per-unit prices)
  *   {{regularPrice:<offerId>}} 4,49 €
@@ -14,21 +14,31 @@
  *   {{page:<productId>}}       5   (1-based PDF page of the first placement)
  *   {{recipeServings:<recipeId>}} / {{pantry:<recipeId>}} (pantry assumptions)
  *   {{recipeTitle:<recipeId>}} / {{recipeTotal:<recipeId>}} / {{recipeTotalCard:<recipeId>}}
- *   {{note:<offerId>}}  printed extra condition · {{issue}}  catalog issue label (40/26)
+ *   {{note:<offerId>}}  printed extra condition · {{issue}}  primary catalog issue label (41/26)
+ *   {{catalogs}}               SPAR 41/26 in INTERSPAR 14/26 (every catalog, from data)
+ *   {{currentPeriod:<offerId>}} 7. 10. – 13. 10. 2026 (validity of the offer's catalog)
+ *   {{futurePrice:<promoId>}}  2,99 € (upcoming demo promo) · {{futureFrom:<promoId>}}  14. 10.
+ *   {{futurePeriod}}           14. 10. – 20. 10. 2026 (the upcoming period)
  *   {{budget}} / {{servings}}
  */
 import {
   catalog,
+  catalogs,
   conditionText,
+  formatPeriod,
   formatPrice,
+  formatShortDate,
+  getCatalog,
   getOffer,
   getPlacementsForProduct,
   getProduct,
   getRecipe,
   PRICE_UNIT_LABEL,
+  RETAILER_LABEL,
   recipeTotals,
   validityText,
 } from "@/lib/catalog";
+import { getFuturePromo, upcomingPeriod } from "@/lib/futurePromos";
 import type { Offer, Product, Recipe, SpPlusSetting } from "@/lib/types";
 
 export type PlaceholderContext = {
@@ -38,6 +48,7 @@ export type PlaceholderContext = {
   /** When set, ids outside these sets make resolution fail (used for model output). */
   allowedProductIds?: Set<string>;
   allowedOfferIds?: Set<string>;
+  allowedPromoIds?: Set<string>;
   allowedRecipeIds?: Set<string>;
   /** Optional lookup override for tests with synthetic recipes. */
   recipeLookup?: (id: string) => Recipe | undefined;
@@ -49,10 +60,15 @@ function lowerFirst(s: string): string {
   return s ? s[0].toLowerCase() + s.slice(1) : s;
 }
 
-/** "S-BUDGET lahka skuta" — brand prefix only when the name doesn't already contain it. */
+/** "S-BUDGET Svinjske kocke" — brand prefix only when the name doesn't already contain it. */
 export function displayName(p: Product): string {
   if (p.brand && !p.name.toLowerCase().includes(p.brand.toLowerCase())) return `${p.brand} ${lowerFirst(p.name)}`;
   return p.name;
+}
+
+/** "SPAR 41/26 in INTERSPAR 14/26": every catalog of the demo, derived from data. */
+export function catalogsLabel(): string {
+  return catalogs.map((c) => `${RETAILER_LABEL[c.retailer]} ${c.issueLabel}`).join(" in ");
 }
 
 export function priceLabel(o: Offer): string {
@@ -79,6 +95,7 @@ export function resolvePlaceholders(template: string, ctx: PlaceholderContext): 
     const kind = kindRaw;
     const productOk = (pid: string) => !ctx.allowedProductIds || ctx.allowedProductIds.has(pid);
     const offerOk = (oid: string) => !ctx.allowedOfferIds || ctx.allowedOfferIds.has(oid);
+    const promoOk = (fid: string) => !ctx.allowedPromoIds || ctx.allowedPromoIds.has(fid);
     const recipeOk = (rid: string) => !ctx.allowedRecipeIds || ctx.allowedRecipeIds.has(rid);
     switch (kind) {
       case "name":
@@ -119,8 +136,24 @@ export function resolvePlaceholders(template: string, ctx: PlaceholderContext): 
         const v = kind === "recipeTotalCard" ? t.withCard : effectiveRecipeTotal(r, ctx.spPlus);
         return v != null ? formatPrice(v) : fail("recipe total unknown");
       }
+      case "futurePrice":
+      case "futureFrom": {
+        const fp = id ? getFuturePromo(id) : undefined;
+        if (!fp || !promoOk(fp.id)) return fail(`unknown promo ${id}`);
+        return kind === "futurePrice" ? formatPrice(fp.priceCents) : formatShortDate(fp.validFrom);
+      }
+      case "futurePeriod":
+        return formatPeriod(upcomingPeriod.from, upcomingPeriod.to);
+      case "currentPeriod": {
+        const o = id ? getOffer(id) : undefined;
+        const c = o && getCatalog(o.catalogId);
+        if (!o || !c || !offerOk(o.id)) return fail(`unknown offer ${id}`);
+        return formatPeriod(c.validFrom, c.validTo);
+      }
       case "issue":
         return catalog.issueLabel;
+      case "catalogs":
+        return catalogsLabel();
       case "note": {
         const o = id ? getOffer(id) : undefined;
         if (!o || !offerOk(o.id) || !o.conditions.note) return fail("no note");

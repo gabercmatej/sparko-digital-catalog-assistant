@@ -49,6 +49,10 @@
   min-width: 0;
   padding-right: 10px;
 }
+.badge {
+  align-self: flex-start;
+  margin-bottom: 3px;
+}
 .brand {
   font-size: 11px;
   font-weight: 700;
@@ -80,6 +84,19 @@
   align-items: flex-end;
   justify-content: flex-end;
   gap: 2px;
+}
+.compact {
+  align-self: center;
+  margin-top: 0;
+}
+.compact .price {
+  font-size: 21px;
+  padding: 5px 6px 4px 7px;
+}
+.compact .cond,
+.compact .unit {
+  margin-right: 0;
+  font-size: 9.5px;
 }
 .cond,
 .unit {

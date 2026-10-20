@@ -18,6 +18,11 @@
   --c-red: #e30613; /* SPAR price red */
   --c-red-ink: #b8000f;
   --c-yellow: #ffe500;
+  /* Upcoming (future, demo) promo prices: a soft blue that never competes with the red current price. */
+  --c-future-bg: #e3effc;
+  --c-future-ink: #1f5fae;
+  --c-future-border: #c4dbf5;
+  --c-future-band: #f1f7fe;
   --c-focus: #0b5d33;
   --c-bubble-user: #e7f4ec;
   --c-bubble-bot: #eff1f0;

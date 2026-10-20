@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { catalogs, formatPeriod } from "@/lib/catalog";
 import { deleteUserConversations, resetSelection, setSpPlus, showToast, useStore } from "@/lib/store/store";
 import type { SpPlusSetting } from "@/lib/types";
 import { Icon } from "../ui/Icon";
@@ -39,9 +40,10 @@ export function SettingsPanel({ onBack }: { onBack: () => void }) {
         </fieldset>
 
         <section className={styles.infoBlock}>
-          <h3 className={styles.sectionTitle}>O demo katalogu</h3>
+          <h3 className={styles.sectionTitle}>O demo katalogih</h3>
           <p className={styles.help}>
-            Demo katalog SPAR 40/26 z dne 30. 9. 2026. Cene in datumi so iz tega kataloga, ne aktualne cene v trgovini.
+            {catalogs.map((c) => `${c.title} (${formatPeriod(c.validFrom, c.validTo)})`).join(" in ")}. Cene in datumi so iz teh katalogov, ne aktualne
+            cene v trgovini. Akcije »naslednji teden« so demo podatki.
           </p>
         </section>
 

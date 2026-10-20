@@ -10,42 +10,46 @@ import {
   resetSelection,
   saveProduct,
 } from "@/lib/store/store";
+import { getPrimaryOffer, products } from "@/lib/catalog";
 import type { Conversation } from "@/lib/types";
+
+const A = products[0].id;
+const B = products[1].id;
 
 describe("store", () => {
   beforeEach(() => __resetForTests());
 
   it("saves idempotently and rejects unknown ids", () => {
-    expect(saveProduct("sb-skuta-1kg", { toast: false })).toBe("saved");
-    expect(saveProduct("sb-skuta-1kg", { toast: false })).toBe("already");
+    expect(saveProduct(A, { toast: false })).toBe("saved");
+    expect(saveProduct(A, { toast: false })).toBe("already");
     expect(saveProduct("does-not-exist", { toast: false })).toBe("unknown");
     expect(getState().saved).toHaveLength(1);
-    expect(getState().saved[0].offerId).toBe("offer-sb-skuta-1kg-4026");
+    expect(getState().saved[0].offerId).toBe(getPrimaryOffer(A)!.id);
   });
 
   it("emits a highlight event only on real saves", () => {
-    saveProduct("sb-skuta-1kg", { toast: false });
+    saveProduct(A, { toast: false });
     const first = getState().highlight;
-    expect(first?.productId).toBe("sb-skuta-1kg");
-    saveProduct("sb-skuta-1kg", { toast: false });
+    expect(first?.productId).toBe(A);
+    saveProduct(A, { toast: false });
     expect(getState().highlight).toBe(first);
   });
 
   it("removes and resets selection without touching conversations", () => {
     const id = createConversation();
-    appendMessage(id, { id: "m1", role: "user", text: "Koliko stane skuta?", createdAt: 1, status: "ok" });
-    saveProduct("sb-skuta-1kg", { toast: false });
-    saveProduct("sb-pommes-1kg", { toast: false });
-    expect(removeProduct("sb-pommes-1kg", { toast: false })).toBe(true);
-    expect(removeProduct("sb-pommes-1kg", { toast: false })).toBe(false);
+    appendMessage(id, { id: "m1", role: "user", text: "Koliko stane izdelek?", createdAt: 1, status: "ok" });
+    saveProduct(A, { toast: false });
+    saveProduct(B, { toast: false });
+    expect(removeProduct(B, { toast: false })).toBe(true);
+    expect(removeProduct(B, { toast: false })).toBe(false);
     resetSelection();
     expect(getState().saved).toHaveLength(0);
     expect(getState().conversations).toHaveLength(1);
-    expect(getState().conversations[0].title).toBe("Koliko stane skuta?");
+    expect(getState().conversations[0].title).toBe("Koliko stane izdelek?");
   });
 
   it("deleting conversations keeps the selection", () => {
-    saveProduct("sb-skuta-1kg", { toast: false });
+    saveProduct(A, { toast: false });
     createConversation();
     deleteUserConversations();
     expect(getState().conversations).toHaveLength(0);

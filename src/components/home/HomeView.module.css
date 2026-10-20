@@ -1,0 +1,213 @@
+.home {
+  padding: 14px 0 28px;
+  color: var(--c-ink);
+}
+/* Centred readable column; the rail bleeds to its edges by cancelling the column padding. */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+.column > * {
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-margin-top: 8px;
+}
+.fade {
+  animation: home-fade 0.2s ease-out;
+}
+@keyframes home-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* Segmented control: two equal pills, the selected one filled green. */
+.segments {
+  display: flex;
+  align-self: center;
+  width: min(100%, 300px);
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--c-tile);
+}
+.segment {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--c-ink-2);
+  transition: background-color 0.18s, color 0.18s;
+}
+.segment[aria-selected="true"] {
+  background: var(--c-green);
+  color: #fff;
+  box-shadow: 0 2px 6px rgb(13 107 59 / 30%);
+}
+
+.sparko {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.mascot {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: -4px;
+}
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.action {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 60px;
+  padding: 8px 4px 8px 8px;
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  background: #fff;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.action:active {
+  background: var(--c-surface-muted);
+}
+.action[aria-pressed="true"] {
+  background: var(--c-green-050);
+  border-color: var(--c-green);
+  box-shadow: inset 0 0 0 1px var(--c-green);
+}
+.actionIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--c-green-050);
+  color: var(--c-green);
+}
+.action[aria-pressed="true"] .actionIcon {
+  background: var(--c-green);
+  color: #fff;
+}
+.actionLabel {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.chevron {
+  color: var(--c-ink-3);
+}
+/* Narrow phones: drop the decorative chevron and shrink the icon so every label fits in two lines. */
+@media (max-width: 400px) {
+  .action {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px;
+    padding: 8px 6px 8px 8px;
+  }
+  .actionIcon {
+    width: 28px;
+    height: 28px;
+  }
+  .chevron {
+    display: none;
+  }
+  .actionLabel {
+    font-size: 13.5px;
+  }
+}
+
+.railSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.railHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.railTitle {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--c-green);
+}
+.viewAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--c-ink-2);
+}
+.viewAll svg {
+  align-self: center;
+}
+
+.rail {
+  list-style: none;
+  margin: 0 calc(-1 * var(--pad-x));
+  padding: 2px var(--pad-x) 6px;
+  scroll-padding-inline: var(--pad-x);
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  animation: home-fade 0.2s ease-out;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.railItem {
+  flex: none;
+  width: 134px;
+  scroll-snap-align: start;
+}
+.railItem > * {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade,
+  .rail {
+    animation: none;
+  }
+  .segment,
+  .action {
+    transition: none;
+  }
+}

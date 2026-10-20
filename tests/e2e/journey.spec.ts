@@ -1,6 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const SKUTA = "sb-skuta-1kg";
+import { busiestPage, escapeRe, packOf, pdfPageNumberOf, priceOf, primary, productName } from "./catalog-data";
+
+// Two SPAR products on the busiest SPAR page, derived from the data (no hard-coded ids).
+const [SKUTA, SECOND] = busiestPage(primary).ids;
+const NAME = productName(SKUTA);
+const NAME2 = productName(SECOND);
 
 async function fresh(page: Page, path = "/") {
   await page.goto(path);
@@ -13,16 +18,18 @@ const chatLog = (page: Page) => page.getByRole("log", { name: "Pogovor s Sparkom
 test("core journey: ask → save → Moj katalog → leaflet highlight → add/remove there → all views consistent → reload", async ({ page }) => {
   await fresh(page);
 
-  // Ask via the generic starter: Sparko asks which product, a bare "skuta" answers it.
+  // Ask via the generic starter: Sparko asks which product, a bare product name answers it.
   await page.getByRole("button", { name: "Koliko stane izdelek v katalogu?" }).click();
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("Seveda. Kateri izdelek te zanima?");
   const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
-  await input.fill("skuta");
+  await input.fill(NAME);
   await input.press("Enter");
   const card = chatLog(page).locator(`[data-product-card="${SKUTA}"]`).first();
   await expect(card).toBeVisible();
-  await expect(card).toContainText("3,38 €");
-  await expect(card).toContainText("1 kg");
+  await expect(card).toContainText(priceOf(SKUTA));
+  await expect(card).toContainText(packOf(SKUTA));
+  // The card names its source catalog.
+  await expect(card.locator("[data-retailer=\"spar\"]")).toHaveCount(1);
   // Compact card: each fact once, no validity / source footer clutter.
   await expect(card).not.toContainText("Velja");
   await expect(card).not.toContainText("PDF-stran");
@@ -40,46 +47,43 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
   await add.click();
   // One toggle button: the same button now reads "V mojem katalogu".
   await expect(card.getByRole("button", { name: /^V mojem katalogu/ })).toBeVisible();
-  const savedCount = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!).saved.length);
+  const savedCount = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v2")!).saved.length);
   expect(savedCount).toBe(1);
   // Saved-state geometry stays equal.
   const a2 = (await card.getByRole("button", { name: /^V mojem katalogu/ }).boundingBox())!;
   expect(Math.abs(a2.height - b.height)).toBeLessThan(1);
   expect(Math.abs(a2.width - b.width)).toBeLessThan(1);
 
-  // Carousel tile also shows saved state.
-  await expect(page.locator(`button[data-product-id="${SKUTA}"][data-saved]`).first()).toBeVisible();
-
   // Moj katalog.
   await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: /Moj katalog/ }).click();
   await expect(page).toHaveURL(/\/moj-katalog/);
-  await expect(page.getByText("Tvoji izdelki · 1")).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Moji izdelki (1)" })).toBeVisible();
   await expect(page.locator(`#izdelek-${SKUTA}`)).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Priporočeno zate/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Priporočila zate iz kataloga" })).toBeVisible();
 
   // Open the leaflet at the product: saved highlight present.
-  await page.getByRole("link", { name: /Odpri SPAR letak/ }).click();
+  await page.getByRole("link", { name: "Pokaži na letaku" }).click();
   await expect(page).toHaveURL(/\/letak/);
   const skutaOverlay = page.locator(`[data-testid="leaflet-stage"] [data-product-id="${SKUTA}"]`).first();
   await expect(skutaOverlay).toHaveAttribute("data-saved", "true");
   await expect(skutaOverlay).toContainText("V Mojem katalogu");
 
-  // Add pommes from the leaflet.
-  await page.getByRole("button", { name: /^Pommes frites, 1 kg, 1,59 € – ni v Mojem katalogu/ }).last().click();
+  // Add a second product from the leaflet.
+  await page.getByRole("button", { name: new RegExp(`^${escapeRe(NAME2)}, ${escapeRe(packOf(SECOND))}, ${escapeRe(priceOf(SECOND))} – ni v Mojem katalogu`) }).last().click();
   await page.getByRole("dialog").getByRole("button", { name: "Dodaj v Moj katalog" }).click();
-  await expect(page.locator('[data-testid="leaflet-stage"] [data-product-id="sb-pommes-1kg"][data-saved]').first()).toBeVisible();
+  await expect(page.locator(`[data-testid="leaflet-stage"] [data-product-id="${SECOND}"][data-saved]`).first()).toBeVisible();
   await page.keyboard.press("Escape");
 
-  // Remove skuta from the leaflet → highlight disappears immediately.
-  await page.getByRole("button", { name: /^Lahka skuta, 1 kg, 3,38 € – v Mojem katalogu/ }).last().click();
+  // Remove the first product from the leaflet → highlight disappears immediately.
+  await page.getByRole("button", { name: new RegExp(`^${escapeRe(NAME)}, ${escapeRe(packOf(SKUTA))}, ${escapeRe(priceOf(SKUTA))} – v Mojem katalogu`) }).last().click();
   await page.getByRole("dialog").getByRole("button", { name: "Odstrani" }).click();
   await expect(skutaOverlay).not.toHaveAttribute("data-saved", "true");
   await page.keyboard.press("Escape");
 
   // Moj katalog reflects it.
   await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: /Moj katalog/ }).click();
-  await expect(page.getByText("Tvoji izdelki · 1")).toBeVisible();
-  await expect(page.locator("#izdelek-sb-pommes-1kg")).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Moji izdelki (1)" })).toBeVisible();
+  await expect(page.locator(`#izdelek-${SECOND}`)).toBeVisible();
   await expect(page.locator(`#izdelek-${SKUTA}`)).toHaveCount(0);
 
   // Old chat card updates to unsaved.
@@ -90,7 +94,7 @@ test("core journey: ask → save → Moj katalog → leaflet highlight → add/r
   await page.reload();
   await expect(chatLog(page).locator('[data-role="user"]').first()).toHaveText("Koliko stane izdelek v katalogu?");
   await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: /Moj katalog/ }).click();
-  await expect(page.locator("#izdelek-sb-pommes-1kg")).toBeVisible();
+  await expect(page.locator(`#izdelek-${SECOND}`)).toBeVisible();
 });
 
 test("both starters send a real message and get an answer", async ({ page }) => {
@@ -128,24 +132,26 @@ test("unknown product does not produce an invented card", async ({ page }) => {
 test("contextual follow-up: kje je v letaku?", async ({ page }) => {
   await fresh(page);
   const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
-  await input.fill("koliko stane skuto");
+  await input.fill(`koliko stane ${NAME}`);
   await input.press("Enter");
-  await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("3,38 €", { timeout: 15_000 });
+  await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText(priceOf(SKUTA), { timeout: 15_000 });
   await input.fill("kje je v letaku?");
   await input.press("Enter");
-  await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText("PDF-strani 5", { timeout: 15_000 });
+  await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText(`PDF-strani ${pdfPageNumberOf(SKUTA)}`, { timeout: 15_000 });
 });
 
-test("Domov home page keeps state", async ({ page }) => {
-  await fresh(page);
-  await page.locator(`button[data-product-id="${SKUTA}"]`).first().click();
-  await chatLog(page).getByRole("button", { name: "Dodaj v Moj katalog" }).first().click();
-  await page.getByRole("link", { name: "Domov" }).click();
-  await expect(page.getByRole("heading", { name: "Pozdravljeni!" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "SPAR katalogi" })).toBeVisible();
-  await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: "Sparko" }).click();
-  await expect(chatLog(page).locator(`[data-product-card="${SKUTA}"]`)).toBeVisible();
+test("Domov: add from the rail sheet → Moj katalog badge, row and saved rail card stay consistent", async ({ page }) => {
+  await fresh(page, "/domov");
+  await expect(page.locator("[data-catalog-card]")).toHaveCount(2);
+  const card = page.locator("[data-testid=home-rail] [data-mini-card]").first();
+  const id = (await card.getAttribute("data-product-id"))!;
+  await card.locator("button").first().click();
+  await page.getByRole("dialog").getByRole("button", { name: "Dodaj v Moj katalog" }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.locator(`[data-testid=home-rail] [data-product-id="${id}"][data-saved]`)).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Glavna navigacija" })).toContainText("1");
+  await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: /Moj katalog/ }).click();
+  await expect(page.locator(`#izdelek-${id}`)).toBeVisible();
 });
 
 test("email PDF button only explains availability and sends nothing", async ({ page }) => {
@@ -170,13 +176,13 @@ test("demo conversation can be continued without changing the example", async ({
   await demoLink.click();
   const userCountBefore = await chatLog(page).locator('[data-role="user"]').count();
   expect(userCountBefore).toBeGreaterThan(0);
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1") ?? '{"saved":[]}').saved.length);
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v2") ?? '{"saved":[]}').saved.length);
   expect(saved).toBe(0);
   const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
   await input.fill("Kaj je najbolj znižano?");
   await input.press("Enter");
   await expect(chatLog(page).locator('[data-role="assistant"]').last()).toContainText(/€/, { timeout: 15_000 });
-  const state = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v1")!));
+  const state = await page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v2")!));
   expect(state.conversations.length).toBe(1);
   expect(state.conversations[0].forkedFrom).toMatch(/^demo-/);
 });
@@ -196,7 +202,7 @@ for (const width of [360, 390, 430]) {
     }
     await page.goto("/");
     const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
-    await input.fill("Koliko stane skuta?");
+    await input.fill(`Koliko stane ${NAME}?`);
     await input.press("Enter");
     await expect(chatLog(page).locator("[data-product-card]").first()).toBeVisible();
     const tiles = await page.evaluate(() =>

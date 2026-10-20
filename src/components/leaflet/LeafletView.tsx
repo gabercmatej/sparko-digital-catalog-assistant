@@ -1,7 +1,20 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { catalog, formatPrice, getOffer, getPage, getPlacementsForProduct, getPlacementsOnPage, getProduct, placements as allPlacements } from "@/lib/catalog";
+import {
+  catalogs,
+  formatShortDate,
+  formatPrice,
+  getCatalog,
+  getOffer,
+  getPage,
+  getPlacementsForProduct,
+  getPlacementsOnPage,
+  getProduct,
+  placements as allPlacements,
+  primaryCatalog,
+  RETAILER_LABEL,
+} from "@/lib/catalog";
 import { useStore } from "@/lib/store/store";
 import { ProductCard } from "../product/ProductCard";
 import { Icon } from "../ui/Icon";
@@ -17,25 +30,38 @@ type Nav = { page: number; token: number; target: string | null };
 
 const productIdForOffer = (offerId: string) => getOffer(offerId)?.productId;
 
-function pageLabelFor(index: number): string {
-  const p = getPage(index);
+function pageLabelFor(index: number, catalogId: string): string {
+  const p = getPage(index, catalogId);
   const base = `PDF-stran ${index + 1}`;
   return p?.printedPageLabel ? `${base} (tiskana stran ${p.printedPageLabel})` : base;
 }
 
-/** Resolve the initial page/target from the URL. `pendingMine` = wait for hydration to pick the first saved page. */
-function initialFromParams(sp: URLSearchParams): { nav: Nav; pendingMine: boolean; mine: boolean } {
-  const pageCount = catalog.pageCount;
-  const stran = parsePageParam(sp.get("stran"), pageCount);
+/**
+ * Active catalog from the URL: `katalog` (unknown/missing = primary SPAR); a valid `izdelek` wins over it,
+ * so a product link always opens the catalog the product is printed in.
+ */
+function catalogIdFromParams(sp: URLSearchParams): string {
+  const izdelek = sp.get("izdelek");
+  const own = izdelek && getProduct(izdelek) ? getPlacementsForProduct(izdelek)[0]?.catalogId : undefined;
+  if (own && getCatalog(own)) return own;
+  const kat = sp.get("katalog");
+  return (kat && getCatalog(kat)?.id) || primaryCatalog.id;
+}
+
+/** Resolve the initial catalog/page/target from the URL. `pendingMine` = wait for hydration to pick the first saved page. */
+function initialFromParams(sp: URLSearchParams): { catalogId: string; nav: Nav; pendingMine: boolean; mine: boolean } {
+  const catalogId = catalogIdFromParams(sp);
+  const cat = getCatalog(catalogId)!;
+  const stran = parsePageParam(sp.get("stran"), cat.pageCount);
   const izdelek = sp.get("izdelek");
   const mine = sp.get("moji") === "1";
-  const targetPlacements = izdelek && getProduct(izdelek) ? getPlacementsForProduct(izdelek) : [];
+  const targetPlacements = izdelek && getProduct(izdelek) ? getPlacementsForProduct(izdelek).filter((pl) => pl.catalogId === catalogId) : [];
   let page = stran;
   if (page === null && targetPlacements.length) page = targetPlacements[0].pdfPageIndex;
   const pendingMine = page === null && mine;
-  if (page === null) page = [...catalog.pages].sort((a, b) => a.pdfPageIndex - b.pdfPageIndex)[0]?.pdfPageIndex ?? 0;
+  if (page === null) page = [...cat.pages].sort((a, b) => a.pdfPageIndex - b.pdfPageIndex)[0]?.pdfPageIndex ?? 0;
   const target = izdelek && targetPlacements.some((pl) => pl.pdfPageIndex === page) ? izdelek : null;
-  return { nav: { page, token: 0, target }, pendingMine, mine };
+  return { catalogId, nav: { page, token: 0, target }, pendingMine, mine };
 }
 
 const SWIPE_HINT_KEY = "sparko:swipeHintSeen";
@@ -150,6 +176,8 @@ export function LeafletView() {
   const qs = sp.toString();
 
   const [init] = useState(() => initialFromParams(new URLSearchParams(qs)));
+  const [catalogId, setCatalogId] = useState(init.catalogId);
+  const catalog = getCatalog(catalogId)!;
   const [nav, setNav] = useState<Nav>(init.nav);
   const [pendingMine, setPendingMine] = useState(init.pendingMine);
   const [filterOn, setFilterOn] = useState(init.mine);
@@ -175,7 +203,15 @@ export function LeafletView() {
 
   const savedIds = useMemo(() => store.saved.map((s) => s.productId), [store.saved]);
   const savedSet = useMemo(() => new Set(savedIds), [savedIds]);
-  const savedPages = useMemo(() => pagesWithProducts(savedIds, allPlacements, productIdForOffer), [savedIds]);
+  const savedPages = useMemo(
+    () =>
+      pagesWithProducts(
+        savedIds,
+        allPlacements.filter((pl) => pl.catalogId === catalogId),
+        productIdForOffer,
+      ),
+    [savedIds, catalogId],
+  );
   const hydrated = store.hydrated;
 
   // ---------------------------------------------------------------- render-time state adjustments
@@ -190,7 +226,11 @@ export function LeafletView() {
   // stay on the page, switch the filter off and explain.
   if (hydrated && filterOn && savedPages.length === 0) {
     setFilterOn(false);
-    setFilterNotice("Moj katalog je prazen, zato filter ni več vklopljen. Prikazane so vse strani.");
+    setFilterNotice(
+      savedIds.length === 0
+        ? "Moj katalog je prazen, zato filter ni več vklopljen. Prikazane so vse strani."
+        : `V katalogu ${RETAILER_LABEL[catalog.retailer]} nimaš izdelkov, zato filter ni vklopljen. Prikazane so vse strani.`,
+    );
   }
 
   // External URL change (not one we issued) → follow it.
@@ -198,10 +238,14 @@ export function LeafletView() {
     setLastQs(qs);
     if (!issued.includes(qs)) {
       const params = new URLSearchParams(qs);
-      const p = parsePageParam(params.get("stran"), catalog.pageCount);
+      const kat = catalogIdFromParams(params);
+      const p = parsePageParam(params.get("stran"), getCatalog(kat)!.pageCount);
       const iz = params.get("izdelek");
-      if (p !== null && (p !== nav.page || (iz && iz !== nav.target))) {
-        const target = iz && getPlacementsForProduct(iz).some((pl) => pl.pdfPageIndex === p) ? iz : null;
+      const target = iz && getPlacementsForProduct(iz).some((pl) => pl.catalogId === kat && pl.pdfPageIndex === (p ?? -1)) ? iz : null;
+      if (kat !== catalogId) {
+        setCatalogId(kat);
+        setNav((n) => ({ page: p ?? 0, token: n.token + 1, target }));
+      } else if (p !== null && (p !== nav.page || (iz && iz !== nav.target))) {
         setNav((n) => ({ page: p, token: n.token + 1, target }));
       }
     }
@@ -209,7 +253,7 @@ export function LeafletView() {
 
   const filterActive = filterOn && savedPages.length > 0;
   const visible = filterActive ? savedPages : allPageIndexes(catalog.pageCount);
-  const page = getPage(nav.page);
+  const page = getPage(nav.page, catalogId);
   const prevPage = adjacentPage(nav.page, visible, -1);
   const nextPage = adjacentPage(nav.page, visible, 1);
   const onFilteredPageWithoutSaved = filterActive && !savedPages.includes(nav.page);
@@ -218,11 +262,11 @@ export function LeafletView() {
 
   const replaceUrl = useCallback(
     (pageIndex: number, mine: boolean) => {
-      const q = leafletQuery(pageIndex, { mine });
+      const q = leafletQuery(pageIndex, { mine, catalogId });
       setIssued((list) => [...list.slice(-19), q.slice(1)]);
       router.replace(`${pathname}${q}`, { scroll: false });
     },
-    [router, pathname],
+    [router, pathname, catalogId],
   );
 
   const goTo = useCallback(
@@ -240,6 +284,25 @@ export function LeafletView() {
   const goPrev = useCallback(() => {
     if (prevPage !== null) goTo(prevPage);
   }, [prevPage, goTo]);
+
+  // Catalog switch: page 1 of the other catalog (its first saved page when "Moje strani" is on and it has some).
+  const switchCatalog = (id: string) => {
+    if (id === catalogId) return;
+    const pagesThere = pagesWithProducts(
+      savedIds,
+      allPlacements.filter((pl) => pl.catalogId === id),
+      productIdForOffer,
+    );
+    const mine = filterOn && pagesThere.length > 0;
+    const pageIndex = mine ? pagesThere[0] : 0;
+    const q = leafletQuery(pageIndex, { mine, catalogId: id });
+    setIssued((list) => [...list.slice(-19), q.slice(1)]);
+    setCatalogId(id);
+    setNav((n) => ({ page: pageIndex, token: n.token + 1, target: null }));
+    setFilterNotice(null);
+    setSheet(null);
+    router.replace(`${pathname}${q}`, { scroll: false });
+  };
 
   const toggleFilter = () => {
     if (!hydrated || savedPages.length === 0) return;
@@ -274,18 +337,18 @@ export function LeafletView() {
   // Preload only the neighbouring page images.
   useEffect(() => {
     for (const idx of [prevPage, nextPage]) {
-      const p = idx === null ? undefined : getPage(idx);
+      const p = idx === null ? undefined : getPage(idx, catalogId);
       if (p) {
         const img = new Image();
         img.decoding = "async";
         img.src = p.image.src;
       }
     }
-  }, [prevPage, nextPage]);
+  }, [prevPage, nextPage, catalogId]);
 
   // ---------------------------------------------------------------- page data
 
-  const pagePlacements = useMemo(() => getPlacementsOnPage(nav.page), [nav.page]);
+  const pagePlacements = useMemo(() => getPlacementsOnPage(nav.page, catalogId), [nav.page, catalogId]);
   const items: OverlayItem[] = pagePlacements.flatMap((pl) => {
     const offer = getOffer(pl.offerId);
     const product = offer && getProduct(offer.productId);
@@ -302,25 +365,36 @@ export function LeafletView() {
     ];
   });
 
-  const openPlacement = useCallback((placementId: string) => {
-    const pl = getPlacementsOnPage(nav.page).find((p) => p.id === placementId);
+  const openPlacement = (placementId: string) => {
+    const pl = pagePlacements.find((p) => p.id === placementId);
     const offer = pl && getOffer(pl.offerId);
     if (offer) setSheet({ productId: offer.productId, offerId: offer.id });
-  }, [nav.page]);
-
+  };
 
   const onScaleChange = useCallback((scale: number) => setZoom({ token: nav.token, scale }), [nav.token]);
   const zoomScale = zoom.token === nav.token ? zoom.scale : 1;
 
   const onSwipe = useCallback((dir: "next" | "prev") => (dir === "next" ? goNext() : goPrev()), [goNext, goPrev]);
 
-  const pageLabel = pageLabelFor(nav.page);
+  const pageLabel = pageLabelFor(nav.page, catalogId);
   const position = filterActive && savedPages.includes(nav.page) ? `${savedPages.indexOf(nav.page) + 1}/${savedPages.length}` : null;
   const filterDisabled = !hydrated || savedPages.length === 0;
 
   return (
     <div className={styles.root}>
-      <h1 className="sr-only">SPAR letak</h1>
+      <h1 className="sr-only">{RETAILER_LABEL[catalog.retailer]} letak</h1>
+      <div className={styles.catalogBar}>
+        <div role="group" aria-label="Katalog" className={styles.segment}>
+          {catalogs.map((c) => (
+            <button key={c.id} type="button" className={styles.segmentBtn} aria-pressed={c.id === catalogId} data-catalog-id={c.id} onClick={() => switchCatalog(c.id)}>
+              {RETAILER_LABEL[c.retailer]}
+            </button>
+          ))}
+        </div>
+        <span className={styles.validity} data-testid="catalog-validity">
+          {formatShortDate(catalog.validFrom)} – {formatShortDate(catalog.validTo)}
+        </span>
+      </div>
       <div className={styles.toolbar}>
         <button
           type="button"
@@ -422,6 +496,7 @@ export function LeafletView() {
 
       <Sheet open={pickerOpen} onClose={() => setPickerOpen(false)} title={filterActive ? "Strani z mojimi izdelki" : "Izberi stran"}>
         <PagePicker
+          catalogId={catalogId}
           pages={visible}
           current={nav.page}
           savedPages={savedPages}

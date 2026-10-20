@@ -70,7 +70,8 @@ export function validateModelOutput(raw: unknown, draft: DeterministicReply): Va
   const allowedProductIds = new Set(draft.candidateProductIds);
   const allowedOfferIds = new Set(draft.candidateProductIds.map((id) => getPrimaryOffer(id)?.id).filter((x): x is string => !!x));
   const allowedRecipeIds = new Set(draft.candidateRecipeIds);
-  const resolved = resolvePlaceholders(text.trim(), { ...draft.placeholderCtx, allowedProductIds, allowedOfferIds, allowedRecipeIds });
+  const allowedPromoIds = new Set(draft.candidatePromoIds);
+  const resolved = resolvePlaceholders(text.trim(), { ...draft.placeholderCtx, allowedProductIds, allowedOfferIds, allowedRecipeIds, allowedPromoIds });
   if (!resolved.ok) return { ok: false, reason: "placeholder" };
   const finalText = resolved.text.replace(/[ \t]+\n/g, "\n").trim();
   if (finalText.length > MAX_MODEL_TEXT_CHARS) return { ok: false, reason: "too_long" };

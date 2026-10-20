@@ -22,24 +22,33 @@ export type CatalogPage = {
   theme: string | null;
 };
 
+/** Which store format a catalog (and so every offer in it) belongs to. Drives the SPAR / INTERSPAR source label. */
+export type Retailer = "spar" | "interspar";
+
 export type Catalog = {
-  id: string; // "spar-4026"
-  title: string; // "SPAR katalog 40/26"
-  issueLabel: string; // "40/26"
-  /** ISO date the catalog was published / starts, "2026-09-30". */
+  id: string; // "spar-4126" | "interspar-1426"
+  retailer: Retailer;
+  title: string; // "SPAR katalog 41/26"
+  issueLabel: string; // "41/26"
+  /** ISO date the catalog was published / starts, "2026-10-07". */
   publishedDate: string;
+  /** General catalog validity as printed (individual offers may differ, see Offer.validity). */
+  validFrom: string; // "2026-10-07"
+  validTo: string; // "2026-10-13"
   sourceFile: string; // original file name
   /** Public URL of the original PDF. */
   pdfUrl: string;
   pageCount: number;
+  /** Cover (PDF page 1) image for the home catalog cards. */
+  cover: { src: string; width: number; height: number };
   pages: CatalogPage[];
 };
 
 export type QuantityUnit = "g" | "kg" | "ml" | "l" | "kos";
 
 export type Product = {
-  id: string; // stable, kebab-case, e.g. "sb-skuta-1kg"
-  name: string; // "Lahka skuta"
+  id: string; // stable, kebab-case, e.g. "nutella-1kg"
+  name: string; // "Nutella"
   /** Brand or private label line, e.g. "S-BUDGET", "SPAR", "Ljubljanske mlekarne". */
   brand: string | null;
   /** Product line used for recommendations (+3), e.g. "S-BUDGET". */
@@ -54,7 +63,7 @@ export type Product = {
   /** Lowercase Slovenian aliases & inflections, without diacritics variants is fine. */
   aliases: string[];
   image: {
-    src: string; // "/products/sb-skuta-1kg.webp"
+    src: string; // "/products/nutella-1kg.webp"
     width: number;
     height: number;
     /** How the image was obtained, e.g. "embedded PDF image xref 123, page 5". */
@@ -64,6 +73,10 @@ export type Product = {
   theme: string | null;
   /** Editorial order for carousel / tie-breaks (lower first). */
   editorialRank: number;
+  /** "Novo v katalogu". */
+  isNew: boolean;
+  /** printed_badge = "NOVO" printed in the leaflet; demo_editorial = explicit demo pick (mock). null iff !isNew. */
+  newSource: "printed_badge" | "demo_editorial" | null;
 };
 
 export type PriceKind =
@@ -79,7 +92,7 @@ export type ValidityStatus =
   | "unknown"; // not determinable from source
 
 export type Offer = {
-  id: string; // "offer-sb-skuta-1kg-4026"
+  id: string; // "offer-nutella-1kg-4126"
   productId: string;
   catalogId: string;
   priceCents: number;
@@ -115,9 +128,11 @@ export type Offer = {
 export type NormalizedBox = { x: number; y: number; width: number; height: number };
 
 export type Placement = {
-  id: string; // "pl-sb-skuta-1kg-p05"
+  id: string; // "pl-nutella-1kg-4126-p01"
   offerId: string;
-  pdfPageIndex: number; // 0-based
+  /** Catalog the page belongs to (always the offer's catalogId). */
+  catalogId: string;
+  pdfPageIndex: number; // 0-based within that catalog
   pdfPageNumber: number; // 1-based
   printedPageLabel: string | null;
   bbox: NormalizedBox;
@@ -149,12 +164,41 @@ export type Recipe = {
 };
 
 export type CatalogData = {
-  version: number;
-  catalog: Catalog;
+  version: 2;
+  /** SPAR first (primary), then INTERSPAR. */
+  catalogs: Catalog[];
   products: Product[];
   offers: Offer[];
   placements: Placement[];
   recipes: Recipe[];
+};
+
+// ---------------------------------------------------------------- future promotions (DEMO MOCK)
+
+/**
+ * An upcoming promotion for a product that is in the current catalog. DEMO MOCK: the real
+ * future-promo feed does not exist yet; src/data/future-promos.json is deterministic demo data,
+ * shaped so it can be swapped for a real feed. Never mixed with verified current offers:
+ * the current price always comes from the product's current Offer.
+ */
+export type FuturePromo = {
+  id: string; // "fp-<productId>-w42"
+  productId: string;
+  catalogId: string;
+  validFrom: string; // ISO date
+  validTo: string; // ISO date
+  priceCents: number;
+  regularPriceCents: number | null;
+  discountPercent: number | null;
+  spPlusRequired: boolean;
+};
+
+export type FuturePromoData = {
+  version: 1;
+  mock: true;
+  note: string;
+  period: { from: string; to: string };
+  promos: FuturePromo[];
 };
 
 // ---------------------------------------------------------------- user state
@@ -178,6 +222,11 @@ export type MessageBlock =
       layout?: "card" | "list";
     }
   | { type: "recipe"; recipeId: string }
+  /**
+   * Discount timing: "Znižano ta teden" (verified current offers) and "Znižano naslednji teden"
+   * (FuturePromo ids, demo mock). Either list may be empty; periods are derived from the data.
+   */
+  | { type: "discount_timeline"; currentOfferIds: string[]; upcomingPromoIds: string[] }
   | {
       type: "choices";
       prompt?: string;

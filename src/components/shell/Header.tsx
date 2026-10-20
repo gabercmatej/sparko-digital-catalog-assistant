@@ -43,3 +43,20 @@ export function Header() {
     </header>
   );
 }
+
+/**
+ * Page-owned header for routes that replace the global logo header (currently Moj katalog):
+ * menu button on the left, centered title, page actions (`children`) on the right.
+ */
+export function PageHeader({ title, children }: { title: string; children?: React.ReactNode }) {
+  const { openSidebar } = useShell();
+  return (
+    <header className={`${styles.header} ${styles.pageHeader}`}>
+      <button type="button" className={`icon-btn ${styles.pageMenu}`} onClick={openSidebar} aria-label="Odpri meni">
+        <Icon name="menu" size={24} />
+      </button>
+      <h1 className={styles.pageTitle}>{title}</h1>
+      <div className={styles.pageActions}>{children}</div>
+    </header>
+  );
+}

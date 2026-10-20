@@ -4,7 +4,7 @@
  */
 import type { Conversation, SavedItem, SpPlusSetting } from "../types";
 
-export const STORAGE_KEY = "sparko:v1";
+export const STORAGE_KEY = "sparko:v2";
 export const STORAGE_VERSION = 1;
 
 export type PersistedState = {

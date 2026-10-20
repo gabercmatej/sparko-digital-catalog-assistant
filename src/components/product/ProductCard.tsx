@@ -2,7 +2,8 @@
 import { formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL, splitPrice } from "@/lib/catalog";
 import type { Offer } from "@/lib/types";
 import { ProductActions } from "./ProductActions";
-import { ProductSummary } from "./ProductSummary";
+import { brandLabel, ProductSummary } from "./ProductSummary";
+import { RetailerBadge } from "./RetailerBadge";
 import { ProductTile } from "./ProductTile";
 import styles from "./ProductCard.module.css";
 
@@ -39,7 +40,8 @@ export function ProductCard({
         <div className={styles.row} data-product-row>
           <ProductTile productId={productId} size="carousel" thumb />
           <div className={styles.info}>
-            {product.brand && <span className={styles.brand}>{product.brand}</span>}
+            <RetailerBadge productId={productId} className={styles.badge} />
+            {brandLabel(product) && <span className={styles.brand}>{brandLabel(product)}</span>}
             <Name className={styles.name}>{product.name}</Name>
           </div>
           <span className={styles.pack}>{product.packSize}</span>
@@ -63,11 +65,11 @@ export function ProductCard({
  * above it. Shared by the chat card and the compact chat rows; it occupies the `price` grid area and
  * is meant to sit flush in the bottom-right corner of its white row. Inline markup only (spans).
  */
-export function PriceBlock({ offer }: { offer: Offer }) {
+export function PriceBlock({ offer, compact = false }: { offer: Offer; compact?: boolean }) {
   const { euros, cents } = splitPrice(offer.priceCents);
   const unit = PRICE_UNIT_LABEL[offer.priceUnit];
   return (
-    <span className={styles.priceWrap} data-price-block>
+    <span className={`${styles.priceWrap}${compact ? ` ${styles.compact}` : ""}`} data-price-block>
       {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
       {unit && <span className={styles.unit}>{unit}</span>}
       <span className={styles.price} aria-hidden="true" data-price>

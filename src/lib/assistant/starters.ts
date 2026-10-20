@@ -8,5 +8,5 @@ export const STARTER_PROMPTS: { label: string; message: string }[] = [
   { label: "Koliko stane izdelek v katalogu?", message: "Koliko stane izdelek v katalogu?" },
   { label: "Kaj je najbolj znižano v katalogu?", message: "Kaj je najbolj znižano v katalogu?" },
   { label: "Kje je meni najbližji SPAR?", message: "Kje je meni najbližji SPAR?" },
-  { label: "Kje v trgovini je izdelek iz kataloga?", message: "Kje v trgovini je izdelek iz kataloga?" },
+  { label: "Kdaj je Perutnina Ptuj znižana?", message: "Kdaj je Perutnina Ptuj znižana?" },
 ];
