@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const ENTRY = (page: Page) => page.getByRole("button", { name: "Odpri klepet s Sparkom" });
+const ENTRY = (page: Page) => page.getByRole("button", { name: "Pogovor s Sparkom" });
 const input = (page: Page) => page.getByPlaceholder("Vprašaj Sparka o katalogu …");
 const lastReply = (page: Page) => page.getByRole("log", { name: "Pogovor s Sparkom" }).locator('[data-role="assistant"]').last();
 

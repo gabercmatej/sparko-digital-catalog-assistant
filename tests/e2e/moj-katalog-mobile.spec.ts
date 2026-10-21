@@ -46,7 +46,7 @@ test("total equals the sum of the saved card prices, per-kg included", async ({ 
   expect(cents.reduce((a, b) => a + b, 0)).toBe(SAVED.reduce((a, id) => a + byId(id).priceCents, 0));
 });
 
-test("savings are red with a leading minus; columns are centred and equal; yellow background; no info / coverage text", async ({ page }) => {
+test("split bar: price white on red, savings red on yellow with a leading minus; halves centred and equal; no info / coverage text", async ({ page }) => {
   await seed(page, SAVED);
   const sv = bar(page).locator("[data-total-savings]");
   await expect(sv).toHaveText(/^−\d+,\d{2} €$/);
@@ -59,7 +59,15 @@ test("savings are red with a leading minus; columns are centred and equal; yello
     return c;
   });
   expect(await sv.evaluate((el) => getComputedStyle(el).color)).toBe(red);
-  expect(await bar(page).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(255, 229, 0)"); // catalog discount-label yellow (--c-yellow)
+  const halves = await bar(page).evaluate((el) =>
+    [...el.children].map((c) => ({
+      bg: getComputedStyle(c).backgroundColor,
+      label: getComputedStyle(c.querySelector("span")!).color,
+      value: getComputedStyle(c.querySelector("strong")!).color,
+    })),
+  );
+  expect(halves[0]).toEqual({ bg: red, label: "rgb(255, 255, 255)", value: "rgb(255, 255, 255)" }); // SPAR red, white text
+  expect(halves[1]).toEqual({ bg: "rgb(255, 229, 0)", label: red, value: red }); // catalog discount-label yellow, red text
 
   const barBox = (await bar(page).boundingBox())!;
   const cols = bar(page).locator(":scope > div");
@@ -75,6 +83,13 @@ test("savings are red with a leading minus; columns are centred and equal; yello
     expect(Math.abs(value.x + value.width / 2 - cx)).toBeLessThanOrEqual(2);
   }
   expect(Math.abs(widths[0] - widths[1])).toBeLessThanOrEqual(1);
+  // The halves fill the bar edge to edge with no gap, at the same height.
+  const [h0, h1] = [(await cols.nth(0).boundingBox())!, (await cols.nth(1).boundingBox())!];
+  expect(Math.abs(h0.x - barBox.x)).toBeLessThanOrEqual(0.5);
+  expect(Math.abs(h1.x - (h0.x + h0.width))).toBeLessThanOrEqual(0.5);
+  expect(Math.abs(h1.x + h1.width - (barBox.x + barBox.width))).toBeLessThanOrEqual(0.5);
+  expect(Math.abs(h0.height - barBox.height)).toBeLessThanOrEqual(0.5);
+  expect(Math.abs(h1.height - barBox.height)).toBeLessThanOrEqual(0.5);
   expect(barBox.height).toBeGreaterThanOrEqual(52);
   expect(barBox.height).toBeLessThanOrEqual(72);
 

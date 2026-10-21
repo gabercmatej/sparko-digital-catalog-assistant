@@ -1,27 +1,33 @@
+/* Two equal, full-height halves with no gap: price on SPAR red (white text), savings on the catalog
+   discount-label yellow (red text). */
 .bar {
   flex: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
   min-height: 58px;
-  padding: 6px var(--gutter);
-  /* the catalog discount-label yellow; the savings amount is in the SPAR price red */
-  background: var(--c-yellow);
-  border-top: 1px solid #e6c800;
 }
 .col {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
   min-width: 0;
+  padding: 6px 12px;
   text-align: center;
+}
+.colTotal {
+  background: var(--c-red);
+  color: #fff;
+}
+.colSavings {
+  background: var(--c-yellow);
+  color: var(--c-red);
 }
 .label {
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: 1.2;
-  color: var(--c-ink);
 }
 .value {
   font-size: var(--text-lg);
@@ -30,16 +36,11 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.total {
-  color: var(--c-ink);
-}
-.savings {
-  color: var(--c-red);
-}
 .skeleton {
   display: block;
   width: 64px;
   height: 18px;
   border-radius: 6px;
-  background: rgb(0 0 0 / 8%);
+  background: currentColor;
+  opacity: 0.2;
 }

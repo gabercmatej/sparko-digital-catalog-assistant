@@ -13,20 +13,20 @@ export function CollectionSummary({ totals, hydrated }: { totals: CollectionTota
 
   return (
     <div className={styles.bar} data-collection-summary role="group" aria-label="Povzetek cen v Mojem katalogu" aria-busy={!hydrated}>
-      <div className={styles.col}>
+      <div className={`${styles.col} ${styles.colTotal}`}>
         <span className={styles.label}>Cena izdelkov</span>
         {hydrated ? (
-          <strong className={`${styles.value} ${styles.total}`} data-total-price>
+          <strong className={styles.value} data-total-price>
             {total}
           </strong>
         ) : (
           <span className={styles.skeleton} aria-hidden="true" />
         )}
       </div>
-      <div className={styles.col}>
+      <div className={`${styles.col} ${styles.colSavings}`}>
         <span className={styles.label}>Skupni prihranek</span>
         {hydrated ? (
-          <strong className={`${styles.value} ${styles.savings}`} data-total-savings aria-label={`Skupni prihranek ${savings}`}>
+          <strong className={styles.value} data-total-savings aria-label={`Skupni prihranek ${savings}`}>
             {totals.savingsCents > 0 ? `\u2212${savings}` : savings}
           </strong>
         ) : (

@@ -42,13 +42,17 @@ async function checkHome(page: Page) {
   // Vertical control rail on the far right of the top zone, vertically centred on the cards, compact.
   await expect(page.getByRole("tablist", { name: "Prikaz" })).toHaveAttribute("aria-orientation", "vertical");
   expect(tab.x, "rail right of the cards").toBeGreaterThanOrEqual(c1.x + c1.width - 0.5);
-  expect(vp.width - (tab.x + tab.width), "rail at the right edge (gutter only)").toBeLessThanOrEqual(26);
+  // Nudged ~6px into the right gutter, but never clipped (`inside` above).
+  expect(vp.width - (tab.x + tab.width), "rail at the right edge (part of the gutter)").toBeLessThanOrEqual(20);
   expect(tab.width, "rail is slim (layout width)").toBeLessThanOrEqual(30);
+  // ~50% taller than the former 94px rail, from taller options (icons stay 18px).
+  expect(tab.height, "tall rail").toBeGreaterThanOrEqual(135);
   expect(tab.height, "options stacked").toBeGreaterThan(tab.width);
   expect(Math.abs(tab.y + tab.height / 2 - (c0.y + c0.height / 2)), "rail vertically centred").toBeLessThan(3);
   const [kat, izd] = [await box("[role=tab]", 0), await box("[role=tab]", 1)];
   expect(izd.y, "Izdelki below Katalogi").toBeGreaterThanOrEqual(kat.y + kat.height - 0.5);
-  for (const t of [kat, izd]) expect(t.height, "touch target").toBeGreaterThanOrEqual(44);
+  for (const t of [kat, izd]) expect(t.height, "touch target").toBeGreaterThanOrEqual(64);
+  expect(Math.abs(kat.height - izd.height), "even options").toBeLessThan(0.5);
   // The slim tabs keep a ~44px-wide hit area (invisible ::after into the gap and the gutter).
   const hits = await page.evaluate(() =>
     [...document.querySelectorAll("[role=tab]")].map((t) => {
@@ -83,14 +87,16 @@ async function checkHome(page: Page) {
   const mascot = await box('[data-home-zone="mascot"]');
   inside("mascot", mascot);
   // Responsive breathing room between the zones: never crowded, never a large empty band.
-  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeLessThanOrEqual(60);
+  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeLessThanOrEqual(80);
   expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeGreaterThanOrEqual(12);
   // Compact top zone on phones: the catalog cards take at most ~42% of the space between header and nav.
   expect(c0.height, "catalog section height").toBeLessThanOrEqual((navBox.y - headerBottom) * 0.42);
   const actionsBox = await box('[data-home-zone="actions"]');
   const railBox = await box('[data-home-zone="bottom"]');
   expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeGreaterThanOrEqual(12);
-  expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeLessThanOrEqual(60);
+  expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeLessThanOrEqual(80);
+  // Balanced: the two zone gaps match.
+  expect(Math.abs(railBox.y - (actionsBox.y + actionsBox.height) - (mascot.y - (c0.y + c0.height))), "balanced gaps").toBeLessThan(2);
   inside("actions", await box('[data-home-zone="actions"]'));
   inside("rail section", await box('[data-home-zone="bottom"]'));
   const railCards = page.locator("[data-testid=home-rail] li");
@@ -131,7 +137,7 @@ async function checkHome(page: Page) {
     });
     expect(g.label.x - g.card.x, `card ${i} label left`).toBeLessThan(16);
     expect(g.label.y - g.card.y, `card ${i} label top`).toBeLessThan(20);
-    if (g.card.width <= 150) {
+    if (g.card.width <= 160) {
       expect(g.title.y, `card ${i} title under label`).toBeGreaterThanOrEqual(g.label.bottom - 0.5);
       expect(Math.abs(g.title.x - g.label.x), `card ${i} title left-aligned with label`).toBeLessThan(4);
       expect(g.titleOneLine, `card ${i} title on one line`).toBe(true);
@@ -147,6 +153,34 @@ async function checkHome(page: Page) {
     expect(g.cta.y, `card ${i} CTA below dates`).toBeGreaterThanOrEqual(g.dates.bottom - 0.5);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  // Mascot + "Pogovor" pill: one horizontally centred group, vertically aligned.
+  const pic = await box('[data-home-zone="mascot"] img');
+  const chat = await box("[data-chat-entry]");
+  await expect(page.locator("[data-chat-entry]")).toHaveText("Pogovor");
+  expect(chat.x, "Pogovor right of the mascot").toBeGreaterThan(pic.x + pic.width);
+  expect(Math.abs(pic.x + (chat.x + chat.width - pic.x) / 2 - vp.width / 2), "group centred").toBeLessThan(3);
+  expect(Math.abs(pic.y + pic.height / 2 - (chat.y + chat.height / 2)), "group vertically aligned").toBeLessThan(2);
+
+  // Izdelki: same top-zone height (nothing below moves), exactly two complete list rows, the rest scrolls inside.
+  const before = { mascot, rail: railBox };
+  await page.getByRole("tab", { name: "Izdelki" }).click();
+  const panel = await box("[role=tabpanel]");
+  expect(Math.abs(panel.height - c0.height), "same top height in both modes").toBeLessThan(1);
+  const after = { mascot: await box('[data-home-zone="mascot"]'), rail: await box('[data-home-zone="bottom"]') };
+  expect(Math.abs(after.mascot.y - before.mascot.y), "mascot does not jump").toBeLessThan(1);
+  expect(Math.abs(after.rail.y - before.rail.y), "products rail does not jump").toBeLessThan(1);
+  const list = await page.getByTestId("home-list").evaluate((el) => {
+    const l = el.getBoundingClientRect();
+    const rows = [...el.querySelectorAll("[data-home-row]")].map((r) => r.getBoundingClientRect());
+    return { scrolls: el.scrollHeight > el.clientHeight + 10, visible: rows.filter((r) => r.top < l.bottom - 0.5 && r.bottom > l.top + 0.5).map((r) => ({ top: r.top - l.top, bottom: r.bottom - l.top })), h: l.height };
+  });
+  expect(list.visible.length, "exactly two rows visible").toBe(2);
+  for (const r of list.visible) {
+    expect(r.top, "row fully visible").toBeGreaterThanOrEqual(-0.5);
+    expect(r.bottom, "row fully visible").toBeLessThanOrEqual(list.h + 0.5);
+  }
+  expect(list.scrolls, "more products scroll inside the list").toBe(true);
 }
 
 test("home zones are intact, inside the viewport, and catalog cards never collapse", async ({ page }) => {

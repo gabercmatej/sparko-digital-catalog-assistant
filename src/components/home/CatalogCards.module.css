@@ -184,11 +184,13 @@
 
 /* Narrow phone cards (beside the vertical control rail): the label sits on top and "Aktualni katalog" on one
    line right below it, both left-aligned, so neither is clipped next to the wide INTERSPAR label. */
-@container card (max-width: 150px) {
-  /* Compact phone chrome: a little less padding, date row and CTA height so the whole top zone is lower. */
+@container card (max-width: 160px) {
+  /* Compact phone chrome: a little less padding, gaps, header, date row and CTA height, so the cover keeps most
+     of the (two-list-rows high) top zone. */
   .card {
     --pad: 6px;
-    --head-h: 30px;
+    --gap: 2px;
+    --head-h: 28px;
     --date-h: 12px;
     --cta-h: 26px;
   }

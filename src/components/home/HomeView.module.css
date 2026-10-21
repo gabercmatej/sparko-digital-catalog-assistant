@@ -2,8 +2,9 @@
  * Viewport engineering. .home is absolutely positioned inside <main> (inset: 0), so its size is DEFINITE
  * in every engine, and it is a size container: 100cqh is the real available height. There are no
  * percentage-height chains below it. The catalog zone (and the product panel that shares its box) gets an
- * explicit length: clamp(min, 100cqh - (everything else), max), where "everything else" is a sum of compact
- * fixed sizes. The rail is sized by its cards' natural height (--card-h is only the budget estimate).
+ * explicit length: on phones exactly two Izdelki list rows plus the panel chrome; on desktop
+ * clamp(min, 100cqh - (everything else), max), where "everything else" is a sum of compact fixed sizes.
+ * The rail is sized by its cards' natural height (--card-h is only the budget estimate).
  * If the minimums exceed the height, .home scrolls vertically instead of clipping.
  */
 .home {
@@ -40,21 +41,22 @@
   --card-h: 112px; /* estimated natural height of a rail ProductMiniCard (phones), incl. rounding */
   --rail-pad: 9px;
   --cat-min: 150px;
-  /* A compact phone card (cover ~55px narrower than the card, chrome ~90px) so the top zone stays modest and the
-     height it leaves goes to the gaps between the zones; tall phones may grow it to ~34% of the height, but never
-     beyond what the width-limited cover needs (--cat-fill: cover almost as wide as the card). */
-  --cat-col: calc((min(100cqw, var(--content-max)) - 2 * var(--pad-x) - var(--seg-w) - var(--seg-gap) - 8px) / 2);
-  --cat-fit: calc((var(--cat-col) - 55px) * 977 / 720 + 96px);
-  --cat-fill: calc((var(--cat-col) - 26px) * 977 / 720 + 117px);
-  --cat-max: min(var(--cat-fill), max(var(--cat-fit), 34cqh), clamp(260px, 105cqw, 460px));
+  /* Phones: the top zone (both modes) is exactly the Izdelki panel showing two complete list rows: panel chrome
+     (padding + heading + chips + gaps, see ItemPanel.module.css) + 2 fixed-height rows + their divider. */
+  --ip-pad-t: 10px;
+  --ip-gap: 6px;
+  --ip-head-h: 24px;
+  --ip-chips-h: 38px;
+  --row-h: 64px;
+  --row-lines: 1;
+  --cat-h: calc(var(--ip-pad-t) + var(--ip-head-h) + var(--ip-chips-h) + 2 * var(--ip-gap) + 2 * var(--row-h) + 1px);
   --others: calc(
     var(--pad-t) + var(--pad-b) + var(--cat-gap) + var(--mascot-h) + 6px + 2 * var(--action-h) +
       6px + var(--zone-gap) + var(--head-h) + 2px + var(--card-h) + var(--rail-pad)
   );
-  --cat-h: clamp(var(--cat-min), calc(100cqh - var(--others)), var(--cat-max));
-  /* 40% of the unused height to each zone gap (capped); the remaining 20% is split above and below by centring. */
-  --extra: min(max(0px, calc((100cqh - var(--others) - var(--cat-h)) * 0.4)), var(--extra-max));
-  --extra-max: 34px;
+  /* 45% of the unused height to each zone gap (capped); the remaining 10% is split above and below by centring. */
+  --extra: min(max(0px, calc((100cqh - var(--others) - var(--cat-h)) * 0.45)), var(--extra-max));
+  --extra-max: 44px;
 }
 .column > * {
   min-width: 0;
@@ -86,14 +88,16 @@
 }
 
 /* Vertical segmented control: a slim icon-only rail (names via aria-label / title), vertically centred on the
-   top box. Fixed size, so it never moves between modes. Each tab is narrower than a finger, so an invisible
-   ::after widens its hit area to 44px into the gap and the gutter (layout width stays --seg-w). */
+   top box and nudged into the right gutter. Fixed size, so it never moves between modes. Each tab is narrower
+   than a finger, so an invisible ::after widens its hit area to 44px into the gap and the gutter (layout width
+   stays --seg-w). */
 .segments {
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   width: var(--seg-w);
+  margin-right: -6px;
   padding: 2px;
   border-radius: 12px;
   background: var(--c-tile);
@@ -102,7 +106,7 @@
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 44px;
+  min-height: 66px;
   padding: 0;
   border: 0;
   border-radius: 9px;
@@ -128,25 +132,24 @@
   align-items: center;
   gap: 6px;
 }
+/* Mascot + "Pogovor" button: one horizontally centred group. */
 .mascotRow {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   height: var(--mascot-h);
 }
 .mascot {
-  grid-column: 2;
+  flex: none;
   width: var(--mascot-h);
   height: var(--mascot-h);
   object-fit: contain;
 }
 .chatSlot {
-  grid-column: 3;
-  justify-self: start;
-  margin-left: 8px;
-  width: 40px;
-  height: 40px;
+  flex: none;
+  display: flex;
 }
 .actions {
   display: grid;
@@ -276,22 +279,21 @@
   scroll-snap-align: start;
 }
 
-/* Short screens: tighter everything. */
+/* Short screens: tighter everything, including the Izdelki panel chrome and rows (so a shorter top zone). */
 @container home (max-height: 600px) {
   .column {
     --mascot-h: 40px;
     --action-h: 40px;
     --zone-gap: 14px;
     --cat-gap: 14px;
+    --ip-pad-t: 6px;
+    --ip-gap: 2px;
+    --ip-head-h: 20px;
+    --ip-chips-h: 34px;
+    --row-h: 60px;
   }
 }
-/* Very narrow phones: a slimmer control rail; keep the cover readable (taller minimum) and let .home scroll if needed. */
-@container home (max-width: 340px) {
-  .column {
-    --cat-min: 190px;
-  }
-}
-/* Tall screens: a larger mascot and roomier actions (the catalog cards stop growing at --cat-fit). */
+/* Tall screens: a larger mascot and roomier actions. */
 @container home (min-height: 700px) {
   .column {
     --mascot-h: 76px;
@@ -308,13 +310,19 @@
   .column {
     --mascot-h: 100px;
     --action-h: 62px;
+    --row-h: 72px;
+    --extra-max: 56px;
   }
 }
-/* Desktop-size cards in the rail. */
+/* Desktop: the top zone fills the height left by the other zones (capped); the list rows keep their natural
+   height and show as many as fit. */
 @container home (min-width: 700px) {
   .column {
     --card-h: 122px;
     --cat-max: 380px;
+    --cat-h: clamp(var(--cat-min), calc(100cqh - var(--others)), var(--cat-max));
+    --row-h: auto;
+    --row-lines: 2;
     --seg-w: 34px;
     --seg-gap: 10px;
     --mascot-h: 64px;
@@ -322,10 +330,11 @@
     /* desktop spacing as before */
     --zone-gap: clamp(8px, 1.8cqh, 14px);
     --cat-gap: clamp(8px, 1.8cqh, 14px);
+    --extra: min(max(0px, calc((100cqh - var(--others) - var(--cat-h)) * 0.4)), var(--extra-max));
     --extra-max: 36px;
   }
   .segment {
-    min-height: 52px;
+    min-height: 78px;
   }
 }
 
