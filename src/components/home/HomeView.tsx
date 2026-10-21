@@ -17,7 +17,7 @@ import { useChatEntryTransition } from "./useChatEntryTransition";
 
 const SEGMENTS: { mode: TopMode; label: string; icon: IconName }[] = [
   { mode: "catalogs", label: "Katalogi", icon: "leaflet" },
-  { mode: "products", label: "Izdelki", icon: "list" },
+  { mode: "products", label: "Izdelki", icon: "grid" },
 ];
 
 /**
@@ -79,7 +79,7 @@ export function HomeView() {
             )}
           </div>
 
-          {/* Narrow vertical control rail on the far right, same position in both modes. */}
+          {/* Narrow icon-only control rail on the far right, same position in both modes. */}
           <div className={styles.segments} role="tablist" aria-label="Prikaz" aria-orientation="vertical" onKeyDown={onTabKey}>
             {SEGMENTS.map((s) => {
               const selected = state.topMode === s.mode;
@@ -92,11 +92,12 @@ export function HomeView() {
                   aria-selected={selected}
                   aria-controls={panelId}
                   tabIndex={selected ? 0 : -1}
+                  aria-label={s.label}
+                  title={s.label}
                   className={styles.segment}
                   onClick={() => setMode(s.mode)}
                 >
                   <Icon name={s.icon} size={18} strokeWidth={2} />
-                  <span className={styles.segmentLabel}>{s.label}</span>
                 </button>
               );
             })}

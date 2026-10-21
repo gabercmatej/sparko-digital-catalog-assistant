@@ -111,8 +111,13 @@ button.hit:active {
 .unit {
   font-size: 10px;
 }
+/* The red price block is flush with the card's right and bottom edges (the card's overflow + radius clip the
+   corner): negative margins cancel the .hit padding and the same amount is added back as padding, so the price
+   text stays where it was. Base card: .hit padding 8px right/bottom, PricePill sm padding 4px 6px 4px 7px. */
 .price {
   justify-self: end;
+  margin: 0 -8px -8px 0;
+  padding: 4px 14px 12px 7px;
 }
 .corner {
   position: absolute;
@@ -174,7 +179,8 @@ button.hit:active {
   }
   .price {
     font-size: 13px;
-    padding: 3px 5px 3px 5px;
+    margin: 0 -6px -6px 0;
+    padding: 3px 11px 9px 5px;
   }
   .corner {
     top: 4px;
@@ -228,7 +234,8 @@ button.hit:active {
 }
 .rail .price {
   font-size: 10.5px;
-  padding: 2px 3px;
+  margin: 0 -4px -4px 0;
+  padding: 2px 7px 6px 3px;
 }
 .rail .corner {
   top: 3px;

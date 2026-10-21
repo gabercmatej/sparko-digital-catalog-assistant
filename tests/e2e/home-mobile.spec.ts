@@ -43,12 +43,28 @@ async function checkHome(page: Page) {
   await expect(page.getByRole("tablist", { name: "Prikaz" })).toHaveAttribute("aria-orientation", "vertical");
   expect(tab.x, "rail right of the cards").toBeGreaterThanOrEqual(c1.x + c1.width - 0.5);
   expect(vp.width - (tab.x + tab.width), "rail at the right edge (gutter only)").toBeLessThanOrEqual(26);
-  expect(tab.width, "rail is narrow").toBeLessThanOrEqual(56);
+  expect(tab.width, "rail is slim (layout width)").toBeLessThanOrEqual(30);
   expect(tab.height, "options stacked").toBeGreaterThan(tab.width);
   expect(Math.abs(tab.y + tab.height / 2 - (c0.y + c0.height / 2)), "rail vertically centred").toBeLessThan(3);
   const [kat, izd] = [await box("[role=tab]", 0), await box("[role=tab]", 1)];
   expect(izd.y, "Izdelki below Katalogi").toBeGreaterThanOrEqual(kat.y + kat.height - 0.5);
   for (const t of [kat, izd]) expect(t.height, "touch target").toBeGreaterThanOrEqual(44);
+  // The slim tabs keep a ~44px-wide hit area (invisible ::after into the gap and the gutter).
+  const hits = await page.evaluate(() =>
+    [...document.querySelectorAll("[role=tab]")].map((t) => {
+      const r = t.getBoundingClientRect();
+      const y = r.top + r.height / 2;
+      const at = (x: number) => document.elementFromPoint(x, y)?.closest("[role=tab]") === t;
+      return at(r.left + r.width / 2 - 21) && at(r.left + r.width / 2 + 21);
+    }),
+  );
+  expect(hits, "44px-wide tab hit areas").toEqual([true, true]);
+  // Icon-only tabs: no visible text, names come from aria-label.
+  for (const name of ["Katalogi", "Izdelki"]) {
+    const t = page.getByRole("tab", { name });
+    await expect(t).toHaveText("");
+    await expect(t.locator("svg")).toHaveCount(1);
+  }
   // The top zone starts right under the app header (no horizontal toggle above it any more).
   const headerBottom = await page.evaluate(() => document.querySelector("header")!.getBoundingClientRect().bottom);
   expect(c0.y - headerBottom, "catalog close to the header").toBeLessThanOrEqual(36);
@@ -67,12 +83,14 @@ async function checkHome(page: Page) {
   const mascot = await box('[data-home-zone="mascot"]');
   inside("mascot", mascot);
   // Responsive breathing room between the zones: never crowded, never a large empty band.
-  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeLessThanOrEqual(52);
-  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeGreaterThanOrEqual(6);
+  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeLessThanOrEqual(60);
+  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeGreaterThanOrEqual(12);
+  // Compact top zone on phones: the catalog cards take at most ~42% of the space between header and nav.
+  expect(c0.height, "catalog section height").toBeLessThanOrEqual((navBox.y - headerBottom) * 0.42);
   const actionsBox = await box('[data-home-zone="actions"]');
   const railBox = await box('[data-home-zone="bottom"]');
-  expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeGreaterThanOrEqual(6);
-  expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeLessThanOrEqual(52);
+  expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeGreaterThanOrEqual(12);
+  expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeLessThanOrEqual(60);
   inside("actions", await box('[data-home-zone="actions"]'));
   inside("rail section", await box('[data-home-zone="bottom"]'));
   const railCards = page.locator("[data-testid=home-rail] li");
@@ -139,6 +157,7 @@ test("home zones are intact, inside the viewport, and catalog cards never collap
 for (const [w, h] of [
   [360, 640],
   [375, 667],
+  [390, 844],
   [430, 932],
 ] as const) {
   test(`home zones are intact @${w}x${h}`, async ({ page }) => {

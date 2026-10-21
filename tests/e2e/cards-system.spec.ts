@@ -52,6 +52,9 @@ function expectCorners(list: Geo[], where: string) {
     expect(g.pill, `${where} ${g.id}: price pill exists`).not.toBeNull();
     expect(cx(g.pill!), `${where} ${g.id}: pill in right half`).toBeGreaterThan(midX);
     expect(cy(g.pill!), `${where} ${g.id}: pill in bottom half`).toBeGreaterThan(midY);
+    // The red price block is flush with the card's right and bottom edges.
+    expect(Math.abs(g.pill!.x + g.pill!.width - (g.card.x + g.card.width)), `${where} ${g.id}: pill flush right`).toBeLessThanOrEqual(1);
+    expect(Math.abs(g.pill!.y + g.pill!.height - (g.card.y + g.card.height)), `${where} ${g.id}: pill flush bottom`).toBeLessThanOrEqual(1);
     if (g.pack) {
       expect(cx(g.pack), `${where} ${g.id}: pack in left half`).toBeLessThan(midX);
       expect(cy(g.pack), `${where} ${g.id}: pack in bottom half`).toBeGreaterThan(midY);

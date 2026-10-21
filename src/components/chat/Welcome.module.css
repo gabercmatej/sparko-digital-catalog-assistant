@@ -12,7 +12,8 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 14px;
-  padding: 12px var(--gutter) 12px;
+  /* a little extra air above the mascot, separating it from the product carousel */
+  padding: 22px var(--gutter) 12px;
 }
 .hero {
   display: flex;
@@ -22,8 +23,8 @@
 }
 .mascot {
   /* Scales with the space really left in the chat scroll area (container), never hidden. */
-  /* 258px = everything else in the welcome (title, text, starters, padding); the rest goes to the mascot. */
-  --m: clamp(48px, calc(100cqh - 258px), 110px);
+  /* 268px = everything else in the welcome (title, text, starters, padding); the rest goes to the mascot. */
+  --m: clamp(48px, calc(100cqh - 268px), 110px);
   width: var(--m);
   height: var(--m);
   flex: none;
@@ -115,11 +116,11 @@
 @container welcome (max-height: 320px) {
   .inner {
     gap: 10px;
-    padding-top: 6px;
+    padding-top: 14px;
     padding-bottom: 6px;
   }
   .mascot {
-    --m: clamp(44px, calc(100cqh - 232px), 64px);
+    --m: clamp(44px, calc(100cqh - 240px), 64px);
     margin-bottom: 4px;
   }
   .title {
@@ -136,11 +137,18 @@
   }
 }
 
+/* Very short (e.g. 320×568): no room for the extra air above the mascot. */
+@container welcome (max-height: 290px) {
+  .inner {
+    padding-top: 6px;
+  }
+}
+
 /* Generous spacing when there is plenty of room (desktop, tall phones). */
 @container welcome (min-height: 440px) {
   .inner {
     gap: 20px;
-    padding-top: 24px;
+    padding-top: 34px;
   }
   .mascot {
     margin-bottom: 12px;

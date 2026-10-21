@@ -50,14 +50,14 @@ async function expectWelcomeFits(page: Page) {
   expect(inViewport(nav, vp), "nav in viewport").toBe(true);
   expect(input.y + input.height).toBeLessThanOrEqual(nav.y + 0.5);
 
-  // Carousel: >= 2 mini cards fully visible horizontally, above the mascot.
+  // Carousel: >= 2 mini cards fully visible horizontally, above the mascot with some breathing room.
   const cards = page.locator("[data-mini-card]");
   let visible = 0;
   for (let i = 0; i < (await cards.count()); i++) {
     const b = (await cards.nth(i).boundingBox())!;
     if (b.x >= -0.5 && b.x + b.width <= vp.width + 0.5) {
       visible++;
-      expect(b.y + b.height).toBeLessThanOrEqual(mascot.y + 0.5);
+      expect(mascot.y - (b.y + b.height), "carousel-to-mascot gap").toBeGreaterThanOrEqual(18);
     }
   }
   expect(visible).toBeGreaterThanOrEqual(2);
