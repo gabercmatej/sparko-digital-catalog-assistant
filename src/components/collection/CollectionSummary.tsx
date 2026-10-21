@@ -14,7 +14,7 @@ export function CollectionSummary({ totals, hydrated }: { totals: CollectionTota
   return (
     <div className={styles.bar} data-collection-summary role="group" aria-label="Povzetek cen v Mojem katalogu" aria-busy={!hydrated}>
       <div className={`${styles.col} ${styles.colTotal}`}>
-        <span className={styles.label}>Cena izdelkov</span>
+        <span className={styles.label}>Skupni znesek</span>
         {hydrated ? (
           <strong className={styles.value} data-total-price>
             {total}

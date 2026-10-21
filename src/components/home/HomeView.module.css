@@ -132,23 +132,24 @@
   align-items: center;
   gap: 6px;
 }
-/* Mascot + "Pogovor" button: one horizontally centred group. */
+/* The mascot is centred on its own (middle track); the "Pogovor" pill sits in the right track, beside it. */
 .mascotRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  column-gap: 8px;
   width: 100%;
   height: var(--mascot-h);
 }
 .mascot {
-  flex: none;
+  grid-column: 2;
   width: var(--mascot-h);
   height: var(--mascot-h);
   object-fit: contain;
 }
 .chatSlot {
-  flex: none;
+  grid-column: 3;
+  justify-self: start;
   display: flex;
 }
 .actions {

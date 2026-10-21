@@ -106,6 +106,9 @@ test("bar is in the viewport directly above the bottom nav", async ({ page }) =>
   expect(b.y).toBeGreaterThanOrEqual(0);
   expect(b.y + b.height).toBeLessThanOrEqual(vh);
   expect(Math.abs(b.y + b.height - n.y)).toBeLessThanOrEqual(1);
+  // A subtle shadow lifts the bar (cast upward); the shared bottom nav gets none.
+  expect(await bar(page).evaluate((el) => getComputedStyle(el).boxShadow)).toMatch(/^rgba\(0, 0, 0, 0\.1\) 0px -3px 10px/);
+  expect(await nav(page).evaluate((el) => getComputedStyle(el).boxShadow)).toBe("none");
 });
 
 test("last row scrolls fully above the bar; removing an item updates the total immediately", async ({ page }) => {

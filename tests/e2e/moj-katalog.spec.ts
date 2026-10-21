@@ -265,7 +265,7 @@ test("totals bar: empty list shows 0,00 € for both values", async ({ page }) =
   await expect(bar(page)).toBeVisible();
   await expect(bar(page).locator("[data-total-price]")).toHaveText("0,00 €");
   await expect(bar(page).locator("[data-total-savings]")).toHaveText("0,00 €");
-  await expect(bar(page)).toContainText("Cena izdelkov");
+  await expect(bar(page)).toContainText("Skupni znesek");
   await expect(bar(page)).toContainText("Skupni prihranek");
 });
 

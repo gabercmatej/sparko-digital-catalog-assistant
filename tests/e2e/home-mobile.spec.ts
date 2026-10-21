@@ -154,12 +154,14 @@ async function checkHome(page: Page) {
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
-  // Mascot + "Pogovor" pill: one horizontally centred group, vertically aligned.
+  // Mascot centred on its own; the "Pogovor" pill beside it on the right, vertically aligned.
   const pic = await box('[data-home-zone="mascot"] img');
   const chat = await box("[data-chat-entry]");
   await expect(page.locator("[data-chat-entry]")).toHaveText("Pogovor");
   expect(chat.x, "Pogovor right of the mascot").toBeGreaterThan(pic.x + pic.width);
-  expect(Math.abs(pic.x + (chat.x + chat.width - pic.x) / 2 - vp.width / 2), "group centred").toBeLessThan(3);
+  expect(Math.abs(pic.x + pic.width / 2 - vp.width / 2), "mascot centred").toBeLessThan(1.5);
+  expect(chat.x - (pic.x + pic.width), "Pogovor close to the mascot").toBeLessThanOrEqual(12);
+  expect(chat.x + chat.width, "Pogovor inside the viewport").toBeLessThanOrEqual(vp.width);
   expect(Math.abs(pic.y + pic.height / 2 - (chat.y + chat.height / 2)), "group vertically aligned").toBeLessThan(2);
 
   // Izdelki: same top-zone height (nothing below moves), exactly two complete list rows, the rest scrolls inside.
