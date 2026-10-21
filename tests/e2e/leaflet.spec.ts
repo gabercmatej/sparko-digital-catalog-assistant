@@ -561,3 +561,49 @@ test("overlays stay aligned with the page image across responsive sizes", async 
     }
   }
 });
+
+// ---------------------------------------------------------------- FIX 7: more interactive products (SPAR cover = reference page)
+
+const COVER_IDS = ["svinjska-rebra-eu-1kg", "radler-cola-limeta-union-0-5l"];
+
+test("SPAR cover: Svinjska rebra EU and Radler Cola Limeta are tappable regions next to the already mapped products", async ({ page }) => {
+  await seed(page, [], "/letak?stran=1");
+  await expect(indicator(page)).toHaveText(pageNum(1, primary));
+  for (const id of [...COVER_IDS, "nutella-1kg", "sitarjev-hlebec-750g", "belo-grozdje-1kg"]) await expect(box(page, id)).toHaveCount(1);
+});
+
+for (const id of COVER_IDS) {
+  test(`SPAR cover: tapping ${id} opens the product sheet; saving gives the golden highlight, shows it in Moj katalog and survives a reload`, async ({ page }) => {
+    await seed(page, [], "/letak?stran=1");
+    await box(page, id).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText(productName(id));
+    await dialog.getByRole("button", { name: "Dodaj v Moj katalog" }).click();
+    await page.keyboard.press("Escape");
+    await expect(box(page, id)).toHaveAttribute("data-saved", "true");
+    await expect(box(page, "nutella-1kg")).not.toHaveAttribute("data-saved", "true");
+
+    await page.reload();
+    await expect(box(page, id)).toHaveAttribute("data-saved", "true");
+
+    await page.goto("/moj-katalog");
+    await expect(page.getByText(productName(id)).first()).toBeVisible();
+
+    // remove again from the leaflet
+    await page.goto("/letak?stran=1");
+    await box(page, id).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Odstrani" }).click();
+    await page.keyboard.press("Escape");
+    await expect(box(page, id)).not.toHaveAttribute("data-saved", "true");
+  });
+}
+
+test("INTERSPAR still switches and a newly mapped INTERSPAR product (page 8) is tappable", async ({ page }) => {
+  await seed(page, [], "/letak");
+  await switchTo(page, SECONDARY_LABEL).click();
+  await expect(indicator(page)).toHaveText(pageNum(1, secondary));
+  await page.goto("/letak?katalog=interspar-1426&stran=8");
+  await expect(box(page, "pecena-piscancja-prsa-1kg")).toHaveCount(1);
+  await box(page, "tiramisu-to-go-200g").click();
+  await expect(page.getByRole("dialog")).toContainText(productName("tiramisu-to-go-200g"));
+});

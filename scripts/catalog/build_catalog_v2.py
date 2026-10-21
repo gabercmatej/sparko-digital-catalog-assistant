@@ -34,6 +34,7 @@ CATALOG_JSON = ROOT / "src" / "data" / "catalog.json"
 PRODUCTS_DIR = ROOT / "public" / "products"
 TMP = ROOT / ".tmp"
 CHECKED_ON = "2026-10-20"
+DRY = bool(os.environ.get("SPARKO_DRY"))
 
 CATALOGS = {
     "spar-4126": {
@@ -119,6 +120,25 @@ P: list[dict] = []
 def prod(**kw):
     kw.setdefault("cat", "spar-4126")
     P.append(kw)
+
+
+def q(pid, page, name, brand, pack, qty, cats, price, regular=None, disc=None, *, anchor=None, box=None, printed=None, pc=None,
+      descriptor=None, line=None, unit=None, aliases=(), cat="spar-4126", img=("render", []), **kw):
+    """Compact prod() for the FIX 7 additions (scripts/catalog/extra_products_*.py): same facts, printed text rebuilt unless given."""
+    spec = dict(id=pid, page=page, name=name, brand=brand, line=line, descriptor=descriptor, pack=pack, qty=qty, cats=cats,
+                aliases=list(aliases), printed=printed or f"{name.upper()}{(' ' + descriptor) if descriptor else ''}, {pack}",
+                price=price, img=img, cat=cat, **kw)
+    if anchor:
+        spec["anchor"] = anchor
+    if box:
+        spec["box"] = box
+    if regular:
+        spec["regular"], spec["disc"] = regular, disc
+    if pc:
+        spec["pc"] = pc
+    if unit:
+        spec["unit"] = unit
+    prod(**spec)
 
 
 S_NOTE = "S-BUDGET diskontna cena; odstotek popusta ni natisnjen."
@@ -306,7 +326,7 @@ prod(cat=I, id="tolminska-skuta-500g", page=2, box=(0.29, 0.77, 0.50, 0.975), na
      descriptor="5 % m. m.", pack="500 g", qty=(500, "g"), cats=["mlecni-izdelki", "zajtrk"],
      aliases=["skuta", "skute", "skuto", "skuti", "tolminska skuta", "planika", "mlekarna planika"],
      printed="TOLMINSKA SKUTA 5 % m. m., Mlekarna Planika, 500 g", price=309, regular=369, disc=16, img=("embedded", 27))
-prod(cat=I, id="bio-maslo-250g", page=2, box=(0.66, 0.62, 0.985, 0.80), name="Bio maslo", brand=NATUR, line="Natur*pur", descriptor=None,
+prod(cat=I, id="bio-maslo-250g", page=2, box=(0.67, 0.62, 0.985, 0.80), name="Bio maslo", brand=NATUR, line="Natur*pur", descriptor=None,
      pack="250 g", qty=(250, "g"), cats=["mlecni-izdelki", "zajtrk"],
      aliases=["maslo", "masla", "maslom", "bio maslo", "biološko maslo", "natur pur", "naturpur", "putr"],
      printed="BIO MASLO 250 g", price=229, regular=259, disc=11, img=("embedded", 53))
@@ -350,6 +370,10 @@ prod(cat=I, id="bio-kornstrucka-76g", page=8, box=(0.03, 0.185, 0.335, 0.425), n
      aliases=["kornštručka", "korn štručka", "štručka", "štručko", "pecivo", "bio kornštručka", "bio štručka"],
      printed="BIO KORNŠTRUČKA 76 g", price=44, regular=59, disc=25, img=("embedded", 1372))
 
+# ============================================================ FIX 7: additional verified products (kept in separate files for review)
+for _f in ("extra_products_spar.py", "extra_products_interspar.py"):
+    exec(compile((pathlib.Path(__file__).parent / _f).read_text(encoding="utf-8"), _f, "exec"), globals())
+
 # editorial order: interleave SPAR / INTERSPAR, attractive packshots first
 RANK_ORDER = [
     "nutella-1kg", "jedilna-cokolada-250g", "belo-grozdje-1kg", "piscancje-meso-po-italijansko-800g", "pistacijev-namaz-150g",
@@ -363,6 +387,9 @@ RANK_ORDER = [
     "soncnicno-olje-spar-1l", "mineralna-voda-dana-1-5l", "sb-sampinjoni-500g", "sb-svinjske-kocke-500g",
 ]
 RANK = {pid: i + 1 for i, pid in enumerate(RANK_ORDER)}
+for _s in P:  # additions keep the original order first; new products follow in file order (priority: cover, then page order)
+    if _s["id"] not in RANK:
+        RANK[_s["id"]] = len(RANK) + 1
 
 # ----------------------------------------------------------------------------- recipes
 SPAR, INT = "4126", "1426"
@@ -511,7 +538,7 @@ def locate(spec):
         cell, _ = min(cand, key=lambda rf: rf[0].width * rf[0].height)
         block = None
     shots = [i for i in infos if cell.contains(centre(pymupdf.Rect(i["bbox"])))
-             and i["width"] * i["height"] >= 8000 and smoothness(cid, i["xref"]) >= 2.5]
+             and i["width"] * i["height"] >= spec.get("minpx", 8000) and smoothness(cid, i["xref"]) >= 2.5]
     if block is None:
         # the drawn grid cell is the placement box; cells in the top row run under the printed header band
         block = pymupdf.Rect(cell)
@@ -670,6 +697,28 @@ def make_image(spec, block, shots):
     return trim_resize(img), prov
 
 
+def cached_image(spec, block, shots):
+    """make_image() with a small on-disk cache (.tmp/imgcache) keyed by the spec, geometry and this file's image code,
+    so adding / fixing one product does not re-render all packshots (a full run takes ~10 min)."""
+    import hashlib
+    key = hashlib.sha1((json.dumps(spec, sort_keys=True, default=str) + repr(tuple(block)) + repr([i["xref"] for i in shots])
+                        + IMAGE_CODE_VERSION).encode("utf-8")).hexdigest()
+    cdir = TMP / "imgcache"
+    cdir.mkdir(exist_ok=True)
+    meta, fimg = cdir / f"{spec['id']}.json", cdir / f"{spec['id']}.png"
+    if meta.exists() and fimg.exists():
+        m = json.loads(meta.read_text(encoding="utf-8"))
+        if m["key"] == key:
+            return Image.open(fimg).convert("RGBA" if m["rgba"] else "RGB"), m["prov"]
+    img, prov = make_image(spec, block, shots)
+    img.save(fimg)
+    meta.write_text(json.dumps({"key": key, "prov": prov, "rgba": img.mode == "RGBA"}, ensure_ascii=False), encoding="utf-8")
+    return img, prov
+
+
+IMAGE_CODE_VERSION = "2"  # bump when make_image() changes
+
+
 def offer_for(spec):
     cid = spec["cat"]
     suffix = CATALOGS[cid]["suffix"]
@@ -682,6 +731,8 @@ def offer_for(spec):
         notes.append(f"oznaka »{spec['extra']}«")
     if spec.get("badge"):
         notes.append(f"akcija »{spec['badge']}«")
+    if spec.get("cond"):
+        notes.append(spec["cond"])
     vnotes = [n for n in (spec.get("vnote"), spec.get("vextra")) if n]
     if loyalty:
         vnotes.insert(0, "Znižana cena velja s SPAR plus kartico; redna cena je natisnjena v istem bloku.")
@@ -717,8 +768,9 @@ def write_json_atomic(data):
 def main():
     TMP.mkdir(exist_ok=True)
     PRODUCTS_DIR.mkdir(parents=True, exist_ok=True)
-    for old in PRODUCTS_DIR.glob("*.webp"):
-        old.unlink()  # only packshots generated by this run remain
+    if not DRY:
+        for old in PRODUCTS_DIR.glob("*.webp"):
+            old.unlink()  # only packshots generated by this run remain
     catalogs = []
     for cid, c in CATALOGS.items():
         base = ROOT / "public" / "catalog" / cid
@@ -746,14 +798,23 @@ def main():
     ok_all = True
     ids = [s["id"] for s in P]
     assert len(ids) == len(set(ids)), "duplicate product ids"
-    assert set(ids) == set(RANK), f"rank order mismatch: {set(ids) ^ set(RANK)}"
+    assert set(RANK_ORDER) <= set(ids), f"rank order mentions unknown ids: {set(RANK_ORDER) - set(ids)}"
     for spec in P:
         cid = spec["cat"]
         page = DOCS[cid][spec["page"] - 1]
         W, H = page.rect.width, page.rect.height
+        if DRY:  # fast check of anchors / boxes / text layer only (SPARKO_DRY=1), nothing is written
+            try:
+                block, shots = locate(spec)
+                ok_all &= verify_text(spec, block)
+                print(f"DRY {spec['id']:40s} p{spec['page']:02d} shots={len(shots)} block=({block.x0/W:.3f},{block.y0/H:.3f},{block.x1/W:.3f},{block.y1/H:.3f})")
+            except AssertionError as e:
+                ok_all = False
+                print(f"DRY !! {spec['id']}: {e}")
+            continue
         block, shots = locate(spec)
         ok_all &= verify_text(spec, block)
-        img, prov = make_image(spec, block, shots)
+        img, prov = cached_image(spec, block, shots)
         img.save(PRODUCTS_DIR / f"{spec['id']}.webp", "WEBP", quality=86, method=6)
         sheet.append((spec["id"], img))
         qty = {"amount": spec["qty"][0], "unit": spec["qty"][1]} if spec.get("qty") else None
@@ -777,6 +838,9 @@ def main():
                            "pdfPageIndex": spec["page"] - 1, "pdfPageNumber": spec["page"], "printedPageLabel": label, "bbox": bx})
         overlay_boxes.setdefault((cid, spec["page"]), []).append((spec["id"], bx))
         print(f"{cid[:3]} {spec['id']:36s} p{spec['page']:02d} {spec['price']:5d}c img {img.width}x{img.height}")
+    if DRY:
+        print("DRY RUN done, text-check", "OK" if ok_all else "ISSUES")
+        return
     data = {"version": 2, "catalogs": catalogs, "products": products, "offers": offers, "placements": placements, "recipes": RECIPES}
     write_json_atomic(data)
     for (cid, n), boxes in overlay_boxes.items():

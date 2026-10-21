@@ -143,6 +143,8 @@ export function resolvePlaceholders(template: string, ctx: PlaceholderContext): 
         return kind === "futurePrice" ? formatPrice(fp.priceCents) : formatShortDate(fp.validFrom);
       }
       case "futurePeriod":
+        // Model output: only when the draft itself concerns upcoming promos (allow-list given, but empty = none).
+        if (ctx.allowedPromoIds && ctx.allowedPromoIds.size === 0) return fail("no upcoming promos allowed");
         return formatPeriod(upcomingPeriod.from, upcomingPeriod.to);
       case "currentPeriod": {
         const o = id ? getOffer(id) : undefined;

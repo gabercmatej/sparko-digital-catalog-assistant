@@ -1,64 +1,78 @@
 /**
- * Pure state model of the home page (`/domov`): which top-zone mode is shown (catalog covers or an
- * item list), which "intent" (action button) drives the list and the product rail, and the selectors
- * that turn that state into product ids. No React, no I/O: unit-tested in tests/unit/home-state.test.ts.
+ * Pure state model of the home page (`/domov`). One source of truth: which top-zone mode is shown
+ * (catalog covers or the product list), which category is selected and which discovery (action
+ * button) drives the content. The top list AND the bottom rail are derived from the same selector
+ * (`visibleIds`), so they can never diverge. No React, no I/O: unit-tested in tests/unit/home-state.test.ts.
  */
 import { newProducts, products, productsInCategory } from "@/lib/catalog";
 import { rankDiscounts } from "@/lib/assistant/discounts";
 import { categoryLabel } from "@/lib/recommendations";
 
-export type HomeMode = "katalogi" | "izdelki";
-export type HomeIntent = "featured" | "discounts" | "new" | "categories";
-export type HomeState = { mode: HomeMode; intent: HomeIntent; category: string | null };
+export type TopMode = "catalogs" | "products";
+/** "all" is the "VSI" chip. */
+export type CategoryKey = "all" | (string & {});
+/** default = unfiltered editorial list; category = a chip / sheet choice; discounts / new = action buttons. */
+export type Discovery = "default" | "discounts" | "category" | "new";
+export type HomeState = { topMode: TopMode; activeCategory: CategoryKey; activeDiscovery: Discovery };
 
 export type HomeAction =
-  | { type: "segment"; mode: HomeMode }
-  /** One of the three content action buttons (the nearest-store button never touches this state). */
-  | { type: "intent"; intent: Exclude<HomeIntent, "featured"> }
-  | { type: "category"; slug: string }
-  /** The rail's "Poglej vse": show the rail's intent in the top zone. */
+  | { type: "setTopMode"; mode: TopMode }
+  /** "Kaj je najbolj znižano" / "Kaj je novega v katalogu". */
+  | { type: "discover"; discovery: "discounts" | "new" }
+  /** A category chip or a pick in the category sheet ("all" = VSI). */
+  | { type: "selectCategory"; category: CategoryKey }
+  /** The rail's "Poglej vse": show what the rail shows in the top zone. */
   | { type: "viewAll" };
 
-/** Rows shown in the top list before "Poglej vse" expands it. */
-export const TOP_PREVIEW = 4;
-/** The rail uses the intent's remaining items only when at least this many are left. */
-export const RAIL_MIN = 4;
 /** Upper bound of rail cards (keeps the DOM small). */
 export const RAIL_MAX = 20;
+export const ALL_CATEGORY = "all";
 export const DEFAULT_RAIL_TITLE = "Aktualni izdelki iz kataloga";
 
-export const initialHomeState: HomeState = { mode: "katalogi", intent: "featured", category: null };
+export const initialHomeState: HomeState = { topMode: "catalogs", activeCategory: ALL_CATEGORY, activeDiscovery: "default" };
 
-/** Categories with at least two products, most products first (ties by slug): the chip row. */
+/** Categories always offered first (when the catalog has products for them), in this order. */
+export const PRIORITY_CATEGORIES = ["zajtrk", "pekovsko", "vecerja", "osnovna-zivila", "mlecni-izdelki"] as const;
+
+/** Real category slugs for the chips and the sheet: the priority ones, then others with >= 2 products (most first). */
 export function availableCategories(): string[] {
   const counts = new Map<string, number>();
   for (const p of products) for (const c of new Set(p.categories)) counts.set(c, (counts.get(c) ?? 0) + 1);
-  return [...counts.entries()]
-    .filter(([, n]) => n >= 2)
+  const priority = PRIORITY_CATEGORIES.filter((s) => (counts.get(s) ?? 0) > 0) as string[];
+  const rest = [...counts.entries()]
+    .filter(([slug, n]) => n >= 2 && !priority.includes(slug))
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([slug]) => slug);
+  return [...priority, ...rest];
+}
+
+/** Chip / sheet order: VSI first, then the real categories. */
+export function categoryOptions(): { key: CategoryKey; label: string; count: number }[] {
+  return [
+    { key: ALL_CATEGORY, label: "VSI", count: products.length },
+    ...availableCategories().map((slug) => ({ key: slug, label: capitalize(categoryLabel(slug)), count: productsInCategory(slug).length })),
+  ];
+}
+
+function capitalize(s: string): string {
+  return s.charAt(0).toLocaleUpperCase("sl") + s.slice(1);
 }
 
 export function homeReducer(state: HomeState, action: HomeAction): HomeState {
   switch (action.type) {
-    case "segment":
-      return action.mode === "izdelki" ? { ...state, mode: "izdelki" } : { mode: "katalogi", intent: "featured", category: null };
-    case "intent":
-      if (action.intent === "categories") {
-        // Tapping the active action again keeps the current category instead of resetting it.
-        return { mode: "izdelki", intent: "categories", category: state.intent === "categories" && state.category ? state.category : (availableCategories()[0] ?? null) };
-      }
-      return { mode: "izdelki", intent: action.intent, category: null };
-    case "category":
-      return { mode: "izdelki", intent: "categories", category: action.slug };
+    case "setTopMode":
+      // Back to the catalogs resets every filter; Izdelki keeps what is selected (default: VSI).
+      return action.mode === "products" ? { ...state, topMode: "products" } : initialHomeState;
+    case "discover":
+      return { topMode: "products", activeCategory: ALL_CATEGORY, activeDiscovery: action.discovery };
+    case "selectCategory":
+      return { topMode: "products", activeCategory: action.category, activeDiscovery: "category" };
     case "viewAll":
-      return state.intent === "categories" && !state.category ? { ...state, mode: "izdelki", category: availableCategories()[0] ?? null } : { ...state, mode: "izdelki" };
+      return { ...state, topMode: "products" };
   }
 }
 
-const editorialIds = (): string[] => products.map((p) => p.id);
-
-/** Verified percent discounts, best first, one entry per product. */
+/** Verified, currently valid percent discounts, best first, one entry per product. */
 export function discountedProducts(): { productId: string; percent: number }[] {
   const seen = new Set<string>();
   const out: { productId: string; percent: number }[] = [];
@@ -70,72 +84,50 @@ export function discountedProducts(): { productId: string; percent: number }[] {
   return out;
 }
 
-/** The complete list of the current intent (what "Poglej vse" expands to). */
-export function intentItems(state: HomeState): string[] {
-  switch (state.intent) {
+/** The single selector behind the top list and the rail: the complete product set of the current state. */
+export function visibleIds(state: HomeState): string[] {
+  switch (state.activeDiscovery) {
     case "discounts":
       return discountedProducts().map((d) => d.productId);
     case "new":
       return newProducts().map((p) => p.id);
-    case "categories":
-      return state.category ? productsInCategory(state.category).map((p) => p.id) : [];
+    case "category":
+      return state.activeCategory === ALL_CATEGORY ? products.map((p) => p.id) : productsInCategory(state.activeCategory).map((p) => p.id);
     default:
-      return editorialIds();
+      return products.map((p) => p.id);
   }
 }
 
-/** Collapsed top list: the first TOP_PREVIEW items of the intent. */
+/** Top list (products mode): everything in the set; the list scrolls inside its fixed-height box. */
 export function topItems(state: HomeState): string[] {
-  return intentItems(state).slice(0, TOP_PREVIEW);
+  return visibleIds(state);
 }
 
-function railPlan(state: HomeState): { ids: string[]; title: string } {
-  const all = intentItems(state);
-  const fallback = (shown: Set<string>) => editorialIds().filter((id) => !shown.has(id));
-  // Catalog mode: no list is on screen, so the default rail is simply the editorial order.
-  if (state.mode === "katalogi") return { ids: editorialIds().slice(0, RAIL_MAX), title: DEFAULT_RAIL_TITLE };
-  const shown = new Set(topItems(state));
-  const rest = all.slice(TOP_PREVIEW);
-  // Rule: the rail never repeats the visible top list. If the intent has at least RAIL_MIN further
-  // items they fill the rail under the intent's own title; otherwise (and for the default intent,
-  // whose "rest" is the editorial order anyway) the rail falls back to editorial items not shown above.
-  if (state.intent !== "featured" && rest.length >= RAIL_MIN) return { ids: rest.slice(0, RAIL_MAX), title: intentRailTitle(state) };
-  return { ids: fallback(shown).slice(0, RAIL_MAX), title: DEFAULT_RAIL_TITLE };
+/** Rail: the same set (editorial order in catalog mode, where no list is on screen), capped. */
+export function railItems(state: HomeState): string[] {
+  return visibleIds(state.topMode === "catalogs" ? initialHomeState : state).slice(0, RAIL_MAX);
 }
 
-function intentRailTitle(state: HomeState): string {
-  switch (state.intent) {
+function discoveryTitle(state: HomeState, fallback: string): string {
+  switch (state.activeDiscovery) {
     case "discounts":
       return "Najbolj znižano";
     case "new":
       return "Novo v katalogu";
-    case "categories": {
-      const label = categoryLabel(state.category ?? "");
-      return `${label.charAt(0).toLocaleUpperCase("sl")}${label.slice(1)} iz kataloga`;
-    }
+    case "category":
+      return state.activeCategory === ALL_CATEGORY ? fallback : capitalize(categoryLabel(state.activeCategory));
     default:
-      return DEFAULT_RAIL_TITLE;
+      return fallback;
   }
 }
 
-export function railItems(state: HomeState): string[] {
-  return railPlan(state).ids;
-}
-
 export function railTitle(state: HomeState): string {
-  return railPlan(state).title;
+  const s = state.topMode === "catalogs" ? initialHomeState : state;
+  const t = discoveryTitle(s, DEFAULT_RAIL_TITLE);
+  return s.activeDiscovery === "category" && s.activeCategory !== ALL_CATEGORY ? `${t} iz kataloga` : t;
 }
 
 /** Heading of the top list. */
 export function topTitle(state: HomeState): string {
-  switch (state.intent) {
-    case "discounts":
-      return "Najbolj znižano";
-    case "new":
-      return "Novo v katalogu";
-    case "categories":
-      return "Po kategorijah";
-    default:
-      return "Izdelki iz katalogov";
-  }
+  return discoveryTitle(state, "Izdelki iz katalogov");
 }

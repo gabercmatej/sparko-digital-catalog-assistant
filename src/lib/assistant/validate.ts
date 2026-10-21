@@ -48,6 +48,9 @@ const CHECKS: [RejectReason, RegExp][] = [
   ["competitor", /\b(mercator\w*|tus\w*|hofer\w*|lidl\w*|eurospin\w*|jager\w*|aldi\w*)\b/],
 ];
 
+/** Words that announce future promos; rejected in model prose for current-discount answers. */
+const FUTURE_WORDS = /\b(naslednj\w*|prihodnj\w*|kmalu|prihaja\w*|napovedan\w*|napoved\w*|bodo znizan\w*|bo znizan\w*|bo v akciji|bodo v akciji)\b/;
+
 /** Check free prose (placeholders removed). Returns the first violated rule or null. */
 export function checkProse(prose: string): RejectReason | null {
   if (/https?:|www\.|<\s*\/?\s*[a-z]/i.test(prose)) return "markup";
@@ -66,6 +69,8 @@ export function validateModelOutput(raw: unknown, draft: DeterministicReply): Va
   const prose = stripPlaceholders(text);
   const violation = checkProse(prose);
   if (violation) return { ok: false, reason: violation };
+  // A generic "what is discounted" answer is about CURRENT offers only: the model must not add upcoming promos.
+  if (draft.intent === "discounts" && FUTURE_WORDS.test(fold(prose))) return { ok: false, reason: "dates_or_current_claims" };
 
   const allowedProductIds = new Set(draft.candidateProductIds);
   const allowedOfferIds = new Set(draft.candidateProductIds.map((id) => getPrimaryOffer(id)?.id).filter((x): x is string => !!x));

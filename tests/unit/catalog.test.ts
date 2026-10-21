@@ -220,3 +220,52 @@ describe("future promos (demo mock)", () => {
     expect(new Set(futurePromos.map((p) => p.catalogId)).size).toBe(2);
   });
 });
+
+describe("FIX 7: extended leaflet coverage", () => {
+  const KNOWN_SLUGS = new Set([
+    "mlecni-izdelki", "mesni-izdelki", "meso", "osnovna-zivila", "zajtrk", "vecerja", "prilogi", "zamrznjeno", "zelenjava", "sadje",
+    "pekovsko", "kruh", "sir", "ribe", "testenine", "omake", "pijace", "sokovi", "voda", "kava", "sladko", "sladkarije", "zacimbe",
+    "prigrizki", "namazi",
+  ]);
+  const onPage = (catalogId: string, page: number) =>
+    placements.filter((p) => p.catalogId === catalogId && p.pdfPageNumber === page).map((p) => getOffer(p.offerId)!.productId);
+
+  it("maps many more products than the first 47 curated ones, in both catalogs", () => {
+    expect(products.length).toBeGreaterThan(47);
+    expect(placements.filter((p) => p.catalogId === "spar-4126").length).toBeGreaterThan(33);
+    expect(placements.filter((p) => p.catalogId === "interspar-1426").length).toBeGreaterThan(14);
+    expect(placements).toHaveLength(offers.length);
+    expect(offers).toHaveLength(products.length);
+  });
+
+  it("SPAR cover (reference page): Svinjska rebra EU and Radler Cola Limeta are interactive next to Nutella, Sitarjev hlebec and belo grozdje", () => {
+    const ids = onPage("spar-4126", 1);
+    for (const id of ["svinjska-rebra-eu-1kg", "radler-cola-limeta-union-0-5l", "nutella-1kg", "sitarjev-hlebec-750g", "belo-grozdje-1kg"]) expect(ids).toContain(id);
+    expect(getPrimaryOffer("svinjska-rebra-eu-1kg")).toMatchObject({ priceCents: 379, priceUnit: "kg", priceKind: "catalog_price", regularPriceCents: null });
+  });
+
+  it("Radler keeps its printed multi-buy condition (0,81 € only when buying 24 cans; 1,16 € for one)", () => {
+    const o = getPrimaryOffer("radler-cola-limeta-union-0-5l")!;
+    expect(o.priceCents).toBe(81);
+    expect(o.regularPriceCents).toBe(116);
+    expect(o.conditions.note).toMatch(/24 kosov/);
+    expect(o.verification.notes).toMatch(/24 kosov/);
+  });
+
+  it("new products only use category slugs the app has labels for, have a primary category, an image and a unique editorial rank", () => {
+    for (const p of products) {
+      expect(p.categories.length, p.id).toBeGreaterThan(0);
+      for (const c of p.categories) expect(KNOWN_SLUGS.has(c) || p.editorialRank <= 47, `${p.id}: ${c}`).toBe(true);
+      expect(p.image.src).toBe(`/products/${p.id}.webp`);
+    }
+    const ranks = products.map((p) => p.editorialRank);
+    expect(new Set(ranks).size).toBe(ranks.length);
+  });
+
+  it("the original 47 products keep the first 47 editorial ranks (new items are appended)", () => {
+    const original = products.filter((p) => p.editorialRank <= 47);
+    expect(original).toHaveLength(47);
+    expect(getProduct("nutella-1kg")!.editorialRank).toBe(1);
+    expect(Math.min(...products.filter((p) => p.editorialRank > 47).map((p) => p.editorialRank))).toBe(48);
+  });
+});

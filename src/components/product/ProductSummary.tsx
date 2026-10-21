@@ -2,7 +2,6 @@
 import { conditionText, formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
 import { ProductTile } from "./ProductTile";
-import { RetailerBadge } from "./RetailerBadge";
 import styles from "./ProductSummary.module.css";
 
 /** The brand line above a product name, unless the name already carries the brand ("Perutnina Ptuj piščančje prsi"). */
@@ -38,7 +37,6 @@ export function ProductSummary({
     <span className={styles.summary}>
       <ProductTile productId={productId} size="carousel" minimal />
       <span className={styles.text}>
-        <RetailerBadge productId={productId} className={styles.badge} />
         {brandLabel(product) && <span className={styles.brand}>{brandLabel(product)}</span>}
         <Name className={styles.name}>{product.name}</Name>
         <span className={styles.pack}>{product.packSize}</span>

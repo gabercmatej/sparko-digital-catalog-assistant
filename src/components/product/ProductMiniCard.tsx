@@ -3,25 +3,31 @@ import { getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import { PricePill } from "./PricePill";
-import { RetailerBadge } from "./RetailerBadge";
+import { PriceStack } from "./PriceStack";
 import styles from "./ProductMiniCard.module.css";
 
 /**
  * The compact white product card of the home rail and the "Priporočila zate" band:
- * SPAR / INTERSPAR label, packshot, name, pack size and the red price pill. Optional round
- * "+" (onAdd) in the top-right corner. Width comes from the parent (fixed in a rail, 1fr in a grid).
+ * packshot, name, pack size and the red price pill with the SPAR / INTERSPAR label right-aligned above it (PriceStack). Also used by the chat carousel (`rail`). Optional round
+ * "+" (onAdd) in the top-right corner. Width: 100% of the parent, or the canonical fixed rail width with `rail`.
  */
 export function ProductMiniCard({
   productId,
   onSelect,
   onAdd,
   className,
+  rail = false,
+  ariaLabelPrefix,
 }: {
   productId: string;
   onSelect?: () => void;
   /** Shows the round "+" add button; hidden once the product is saved (a check is shown instead). */
   onAdd?: () => void;
   className?: string;
+  /** Fixed canonical rail width (--mini-card-w, 134px): home rail and chat carousel. Otherwise 100% of the parent (grids). */
+  rail?: boolean;
+  /** Accessible-name prefix, e.g. "Pokaži" -> "Pokaži: Brand Name, 500 g". */
+  ariaLabelPrefix?: string;
 }) {
   const store = useStore();
   const product = getProduct(productId);
@@ -29,11 +35,10 @@ export function ProductMiniCard({
   if (!product || !offer) return null;
   const saved = isSaved(productId, store);
   const unit = PRICE_UNIT_LABEL[offer.priceUnit];
-  const label = `${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}${saved ? ", v Mojem katalogu" : ""}`;
+  const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}${saved ? ", v Mojem katalogu" : ""}`;
 
   const body = (
     <>
-      <RetailerBadge productId={productId} size="xs" className={styles.badge} />
       <span className={styles.media}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={product.image.src} width={product.image.width} height={product.image.height} alt="" loading="lazy" decoding="async" draggable={false} />
@@ -44,13 +49,15 @@ export function ProductMiniCard({
           {product.packSize}
           {unit && <span className={styles.unit}>{unit}</span>}
         </span>
-        <PricePill cents={offer.priceCents} size="sm" />
+        <PriceStack productId={productId}>
+          <PricePill cents={offer.priceCents} size="sm" />
+        </PriceStack>
       </span>
     </>
   );
 
   return (
-    <div className={`${styles.card}${className ? ` ${className}` : ""}`} data-product-id={productId} data-saved={saved || undefined} data-mini-card>
+    <div className={`${styles.card}${rail ? ` ${styles.rail}` : ""}${className ? ` ${className}` : ""}`} data-product-id={productId} data-saved={saved || undefined} data-mini-card>
       {onSelect ? (
         <button type="button" className={styles.hit} onClick={onSelect} aria-label={label}>
           {body}

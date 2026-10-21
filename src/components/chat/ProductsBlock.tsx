@@ -80,7 +80,6 @@ export function ProductRow({ productId, offerId, reason, upcoming }: { productId
           <ProductTile productId={productId} size="carousel" thumb />
         </span>
         <span className={styles.rowInfo}>
-          <RetailerBadge productId={productId} className={styles.rowBadge} />
           {brand && <span className={styles.rowBrand}>{brand}</span>}
           <span className={styles.rowName}>{product.name}</span>
         </span>
@@ -93,6 +92,7 @@ export function ProductRow({ productId, offerId, reason, upcoming }: { productId
         {upcoming ? (
           <>
             <span className={styles.priceStrip} data-price-strip>
+              <RetailerBadge productId={productId} size="xs" className={styles.stripBadge} />
               <span className={styles.priceCol}>
                 <span className={styles.priceLabel}>Zdaj{unit ? ` · ${unit}` : ""}</span>
                 <PricePill cents={offer.priceCents} tone="now" size="md" srPrefix="Zdaj" />
@@ -108,7 +108,7 @@ export function ProductRow({ productId, offerId, reason, upcoming }: { productId
           </>
         ) : (
           <>
-            <PriceBlock offer={offer} compact />
+            <PriceBlock offer={offer} productId={productId} compact />
           </>
         )}
       </button>

@@ -242,7 +242,7 @@ describe("deterministic responder — save/remove", () => {
 
 describe("discounts", () => {
   it("ranks only verified printed percentages, sorted desc, without S-BUDGET šampinjoni", () => {
-    const ranked = rankDiscounts({ limit: 50 });
+    const ranked = rankDiscounts({ limit: offers.length });
     for (const r of ranked) {
       expect(isPercentDiscount(r.offer)).toBe(true);
       expect(r.offer.discountPercent).not.toBeNull();

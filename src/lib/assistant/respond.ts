@@ -12,16 +12,16 @@ import { discountTemplate, rankDiscounts } from "./discounts";
 import { COMMAND_STOP, detectIntent, type DetectedIntent, type Intent } from "./intents";
 import { breakfastProducts, mealTemplate, recipeProductIds, suggestMeal, type MealRequest } from "./meals";
 import { displayName, render, type PlaceholderContext } from "./placeholders";
-import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT, STARTER_PROMPTS } from "./starters";
+import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT, ASK_TIMING_PRODUCT_TEXT, STARTER_PROMPTS } from "./starters";
 import { cheaperAlternatives, comparablePrice, productsInLine, queryContentTokens, searchProducts, type SearchHit } from "./search";
-import { currentDiscountsOf, MAX_UPCOMING, rankUpcoming, TIMING_STOP, timingSubject, timingTemplate } from "./timing";
+import { currentDiscountsOf, forecastOnlyIds, forecastTemplate, MAX_UPCOMING, rankUpcoming, TIMING_STOP, generalTimingTemplate } from "./timing";
 
 /** Unambiguous example product for the help text: the first catalog product (editorial order). */
 const HELP_EXAMPLE_PRODUCT = allProducts[0]?.name ?? "izdelek";
 
 export const MAX_PRODUCTS_SHOWN = 4;
 
-export type ReplyKind = Intent | "ambiguous" | "ask_product" | "price_check";
+export type ReplyKind = Intent | "ambiguous" | "ask_product" | "ask_timing_product" | "price_check";
 
 export type DeterministicReply = {
   intent: Intent;
@@ -396,77 +396,126 @@ function handleWhere(d: DetectedIntent): Draft {
   };
 }
 
-/** Top upcoming promos shown as the secondary section of "Kaj je najbolj znižano?". */
-const DISCOUNTS_UPCOMING_SHOWN = 3;
-
+/**
+ * "Kaj je najbolj znižano?" / "Kaj je zdaj v akciji?": CURRENT verified discounts only. Never upcoming promos,
+ * future prices or forecasts (those belong to the discount_timing intent); candidatePromoIds stays empty so a
+ * live model cannot reference them either.
+ */
 function handleDiscounts(req: ChatRequest): Draft {
   const ranked = rankDiscounts({ limit: MAX_PRODUCTS_SHOWN });
-  const upcoming = rankUpcoming({ limit: DISCOUNTS_UPCOMING_SHOWN });
   return {
-    template: discountTemplate(ranked, req.spPlus, { hasUpcoming: upcoming.length > 0 }),
+    template: discountTemplate(ranked, req.spPlus),
     blocks: ranked.length
-      ? [{ type: "discount_timeline", currentOfferIds: ranked.map((r) => r.offer.id), upcomingPromoIds: upcoming.map((u) => u.promo.id) }]
+      ? [{ type: "discount_timeline", currentOfferIds: ranked.map((r) => r.offer.id), upcomingPromoIds: [] }]
       : [{ type: "choices", options: [{ label: "Pokaži izdelke S-BUDGET", message: "Pokaži S-BUDGET izdelke" }] }],
     contextProductIds: ranked.map((r) => r.product.id),
     actions: [],
     candidateProductIds: ranked.map((r) => r.product.id),
     candidateRecipeIds: [],
+    candidatePromoIds: [],
     allowModel: true,
   };
 }
 
+/** "Kdaj bo izdelek najbolj znižan?" (no product named): ask back; the next short reply is resolved as a timing query. */
+function askTimingProductDraft(): Draft {
+  return {
+    template: ASK_TIMING_PRODUCT_TEXT,
+    blocks: [],
+    contextProductIds: [],
+    actions: [],
+    candidateProductIds: [],
+    candidateRecipeIds: [],
+    allowModel: false,
+    kind: "ask_timing_product",
+  };
+}
+
+/** Timing question about a product we cannot find: honest, and NO product cards. */
+function timingNotFoundDraft(): Draft {
+  return {
+    template: "Tega izdelka ne najdem med preverjenimi izdelki iz kataloga, zato ti ne morem povedati, kdaj bo v akciji. Poskusi z drugim izdelkom ali znamko.",
+    blocks: [{ type: "choices", options: [SUGGESTION_CHOICES[1]] }],
+    contextProductIds: [],
+    actions: [],
+    candidateProductIds: [],
+    candidateRecipeIds: [],
+    allowModel: false,
+    kind: "unknown_product",
+  };
+}
+
 /**
- * "Kdaj je Perutnina Ptuj znižana?" / "Kaj bo znižano naslednji teden?": a deterministic answer built from
- * the verified current discounts and the upcoming demo promos. Never phrased by the model.
+ * "Kdaj je Perutnina Ptuj znižana?" / "Kaj bo znižano naslednji teden?": a deterministic answer (never phrased by
+ * the model) combining the verified current discounts, the structured upcoming demo promos and the DEMO forecast
+ * (every verified product is simulated to be promoted next week, with no invented price).
  */
 function handleTiming(d: DetectedIntent): Draft {
   const lineHits = d.filters.line ? productsInLine(d.filters.line) : [];
   const lineWords = new Set(lineHits.flatMap((h) => queryContentTokens(`${h.product.brand ?? ""} ${h.product.line ?? ""}`)));
   const stop = new Set([...TIMING_STOP, ...lineWords]);
+  const content = queryContentTokens(d.text, stop);
   let products: Product[] | null = null; // null = general question
-  if (queryContentTokens(d.text, stop).length) {
+  if (content.length) {
     const hits = searchProducts(d.text, { extraStop: stop, filters: d.filters.line ? { line: d.filters.line } : {} });
-    if (!hits.length) return unknownDraft(d);
+    if (!hits.length) return timingNotFoundDraft();
     products = strongHits(hits).map((h) => h.product);
   } else if (lineHits.length) {
     products = lineHits.map((h) => h.product);
-  } else if (d.contextProductIds.length && !/\bkaj\b/.test(d.folded)) {
-    // "Kdaj bo to znižano?" after a product answer.
-    products = d.contextProductIds.map((id) => getProduct(id)).filter((p): p is Product => !!p);
+  } else {
+    const refersToContext = /\b(ta|to|tega|teh)\b/.test(d.folded);
+    const namesGenericProduct = /\bizdelek\b/.test(d.folded) && !refersToContext;
+    if (namesGenericProduct || (/\bkdaj\b/.test(d.folded) && !d.contextProductIds.length)) return askTimingProductDraft();
+    if (d.contextProductIds.length && (refersToContext || /\bkdaj\b/.test(d.folded)) && !/\bkaj\b/.test(d.folded)) {
+      // "Kdaj bo to znižano?" after a product answer.
+      products = d.contextProductIds.map((id) => getProduct(id)).filter((p): p is Product => !!p);
+    }
   }
   products = products?.slice(0, MAX_UPCOMING) ?? null;
 
   const ids = products?.map((p) => p.id);
   const current = ids ? currentDiscountsOf(ids) : [];
   const upcoming = rankUpcoming(ids ? { productIds: ids } : {});
-  const involved = Array.from(new Map([...current.map((r) => r.product), ...upcoming.map((u) => u.product)].map((p) => [p.id, p])).values());
+  const structuredIds = new Set(upcoming.map((u) => u.product.id));
+  const forecastIds = products ? forecastOnlyIds(ids!.filter((id) => !structuredIds.has(id))) : [];
+  const involved = Array.from(new Map([...current.map((r) => r.product), ...upcoming.map((u) => u.product), ...forecastIds.map((id) => getProduct(id)!)].map((p) => [p.id, p])).values());
   const base = { actions: [], candidateRecipeIds: [], allowModel: false, candidatePromoIds: upcoming.map((u) => u.promo.id) };
 
-  if (current.length || upcoming.length) {
+  if (!products) {
+    if (!upcoming.length) {
+      return { ...base, template: generalTimingTemplate(upcoming), blocks: [{ type: "choices", options: [SUGGESTION_CHOICES[1]] }], contextProductIds: [], candidateProductIds: [] };
+    }
     return {
       ...base,
-      template: timingTemplate({ subject: products ? timingSubject(involved) : null, current, upcoming }),
-      blocks: [{ type: "discount_timeline", currentOfferIds: current.map((r) => r.offer.id), upcomingPromoIds: upcoming.map((u) => u.promo.id) }],
+      template: generalTimingTemplate(upcoming),
+      blocks: [{ type: "discount_timeline", currentOfferIds: [], upcomingPromoIds: upcoming.map((u) => u.promo.id) }],
       contextProductIds: involved.map((p) => p.id),
       candidateProductIds: involved.map((p) => p.id),
     };
   }
-  // Nothing discounted now and nothing announced: say so, and show what the product costs in the catalog.
-  if (!products) {
+  if (upcoming.length || forecastIds.length) {
     return {
       ...base,
-      template: timingTemplate({ subject: null, current, upcoming }),
-      blocks: [{ type: "choices", options: [SUGGESTION_CHOICES[1]] }],
-      contextProductIds: [],
-      candidateProductIds: [],
+      template: forecastTemplate(products, upcoming),
+      blocks: [
+        {
+          type: "discount_timeline",
+          currentOfferIds: current.map((r) => r.offer.id),
+          upcomingPromoIds: upcoming.map((u) => u.promo.id),
+          ...(forecastIds.length ? { forecastProductIds: forecastIds } : {}),
+        },
+      ],
+      contextProductIds: involved.map((p) => p.id),
+      candidateProductIds: involved.map((p) => p.id),
     };
   }
+  // Defensive: no verified offer to forecast for - just show what is in the catalog.
   const shown = hitsOf(products.map((p) => p.id)).slice(0, MAX_PRODUCTS_SHOWN);
-  const only = shown.length === 1 ? shown[0] : null;
+  if (!shown.length) return timingNotFoundDraft();
   return {
     ...base,
-    template: `${timingTemplate({ subject: timingSubject(products), current, upcoming })}${only ? ` Trenutna cena je {{price:${only.offer.id}}}.` : ""}`,
-    blocks: [productsBlock(shown.map((h) => h.offer.id), only ? "card" : "list")],
+    template: "Za ta izdelek nimam napovedi akcije. Spodaj je njegova cena v katalogu.",
+    blocks: [productsBlock(shown.map((h) => h.offer.id), shown.length === 1 ? "card" : "list")],
     contextProductIds: shown.map((h) => h.product.id),
     candidateProductIds: shown.map((h) => h.product.id),
   };

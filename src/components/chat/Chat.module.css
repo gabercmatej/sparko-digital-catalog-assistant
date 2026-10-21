@@ -363,9 +363,9 @@
 .rowPanel {
   padding: 10px;
 }
-.rowBadge {
-  align-self: flex-start;
-  margin-bottom: 2px;
+.stripBadge {
+  flex-basis: 100%;
+  justify-content: flex-end;
 }
 /* ---- upcoming-promo row: current (red) and upcoming (soft blue) prices share a strip under the text, never overlapping. */
 .rowBtn[data-upcoming] {
@@ -387,9 +387,6 @@
 }
 .rowBtn[data-upcoming] .rowName {
   flex-basis: 100%;
-}
-.rowBtn[data-upcoming] .rowBadge {
-  margin-bottom: 0;
 }
 .priceStrip {
   grid-area: prices;

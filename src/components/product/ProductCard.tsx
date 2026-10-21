@@ -40,12 +40,11 @@ export function ProductCard({
         <div className={styles.row} data-product-row>
           <ProductTile productId={productId} size="carousel" thumb />
           <div className={styles.info}>
-            <RetailerBadge productId={productId} className={styles.badge} />
             {brandLabel(product) && <span className={styles.brand}>{brandLabel(product)}</span>}
             <Name className={styles.name}>{product.name}</Name>
           </div>
           <span className={styles.pack}>{product.packSize}</span>
-          <PriceBlock offer={offer} />
+          <PriceBlock offer={offer} productId={productId} />
         </div>
         <ProductActions productId={productId} showLeaflet={showLeaflet} toggle />
       </article>
@@ -61,15 +60,16 @@ export function ProductCard({
 }
 
 /**
- * The catalog-style red price block (split euros/cents, small €) with the "SPAR plus" / unit label
- * above it. Shared by the chat card and the compact chat rows; it occupies the `price` grid area and
+ * The catalog-style red price block (split euros/cents, small €) with the SPAR / INTERSPAR RetailerBadge
+ * (right-aligned, when `productId` is given) and the "SPAR plus" / unit label above it. Shared by the chat card and the compact chat rows; it occupies the `price` grid area and
  * is meant to sit flush in the bottom-right corner of its white row. Inline markup only (spans).
  */
-export function PriceBlock({ offer, compact = false }: { offer: Offer; compact?: boolean }) {
+export function PriceBlock({ offer, productId, compact = false }: { offer: Offer; productId?: string; compact?: boolean }) {
   const { euros, cents } = splitPrice(offer.priceCents);
   const unit = PRICE_UNIT_LABEL[offer.priceUnit];
   return (
     <span className={`${styles.priceWrap}${compact ? ` ${styles.compact}` : ""}`} data-price-block>
+      {productId && <RetailerBadge productId={productId} size="xs" className={styles.badge} />}
       {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
       {unit && <span className={styles.unit}>{unit}</span>}
       <span className={styles.price} aria-hidden="true" data-price>

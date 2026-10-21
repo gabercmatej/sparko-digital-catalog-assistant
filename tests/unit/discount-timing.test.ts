@@ -81,12 +81,10 @@ describe("discount timing: product-scoped answer (Perutnina Ptuj)", () => {
     expect(r.contextProductIds.every((id) => ptujIds.has(id))).toBe(true);
   });
 
-  it.skipIf(needsPtuj)("text is fully resolved, mentions the upcoming date and carries no model-written facts", () => {
+  it.skipIf(needsPtuj)("text is fully resolved (brand genitive, demo forecast wording) and carries no model-written facts", () => {
     const r = buildDeterministicReply(req("Kdaj je perutnina ptuj znižana?"));
     expect(r.text).not.toMatch(/\{\{|\}\}/);
-    const first = [...timelineOf(r)!.upcomingPromoIds].map((id) => upcomingItem(id)!.promo.validFrom).sort()[0];
-    expect(r.text).toContain(formatShortDate(first));
-    expect(r.text).toContain("Perutnina Ptuj");
+    expect(r.text).toBe("Izdelki Perutnine Ptuj bodo v naši demo napovedi znižani naslednji teden. Poglej, kateri izdelki so vključeni.");
   });
 });
 
@@ -131,12 +129,14 @@ describe("discount timing: honest empty and unknown cases", () => {
     (p) => futurePromosForProduct(p.id).length === 0 && currentDiscountsOf([p.id]).length === 0 && getPrimaryOffer(p.id)?.priceUnit === "pack",
   );
 
-  it.skipIf(!noTiming)("a product without current or upcoming discount says so and shows its current price", () => {
+  it.skipIf(!noTiming)("a product without a structured promo gets a demo forecast row: period only, no future price", () => {
     const r = buildDeterministicReply(req(`Kdaj bo ${noTiming!.name} znižan?`));
     expect(r.intent).toBe("discount_timing");
-    expect(timelineOf(r)).toBeUndefined();
-    expect(r.text).toContain("ni znižanja");
-    expect(r.blocks.some((b) => b.type === "products")).toBe(true);
+    const tl = timelineOf(r)!;
+    expect(tl.upcomingPromoIds).toEqual([]);
+    expect(tl.forecastProductIds).toContain(noTiming!.id);
+    expect(r.text).toContain("demo napovedi");
+    expect(r.text).not.toMatch(/\d/);
     expect(r.allowModel).toBe(false);
   });
 
@@ -148,15 +148,15 @@ describe("discount timing: honest empty and unknown cases", () => {
   });
 });
 
-describe("discounts intent shows the timeline (current first, compact upcoming second)", () => {
-  it("current top discounts plus at most three upcoming promos", () => {
+describe("discounts intent shows ONLY current discounts", () => {
+  it("current top discounts and no upcoming promos or forecast", () => {
     const r = buildDeterministicReply(req("Kaj je najbolj znižano?"));
     expect(r.intent).toBe("discounts");
     expect(r.blocks[0].type).toBe("discount_timeline");
     const tl = timelineOf(r)!;
     expect(tl.currentOfferIds).toEqual(rankDiscounts({ limit: 4 }).map((x) => x.offer.id));
-    expect(tl.upcomingPromoIds.length).toBeLessThanOrEqual(3);
-    expect(tl.upcomingPromoIds).toEqual(rankUpcoming({ limit: 3 }).map((u) => u.promo.id));
+    expect(tl.upcomingPromoIds).toEqual([]);
+    expect(tl.forecastProductIds).toBeUndefined();
     expect(r.text).not.toMatch(/\{\{|\}\}/);
   });
 });
@@ -200,5 +200,15 @@ describe("sanitizeBlocks keeps valid discount timelines", () => {
       { type: "discount_timeline" },
     ]);
     expect(out).toEqual([{ type: "discount_timeline", currentOfferIds: [offer.id], upcomingPromoIds: [promo.id] }]);
+  });
+});
+
+describe("bulk-purchase prices are not ranked as discounts", () => {
+  it("Radler (0,81 € only when buying 24 cans) is excluded from the discount ranking", () => {
+    const radler = getPrimaryOffer("radler-cola-limeta-union-0-5l");
+    expect(radler).toBeDefined();
+    expect(radler!.conditions.note).toMatch(/ob nakupu 24 kosov/);
+    expect(isPercentDiscount(radler!)).toBe(false);
+    expect(rankDiscounts({ limit: Infinity }).some((r) => r.offer.id === radler!.id)).toBe(false);
   });
 });

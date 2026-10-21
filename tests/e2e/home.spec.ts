@@ -28,27 +28,100 @@ test.describe("home", () => {
     await izdelki.click();
     await expect(izdelki).toHaveAttribute("aria-selected", "true");
     await expect(page.getByRole("heading", { name: "Izdelki iz katalogov" })).toBeVisible();
+    await expect(page.getByRole("group", { name: "Kategorije" }).getByRole("button").first()).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("[data-catalog-card]")).toHaveCount(0);
     await katalogi.click();
     await expect(page.locator("[data-catalog-card]")).toHaveCount(2);
   });
 
-  const cases = [
-    { action: "Kaj je najbolj znižano", heading: "Najbolj znižano" },
-    { action: "Kaj je novega v katalogu", heading: "Novo v katalogu" },
-    { action: "Poglej izdelke po kategoriji", heading: "Po kategorijah" },
-  ];
-  for (const c of cases) {
-    test(`action "${c.action}" switches to Izdelki`, async ({ page }) => {
+  test("Izdelki defaults to VSI and chips filter the list", async ({ page }) => {
+    await page.getByRole("tab", { name: "Izdelki" }).click();
+    const chips = page.getByRole("group", { name: "Kategorije" }).getByRole("button");
+    const names = (await chips.allTextContents()).map((t) => t.trim());
+    expect(names.slice(0, 6)).toEqual(["VSI", "Zajtrk", "Pekovsko pecivo", "Večerja", "Osnovna živila", "Mlečni izdelki"]);
+    await expect(chips.first()).toHaveAttribute("aria-pressed", "true");
+    const list = page.getByTestId("home-list");
+    expect(await list.locator("[data-retailer=spar]").count()).toBeGreaterThan(0);
+    expect(await list.locator("[data-retailer=interspar]").count()).toBeGreaterThan(0);
+    const all = await list.locator("[data-home-row]").count();
+    await page.getByRole("button", { name: "Mlečni izdelki", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Mlečni izdelki", exact: true })).toHaveAttribute("aria-pressed", "true");
+    const some = await list.locator("[data-home-row]").count();
+    expect(some).toBeGreaterThan(0);
+    expect(some).toBeLessThan(all);
+    await page.getByRole("button", { name: "VSI", exact: true }).click();
+    await expect(list.locator("[data-home-row]")).toHaveCount(all);
+  });
+
+  test("Najbolj znižano and Novo v katalogu switch to Izdelki", async ({ page }) => {
+    for (const c of [
+      { action: "Kaj je najbolj znižano", heading: "Najbolj znižano" },
+      { action: "Kaj je novega v katalogu", heading: "Novo v katalogu" },
+    ]) {
       const btn = page.getByRole("button", { name: c.action });
       await btn.click();
       await expect(btn).toHaveAttribute("aria-pressed", "true");
       await expect(page.getByRole("tab", { name: "Izdelki" })).toHaveAttribute("aria-selected", "true");
       await expect(page.getByRole("heading", { name: c.heading, exact: true }).first()).toBeVisible();
-      await expect(page.locator("[data-product-id]").first()).toBeVisible();
-      // The rail title follows the intent, or falls back to the default when too few items are left.
-      const title = ((await page.getByTestId("home-rail").locator("xpath=../div/h2").textContent()) ?? "").trim();
-      expect(title === c.heading || title === "Aktualni izdelki iz kataloga" || title.endsWith(" iz kataloga")).toBe(true);
+      await expect(page.locator("[data-home-row]").first()).toBeVisible();
+      await expect(page.getByTestId("home-rail").locator("xpath=../div/h2")).toHaveText(c.heading);
+    }
+  });
+
+  test("category button opens a dialog; picking Mlečni izdelki updates top list and rail", async ({ page }) => {
+    await page.getByRole("button", { name: "Poglej izdelke po kategoriji" }).click();
+    const dialog = page.getByRole("dialog", { name: "Izberi kategorijo" });
+    await expect(dialog).toBeVisible();
+    const options = (await dialog.getByRole("button").allTextContents()).map((t) => t.trim());
+    expect(options[1]).toMatch(/^VSI/);
+    await dialog.locator("[data-category=mlecni-izdelki]").click();
+    await expect(dialog).toHaveCount(0);
+    await expect(page.getByRole("tab", { name: "Izdelki" })).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("button", { name: "Mlečni izdelki", exact: true })).toHaveAttribute("aria-pressed", "true");
+    const topIds = await page.locator("[data-home-row]").evaluateAll((els) => els.map((e) => e.getAttribute("data-product-id")));
+    const railIds = await page.locator("[data-testid=home-rail] [data-mini-card]").evaluateAll((els) => els.map((e) => e.getAttribute("data-product-id")));
+    expect(topIds.length).toBeGreaterThan(0);
+    for (const id of railIds) expect(topIds).toContain(id);
+    expect(railIds.length).toBeGreaterThan(0);
+    await expect(page.getByTestId("home-rail").locator("[data-retailer]").first()).toBeVisible();
+    // VSI restores everything
+    await page.getByRole("button", { name: "Poglej izdelke po kategoriji" }).click();
+    await page.getByRole("dialog").locator("[data-category=all]").click();
+    expect(await page.locator("[data-home-row]").count()).toBeGreaterThan(topIds.length);
+  });
+
+  for (const w of [360, 390, 430]) {
+    test(`middle section and rail do not move when the top changes @${w}px`, async ({ page }) => {
+      await page.setViewportSize({ width: w, height: 800 });
+      await page.goto("/domov");
+      const mascot = page.locator("img[src*=sparko-mascot]");
+      const firstAction = page.getByRole("button", { name: "Kaj je najbolj znižano" });
+      const lastAction = page.getByRole("button", { name: "Kje je najbližji SPAR" });
+      const rail = page.getByTestId("home-rail");
+      const seg = page.getByRole("tablist", { name: "Prikaz" });
+      const ys = async () => [mascot, firstAction, lastAction, rail, seg].map(async (l) => (await l.boundingBox())!.y);
+      const snap = async () => Promise.all(await ys());
+      await expect(page.locator("[data-catalog-card]").first()).toBeVisible();
+      const base = await snap();
+      const same = async (label: string) => {
+        const now = await snap();
+        now.forEach((y, i) => expect(Math.abs(y - base[i]), `${label} #${i} @${w}px`).toBeLessThanOrEqual(1));
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      };
+      await page.getByRole("tab", { name: "Izdelki" }).click();
+      await expect(page.getByTestId("home-list")).toBeVisible();
+      await same("Izdelki");
+      await page.getByRole("button", { name: "Zajtrk", exact: true }).click();
+      await same("Zajtrk");
+      await page.getByRole("button", { name: "Mlečni izdelki", exact: true }).click();
+      await same("Mlečni izdelki");
+      await page.getByRole("button", { name: "Kaj je najbolj znižano" }).click();
+      await same("znižano");
+      await page.getByRole("button", { name: "Kaj je novega v katalogu" }).click();
+      await same("novo");
+      await page.getByRole("tab", { name: "Katalogi" }).click();
+      await expect(page.locator("[data-catalog-card]").first()).toBeVisible();
+      await same("Katalogi");
     });
   }
 
@@ -112,17 +185,18 @@ test.describe("home", () => {
     });
   }
 
-  test("catalog cover images are large enough to read (not hidden behind the CTA)", async ({ page }) => {
+  test("catalog covers are shown whole inside the card (not cropped)", async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 740 });
     await page.goto("/domov");
     for (const card of await page.locator("[data-catalog-card]").all()) {
-      const cover = (await card.locator("img[class*='cover']").boundingBox())!;
-      const cta = (await card.locator("[class*='cta']").boundingBox())!;
+      const cover = (await card.locator("img[class*=\"cover\"]").boundingBox())!;
       const box = (await card.boundingBox())!;
-      // Visible part of the cover above the CTA pill is a substantial area.
-      const visibleH = Math.min(cta.y, box.y + box.height) - Math.max(cover.y, box.y);
-      expect(visibleH).toBeGreaterThanOrEqual(80);
-      expect(cover.width).toBeGreaterThanOrEqual(120);
+      expect(cover.x).toBeGreaterThanOrEqual(box.x - 0.5);
+      expect(cover.y).toBeGreaterThanOrEqual(box.y - 0.5);
+      expect(cover.x + cover.width).toBeLessThanOrEqual(box.x + box.width + 0.5);
+      expect(cover.y + cover.height).toBeLessThanOrEqual(box.y + box.height + 0.5);
+      const fits = await card.locator("img[class*=\"cover\"]").evaluate((img: HTMLImageElement) => getComputedStyle(img).objectFit !== "cover");
+      expect(fits).toBe(true);
     }
   });
 });

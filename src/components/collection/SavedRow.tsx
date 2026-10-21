@@ -2,7 +2,7 @@
 import { formatPrice, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
 import { Icon } from "../ui/Icon";
 import { PricePill } from "../product/PricePill";
-import { RetailerBadge } from "../product/RetailerBadge";
+import { PriceStack } from "../product/PriceStack";
 import styles from "./SavedRow.module.css";
 
 /**
@@ -48,7 +48,6 @@ export function SavedRow({
           <img src={product.image.src} width={product.image.width} height={product.image.height} alt="" loading="lazy" decoding="async" draggable={false} />
         </span>
         <span className={styles.text}>
-          <RetailerBadge productId={productId} size="xs" />
           <span className={styles.name}>{product.name}</span>
           <span className={styles.pack}>
             {product.packSize}
@@ -60,7 +59,9 @@ export function SavedRow({
             </span>
           )}
         </span>
-        <PricePill cents={offer.priceCents} size="md" />
+        <PriceStack productId={productId}>
+          <PricePill cents={offer.priceCents} size="md" />
+        </PriceStack>
       </button>
     </li>
   );

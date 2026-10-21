@@ -254,7 +254,7 @@
 }
 .railItem {
   flex: none;
-  width: 148px;
+  width: 134px;
   scroll-snap-align: start;
   display: flex;
 }

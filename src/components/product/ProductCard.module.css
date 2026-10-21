@@ -50,8 +50,8 @@
   padding-right: 10px;
 }
 .badge {
-  align-self: flex-start;
-  margin-bottom: 3px;
+  align-self: flex-end;
+  margin-bottom: 1px;
 }
 .brand {
   font-size: 11px;

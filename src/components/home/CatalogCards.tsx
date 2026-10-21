@@ -17,10 +17,16 @@ export function CatalogCards() {
             <span className={styles.brand}>
               <RetailerBadge retailer={c.retailer} size="md" />
             </span>
-            <span className={styles.kicker}>Aktualni katalog</span>
-            <span className={styles.period}>{formatPeriod(c.validFrom, c.validTo)}</span>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className={styles.cover} src={c.cover.src} width={c.cover.width} height={c.cover.height} alt="" decoding="async" draggable={false} />
+            <span className={styles.top}>
+              <span className={styles.text}>
+                <span className={styles.kicker}>Aktualni katalog</span>
+                <span className={styles.period}>{formatPeriod(c.validFrom, c.validTo)}</span>
+              </span>
+              <span className={styles.coverWrap} data-catalog-cover>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className={styles.cover} src={c.cover.src} width={c.cover.width} height={c.cover.height} alt="" decoding="async" draggable={false} />
+              </span>
+            </span>
             <span className={styles.cta} aria-hidden="true">
               Odpri katalog
               <Icon name="arrow-right" size={15} strokeWidth={2.4} />

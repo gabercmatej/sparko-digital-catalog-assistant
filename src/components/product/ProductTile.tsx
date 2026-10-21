@@ -46,13 +46,13 @@ export function ProductTile({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={product.image.src} width={product.image.width} height={product.image.height} alt="" loading={size === "carousel" ? "eager" : "lazy"} decoding="async" draggable={false} />
       </span>
-      {/* SPAR / INTERSPAR source label; minimal/thumb tiles sit next to text that already shows it. */}
-      {!minimal && !thumb && <RetailerBadge productId={productId} size="xs" className={styles.retailer} />}
       {!minimal && !thumb && <span className={styles.name}>{product.name}</span>}
       {!thumb && (
         <span className={styles.meta}>
           <span className={styles.text}>{!minimal && <span className={styles.pack}>{product.packSize}</span>}</span>
           <span className={styles.priceWrap}>
+            {/* SPAR / INTERSPAR source label: right-aligned directly above the price (thumb tiles: the row prints it). */}
+            <RetailerBadge productId={productId} size="xs" className={styles.retailer} />
             {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
             <span className={styles.price} aria-hidden="true">
               <span className={styles.euros}>{euros}</span>

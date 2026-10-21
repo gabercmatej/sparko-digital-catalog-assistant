@@ -22,13 +22,23 @@
   gap: 12px;
   scroll-margin-top: 8px;
 }
+/* The shared top box: identical height in both modes (the catalog covers are 199/218/231/265 px tall at
+   360/390/430/desktop, so the box never clips them); the product list scrolls inside it. */
+.topBox {
+  height: clamp(232px, 60vw, 272px);
+  min-height: 0;
+}
 .fade {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
   animation: home-fade 0.2s ease-out;
 }
+/* Opacity only: a translate would make the zones visibly shift while new content fades in. */
 @keyframes home-fade {
   from {
     opacity: 0;
-    transform: translateY(4px);
   }
 }
 

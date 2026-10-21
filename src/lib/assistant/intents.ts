@@ -7,7 +7,7 @@ import type { ChatRequestMessage } from "@/lib/types";
 import { fold } from "./normalize";
 import { detectFilters, queryContentTokens, searchProducts, type SearchFilters } from "./search";
 import { findStoreSection } from "@/lib/demo/storeMap";
-import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT } from "./starters";
+import { ASK_PRODUCT_TEXT, ASK_STORE_PRODUCT_TEXT, ASK_TIMING_PRODUCT_TEXT } from "./starters";
 
 export type Intent =
   | "greeting"
@@ -118,8 +118,10 @@ const RE = {
   cheaper: /\b(cenej\w*|najcenej\w*|bolj poceni|kaj je poceni|manj drag\w*|varcnej\w*)\b/,
   discounts: /\b(znizan\w*|znizanj\w*|popust\w*|akcij\w*|razprodaj\w*|prihran\w*|najbolj ugodn\w*|ugodne ponudbe)\b/,
   // Discount timing: "Kdaj je X znižan?", "Ali bo X v akciji naslednji teden?", "Kaj bo znižano prihodnji teden?".
-  timingTopic: /\b(znizan\w*|znizanj\w*|popust\w*|akcij\w*|ceneje)\b/,
-  timingWhen: /\b(kdaj|bo|bodo)\b/,
+  // Explicit temporal markers only (kdaj, future "bo/bodo", next week, kmalu, počakati, splača): "zdaj/trenutno/najbolj znižano" are never future.
+  timingTopic: /\b(znizan\w*|znizanj\w*|popust\w*|akcij\w*|cenej\w*)\b/,
+  timingWhen: /\b(kdaj|bo|bodo|kmalu|pocak\w*|splaca)\b/,
+  timingWhenWorth: /\bkdaj\b.*\bsplaca\b|\bsplaca\b.*\bkdaj\b/,
   timingNext: /\b(naslednj\w*|prihodnj\w*)\s+(teden|tedn\w*|katalog\w*)\b/,
   breakfast: /\b(zajtrk\w*|zajtrkoval\w*|za zjutraj)\b/,
   meal: /\b(vecerj\w*|kosil\w*|obrok\w*|recept\w*|skuham|skuhati|kuhati|kuham|pecem|speci|pripravim|pripraviti|kaj (naj |lahko |bi )?(jem|pojem|pripravim|skuham)|jed\w*)\b/,
@@ -219,7 +221,18 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
     if (prev && fold(prev) === fold(ASK_STORE_PRODUCT_TEXT) && folded.split(" ").length <= 4) return { ...base, intent: "store_location" };
   }
   // Timing / future discounts (never "kje": that is a leaflet or store question).
-  if (RE.timingTopic.test(folded) && !RE.whereWord.test(folded) && (RE.timingWhen.test(folded) || RE.timingNext.test(folded))) {
+  if (!RE.whereWord.test(folded) && ((RE.timingTopic.test(folded) && (RE.timingWhen.test(folded) || RE.timingNext.test(folded))) || RE.timingWhenWorth.test(folded))) {
+    return { ...base, intent: "discount_timing" };
+  }
+  // Reply to "Seveda! Za kateri izdelek te zanima, kdaj bo v akciji?": a short product/brand reply (even an unknown one) is a timing query.
+  if (
+    prev &&
+    fold(prev) === fold(ASK_TIMING_PRODUCT_TEXT) &&
+    folded.split(" ").length <= 6 &&
+    // A reply that names a catalog product always counts ("Jedilna čokolada"); otherwise other intents' wording wins.
+    (searchProducts(text, { limit: 1 }).length > 0 ||
+      (!RE.discounts.test(folded) && !RE.where.test(folded) && !RE.meal.test(folded) && !RE.breakfast.test(folded) && !RE.recommend.test(folded) && !RE.outOfScope.test(folded)))
+  ) {
     return { ...base, intent: "discount_timing" };
   }
   if (RE.where.test(folded)) return { ...base, intent: "where_in_leaflet" };

@@ -5,11 +5,12 @@
  * "discounted". Never claims anything about the current store or today's date.
  */
 import { getProduct, offers as allOffers } from "@/lib/catalog";
+import { isOfferCurrent } from "@/lib/promoCalendar";
 import type { Offer, Product, SpPlusSetting } from "@/lib/types";
 
 export type RankedDiscount = { offer: Offer; product: Product };
 
-const MULTIBUY_RE = /\d\s*\+\s*\d|\bgratis\b|\bvsak (drugi|tretji)\b/i;
+const MULTIBUY_RE = /\d\s*\+\s*\d|\bgratis\b|\bvsak (drugi|tretji)\b|\bob nakupu \d+ kos/i;
 
 export function isPercentDiscount(o: Offer): boolean {
   return (
@@ -22,10 +23,11 @@ export function isPercentDiscount(o: Offer): boolean {
   );
 }
 
-export function rankDiscounts(opts: { limit?: number; offers?: readonly Offer[] } = {}): RankedDiscount[] {
+/** Ranks CURRENT discounts only: offers whose validity contains the reference date (see promoCalendar); never upcoming promos. */
+export function rankDiscounts(opts: { limit?: number; offers?: readonly Offer[]; now?: Date } = {}): RankedDiscount[] {
   const list = opts.offers ?? allOffers;
   return list
-    .filter(isPercentDiscount)
+    .filter((o) => isPercentDiscount(o) && isOfferCurrent(o, opts.now))
     .map((offer) => ({ offer, product: getProduct(offer.productId) }))
     .filter((x): x is RankedDiscount => !!x.product)
     .sort(
@@ -42,13 +44,13 @@ export function rankDiscounts(opts: { limit?: number; offers?: readonly Offer[] 
  * discount_timeline block (verified price, regular price, SPAR plus label), so the prose is a short
  * intro naming the single biggest discount instead of repeating every row.
  */
-export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting, opts: { hasUpcoming?: boolean } = {}): string {
+export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting): string {
   if (!ranked.length) {
     return `Med preverjenimi izdelki iz kataloga ({{catalogs}}) ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
   }
   const top = ranked[0];
   let text = `Med preverjenimi izdelki v aktualnem katalogu ({{catalogs}}) je ta teden najbolj znižan izdelek {{name:${top.product.id}}} ({{discount:${top.offer.id}}} ceneje). Spodaj so najbolj znižani izdelki`;
-  text += opts.hasUpcoming ? ", pod njimi pa še napovedane akcije za naslednji teden." : ".";
+  text += ".";
   const card = ranked.filter((r) => r.offer.conditions.spPlusRequired);
   if (card.length && spPlus === "no") {
     const lines = card.map(({ offer, product }) =>

@@ -86,7 +86,7 @@ export function MessageItem({
             b.type === "products" ? (
               <ProductsBlock key={i} offerIds={b.offerIds} reasons={b.reasons} layout={b.layout} />
             ) : (
-              <DiscountTimeline key={i} currentOfferIds={b.currentOfferIds} upcomingPromoIds={b.upcomingPromoIds} />
+              <DiscountTimeline key={i} currentOfferIds={b.currentOfferIds} upcomingPromoIds={b.upcomingPromoIds} forecastProductIds={b.forecastProductIds} />
             ),
           )}
         </div>

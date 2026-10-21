@@ -2,6 +2,7 @@
  * Pure helpers for the Sparko chat client (no React, no store). Unit-testable.
  */
 import { formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "../catalog";
+import { forecastFor } from "../demoForecast";
 import { getFuturePromo } from "../futurePromos";
 import type { ChatAction, ChatRequest, ChatRequestMessage, ChatResponse, Message, MessageBlock, SpPlusSetting } from "../types";
 
@@ -94,7 +95,10 @@ export function sanitizeBlocks(blocks: unknown): MessageBlock[] {
       const known = (ids: unknown, ok: (id: string) => boolean) => (Array.isArray(ids) ? ids.filter((id): id is string => typeof id === "string" && ok(id)) : []);
       const currentOfferIds = known(b.currentOfferIds, (id) => !!getOffer(id));
       const upcomingPromoIds = known(b.upcomingPromoIds, (id) => !!getFuturePromo(id));
-      if (currentOfferIds.length || upcomingPromoIds.length) out.push({ type: "discount_timeline", currentOfferIds, upcomingPromoIds });
+      const forecastProductIds = known(b.forecastProductIds, (id) => !!forecastFor(id));
+      if (currentOfferIds.length || upcomingPromoIds.length || forecastProductIds.length) {
+        out.push({ type: "discount_timeline", currentOfferIds, upcomingPromoIds, ...(forecastProductIds.length ? { forecastProductIds } : {}) });
+      }
     } else if (b.type === "recipe" && typeof b.recipeId === "string") {
       out.push({ type: "recipe", recipeId: b.recipeId });
     } else if (b.type === "choices" && Array.isArray(b.options)) {

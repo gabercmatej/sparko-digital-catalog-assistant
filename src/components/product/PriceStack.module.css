@@ -1,0 +1,11 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex: none;
+  min-width: 0;
+}
+.badge {
+  align-self: flex-end;
+}

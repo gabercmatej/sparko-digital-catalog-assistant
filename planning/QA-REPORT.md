@@ -1,3 +1,26 @@
+# V2 fix pass — 2026-10-21
+
+Environment: Windows 10, Node 22.17, Next.js 16.3.8, Chromium (Playwright 1.63).
+
+| Command | Result |
+| --- | --- |
+| `npm run validate:data` | OK – 164 products / offers / placements, 44 pages, 3 recipes, 10 mocked future promos |
+| `npm run typecheck` | pass |
+| `npm run lint` | pass |
+| `npm test` (Vitest) | **301/301** (12 files; new: `timing-flow.test.ts`) |
+| `npm run build` | pass |
+| `npm run test:e2e` | **115/115** (new: `cards.spec.ts`, `home-covers.spec.ts`; extended home, chat, leaflet) |
+
+Fixed: generic discount questions show only current offers (date-aware `promoCalendar`); timing flow with follow-up and
+"Demo napoved" forecast; uncropped catalog covers; Izdelki defaults to VSI with fixed category order; stable Home zones
+(top box of one height, list scrolls inside, opacity-only fades; mascot/actions/rail y identical across all states at
+360/390/430 px); category bottom sheet synchronising top list and rail; SPAR/INTERSPAR label right-aligned above the price
+everywhere (`PriceStack`); Sparko top carousel uses the Home `ProductMiniCard`; +117 verified leaflet products (SPAR 145,
+INTERSPAR 19). Bulk-purchase prices (»ob nakupu 24 kosov«, Radler) are excluded from the discount ranking.
+Manual visual QA at 360×640, 390×844, 430×932 and 1280×900 against `next start`.
+
+---
+
 # Sparko MVP — QA report
 
 Date: 2026-10-02. Environment: Windows 10, Node 22.17, Next.js 16.3.8, Chromium (Playwright 1.63).

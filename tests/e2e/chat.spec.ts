@@ -64,7 +64,7 @@ test("initial screen: catalog subtitle, four catalog starters in a 2×2 grid, no
   await expect(starters.nth(0)).toHaveText("Koliko stane izdelek v katalogu?");
   await expect(starters.nth(1)).toHaveText("Kaj je najbolj znižano v katalogu?");
   await expect(starters.nth(2)).toHaveText("Kje je meni najbližji SPAR?");
-  await expect(starters.nth(3)).toHaveText("Kdaj je Perutnina Ptuj znižana?");
+  await expect(starters.nth(3)).toHaveText("Kdaj bo izdelek najbolj znižan?");
   // 2×2: two rows of two equal columns.
   const boxes = await Promise.all([0, 1, 2, 3].map(async (i) => (await starters.nth(i).boundingBox())!));
   expect(Math.abs(boxes[0].y - boxes[1].y)).toBeLessThan(1);
@@ -439,7 +439,7 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
       const sec = (k: string) => el.querySelector(`[data-timeline-section="${k}"]`)!;
       const title = (k: string) => getComputedStyle(sec(k).querySelector("h4")!).color;
       const rect = (x: Element) => x.getBoundingClientRect();
-      const upRows = [...sec("upcoming").querySelectorAll("li")].map((li) => {
+      const upRows = [...sec("upcoming").querySelectorAll("li:not([data-forecast-row])")].map((li) => {
         const now = li.querySelector('[data-price-pill="now"]')!;
         const next = li.querySelector('[data-price-pill="upcoming"]')!;
         const a = rect(now);
@@ -501,7 +501,8 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
       expect(r.nowBg).toBe(info.tokens.red);
       expect(r.nextBg).toBe(info.tokens.futureBg);
       expect(r.label).toMatch(/Od \d{1,2}\.\s\d{1,2}\./);
-      expect(r.height, `${w}px upcoming row height`).toBeLessThanOrEqual(140);
+      // +retailer badge row above the price (shared PriceStack) adds ~8 px
+      expect(r.height, `${w}px upcoming row height`).toBeLessThanOrEqual(152);
     }
     expect(info.noteDate, `${w}px note date on one line`).toEqual({ found: true, lines: 1 });
     // SPAR / INTERSPAR source label on every product row.
@@ -513,6 +514,60 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
   const row = lastReply(page).locator('[data-timeline-section="upcoming"] li').first();
   await row.locator("button[aria-expanded]").click();
   await expect(row.getByRole("region").getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
+});
+
+test("generic timing starter asks for the product, then 'Perutnina Ptuj izdelki' shows demo-forecast rows with the retailer label right-aligned above the price", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await fresh(page);
+  await page.getByRole("list", { name: "Predlogi vprašanj" }).getByRole("button", { name: "Kdaj bo izdelek najbolj znižan?" }).click();
+  await expect(lastReply(page)).toContainText("Seveda! Za kateri izdelek te zanima, kdaj bo v akciji?", { timeout: 15_000 });
+  await expect(lastReply(page).locator("li[data-product-row-id]")).toHaveCount(0);
+  await ask(page, "Perutnina Ptuj izdelki");
+  const reply = lastReply(page);
+  await expect(reply).toContainText("Izdelki Perutnine Ptuj bodo v naši demo napovedi znižani naslednji teden. Poglej, kateri izdelki so vključeni.");
+  const up = reply.locator('[data-timeline-section="upcoming"]');
+  await expect(up).toBeVisible();
+  await expect(up).toContainText("Znižano naslednji teden");
+  const rows = up.locator("li[data-product-row-id]");
+  expect(await rows.count()).toBeGreaterThanOrEqual(3);
+  // Rows without a structured promo are marked as demo forecast and carry no future price.
+  const forecast = up.locator("li[data-forecast-row]");
+  for (const row of await forecast.all()) {
+    await expect(row).toContainText("Demo napoved");
+    await expect(row).toContainText("Naslednji teden");
+    await expect(row.locator('[data-price-pill="upcoming"]')).toHaveCount(0);
+    const g = await row.evaluate((li) => {
+      const badge = li.querySelector("[data-retailer]")!.getBoundingClientRect();
+      const pill = li.querySelector('[data-price-pill="now"]')!.getBoundingClientRect();
+      return { badgeRight: badge.right, pillRight: pill.right, badgeBottom: badge.bottom, pillTop: pill.top };
+    });
+    expect(Math.abs(g.badgeRight - g.pillRight)).toBeLessThan(2); // right-aligned with the price
+    expect(g.badgeBottom).toBeLessThanOrEqual(g.pillTop + 1); // directly above it
+  }
+  if (await forecast.count()) {
+    await forecast.first().locator("button[aria-expanded]").click();
+    await expect(forecast.first().getByRole("region").getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
+  }
+});
+
+test("an unrecognized product after the timing follow-up gets an honest answer and no product cards", async ({ page }) => {
+  await fresh(page);
+  await ask(page, "Kdaj bo izdelek najbolj znižan?");
+  await ask(page, "kaviar iz jesetra");
+  const reply = lastReply(page);
+  await expect(reply).toContainText("ne najdem");
+  await expect(reply.locator("li[data-product-row-id], [data-product-card]")).toHaveCount(0);
+});
+
+test("generic discount questions show only current discounts (no next-week section)", async ({ page }) => {
+  await fresh(page);
+  for (const q of ["Kaj je najbolj znižano v katalogu?", "Kaj je zdaj v akciji?"]) {
+    await ask(page, q);
+    const reply = lastReply(page);
+    await expect(reply.locator('[data-timeline-section="current"]')).toBeVisible();
+    await expect(reply.locator('[data-timeline-section="upcoming"]')).toHaveCount(0);
+    await expect(reply).not.toContainText("naslednji teden");
+  }
 });
 
 test("list answer ('S-BUDGET izdelki'): compact rows with retailer label; tapping the row opens the product actions; the product sheet shows the label too", async ({ page }) => {

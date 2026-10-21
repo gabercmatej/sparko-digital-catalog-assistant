@@ -119,3 +119,19 @@
     font-size: 20px;
   }
 }
+
+/* Short phones (e.g. 360×640): the product carousel above uses the taller home mini cards, so the
+   large mascot is dropped (the header already shows it) and the starters stay visible without scrolling. */
+@media (max-height: 700px) {
+  .welcome {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    gap: 10px;
+  }
+  .mascot {
+    display: none;
+  }
+  .title {
+    font-size: 20px;
+  }
+}

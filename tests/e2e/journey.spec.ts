@@ -207,7 +207,8 @@ for (const width of [360, 390, 430]) {
     await expect(chatLog(page).locator("[data-product-card]").first()).toBeVisible();
     const tiles = await page.evaluate(() =>
       [...document.querySelectorAll<HTMLElement>("[data-product-id]")]
-        .filter((e) => !e.closest('[data-testid="leaflet-stage"]'))
+        // The top carousel uses the shared home mini card (rounded, not square) by design.
+        .filter((e) => !e.closest('[data-testid="leaflet-stage"]') && !e.closest("[data-mini-card]"))
         .map((e) => {
           const r = e.getBoundingClientRect();
           return { w: r.width, h: r.height, radius: getComputedStyle(e).borderRadius };

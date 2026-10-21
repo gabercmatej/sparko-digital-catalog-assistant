@@ -30,7 +30,7 @@ Ask in plain Slovenian, get verified prices, build your own catalog and jump str
 
 ## What is SPARko?
 
-SPARko is a mobile-first **prototype** of a conversational shopping assistant built on top of two real promotional catalogs: **SPAR 41/26** (36 pages) and **INTERSPAR 14/26** (8 pages), both valid **7.–13. 10. 2026**.
+SPARko is a mobile-first **prototype** of a conversational shopping assistant built on top of two real promotional catalogs: **SPAR 41/26** (36 pages) and **INTERSPAR 14/26** (8 pages), with 164 verified products, both valid **7.–13. 10. 2026**.
 
 Instead of flipping through 44 pages of PDFs, shoppers talk to **Sparko**: they ask what something costs, what's discounted, what to cook, or what fits a budget. Every answer is backed by structured catalog data, every product can be saved to a personal **Moj katalog**, and every product links back to its exact spot in the original leaflet.
 
@@ -53,11 +53,11 @@ The language model writes the sentence. It never decides the price.
 | **Natural Slovenian conversation** | Free-form questions with contextual follow-ups and suggested next questions |
 | **Verified catalog pricing** | Prices, package sizes, discounts and validity dates come from the catalog data, not from the model |
 | **Two catalogs, one app** | SPAR 41/26 and INTERSPAR 14/26; every product, row and card carries a **SPAR / INTERSPAR** label |
-| **Home (Domov)** | Catalog cover cards, a *Katalogi / Izdelki* toggle, quick actions (*Kaj je najbolj znižano*, *Kaj je novega v katalogu*, *Poglej izdelke po kategoriji*, *Kje je najbližji SPAR*) and a product rail that follows the chosen action |
-| **When is it discounted?** | *"Kdaj je Perutnina Ptuj znižana?"* answers with a grouped timeline: **Znižano ta teden** (verified, green) and **Znižano naslednji teden** (soft blue; current price in red, upcoming price in blue) |
+| **Home (Domov)** | Full (uncropped) catalog cover cards, a *Katalogi / Izdelki* toggle (Izdelki opens on **VSI**, then Zajtrk, Pekovsko pecivo, Večerja, Osnovna živila, Mlečni izdelki …), quick actions (*Kaj je najbolj znižano*, *Poglej izdelke po kategoriji* → category sheet, *Kaj je novega v katalogu*, *Kje je najbližji SPAR*). Top list and bottom rail share one state; the middle section never moves |
+| **Current vs. upcoming discounts** | *"Kaj je najbolj znižano?"* shows **only currently valid** discounts. Timing questions (*"Kdaj bo izdelek najbolj znižan?"* → *"Za kateri izdelek …?"*, *"Kdaj bo skuta v akciji?"*) show **Znižano ta teden** plus the upcoming week; every simulated future offer is marked **Demo napoved** |
 | **Moj katalog** | Compact list of saved products (removal mode behind the trash icon), *Pokaži na letaku*, *Deli seznam* and a green **Priporočila zate** band with explained recommendations |
 | **Leaflet navigation** | Jump from any product to its exact location in the original SPAR or INTERSPAR leaflet (`/letak?katalog=…`) |
-| **Product highlighting** | Saved products are marked directly on the leaflet pages; save/remove there too |
+| **Product highlighting** | 164 verified products are tappable on the leaflet pages (incl. the whole SPAR cover: Svinjska rebra, Radler …); save/remove there too |
 | **Recipes & budget ideas** | Verified recipes built from leaflet products and budget-aware shopping suggestions |
 | **Typo & morphology tolerance** | Handles Slovenian inflection and misspellings (*skuto*, *skute*, *skta* …) |
 | **Persistent state** | Saved products and conversations survive a page reload |
@@ -82,11 +82,11 @@ More detail on the data pipeline: [docs/DATA.md](docs/DATA.md) · full QA log: [
 
 | Check | Result |
 | --- | --- |
-| Data validation | ✅ PASS (2 catalogs, 47 products / offers / placements, 44 pages, 3 recipes, 10 mocked future promos) |
+| Data validation | ✅ PASS (2 catalogs, 164 products / offers / placements, 44 pages, 3 recipes, 10 mocked future promos) |
 | TypeScript typecheck | ✅ PASS |
 | Lint | ✅ PASS |
-| Unit tests (Vitest) | ✅ 237 / 237 |
-| E2E tests (Playwright) | ✅ 95 / 95 |
+| Unit tests (Vitest) | ✅ 301 / 301 |
+| E2E tests (Playwright) | ✅ 115 / 115 |
 | Production build | ✅ PASS |
 | Browser-exposed AI keys | ✅ 0 |
 
@@ -125,6 +125,8 @@ Other scripts: `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`,
 Everything printed in the two leaflets is verified catalog data. Two things are **explicitly mocked** for the demo and are labelled as such in the data files:
 
 - **Future promos** (`src/data/future-promos.json`, `"mock": true`): 10 invented promotions for 14.–20. 10. 2026 that feed *Znižano naslednji teden*. They are not from any leaflet; the current price always comes from the verified offer.
+- **Demo forecast** (`src/lib/demoForecast.ts`): every verified product can be answered with *"Naslednji teden"*, labelled **Demo napoved**. Without a structured promo above, no future price or percentage is shown.
+- **Demo date** (`src/lib/promoCalendar.ts`): when the real date is outside the catalog validity, the demo treats the catalog week (from 7. 10. 2026) as "this week".
 - **"Novo" flags**: 2 products carry a printed NOVO badge (`printed_badge`); 6 more are `demo_editorial` picks chosen by the authors and are not claimed by the leaflet.
 
 Details and validator rules: [docs/DATA.md](docs/DATA.md).

@@ -1,5 +1,13 @@
-import { formatDate, formatPeriod, getCatalog, getOffer, getProduct } from "@/lib/catalog";
+"use client";
+import { useState } from "react";
+import { formatDate, formatPeriod, formatPrice, getCatalog, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { DEMO_FORECAST_LABEL, forecastFor } from "@/lib/demoForecast";
 import { upcomingItem, upcomingPeriod } from "@/lib/futurePromos";
+import { ProductActions } from "../product/ProductActions";
+import { PricePill } from "../product/PricePill";
+import { brandLabel } from "../product/ProductSummary";
+import { ProductTile } from "../product/ProductTile";
+import { RetailerBadge } from "../product/RetailerBadge";
 import { Icon } from "../ui/Icon";
 import { ProductRow } from "./ProductsBlock";
 import chat from "./Chat.module.css";
@@ -18,10 +26,19 @@ function currentPeriod(offerIds: string[]): string | null {
 
 /**
  * The "discount_timeline" block: "Znižano ta teden" (verified current offers, green) and
- * "Znižano naslednji teden" (upcoming demo promos, soft blue, showing the current price in red and
- * the upcoming price in blue). Either section is omitted when empty.
+ * "Znižano naslednji teden" (upcoming demo promos, soft blue). Upcoming rows are either structured demo
+ * promos (current price red, upcoming price blue) or DEMO forecast rows (`forecastProductIds`: period only,
+ * no future price, tagged "Demo napoved"). Either section is omitted when empty.
  */
-export function DiscountTimeline({ currentOfferIds, upcomingPromoIds }: { currentOfferIds: string[]; upcomingPromoIds: string[] }) {
+export function DiscountTimeline({
+  currentOfferIds,
+  upcomingPromoIds,
+  forecastProductIds = [],
+}: {
+  currentOfferIds: string[];
+  upcomingPromoIds: string[];
+  forecastProductIds?: string[];
+}) {
   const current = currentOfferIds
     .map((id) => {
       const offer = getOffer(id);
@@ -29,8 +46,14 @@ export function DiscountTimeline({ currentOfferIds, upcomingPromoIds }: { curren
     })
     .filter((o): o is NonNullable<typeof o> => !!o);
   const upcoming = upcomingPromoIds.map((id) => upcomingItem(id)).filter((x): x is NonNullable<typeof x> => !!x);
-  if (!current.length && !upcoming.length) return null;
+  const forecast = forecastProductIds.map((id) => forecastFor(id)).filter((x): x is NonNullable<typeof x> => !!x);
+  if (!current.length && !upcoming.length && !forecast.length) return null;
   const period = currentPeriod(current.map((o) => o.id));
+  const nextPeriod = upcoming.length
+    ? formatPeriod(upcomingPeriod.from, upcomingPeriod.to)
+    : forecast[0]
+      ? formatPeriod(forecast[0].period.from, forecast[0].period.to)
+      : "";
 
   return (
     <div className={styles.timeline} data-discount-timeline>
@@ -48,25 +71,96 @@ export function DiscountTimeline({ currentOfferIds, upcomingPromoIds }: { curren
           </ul>
         </section>
       )}
-      {upcoming.length > 0 && (
+      {(upcoming.length > 0 || forecast.length > 0) && (
         <section className={`${styles.section} ${styles.upcoming}`} data-timeline-section="upcoming" aria-label="Znižano naslednji teden">
           <header className={styles.head}>
             <CalendarIcon />
             <h4 className={styles.title}>Znižano naslednji teden</h4>
-            <span className={styles.period}>{formatPeriod(upcomingPeriod.from, upcomingPeriod.to)}</span>
+            <span className={styles.period}>{nextPeriod}</span>
           </header>
-          <p className={styles.note}>
-            <Icon name="info" size={15} strokeWidth={2.2} />
-            <span>To so prihodnje akcije. Cene veljajo od {formatDate(upcomingPeriod.from)}.</span>
-          </p>
+          {upcoming.length > 0 && (
+            <p className={styles.note}>
+              <Icon name="info" size={15} strokeWidth={2.2} />
+              <span>To so prihodnje akcije. Cene veljajo od {formatDate(upcomingPeriod.from)}.</span>
+            </p>
+          )}
+          {forecast.length > 0 && (
+            <p className={styles.note} data-forecast-note>
+              <Icon name="info" size={15} strokeWidth={2.2} />
+              <span>{DEMO_FORECAST_LABEL}: za izdelke brez cene je znano le obdobje akcije, cena za naslednji teden še ni znana.</span>
+            </p>
+          )}
           <ul className={`${chat.rows} ${styles.list}`}>
             {upcoming.map(({ promo, currentOffer }) => (
               <ProductRow key={promo.id} productId={promo.productId} offerId={currentOffer.id} upcoming={promo} />
             ))}
+            {forecast
+              .filter((f) => !f.promo)
+              .map(({ productId, period: p }) => (
+                <ForecastRow key={`fc-${productId}`} productId={productId} period={p} />
+              ))}
           </ul>
         </section>
       )}
     </div>
+  );
+}
+
+/**
+ * A DEMO MOCK forecast row: a verified product simulated to be promoted next week, with NO future price.
+ * Real packshot, name and pack size; the SPAR / INTERSPAR label sits right-aligned directly above the verified
+ * current price; the period and the discreet "Demo napoved" tag replace any future price. Tapping toggles the
+ * save actions beneath the row.
+ */
+function ForecastRow({ productId, period }: { productId: string; period: { from: string; to: string } }) {
+  const [open, setOpen] = useState(false);
+  const product = getProduct(productId);
+  const offer = getPrimaryOffer(productId);
+  if (!product || !offer) return null;
+  const brand = brandLabel(product);
+  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  const panelId = `row-forecast-${productId}`;
+  return (
+    <li className={styles.fcRow} data-product-row-id={productId} data-forecast-row>
+      <button
+        type="button"
+        className={styles.fcBtn}
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((o) => !o)}
+        data-row-header
+        data-upcoming=""
+        data-forecast=""
+      >
+        <span className={styles.fcImg} aria-hidden="true">
+          <ProductTile productId={productId} size="carousel" thumb />
+        </span>
+        <span className={styles.fcInfo}>
+          {brand && <span className={styles.fcBrand}>{brand}</span>}
+          <span className={styles.fcName}>{product.name}</span>
+          <span className={styles.fcPack}>{product.packSize}</span>
+          <span className={styles.fcWhen}>
+            <span className={styles.fcWeek}>Naslednji teden</span>
+            <span className={styles.fcPeriod}>{formatPeriod(period.from, period.to)}</span>
+          </span>
+          <span className={styles.fcTag} data-demo-forecast>
+            {DEMO_FORECAST_LABEL}
+          </span>
+        </span>
+        <Icon name="chevron-down" size={16} className={styles.fcChevron} />
+        <span className={styles.fcSide} data-price-strip>
+          <RetailerBadge productId={productId} size="xs" />
+          <span className={styles.fcPriceLabel}>Zdaj{unit ? ` · ${unit}` : ""}</span>
+          <PricePill cents={offer.priceCents} tone="now" size="md" srPrefix="Zdaj" />
+          <span className="sr-only">{`Cena za naslednji teden še ni znana. Trenutna cena ${formatPrice(offer.priceCents)}.`}</span>
+        </span>
+      </button>
+      {open && (
+        <div id={panelId} className={styles.fcPanel} role="region" aria-label={`Dejanja: ${product.name}`}>
+          <ProductActions productId={productId} toggle />
+        </div>
+      )}
+    </li>
   );
 }
 

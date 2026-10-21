@@ -226,7 +226,16 @@ export type MessageBlock =
    * Discount timing: "Znižano ta teden" (verified current offers) and "Znižano naslednji teden"
    * (FuturePromo ids, demo mock). Either list may be empty; periods are derived from the data.
    */
-  | { type: "discount_timeline"; currentOfferIds: string[]; upcomingPromoIds: string[] }
+  | {
+      type: "discount_timeline";
+      currentOfferIds: string[];
+      upcomingPromoIds: string[];
+      /**
+       * DEMO MOCK forecast (src/lib/demoForecast.ts): product ids simulated to be promoted next week WITHOUT a
+       * structured promo - shown with the period and the verified current price only (no future price/percent).
+       */
+      forecastProductIds?: string[];
+    }
   | {
       type: "choices";
       prompt?: string;
