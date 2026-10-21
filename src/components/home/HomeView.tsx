@@ -22,7 +22,7 @@ const SEGMENTS: { mode: TopMode; label: string; icon: IconName }[] = [
 
 /**
  * `/domov`: three fixed zones. TOP (one bounded box shared by the catalog covers and the product list,
- * plus the segmented control), MIDDLE (SPARko mascot + four actions) and BOTTOM (product rail).
+ * with the vertical Katalogi / Izdelki control rail on its right), MIDDLE (SPARko mascot + four actions) and BOTTOM (product rail).
  * Content changes never change any zone's size, so the middle and bottom never move.
  * What the list and the rail show is derived from one `homeReducer` state (see homeState.ts).
  */
@@ -51,7 +51,7 @@ export function HomeView() {
   };
 
   const onTabKey = (e: React.KeyboardEvent) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    if (!["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"].includes(e.key)) return;
     e.preventDefault();
     const next: TopMode = state.topMode === "catalogs" ? "products" : "catalogs";
     setMode(next);
@@ -68,7 +68,19 @@ export function HomeView() {
     <div className={exiting ? `${styles.home} ${entry.exiting}` : styles.home} data-home-root data-exiting={exiting || undefined}>
       <div className={styles.column}>
         <section ref={topRef} className={styles.top} aria-label="Katalogi in izdelki" data-home-zone="top">
-          <div className={styles.segments} role="tablist" aria-label="Prikaz" onKeyDown={onTabKey}>
+          {/* One box, one height, for both modes. */}
+          <div id={panelId} role="tabpanel" aria-labelledby={tabId(state.topMode)} className={styles.topBox}>
+            {products ? (
+              <ItemPanel state={state} ids={topItems(state)} onCategory={pickCategory} onSelect={setSheetId} />
+            ) : (
+              <div className={styles.fade}>
+                <CatalogCards />
+              </div>
+            )}
+          </div>
+
+          {/* Narrow vertical control rail on the far right, same position in both modes. */}
+          <div className={styles.segments} role="tablist" aria-label="Prikaz" aria-orientation="vertical" onKeyDown={onTabKey}>
             {SEGMENTS.map((s) => {
               const selected = state.topMode === s.mode;
               return (
@@ -83,22 +95,11 @@ export function HomeView() {
                   className={styles.segment}
                   onClick={() => setMode(s.mode)}
                 >
-                  <Icon name={s.icon} size={16} strokeWidth={2} />
-                  {s.label}
+                  <Icon name={s.icon} size={18} strokeWidth={2} />
+                  <span className={styles.segmentLabel}>{s.label}</span>
                 </button>
               );
             })}
-          </div>
-
-          {/* One box, one height, for both modes. */}
-          <div id={panelId} role="tabpanel" aria-labelledby={tabId(state.topMode)} className={styles.topBox}>
-            {products ? (
-              <ItemPanel state={state} ids={topItems(state)} onCategory={pickCategory} onSelect={setSheetId} />
-            ) : (
-              <div className={styles.fade}>
-                <CatalogCards />
-              </div>
-            )}
           </div>
         </section>
 

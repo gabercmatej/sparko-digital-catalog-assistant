@@ -203,13 +203,13 @@ test.describe("home", () => {
         const card = document.querySelector("[data-testid=home-rail] [data-mini-card]")!.getBoundingClientRect();
         const seg = document.querySelector('[role=tablist][aria-label="Prikaz"]')!.getBoundingClientRect();
         const cover = document.querySelector("[data-catalog-card]")!.getBoundingClientRect();
-        return { overflow: root.scrollHeight - root.clientHeight, gap: nav.top - card.bottom, cardH: card.height, segAboveCards: seg.bottom <= cover.top + 0.5 };
+        return { overflow: root.scrollHeight - root.clientHeight, gap: nav.top - card.bottom, cardH: card.height, segRightOfCards: seg.left >= cover.right - 0.5 && seg.top >= cover.top && seg.bottom <= cover.bottom };
       });
       expect(m.overflow, "home root needs no scroll").toBeLessThanOrEqual(1);
       expect(m.gap, "rail card above bottom nav").toBeGreaterThanOrEqual(0);
-      // Rail card (~116 px on phones, ~25% smaller than the canonical card): never squeezed by the zone budget.
-      expect(m.cardH, "rail card height").toBeGreaterThanOrEqual(110);
-      expect(m.segAboveCards, "segmented control above the covers").toBe(true);
+      // Rail card (~106 px on phones, ~33% smaller than the canonical card): never squeezed by the zone budget.
+      expect(m.cardH, "rail card height").toBeGreaterThanOrEqual(100);
+      expect(m.segRightOfCards, "vertical segmented control right of the covers").toBe(true);
     });
   }
 

@@ -59,7 +59,7 @@ test("savings are red with a leading minus; columns are centred and equal; yello
     return c;
   });
   expect(await sv.evaluate((el) => getComputedStyle(el).color)).toBe(red);
-  expect(await bar(page).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(255, 247, 221)");
+  expect(await bar(page).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(245, 215, 122)"); // warm golden yellow
 
   const barBox = (await bar(page).boundingBox())!;
   const cols = bar(page).locator(":scope > div");

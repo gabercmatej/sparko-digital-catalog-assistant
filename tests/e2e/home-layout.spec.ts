@@ -11,12 +11,19 @@ async function openHome(page: Page, vp?: { width: number; height: number }) {
   await expect(page.locator("[data-catalog-card]").first()).toBeVisible();
 }
 
-test("segmented control sits above the catalog cards; Katalogi is the default tab", async ({ page }) => {
+test("vertical segmented control sits right of the catalog cards; Katalogi is the default tab", async ({ page }) => {
   await openHome(page);
   await expect(tablist(page)).toBeVisible();
+  await expect(tablist(page)).toHaveAttribute("aria-orientation", "vertical");
   const seg = (await tablist(page).boundingBox())!;
-  const first = (await page.locator("[data-catalog-card]").first().boundingBox())!;
-  expect(seg.y + seg.height, "tablist bottom above first card top").toBeLessThanOrEqual(first.y + 1);
+  const last = (await page.locator("[data-catalog-card]").last().boundingBox())!;
+  expect(seg.x, "tablist right of the last card").toBeGreaterThanOrEqual(last.x + last.width - 0.5);
+  expect(seg.y, "tablist within the cards' height").toBeGreaterThanOrEqual(last.y);
+  expect(seg.y + seg.height, "tablist within the cards' height").toBeLessThanOrEqual(last.y + last.height);
+  const kat = (await page.getByRole("tab", { name: "Katalogi" }).boundingBox())!;
+  const izd = (await page.getByRole("tab", { name: "Izdelki" }).boundingBox())!;
+  expect(izd.y, "Izdelki stacked under Katalogi").toBeGreaterThanOrEqual(kat.y + kat.height - 0.5);
+  expect(Math.abs(izd.x - kat.x)).toBeLessThan(1);
   await expect(page.getByRole("tab", { name: "Katalogi" })).toHaveAttribute("aria-selected", "true");
   await expect(page.getByRole("tab", { name: "Izdelki" })).toHaveAttribute("aria-selected", "false");
 });

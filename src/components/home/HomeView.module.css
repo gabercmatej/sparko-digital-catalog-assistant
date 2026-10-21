@@ -28,40 +28,49 @@
 
   --pad-t: 4px;
   --pad-b: 6px;
-  --zone-gap: 6px;
-  --seg-h: 32px;
-  --cat-gap: 6px;
+  /* Gaps between the three zones grow with the available height (cqh), and any height the capped catalog
+     cards cannot use is shared between them too (--extra), so the zones breathe instead of crowding. */
+  --zone-gap: clamp(8px, 1.8cqh, 14px);
+  --cat-gap: clamp(8px, 1.8cqh, 14px);
+  --seg-w: 50px; /* vertical Katalogi / Izdelki rail, right of the top box */
+  --seg-gap: 6px;
   --mascot-h: 48px;
   --action-h: 46px;
   --head-h: 24px;
-  --card-h: 122px; /* estimated natural height of a rail ProductMiniCard (phones), incl. rounding */
+  --card-h: 112px; /* estimated natural height of a rail ProductMiniCard (phones), incl. rounding */
   --rail-pad: 9px;
   --cat-min: 150px;
   /* Never taller than the card needs to show its width-limited cover (phone card chrome ~103px, plus a little air), so tall
      phones get no empty band inside the card. */
-  --cat-fit: calc(((min(100cqw, var(--content-max)) - 2 * var(--pad-x) - 8px) / 2 - 26px) * 977 / 720 + 117px);
+  --cat-fit: calc(
+    ((min(100cqw, var(--content-max)) - 2 * var(--pad-x) - var(--seg-w) - var(--seg-gap) - 8px) / 2 - 26px) * 977 / 720 + 117px
+  );
   --cat-max: min(var(--cat-fit), clamp(260px, 105cqw, 460px));
   --others: calc(
-    var(--pad-t) + var(--pad-b) + var(--seg-h) + 6px + var(--cat-gap) + var(--mascot-h) + 6px + 2 * var(--action-h) +
+    var(--pad-t) + var(--pad-b) + var(--cat-gap) + var(--mascot-h) + 6px + 2 * var(--action-h) +
       6px + var(--zone-gap) + var(--head-h) + 2px + var(--card-h) + var(--rail-pad)
   );
   --cat-h: clamp(var(--cat-min), calc(100cqh - var(--others)), var(--cat-max));
+  /* 40% of the unused height to each zone gap (capped); the remaining 20% is split above and below by centring. */
+  --extra: min(max(0px, calc((100cqh - var(--others) - var(--cat-h)) * 0.4)), var(--extra-max));
+  --extra-max: 36px;
 }
 .column > * {
   min-width: 0;
 }
 
-/* TOP: segmented control + shared box of explicit height. */
+/* TOP: shared box of explicit height + the vertical control rail on its right. */
 .top {
   flex: none;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: var(--seg-gap);
   scroll-margin-top: 8px;
-  margin-bottom: calc(var(--cat-gap) - var(--zone-gap));
+  margin-bottom: calc(var(--cat-gap) - var(--zone-gap) + var(--extra));
 }
 .topBox {
-  flex: none;
+  flex: 1 1 0;
+  min-width: 0;
   height: var(--cat-h);
 }
 .fade {
@@ -75,31 +84,37 @@
   }
 }
 
-/* Segmented control: compact two-option pill, fixed width so it never changes between modes. */
+/* Vertical segmented control: a narrow rail (icon over a short label), vertically centred on the top box.
+   Fixed size, so it never moves between modes. */
 .segments {
   flex: none;
   display: flex;
-  align-self: center;
-  width: 220px;
-  max-width: 100%;
-  height: 32px;
+  flex-direction: column;
+  gap: 2px;
+  width: var(--seg-w);
   padding: 2px;
-  border-radius: 999px;
+  border-radius: 14px;
   background: var(--c-tile);
 }
 .segment {
-  flex: 1;
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 3px;
+  min-height: 56px;
+  padding: 6px 0;
   border: 0;
-  border-radius: 999px;
+  border-radius: 12px;
   background: transparent;
-  font-size: var(--text-sm);
-  font-weight: 700;
   color: var(--c-ink-2);
   transition: background-color 0.18s, color 0.18s;
+}
+.segmentLabel {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
 .segment[aria-selected="true"] {
   background: var(--c-green);
@@ -108,6 +123,7 @@
 
 .sparko {
   flex: none;
+  margin-bottom: var(--extra);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -257,7 +273,7 @@
 }
 .railItem {
   flex: none;
-  width: var(--rail-card-w, 92px);
+  width: var(--rail-card-w, 83px);
   scroll-snap-align: start;
 }
 
@@ -266,14 +282,19 @@
   .column {
     --mascot-h: 40px;
     --action-h: 40px;
-    --zone-gap: 5px;
-    --cat-gap: 5px;
+    --zone-gap: 6px;
+    --cat-gap: 6px;
   }
 }
-/* Very narrow phones: keep the cover readable (taller minimum) and let .home scroll if needed. */
+/* Very narrow phones: a slimmer control rail; keep the cover readable (taller minimum) and let .home scroll if needed. */
 @container home (max-width: 340px) {
   .column {
     --cat-min: 190px;
+    --seg-w: 46px;
+    --seg-gap: 5px;
+  }
+  .segmentLabel {
+    font-size: 9.5px;
   }
 }
 /* Tall screens: a larger mascot and roomier actions (the catalog cards stop growing at --cat-fit). */
@@ -281,19 +302,27 @@
   .column {
     --mascot-h: 60px;
     --action-h: 50px;
-    --zone-gap: 8px;
   }
 }
 @container home (min-height: 780px) {
   .column {
     --mascot-h: 72px;
+    --action-h: 54px;
+  }
+}
+@container home (min-height: 800px) {
+  .column {
+    --mascot-h: 88px;
+    --action-h: 58px;
   }
 }
 /* Desktop-size cards in the rail. */
 @container home (min-width: 700px) {
   .column {
-    --card-h: 132px;
+    --card-h: 122px;
     --cat-max: 380px;
+    --seg-w: 64px;
+    --seg-gap: 10px;
     --mascot-h: 64px;
   }
 }

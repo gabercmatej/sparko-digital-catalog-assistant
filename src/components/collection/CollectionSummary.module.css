@@ -5,8 +5,8 @@
   align-items: center;
   min-height: 58px;
   padding: 6px var(--gutter);
-  background: #fff7dd;
-  border-top: 1px solid #f0e2b0;
+  background: #f5d77a;
+  border-top: 1px solid #e3c05a;
 }
 .col {
   display: flex;
