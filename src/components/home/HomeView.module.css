@@ -30,14 +30,17 @@
   --pad-b: 6px;
   --zone-gap: 6px;
   --seg-h: 32px;
-  --cat-gap: 10px;
+  --cat-gap: 6px;
   --mascot-h: 48px;
   --action-h: 46px;
   --head-h: 24px;
-  --card-h: 150px; /* estimated natural height of a rail ProductMiniCard (phones) */
+  --card-h: 122px; /* estimated natural height of a rail ProductMiniCard (phones), incl. rounding */
   --rail-pad: 9px;
   --cat-min: 150px;
-  --cat-max: clamp(260px, 105cqw, 460px);
+  /* Never taller than the card needs to show its width-limited cover (phone card chrome ~103px, plus a little air), so tall
+     phones get no empty band inside the card. */
+  --cat-fit: calc(((min(100cqw, var(--content-max)) - 2 * var(--pad-x) - 8px) / 2 - 26px) * 977 / 720 + 117px);
+  --cat-max: min(var(--cat-fit), clamp(260px, 105cqw, 460px));
   --others: calc(
     var(--pad-t) + var(--pad-b) + var(--seg-h) + 6px + var(--cat-gap) + var(--mascot-h) + 6px + 2 * var(--action-h) +
       6px + var(--zone-gap) + var(--head-h) + 2px + var(--card-h) + var(--rail-pad)
@@ -254,7 +257,7 @@
 }
 .railItem {
   flex: none;
-  width: var(--mini-card-w, 118px);
+  width: var(--rail-card-w, 92px);
   scroll-snap-align: start;
 }
 
@@ -264,26 +267,32 @@
     --mascot-h: 40px;
     --action-h: 40px;
     --zone-gap: 5px;
-    --cat-gap: 8px;
+    --cat-gap: 5px;
   }
 }
-/* Very narrow phones: the catalog cards stack, so give them more room and let .home scroll. */
+/* Very narrow phones: keep the cover readable (taller minimum) and let .home scroll if needed. */
 @container home (max-width: 340px) {
   .column {
-    --cat-min: 250px;
+    --cat-min: 190px;
   }
 }
-/* Tall screens: a larger mascot. */
-@container home (min-height: 760px) {
+/* Tall screens: a larger mascot and roomier actions (the catalog cards stop growing at --cat-fit). */
+@container home (min-height: 700px) {
   .column {
-    --mascot-h: 56px;
+    --mascot-h: 60px;
+    --action-h: 50px;
     --zone-gap: 8px;
+  }
+}
+@container home (min-height: 780px) {
+  .column {
+    --mascot-h: 72px;
   }
 }
 /* Desktop-size cards in the rail. */
 @container home (min-width: 700px) {
   .column {
-    --card-h: 172px;
+    --card-h: 132px;
     --cat-max: 380px;
     --mascot-h: 64px;
   }

@@ -8,10 +8,10 @@
   overflow: hidden;
   container-type: inline-size;
 }
-/* Canonical rail width shared by the home rail and the chat carousel. */
+/* Rail width shared by the home rail and the chat carousel (~25% smaller than the canonical card). */
 .rail {
   flex: none;
-  width: var(--mini-card-w, 136px);
+  width: var(--rail-card-w, 104px);
 }
 .hit {
   display: grid;
@@ -188,4 +188,61 @@ button.hit:active {
     top: 5px;
     right: 6px;
   }
+}
+
+/* Rail cards (home rail + chat carousel): same anatomy, every dimension scaled down ~25%. The `.rail`
+   prefix outranks the compact container-query rules above, so the Moj katalog cards are unaffected. */
+.rail .hit {
+  padding: 4px 5px 5px;
+  row-gap: 1px;
+}
+.rail .top {
+  height: 15px;
+  padding-right: 19px;
+}
+.rail .top .badge {
+  font-size: 6.6px;
+}
+.rail .top .badge > span {
+  letter-spacing: 0.08em;
+}
+.rail .media::before {
+  padding-top: 50%;
+}
+.rail .name {
+  font-size: 10px;
+  line-height: 1.22;
+  height: 2.44em;
+  letter-spacing: 0;
+}
+.rail .foot {
+  margin-top: 1px;
+  column-gap: 2px;
+}
+.rail .pack {
+  font-size: 9.5px;
+  height: 2.4em;
+}
+.rail .unit {
+  font-size: 8.5px;
+}
+.rail .price {
+  font-size: 11.5px;
+  padding: 3px 4px;
+}
+.rail .corner {
+  top: 3px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+}
+.rail .saved {
+  width: 15px;
+  height: 15px;
+  top: 4px;
+  right: 5px;
+}
+.rail .saved svg {
+  width: 10px;
+  height: 10px;
 }

@@ -34,8 +34,9 @@ async function geo(cards: Locator): Promise<Geo[]> {
 function expectCompact(list: Geo[], where: string) {
   expect(list.length, `${where}: has cards`).toBeGreaterThan(1);
   for (const g of list) {
-    expect(g.card.width, `${where} width`).toBeLessThanOrEqual(124);
-    expect(g.card.height, `${where} height`).toBeLessThanOrEqual(165);
+    // Rail cards are ~25% smaller than the canonical card (118x144 -> ~92x116 on phones).
+    expect(g.card.width, `${where} width`).toBeLessThanOrEqual(96);
+    expect(g.card.height, `${where} height`).toBeLessThanOrEqual(122);
     expect(Math.abs(g.card.height - list[0].card.height), `${where} equal heights`).toBeLessThanOrEqual(1);
     expect(Math.abs(g.pill!.bottom - list[0].pill!.bottom + (list[0].card.y - g.card.y)), `${where} price bottoms aligned`).toBeLessThanOrEqual(1);
     expect(g.pill!.right, `${where} price inside`).toBeLessThanOrEqual(g.card.right + 0.5);
@@ -64,11 +65,12 @@ test("phone: home rail and chat carousel share one compact card", async ({ page 
   expect(Math.abs(home[0].card.width - chat[0].card.width), "home/chat width").toBeLessThanOrEqual(1);
   expect(Math.abs(home[0].card.height - chat[0].card.height), "home/chat height").toBeLessThanOrEqual(1);
 
-  // Desktop keeps the roomier card.
+  // Desktop: a slightly roomier card, also ~25% smaller than before (136 -> 104).
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await expect(chatCarousel(page).first()).toBeVisible();
   const wide = await geo(chatCarousel(page));
-  expect(wide[0].card.width, "desktop card width").toBeGreaterThanOrEqual(130);
+  expect(wide[0].card.width, "desktop card width").toBeGreaterThanOrEqual(100);
+  expect(wide[0].card.width, "desktop card width").toBeLessThanOrEqual(110);
   expect(wide[0].card.width).toBeGreaterThan(chat[0].card.width);
 });

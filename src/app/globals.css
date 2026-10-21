@@ -32,6 +32,8 @@
   --card-pack-size: 11.5px;
   /* Canonical rail card width (home rail, chat carousel, reco rail); height is intrinsic. */
   --mini-card-w: 136px;
+  /* Home rail + chat carousel cards: ~25% smaller than the canonical card (actual layout size, not a transform). */
+  --rail-card-w: 104px;
   --c-focus: #0b5d33;
   --c-bubble-user: #e7f4ec;
   --c-bubble-bot: #eff1f0;
@@ -273,10 +275,12 @@ p {
 @media (max-width: 480px) {
   :root {
     --mini-card-w: 118px;
+    --rail-card-w: 92px;
   }
 }
 @media (max-width: 360px) {
   :root {
     --mini-card-w: 114px;
+    --rail-card-w: 88px;
   }
 }

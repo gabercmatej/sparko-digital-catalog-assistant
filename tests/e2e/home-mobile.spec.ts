@@ -73,6 +73,34 @@ async function checkHome(page: Page) {
     const dates = ((await card.locator("[data-catalog-dates]").textContent()) ?? "").replace(/\s+/g, " ").trim();
     expect(dates).toBe(period(data.catalogs[i].validFrom, data.catalogs[i].validTo));
     await expect(card.getByText("Odpri katalog", { exact: true })).toBeVisible();
+
+    // Layout: [label  Aktualni katalog] / centred cover / one-line dates / CTA.
+    const g = await card.evaluate((el) => {
+      const r = (q: string) => el.querySelector(q)!.getBoundingClientRect();
+      const label = r("[data-retailer]");
+      const head = el.querySelector("[data-retailer]")!.parentElement!.nextElementSibling!.getBoundingClientRect();
+      const datesEl = el.querySelector("[data-catalog-dates]") as HTMLElement;
+      const cs = getComputedStyle(datesEl);
+      return {
+        card: el.getBoundingClientRect().toJSON(),
+        label: label.toJSON(),
+        title: head.toJSON(),
+        cover: r("[data-catalog-cover] img").toJSON(),
+        dates: r("[data-catalog-dates]").toJSON(),
+        datesOneLine: datesEl.scrollWidth <= datesEl.clientWidth + 1 && datesEl.getBoundingClientRect().height <= parseFloat(cs.fontSize) * 1.6,
+        cta: Array.from(el.querySelectorAll("span")).find((s) => s.textContent?.trim() === "Odpri katalog")!.getBoundingClientRect().toJSON(),
+      };
+    });
+    expect(g.label.x - g.card.x, `card ${i} label left`).toBeLessThan(16);
+    expect(g.label.y - g.card.y, `card ${i} label top`).toBeLessThan(20);
+    expect(g.title.x, `card ${i} title right of label`).toBeGreaterThanOrEqual(g.label.right - 0.5);
+    expect(Math.abs(g.title.y + g.title.height / 2 - (g.label.y + g.label.height / 2)), `card ${i} header aligned`).toBeLessThan(3);
+    expect(g.title.right, `card ${i} title inside`).toBeLessThanOrEqual(g.card.right + 0.5);
+    expect(g.cover.y, `card ${i} cover below header`).toBeGreaterThanOrEqual(g.title.bottom - 3);
+    expect(Math.abs(g.cover.x + g.cover.width / 2 - (g.card.x + g.card.width / 2)), `card ${i} cover centred`).toBeLessThan(4);
+    expect(g.dates.y, `card ${i} dates below cover`).toBeGreaterThanOrEqual(g.cover.bottom - 3);
+    expect(g.datesOneLine, `card ${i} dates on one line`).toBe(true);
+    expect(g.cta.y, `card ${i} CTA below dates`).toBeGreaterThanOrEqual(g.dates.bottom - 0.5);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 }

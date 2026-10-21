@@ -1,8 +1,9 @@
 /*
  * Two cards side by side. The card has an EXPLICIT height (--cat-h, computed in HomeView from the home
- * container height) and is a size container, so its cqw/cqh are definite. Composition:
- *   compact / wide (default): text column on the left, cover on the right, CTA full width below.
- *   narrow + tall (stacked):  text on top, cover centred below it, CTA at the bottom.
+ * container height) and its li is a size container, so cqw/cqh are definite. Composition (rows):
+ *   header (retailer label + "Aktualni katalog") / complete cover, centred / validity dates (one line) / CTA.
+ * Every row except the cover has a fixed height, so the cover size is computed from 100cqh (no percentage
+ * height chains, which WebKit does not resolve inside indefinite flex containers).
  */
 .cards {
   list-style: none;
@@ -21,15 +22,17 @@
 
 .card {
   --pad: 7px;
-  --cta-h: 30px;
+  --gap: 3px;
+  --head-h: 25px;
+  --date-h: 13px;
+  --cta-h: 28px;
+  --cover-h: calc(100cqh - var(--pad) * 2 - var(--head-h) - var(--date-h) - var(--cta-h) - var(--gap) * 3);
+  --cover-w: max(0px, min(calc(100cqw - var(--pad) * 2 - 12px), calc(var(--cover-h) * 720 / 977)));
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
-  grid-template-areas:
-    "text"
-    "cta";
-  row-gap: 6px;
+  grid-template-rows: var(--head-h) minmax(0, 1fr) var(--date-h) var(--cta-h);
+  row-gap: var(--gap);
   height: 100%;
   padding: var(--pad);
   border-radius: 14px;
@@ -45,8 +48,8 @@
   content: "";
   position: absolute;
   z-index: -1;
-  right: -10%;
-  top: 8%;
+  left: 15%;
+  top: 18%;
   width: 70%;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -62,66 +65,46 @@
   background: linear-gradient(170deg, #ee1d2a 0%, #c20613 80%);
 }
 
-/* Retailer label: flush in the top-left corner, over the card background (square corners). */
+/* Header row: retailer label top-left, title immediately to its right, vertically centred. */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
 .brand {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
+  flex: none;
   display: inline-flex;
   padding: 2px 3px;
   background: #fff;
-  border-radius: 0;
 }
 .brand [data-retailer],
 .brand [data-retailer] span {
   border-radius: 0;
 }
-
-.text,
-.coverWrap {
-  --cover-w: min(50cqw, calc((100cqh - var(--pad) * 2 - var(--cta-h) - 6px) * 720 / 977));
+/* Phone cards: a smaller, tighter label so "Aktualni katalog" keeps room beside INTERSPAR. */
+.brand [data-retailer] {
+  font-size: 8px;
 }
-.text {
-  grid-area: text;
-  align-self: start;
-  min-width: 0;
-  padding-right: calc(var(--cover-w) + 4px);
-  padding-top: 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.brand [data-retailer] > span {
+  letter-spacing: 0.08em;
 }
 .title {
-  font-size: 14px;
+  min-width: 0;
+  font-size: 12px;
   font-weight: 800;
-  line-height: 1.12;
+  line-height: 1.06;
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
-.dates {
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.25;
-  opacity: 0.92;
-}
-.dates > span {
-  white-space: nowrap;
-}
 
-/* Complete cover (never cropped or stretched): width derives from the card's definite height and keeps
-   the natural 720:977 ratio. */
+/* Complete cover (never cropped or stretched), centred: its width derives from the card's definite height
+   and keeps the natural 720:977 ratio. */
 .coverWrap {
-  grid-area: cover;
-  position: absolute;
-  z-index: 1;
-  right: var(--pad);
-  top: var(--pad);
-  bottom: calc(var(--pad) + var(--cta-h) + 6px);
   display: flex;
   align-items: center;
-  transform: rotate(2.5deg);
-  transform-origin: 50% 60%;
+  justify-content: center;
+  min-height: 0;
 }
 .cover {
   display: block;
@@ -132,9 +115,19 @@
   background: #fff;
   border-radius: 2px;
   box-shadow: 0 3px 8px rgb(0 0 0 / 32%);
+  transform: rotate(2deg);
+}
+.dates {
+  align-self: center;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: var(--date-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .cta {
-  grid-area: cta;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -152,61 +145,50 @@
 /* Roomier cards (tablet / desktop): bigger type, bigger cover. */
 @container card (min-width: 220px) {
   .card {
-    --pad: 12px;
+    --pad: 10px;
+    --gap: 6px;
+    --head-h: 34px;
+    --date-h: 16px;
     --cta-h: 36px;
   }
-  .text {
-    padding-top: 32px;
-    gap: 6px;
-  }
   .title {
-    font-size: 20px;
+    font-size: 15px;
+  }
+  .brand [data-retailer] {
+    font-size: 9.5px;
+  }
+  .brand [data-retailer] > span {
+    letter-spacing: 0.14em;
   }
   .dates {
-    font-size: 12.5px;
-  }
-  .text,
-  .coverWrap {
-    --cover-w: min(54cqw, calc((100cqh - var(--pad) * 2 - var(--cta-h) - 6px) * 720 / 977));
+    font-size: 13px;
   }
   .cta {
     font-size: 14px;
   }
 }
 @container card (min-width: 280px) {
+  .card {
+    --pad: 12px;
+    --head-h: 26px;
+    --date-h: 18px;
+  }
   .title {
-    font-size: 24px;
+    font-size: 18px;
+    white-space: nowrap;
   }
   .dates {
-    font-size: 13.5px;
+    font-size: 14px;
   }
 }
 
-/* Narrow and tall (tall phones) or very narrow: stack, cover centred. */
-@container card ((max-width: 219px) and (min-height: 235px)) or (max-width: 149px) {
-  .card {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    grid-template-areas:
-      "text"
-      "cover"
-      "cta";
-  }
-  .text {
-    padding-top: 26px;
-    padding-right: 0;
+/* Very narrow cards (320 px phones): smaller date so it stays on one line. */
+@container card (max-width: 150px) {
+  .dates {
+    font-size: 10.5px;
   }
   .title {
-    font-size: 16px;
-  }
-  .dates {
-    font-size: 12px;
-  }
-  .coverWrap {
-    position: static;
-    justify-self: center;
-    align-self: center;
-    --cover-w: min(calc(100cqw - var(--pad) * 2 - 8px), calc((100cqh - var(--pad) * 2 - var(--cta-h) - 112px) * 720 / 977));
+    font-size: 11.5px;
   }
 }
 
