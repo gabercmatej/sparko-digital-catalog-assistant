@@ -1,5 +1,5 @@
 "use client";
-import { getPrimaryOffer, getProduct, splitPrice, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { badgePrice, getPrimaryOffer, getProduct, splitPrice, PRICE_UNIT_LABEL } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import { RetailerBadge } from "./RetailerBadge";
@@ -54,11 +54,8 @@ export function ProductTile({
             {/* SPAR / INTERSPAR source label: right-aligned directly above the price (thumb tiles: the row prints it). */}
             <RetailerBadge productId={productId} size="xs" className={styles.retailer} />
             {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
-            <span className={styles.price} aria-hidden="true">
-              <span className={styles.euros}>{euros}</span>
-              <span className={styles.comma}>,</span>
-              <span className={styles.cents}>{cents}</span>
-              <span className={styles.eur}>€</span>
+            <span className={styles.price} aria-hidden="true" data-price>
+              {badgePrice(offer.priceCents)}
             </span>
           </span>
         </span>

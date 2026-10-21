@@ -5,10 +5,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 58px;
-  /* subtle lift above the list: the shadow falls upward only */
+  /* soft lift above the list: the shadow falls upward only */
   position: relative;
   z-index: 1;
-  box-shadow: 0 -3px 10px rgb(0 0 0 / 10%);
+  box-shadow: 0 -4px 14px rgb(0 0 0 / 17%);
 }
 .col {
   display: flex;

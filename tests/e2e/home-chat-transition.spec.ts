@@ -35,20 +35,45 @@ test("entry button opens the chat with an exit animation (top up, bottom down)",
   await expect(input(page)).toBeVisible();
 });
 
-test("chat history survives the transition and bottom-nav Domov returns to a default Home", async ({ page }) => {
+const nav = (page: Page) => page.getByRole("navigation", { name: "Glavna navigacija" });
+const log = (page: Page) => page.getByRole("log", { name: "Pogovor s Sparkom" }).locator("[data-role]");
+const welcome = (page: Page) => page.getByRole("heading", { name: "Tvoj pomočnik Sparko" });
+const storedConversations = (page: Page) =>
+  page.evaluate(() => (JSON.parse(localStorage.getItem("sparko:v2") ?? "{}").conversations ?? []).length as number);
+
+test("Pogovor starts a new empty chat; earlier chats stay in the history; bottom-nav Sparko keeps the current chat", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => localStorage.clear());
   await page.goto("/");
   await input(page).fill("šampinjoni");
   await input(page).press("Enter");
   await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
-  const before = await page.getByRole("log", { name: "Pogovor s Sparkom" }).locator("[data-role]").count();
-  await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: "Domov" }).click();
+  const before = await log(page).count();
+  expect(before).toBeGreaterThan(0);
+
+  // Bottom-nav Sparko reopens the existing conversation, as before.
+  await nav(page).getByRole("link", { name: "Domov" }).click();
+  await expectDefaultHome(page);
+  await nav(page).getByRole("link", { name: "Sparko" }).click();
+  await expect(input(page)).toBeVisible();
+  await expect(log(page)).toHaveCount(before);
+
+  // Home "Pogovor" always opens a fresh chat with the normal welcome and starters.
+  await nav(page).getByRole("link", { name: "Domov" }).click();
   await expectDefaultHome(page);
   await ENTRY(page).click();
   await expect(input(page)).toBeVisible();
-  await expect(page.getByRole("log", { name: "Pogovor s Sparkom" }).locator("[data-role]")).toHaveCount(before);
-  await page.getByRole("navigation", { name: "Glavna navigacija" }).getByRole("link", { name: "Domov" }).click();
+  await expect(welcome(page)).toBeVisible();
+  await expect(log(page)).toHaveCount(0);
+  expect(await storedConversations(page)).toBe(1);
+
+  // The earlier conversation is still in the history and opens intact.
+  await page.getByRole("button", { name: "Odpri meni" }).first().click();
+  const history = page.getByRole("dialog", { name: "Meni" });
+  await history.getByRole("button", { name: /šampinjoni/i }).click();
+  await expect(log(page)).toHaveCount(before);
+
+  await nav(page).getByRole("link", { name: "Domov" }).click();
   await expectDefaultHome(page);
 });
 
@@ -70,6 +95,13 @@ test("rapid repeated clicks navigate once without errors", async ({ page }) => {
   await btn.click({ force: true, noWaitAfter: true, timeout: 500 }).catch(() => {});
   await expect(input(page)).toBeVisible();
   await expect(page).toHaveURL(/\/$/);
+  await expect(welcome(page)).toBeVisible();
+  // Exactly one new conversation: the first message creates it, and nothing else was stored.
+  expect(await storedConversations(page)).toBe(0);
+  await input(page).fill("Nutella");
+  await input(page).press("Enter");
+  await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
+  expect(await storedConversations(page)).toBe(1);
   await page.goBack();
   await expectDefaultHome(page);
   expect(errors).toEqual([]);

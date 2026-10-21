@@ -107,6 +107,10 @@ export function formatPrice(cents: number): string {
   const rest = String(cents % 100).padStart(2, "0");
   return `${euros},${rest} €`;
 }
+/** 338 -> "3,38 €" for price badges: one run of text, the € the same size and baseline as the digits. */
+export function badgePrice(cents: number): string {
+  return formatPrice(cents).replace(" ", " ");
+}
 /** 338 -> { euros: "3", cents: "38" } for catalog-style price blocks. */
 export function splitPrice(cents: number): { euros: string; cents: string } {
   return { euros: String(Math.floor(cents / 100)), cents: String(cents % 100).padStart(2, "0") };

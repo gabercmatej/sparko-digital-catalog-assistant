@@ -2,6 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { armChatEntryReveal } from "@/lib/chatEntryFlag";
+import { startNewChat } from "@/lib/store/store";
 
 /** Exit animation length; keep in sync with ChatEntry.module.css. */
 export const CHAT_ENTRY_EXIT_MS = 400;
@@ -9,7 +10,8 @@ export const CHAT_ENTRY_EXIT_MS = 400;
 const SAFETY_MS = 1500;
 
 /**
- * Home -> chat transition. `start()` plays the exit (class `exiting` on the Home root), then pushes "/".
+ * Home -> chat transition. `start()` plays the exit (class `exiting` on the Home root), then opens a fresh, empty
+ * chat (earlier conversations stay in the history) and pushes "/".
  * Re-entry guarded; reduced motion navigates immediately; always self-resets.
  */
 export function useChatEntryTransition() {
@@ -38,6 +40,7 @@ export function useChatEntryTransition() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const go = () => {
       armChatEntryReveal();
+      startNewChat();
       router.push("/");
     };
     if (reduced) {

@@ -1,5 +1,5 @@
 "use client";
-import { formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL, splitPrice } from "@/lib/catalog";
+import { badgePrice, formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
 import type { Offer } from "@/lib/types";
 import { ProductActions } from "./ProductActions";
 import { brandLabel, ProductSummary } from "./ProductSummary";
@@ -60,12 +60,11 @@ export function ProductCard({
 }
 
 /**
- * The catalog-style red price block (split euros/cents, small €) with the SPAR / INTERSPAR RetailerBadge
+ * The catalog-style red price block ("3,38 €" as one run of text) with the SPAR / INTERSPAR RetailerBadge
  * (right-aligned, when `productId` is given) and the "SPAR plus" / unit label above it. Shared by the chat card and the compact chat rows; it occupies the `price` grid area and
  * is meant to sit flush in the bottom-right corner of its white row. Inline markup only (spans).
  */
 export function PriceBlock({ offer, productId, compact = false }: { offer: Offer; productId?: string; compact?: boolean }) {
-  const { euros, cents } = splitPrice(offer.priceCents);
   const unit = PRICE_UNIT_LABEL[offer.priceUnit];
   return (
     <span className={`${styles.priceWrap}${compact ? ` ${styles.compact}` : ""}`} data-price-block>
@@ -73,10 +72,7 @@ export function PriceBlock({ offer, productId, compact = false }: { offer: Offer
       {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
       {unit && <span className={styles.unit}>{unit}</span>}
       <span className={styles.price} aria-hidden="true" data-price>
-        <span>{euros}</span>
-        <span>,</span>
-        <span>{cents}</span>
-        <span className={styles.eur}>€</span>
+        {badgePrice(offer.priceCents)}
       </span>
       <span className="sr-only">
         {formatPrice(offer.priceCents)}
