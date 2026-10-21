@@ -254,7 +254,7 @@
 }
 .railItem {
   flex: none;
-  width: 134px;
+  width: var(--mini-card-w, 136px);
   scroll-snap-align: start;
   display: flex;
 }

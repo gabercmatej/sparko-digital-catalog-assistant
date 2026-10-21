@@ -5,31 +5,41 @@ import { RetailerBadge } from "../product/RetailerBadge";
 import styles from "./CatalogCards.module.css";
 
 /**
- * Top zone (the validity period is in the link's aria-label, not drawn: no room), "Katalogi" mode: one cover card per catalog (SPAR green, INTERSPAR red). The whole card is
- * a single link to that catalog's leaflet; the "Odpri katalog" pill is its visual call to action.
+ * Top zone, "Katalogi" mode: one cover card per catalog (SPAR green, INTERSPAR red), always side by side.
+ * Each card is a single link to that catalog's leaflet: retailer label, headline, validity period (from
+ * catalog data), the complete cover and the white "Odpri katalog" pill. The card has an explicit height
+ * (--cat-h from HomeView) and adapts its composition with container queries on its own definite size.
  */
 export function CatalogCards() {
   return (
     <ul className={styles.cards}>
-      {catalogs.map((c) => (
-        <li key={c.id}>
-          <Link href={catalogHref(c.id)} className={`${styles.card} ${styles[c.retailer]}`} data-catalog-card={c.id} aria-label={`Odpri katalog ${c.title}, ${formatPeriod(c.validFrom, c.validTo)}`}>
-            <span className={styles.head}>
+      {catalogs.map((c) => {
+        const period = formatPeriod(c.validFrom, c.validTo);
+        const [from, to] = period.split(" – ");
+        return (
+          <li key={c.id}>
+            <Link href={catalogHref(c.id)} className={`${styles.card} ${styles[c.retailer]}`} data-catalog-card={c.id} aria-label={`Odpri katalog ${c.title}, ${period}`}>
               <span className={styles.brand}>
                 <RetailerBadge retailer={c.retailer} size="sm" />
               </span>
-            </span>
-            <span className={styles.coverWrap} data-catalog-cover>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className={styles.cover} src={c.cover.src} width={c.cover.width} height={c.cover.height} alt="" decoding="async" draggable={false} />
-            </span>
-            <span className={styles.cta} aria-hidden="true">
-              Odpri katalog
-              <Icon name="arrow-right" size={15} strokeWidth={2.4} />
-            </span>
-          </Link>
-        </li>
-      ))}
+              <span className={styles.text}>
+                <span className={styles.title}>Aktualni katalog</span>
+                <span className={styles.dates} data-catalog-dates>
+                  <span>{from} –</span> <span>{to}</span>
+                </span>
+              </span>
+              <span className={styles.coverWrap} data-catalog-cover>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className={styles.cover} src={c.cover.src} width={c.cover.width} height={c.cover.height} alt="" decoding="async" draggable={false} />
+              </span>
+              <span className={styles.cta} aria-hidden="true">
+                Odpri katalog
+                <Icon name="arrow-right" size={15} strokeWidth={2.4} />
+              </span>
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }

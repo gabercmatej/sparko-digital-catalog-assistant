@@ -1,27 +1,38 @@
+/*
+ * Two cards side by side. The card has an EXPLICIT height (--cat-h, computed in HomeView from the home
+ * container height) and is a size container, so its cqw/cqh are definite. Composition:
+ *   compact / wide (default): text column on the left, cover on the right, CTA full width below.
+ *   narrow + tall (stacked):  text on top, cover centred below it, CTA at the bottom.
+ */
 .cards {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: minmax(0, 1fr);
   gap: 8px;
-  height: 100%;
 }
+/* The li is the size container (a container cannot be restyled by its own @container query). Explicit height. */
 .cards li {
   min-width: 0;
-  min-height: 0;
+  height: var(--cat-h);
+  container: card / size;
 }
 
-/* Fills the (flexible) top box: label row, cover (takes all remaining height), CTA. */
 .card {
+  --pad: 7px;
+  --cta-h: 30px;
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
-  row-gap: 5px;
+  grid-template-areas:
+    "text"
+    "cta";
+  row-gap: 6px;
   height: 100%;
-  padding: 5px 6px 6px;
-  border-radius: 12px;
+  padding: var(--pad);
+  border-radius: 14px;
   overflow: hidden;
   isolation: isolate;
   color: #fff;
@@ -34,12 +45,12 @@
   content: "";
   position: absolute;
   z-index: -1;
-  left: 10%;
-  top: 14%;
-  width: 80%;
+  right: -10%;
+  top: 8%;
+  width: 70%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(255 255 255 / 22%), transparent);
+  background: radial-gradient(closest-side, rgb(255 255 255 / 24%), transparent);
 }
 .card:active {
   filter: brightness(0.96);
@@ -52,13 +63,11 @@
 }
 
 /* Retailer label: flush in the top-left corner, over the card background (square corners). */
-.head {
+.brand {
   position: absolute;
   z-index: 2;
   top: 0;
   left: 0;
-}
-.brand {
   display: inline-flex;
   padding: 2px 3px;
   background: #fff;
@@ -69,30 +78,68 @@
   border-radius: 0;
 }
 
-/* Complete cover (never cropped or stretched), as large as the free height allows. The wrapper is a size
-   container so the image can take the largest width that keeps its natural 720:977 ratio within it. */
+.text,
 .coverWrap {
-  display: grid;
-  place-items: center;
-  min-height: 0;
-  container-type: size;
+  --cover-w: min(50cqw, calc((100cqh - var(--pad) * 2 - var(--cta-h) - 6px) * 720 / 977));
+}
+.text {
+  grid-area: text;
+  align-self: start;
+  min-width: 0;
+  padding-right: calc(var(--cover-w) + 4px);
+  padding-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.title {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.dates {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.25;
+  opacity: 0.92;
+}
+.dates > span {
+  white-space: nowrap;
+}
+
+/* Complete cover (never cropped or stretched): width derives from the card's definite height and keeps
+   the natural 720:977 ratio. */
+.coverWrap {
+  grid-area: cover;
+  position: absolute;
+  z-index: 1;
+  right: var(--pad);
+  top: var(--pad);
+  bottom: calc(var(--pad) + var(--cta-h) + 6px);
+  display: flex;
+  align-items: center;
+  transform: rotate(2.5deg);
+  transform-origin: 50% 60%;
 }
 .cover {
   display: block;
-  width: min(100cqw, calc(100cqh * 720 / 977));
+  width: var(--cover-w);
   height: auto;
   aspect-ratio: 720 / 977;
   object-fit: contain;
   background: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 28%);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 32%);
 }
 .cta {
+  grid-area: cta;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  min-height: 30px;
+  min-height: var(--cta-h);
   padding: 0 8px;
   border-radius: 999px;
   background: #fff;
@@ -102,10 +149,68 @@
   white-space: nowrap;
 }
 
-@media (max-width: 370px) {
+/* Roomier cards (tablet / desktop): bigger type, bigger cover. */
+@container card (min-width: 220px) {
   .card {
-    padding: 4px 5px 5px;
+    --pad: 12px;
+    --cta-h: 36px;
   }
+  .text {
+    padding-top: 32px;
+    gap: 6px;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .dates {
+    font-size: 12.5px;
+  }
+  .text,
+  .coverWrap {
+    --cover-w: min(54cqw, calc((100cqh - var(--pad) * 2 - var(--cta-h) - 6px) * 720 / 977));
+  }
+  .cta {
+    font-size: 14px;
+  }
+}
+@container card (min-width: 280px) {
+  .title {
+    font-size: 24px;
+  }
+  .dates {
+    font-size: 13.5px;
+  }
+}
+
+/* Narrow and tall (tall phones) or very narrow: stack, cover centred. */
+@container card ((max-width: 219px) and (min-height: 235px)) or (max-width: 149px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "text"
+      "cover"
+      "cta";
+  }
+  .text {
+    padding-top: 26px;
+    padding-right: 0;
+  }
+  .title {
+    font-size: 16px;
+  }
+  .dates {
+    font-size: 12px;
+  }
+  .coverWrap {
+    position: static;
+    justify-self: center;
+    align-self: center;
+    --cover-w: min(calc(100cqw - var(--pad) * 2 - 8px), calc((100cqh - var(--pad) * 2 - var(--cta-h) - 112px) * 720 / 977));
+  }
+}
+
+@media (max-width: 370px) {
   .cta {
     font-size: 12.5px;
   }

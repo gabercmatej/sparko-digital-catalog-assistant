@@ -9,6 +9,8 @@
 .scroll {
   display: flex;
   flex-direction: column;
+  /* Size container = the real space between header and composer; the welcome scales from it. */
+  container: chat / size;
 }
 .flexFill {
   flex: 1 0 auto;

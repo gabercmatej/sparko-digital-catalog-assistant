@@ -1,13 +1,14 @@
 /*
- * Viewport engineering: .home fills <main> (height:100%) and is a size container, so every zone can be
- * sized from the real available height (cqh). TOP flexes (min/max), MASCOT + ACTIONS are compact auto,
- * BOTTOM (rail) is a clamped height. If the sum of the zone minimums exceeds the height, .home scrolls
- * vertically instead of clipping. Compact mode: @container home (max-height: 600px).
+ * Viewport engineering. .home is absolutely positioned inside <main> (inset: 0), so its size is DEFINITE
+ * in every engine, and it is a size container: 100cqh is the real available height. There are no
+ * percentage-height chains below it. The catalog zone (and the product panel that shares its box) gets an
+ * explicit length: clamp(min, 100cqh - (everything else), max), where "everything else" is a sum of compact
+ * fixed sizes. The rail is sized by its cards' natural height (--card-h is only the budget estimate).
+ * If the minimums exceed the height, .home scrolls vertically instead of clipping.
  */
 .home {
-  flex: 1 1 auto;
-  min-height: 0;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   container: home / size;
   overflow-x: hidden;
   overflow-y: auto;
@@ -18,38 +19,50 @@
 .column {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--zone-gap);
-  justify-content: space-between;
-  min-height: 100%;
+  min-height: 100cqh;
   max-width: var(--content-max);
   margin: 0 auto;
-  --rail-h: clamp(164px, 24cqh, 196px);
-  --rail-w: clamp(126px, calc(var(--rail-h) * 0.82), 144px);
-  --mascot-h: clamp(46px, 8.5cqh, 68px);
-  --action-h: 46px;
+  padding: var(--pad-t) var(--pad-x) var(--pad-b);
+
+  --pad-t: 4px;
+  --pad-b: 6px;
   --zone-gap: 6px;
-  padding: 4px var(--pad-x) 6px;
+  --seg-h: 32px;
+  --cat-gap: 10px;
+  --mascot-h: 48px;
+  --action-h: 46px;
+  --head-h: 24px;
+  --card-h: 150px; /* estimated natural height of a rail ProductMiniCard (phones) */
+  --rail-pad: 9px;
+  --cat-min: 150px;
+  --cat-max: clamp(260px, 105cqw, 460px);
+  --others: calc(
+    var(--pad-t) + var(--pad-b) + var(--seg-h) + 6px + var(--cat-gap) + var(--mascot-h) + 6px + 2 * var(--action-h) +
+      6px + var(--zone-gap) + var(--head-h) + 2px + var(--card-h) + var(--rail-pad)
+  );
+  --cat-h: clamp(var(--cat-min), calc(100cqh - var(--others)), var(--cat-max));
 }
 .column > * {
   min-width: 0;
 }
 
-/* TOP: segmented control + shared box. Flexes into whatever height is left. */
+/* TOP: segmented control + shared box of explicit height. */
 .top {
+  flex: none;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex: 1 1 0;
-  min-height: 176px;
-  max-height: 340px;
   scroll-margin-top: 8px;
+  margin-bottom: calc(var(--cat-gap) - var(--zone-gap));
 }
 .topBox {
-  flex: 1 1 0;
-  min-height: 0;
+  flex: none;
+  height: var(--cat-h);
 }
 .fade {
-  height: 100%;
+  height: var(--cat-h);
   animation: home-fade 0.2s ease-out;
 }
 /* Opacity only: a translate would make the zones visibly shift while new content fades in. */
@@ -225,12 +238,13 @@
 .rail {
   list-style: none;
   margin: 0 calc(-1 * var(--pad-x));
-  padding: 2px var(--pad-x) 2px;
-  height: var(--rail-h);
+  padding: 3px var(--pad-x) 6px;
   scroll-padding-inline: var(--pad-x);
   display: flex;
+  align-items: flex-start;
   gap: 8px;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   scroll-snap-type: x proximity;
   animation: home-fade 0.2s ease-out;
@@ -240,22 +254,38 @@
 }
 .railItem {
   flex: none;
-  width: var(--rail-w);
-  height: 100%;
+  width: var(--mini-card-w, 118px);
   scroll-snap-align: start;
-}
-.railItem > * {
-  height: 100%;
 }
 
 /* Short screens: tighter everything. */
 @container home (max-height: 600px) {
   .column {
-    --rail-h: 164px;
-    --rail-w: 128px;
     --mascot-h: 40px;
     --action-h: 40px;
     --zone-gap: 5px;
+    --cat-gap: 8px;
+  }
+}
+/* Very narrow phones: the catalog cards stack, so give them more room and let .home scroll. */
+@container home (max-width: 340px) {
+  .column {
+    --cat-min: 250px;
+  }
+}
+/* Tall screens: a larger mascot. */
+@container home (min-height: 760px) {
+  .column {
+    --mascot-h: 56px;
+    --zone-gap: 8px;
+  }
+}
+/* Desktop-size cards in the rail. */
+@container home (min-width: 700px) {
+  .column {
+    --card-h: 172px;
+    --cat-max: 380px;
+    --mascot-h: 64px;
   }
 }
 

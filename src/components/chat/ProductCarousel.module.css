@@ -1,5 +1,6 @@
 .wrap {
-  padding-top: 12px;
+  padding-top: 8px;
+  flex: none;
 }
 .trackWrap {
   position: relative;
@@ -9,7 +10,7 @@
   gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2px var(--gutter) 4px;
+  padding: 2px var(--gutter) 2px;
   scroll-padding-inline: var(--gutter);
   scroll-snap-type: x proximity;
   scrollbar-width: none;

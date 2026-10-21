@@ -207,7 +207,8 @@ test.describe("home", () => {
       });
       expect(m.overflow, "home root needs no scroll").toBeLessThanOrEqual(1);
       expect(m.gap, "rail card above bottom nav").toBeGreaterThanOrEqual(0);
-      expect(m.cardH, "rail card height").toBeGreaterThanOrEqual(150);
+      // Compact card (~144 px on phones): still a readable minimum, never squeezed by the zone budget.
+      expect(m.cardH, "rail card height").toBeGreaterThanOrEqual(135);
       expect(m.segAboveCards, "segmented control above the covers").toBe(true);
     });
   }

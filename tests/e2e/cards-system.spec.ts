@@ -60,7 +60,9 @@ function expectCorners(list: Geo[], where: string) {
 }
 
 function expectSamePillY(list: Geo[], where: string) {
-  const ys = list.filter((g) => g.pill).map((g) => g.pill!.y);
+  // Only the first visual row (a wrapping grid has several rows).
+  const top = Math.min(...list.map((g) => g.card.y));
+  const ys = list.filter((g) => g.pill && Math.abs(g.card.y - top) < 2).map((g) => g.pill!.y);
   expect(ys.length).toBeGreaterThan(1);
   for (const y of ys) expect(Math.abs(y - ys[0]), `${where}: pill y aligned across the rail`).toBeLessThanOrEqual(1);
 }
@@ -111,7 +113,8 @@ test("Sparko chat welcome carousel: same corner layout, aligned prices, square p
 test("Moj katalog recommendation rail: same corner layout, aligned prices, square pills", async ({ page }) => {
   await seed(page);
   await page.goto("/moj-katalog");
-  const rail = page.locator("[data-reco-rail]").first();
+  // The recommendations are either a carousel (data-reco-rail) or the expanded grid (data-reco-expanded).
+  const rail = page.locator("[data-reco-rail], [data-reco-expanded]").first();
   if (!(await rail.isVisible().catch(() => false))) {
     const tab = page.getByRole("tab", { name: "Priporočila zate" });
     if (await tab.count()) await tab.click();

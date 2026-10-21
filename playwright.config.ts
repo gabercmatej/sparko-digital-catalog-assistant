@@ -18,6 +18,13 @@ export default defineConfig({
   },
   projects: [
     { name: "mobile-390", use: { ...devices["Pixel 7"], viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true } },
+    // iOS engine (every iPhone browser, incl. Chrome on iOS, is WebKit). Real phones lose ~150-190 px of
+    // height to browser chrome, so the mobile layout specs run here at a realistic visible viewport too.
+    {
+      name: "webkit-iphone",
+      testMatch: /-mobile\.spec\.ts$/,
+      use: { browserName: "webkit", viewport: { width: 390, height: 664 }, deviceScaleFactor: 2, hasTouch: true },
+    },
   ],
   // Runs against a production build. Build first with `npm run build`.
   webServer: process.env.E2E_BASE_URL

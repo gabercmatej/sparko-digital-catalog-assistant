@@ -32,7 +32,8 @@ for (const w of [360, 390, 430, 1280]) {
         heights.push((await card.boundingBox())!.height);
       }
       expect(Math.abs(heights[0] - heights[1])).toBeLessThan(1);
-      expect(heights[0]).toBeLessThanOrEqual(340); // top box max height, cover scales with it
+      expect(heights[0]).toBeGreaterThanOrEqual(150);
+      expect(heights[0]).toBeLessThanOrEqual(470); // --cat-max
     });
   });
 }

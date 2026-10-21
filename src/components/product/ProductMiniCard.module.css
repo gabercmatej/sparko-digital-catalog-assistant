@@ -11,7 +11,7 @@
 /* Canonical rail width shared by the home rail and the chat carousel. */
 .rail {
   flex: none;
-  width: var(--mini-card-w, 134px);
+  width: var(--mini-card-w, 136px);
 }
 .hit {
   display: grid;
@@ -22,6 +22,7 @@
   width: 100%;
   height: 100%;
   padding: 6px 8px 8px;
+  box-sizing: border-box;
   border: 0;
   background: transparent;
   text-align: left;
@@ -80,7 +81,7 @@ button.hit:active {
   line-clamp: 2;
   overflow-wrap: anywhere;
   /* two lines reserved so every card is the same height; room for carons on capitals (Š, Č, Ž) */
-  min-height: 2.6em;
+  height: 2.6em;
   padding-top: 1px;
 }
 /* Footer anchored at the bottom: pack size bottom-left, price badge bottom-right. */
@@ -103,6 +104,9 @@ button.hit:active {
   text-overflow: ellipsis;
   min-width: 0;
   padding-bottom: 1px;
+  /* room for the optional "za kg" unit line in every card, so neighbours stay equal height */
+  height: 2.5em;
+  justify-content: flex-end;
 }
 .unit {
   font-size: 10px;
@@ -137,4 +141,51 @@ button.hit:active {
   right: 8px;
   background: var(--c-green-bright);
   color: #fff;
+}
+
+/* Compact mode: queried on the card's own width (container = .card, so only descendants can react).
+   Phone rail cards (--mini-card-w ~118px) and any other narrow container get the same tighter look. */
+@container (max-width: 125px) {
+  .hit {
+    padding: 5px 6px 6px;
+    row-gap: 1px;
+  }
+  .top {
+    height: 18px;
+    padding-right: 24px;
+  }
+  .media::before {
+    padding-top: 52%;
+  }
+  .name {
+    font-size: 11px;
+    line-height: 1.25;
+    height: 2.5em;
+  }
+  .foot {
+    margin-top: 2px;
+    column-gap: 3px;
+  }
+  .pack {
+    font-size: 10.5px;
+  }
+  .unit {
+    font-size: 9.5px;
+  }
+  .price {
+    font-size: 13px;
+    padding: 3px 5px 3px 5px;
+  }
+  .corner {
+    top: 4px;
+    right: 5px;
+    width: 22px;
+    height: 22px;
+  }
+  .saved {
+    width: 18px;
+    height: 18px;
+    top: 5px;
+    right: 6px;
+  }
 }

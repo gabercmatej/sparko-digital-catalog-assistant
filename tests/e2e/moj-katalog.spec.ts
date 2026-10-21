@@ -236,17 +236,17 @@ for (const width of [360, 390, 430]) {
 type RawOffer = { productId: string; priceCents: number; priceUnit: string; regularPriceCents: number | null };
 const rawOffers = (JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as { offers: RawOffer[] }).offers;
 const eur = (c: number) => `${Math.floor(c / 100)},${String(c % 100).padStart(2, "0")} €`;
-/** Mirrors src/lib/savings.ts for the current demo week: per-kg offers are left out, savings need a verified regular price. */
+/** Mirrors src/lib/savings.ts for the current demo week: every saved offer at its shown price, savings need a verified regular price. */
 function expectedTotals(ids: string[]) {
   let total = 0;
   let savings = 0;
   for (const id of new Set(ids)) {
     const o = rawOffers.find((x) => x.productId === id);
-    if (!o || o.priceUnit === "kg" || o.priceUnit === "100g") continue;
+    if (!o) continue;
     total += o.priceCents;
     if (typeof o.regularPriceCents === "number") savings += Math.max(0, o.regularPriceCents - o.priceCents);
   }
-  return { total: eur(total), savings: eur(savings) };
+  return { total: eur(total), savings: savings > 0 ? `−${eur(savings)}` : eur(savings) };
 }
 const packIds = rawOffers.filter((o) => o.priceUnit === "pack" || o.priceUnit === "kos");
 const WITH_REGULAR = packIds.find((o) => typeof o.regularPriceCents === "number" && o.regularPriceCents > o.priceCents)!.productId;
@@ -287,14 +287,10 @@ test("totals bar: saving and removing update the values, reload keeps them", asy
   await expectTotals(page, [left!]);
 });
 
-test("totals bar: info button explains the calculation", async ({ page }) => {
-  await seed(page, [WITH_REGULAR]);
-  const info = bar(page).getByRole("button", { name: "Kako je izračunano?" });
-  await expect(info).toHaveAttribute("aria-expanded", "false");
-  await info.click();
-  await expect(info).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator("[data-summary-note]")).toContainText("Prihranek je izračunan za izdelke z znano redno ceno.");
-  await info.click();
+test("totals bar: no info button and no partial-coverage texts", async ({ page }) => {
+  await seed(page, [WITH_REGULAR, OTHER_PACK]);
+  await expect(bar(page).getByRole("button")).toHaveCount(0);
+  await expect(bar(page)).not.toContainText(/\bod\b/);
   await expect(page.locator("[data-summary-note]")).toHaveCount(0);
 });
 
