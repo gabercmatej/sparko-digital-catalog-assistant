@@ -26,7 +26,7 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  border-radius: 1.5px;
+  border-radius: var(--price-radius, 0);
   white-space: nowrap;
 }
 .tree {

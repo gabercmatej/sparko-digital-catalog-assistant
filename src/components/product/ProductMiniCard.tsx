@@ -3,13 +3,14 @@ import { getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import { PricePill } from "./PricePill";
-import { PriceStack } from "./PriceStack";
+import { RetailerBadge } from "./RetailerBadge";
 import styles from "./ProductMiniCard.module.css";
 
 /**
  * The compact white product card of the home rail and the "Priporočila zate" band:
- * packshot, name, pack size and the red price pill with the SPAR / INTERSPAR label right-aligned above it (PriceStack). Also used by the chat carousel (`rail`). Optional round
- * "+" (onAdd) in the top-right corner. Width: 100% of the parent, or the canonical fixed rail width with `rail`.
+ * Anatomy (grid rows): [SPAR / INTERSPAR label top-left | "+" / check top-right] / packshot (flexible,
+ * contained) / bold name (2 lines reserved) / [pack size bottom-left | red square price bottom-right].
+ * Also used by the chat carousel (`rail`). Optional round "+" (onAdd) in the top-right corner. Width: 100% of the parent, or the canonical fixed rail width with `rail`.
  */
 export function ProductMiniCard({
   productId,
@@ -39,19 +40,20 @@ export function ProductMiniCard({
 
   const body = (
     <>
+      <span className={styles.top}>
+        <RetailerBadge productId={productId} size="xs" className={styles.badge} />
+      </span>
       <span className={styles.media}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={product.image.src} width={product.image.width} height={product.image.height} alt="" loading="lazy" decoding="async" draggable={false} />
       </span>
       <span className={styles.name}>{product.name}</span>
       <span className={styles.foot}>
-        <span className={styles.pack}>
+        <span className={styles.pack} data-card-pack>
           {product.packSize}
           {unit && <span className={styles.unit}>{unit}</span>}
         </span>
-        <PriceStack productId={productId}>
-          <PricePill cents={offer.priceCents} size="sm" />
-        </PriceStack>
+        <PricePill cents={offer.priceCents} size="sm" className={styles.price} />
       </span>
     </>
   );

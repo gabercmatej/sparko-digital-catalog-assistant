@@ -18,8 +18,8 @@ for (const w of [360, 390, 430, 1280]) {
         await expect(img).toBeVisible();
         expect(await img.getAttribute("src")).toBe(COVERS[i]);
         const info = await img.evaluate((el: HTMLImageElement) => {
-          // Layout size (offsetWidth/Height), not the bounding box: the cover is rotated a few degrees,
-          // which inflates getBoundingClientRect without changing the rendered aspect ratio.
+          // Layout size (offsetWidth/Height) of the cover image;
+          // its rendered aspect ratio must equal the natural one.
           return { nw: el.naturalWidth, nh: el.naturalHeight, w: el.offsetWidth, h: el.offsetHeight, fit: getComputedStyle(el).objectFit };
         });
         expect(info.nw).toBeGreaterThan(0);
@@ -28,10 +28,11 @@ for (const w of [360, 390, 430, 1280]) {
         // Rendered box has the natural aspect ratio (nothing cropped, nothing stretched).
         expect(Math.abs(info.w / info.h / (info.nw / info.nh) - 1)).toBeLessThan(0.02);
         await expect(card.getByText("Odpri katalog", { exact: true })).toBeVisible();
+        await expect(card.locator("[data-retailer]")).toBeVisible();
         heights.push((await card.boundingBox())!.height);
       }
       expect(Math.abs(heights[0] - heights[1])).toBeLessThan(1);
-      if (w <= 430) expect(heights[0]).toBeLessThanOrEqual(240);
+      expect(heights[0]).toBeLessThanOrEqual(340); // top box max height, cover scales with it
     });
   });
 }

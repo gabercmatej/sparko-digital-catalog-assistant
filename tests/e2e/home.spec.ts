@@ -10,8 +10,8 @@ test.describe("home", () => {
     await expect(cards).toHaveCount(2);
     for (let i = 0; i < 2; i++) {
       const card = cards.nth(i);
-      await expect(card).toContainText("Aktualni katalog");
-      await expect(card).toContainText(/\d+\.\s\d+\.\s– \d+\.\s\d+\.\s\d{4}/);
+      // The compact card shows the wordmark + CTA; the validity dates live in its accessible name.
+      await expect(card).toHaveAttribute("aria-label", /^Odpri katalog .*\d+\.\s\d+\.\s– \d+\.\s\d+\.\s\d{4}/);
       await expect(card).toContainText("Odpri katalog");
     }
     await expect(page.locator('[data-catalog-card] [data-retailer="spar"]')).toHaveCount(1);
@@ -165,16 +165,16 @@ test.describe("home", () => {
     test(`quick-action labels fit in at most two lines @${w}px; the rail clears the bottom nav when scrolled to the end`, async ({ page }) => {
       await page.setViewportSize({ width: w, height: 780 });
       await page.goto("/domov");
-      const lines = await page.locator("button:has([class*='actionLabel'])").evaluateAll((btns) =>
+      const lines = await page.locator("[data-home-zone=actions] button").evaluateAll((btns) =>
         btns.map((b) => {
           const label = b.querySelector("[class*='actionLabel']")!;
           const lh = parseFloat(getComputedStyle(label).lineHeight);
           return { text: label.textContent, lines: Math.round(label.getBoundingClientRect().height / lh) };
         }),
       );
-      expect(lines.length).toBeGreaterThanOrEqual(4);
+      expect(lines.length).toBe(4); // exactly the four actions; the chat entry button is not one of them
       for (const l of lines) expect(l.lines, `${l.text} @${w}px`).toBeLessThanOrEqual(2);
-      // Scroll the page to the end: the last rail card must end above the bottom navigation.
+      // The Home root fits at this height (nothing to scroll); the rail card must end above the bottom navigation.
       const gap = await page.evaluate(() => {
         for (const e of document.querySelectorAll<HTMLElement>("*")) if (e.scrollHeight > e.clientHeight + 50 && getComputedStyle(e).overflowY !== "visible") e.scrollTop = 99999;
         const nav = document.querySelector('nav[aria-label="Glavna navigacija"]')!.getBoundingClientRect();
@@ -182,6 +182,33 @@ test.describe("home", () => {
         return nav.top - card.bottom;
       });
       expect(gap, `rail card bottom vs nav @${w}px`).toBeGreaterThanOrEqual(0);
+    });
+  }
+
+  for (const [w, h] of [
+    [360, 640],
+    [375, 667],
+    [390, 664],
+    [390, 844],
+    [430, 932],
+    [1440, 900],
+  ]) {
+    test(`all three zones fit without internal scroll; rail cards stay readable @${w}x${h}`, async ({ page }) => {
+      await page.setViewportSize({ width: w, height: h });
+      await page.goto("/domov");
+      await expect(page.locator("[data-catalog-card]").first()).toBeVisible();
+      const m = await page.evaluate(() => {
+        const root = document.querySelector("[data-home-root]")!;
+        const nav = document.querySelector('nav[aria-label="Glavna navigacija"]')!.getBoundingClientRect();
+        const card = document.querySelector("[data-testid=home-rail] [data-mini-card]")!.getBoundingClientRect();
+        const seg = document.querySelector('[role=tablist][aria-label="Prikaz"]')!.getBoundingClientRect();
+        const cover = document.querySelector("[data-catalog-card]")!.getBoundingClientRect();
+        return { overflow: root.scrollHeight - root.clientHeight, gap: nav.top - card.bottom, cardH: card.height, segAboveCards: seg.bottom <= cover.top + 0.5 };
+      });
+      expect(m.overflow, "home root needs no scroll").toBeLessThanOrEqual(1);
+      expect(m.gap, "rail card above bottom nav").toBeGreaterThanOrEqual(0);
+      expect(m.cardH, "rail card height").toBeGreaterThanOrEqual(150);
+      expect(m.segAboveCards, "segmented control above the covers").toBe(true);
     });
   }
 

@@ -23,6 +23,13 @@
   --c-future-ink: #1f5fae;
   --c-future-border: #c4dbf5;
   --c-future-band: #f1f7fe;
+  /* Price badges and retailer labels are square everywhere (buttons, bubbles, cards keep their own radii). */
+  --price-radius: 0;
+  /* Shared compact product card tokens (ProductMiniCard + rows). */
+  --card-radius: 12px;
+  --card-border: var(--c-border);
+  --card-name-size: 12px;
+  --card-pack-size: 11.5px;
   --c-focus: #0b5d33;
   --c-bubble-user: #e7f4ec;
   --c-bubble-bot: #eff1f0;

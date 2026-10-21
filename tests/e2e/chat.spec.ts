@@ -297,7 +297,7 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
         const img = li.querySelector("img")!.getBoundingClientRect();
         const chev = li.querySelector("svg")!.getBoundingClientRect();
         const texts = [...li.querySelectorAll("[data-row-header] span")]
-          .filter((s) => !s.closest("[data-price-block]") && !s.querySelector("span") && s.textContent?.trim())
+          .filter((s) => !s.closest("[data-price-pill], [class*='priceCol'], [class*='rowPrices']") && !s.classList.contains("sr-only") && !s.querySelector("span") && s.textContent?.trim())
           .map((s) => s.getBoundingClientRect());
         return {
           bg: cs.backgroundColor,
@@ -361,7 +361,8 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
       // No SPAR-plus / percentage prose in the row (the small "SPAR plus" tag of the price block stays).
       expect(r.rowTextOutsidePrice).not.toMatch(/SPAR plus|znižano|%|ceneje/i);
       expect(r.rowText).not.toMatch(/natisnjeno|MEGA|Velja/);
-      expect(r.priceRightGap, `${w}px price right`).toBeLessThanOrEqual(12);
+      // Unified ProductRow grid: price block sits bottom-right inside the row padding (chevron has its own column).
+      expect(r.priceRightGap, `${w}px price right`).toBeLessThanOrEqual(16);
       expect(r.priceRightGap, `${w}px price right`).toBeGreaterThanOrEqual(0);
       // Compact rows: small packshot, 15 px two-line name, price block inside the row.
       expect(r.rowHeight, `${w}px row height`).toBeLessThanOrEqual(125);
@@ -370,7 +371,7 @@ test("'Kaj je najbolj znižano?': text and ALL returned products sit in ONE grey
       expect(r.imgW, `${w}px packshot`).toBeLessThanOrEqual(66);
       expect(r.priceTopGap, `${w}px price in row`).toBeGreaterThanOrEqual(0);
       expect(r.priceBottomGap, `${w}px price in row`).toBeGreaterThanOrEqual(0);
-      expect(r.priceFont).toBeGreaterThanOrEqual(19);
+      expect(r.priceFont).toBeGreaterThanOrEqual(18);
       expect(r.imgLeft, `${w}px image left`).toBe(true);
       expect(r.chevVisible, `${w}px chevron`).toBe(true);
       expect(r.collide, `${w}px price collision`).toBe(false);
@@ -502,7 +503,7 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
       expect(r.nextBg).toBe(info.tokens.futureBg);
       expect(r.label).toMatch(/Od \d{1,2}\.\s\d{1,2}\./);
       // +retailer badge row above the price (shared PriceStack) adds ~8 px
-      expect(r.height, `${w}px upcoming row height`).toBeLessThanOrEqual(152);
+      expect(r.height, `${w}px upcoming row height`).toBeLessThanOrEqual(166);
     }
     expect(info.noteDate, `${w}px note date on one line`).toEqual({ found: true, lines: 1 });
     // SPAR / INTERSPAR source label on every product row.

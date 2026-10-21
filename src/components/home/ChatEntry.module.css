@@ -1,0 +1,21 @@
+/* Applied to the Home root while leaving for the chat. transform/opacity only. */
+/* Root is the scroll container: clip so the off-screen zones cannot create scrollbars. */
+.exiting,
+.exiting[data-home-root] { pointer-events: none; overflow: hidden; }
+.exiting [data-home-zone] {
+  will-change: transform, opacity;
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 340ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.exiting [data-home-zone="top"] { transform: translateY(-110%); opacity: 0; }
+.exiting [data-home-zone="bottom"] { transform: translateY(110%); opacity: 0; }
+.exiting [data-home-zone="actions"] { transform: scale(0.97); opacity: 0; transition-duration: 260ms; }
+.exiting [data-home-zone="mascot"] { transform: translateY(-6px) scale(1.15); }
+.exiting [data-home-zone="mascot"] [data-chat-entry] { opacity: 0; transition: opacity 180ms ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .exiting [data-home-zone] { transition: opacity 100ms linear; will-change: auto; }
+  .exiting [data-home-zone="top"],
+  .exiting [data-home-zone="bottom"],
+  .exiting [data-home-zone="actions"],
+  .exiting [data-home-zone="mascot"] { transform: none; }
+}

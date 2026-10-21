@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
 import { offerOf, primary, productsByPage, secondary, pagesWithProducts, retailerLabel } from "./catalog-data";
 
 // Three SPAR products and one INTERSPAR product, derived from the data.
@@ -21,7 +22,7 @@ async function seed(page: Page, productIds: string[], path = "/moj-katalog") {
   await page.goto(path);
 }
 
-const rows = (page: Page) => page.locator("main ul > li[data-product-id]");
+const rows = (page: Page) => page.locator("main ul > li[data-product-id]:not([data-reco-item])");
 const nav = (page: Page) => page.getByRole("navigation", { name: "Glavna navigacija" });
 
 test("page header: menu, centred title, trash; the global logo header is replaced", async ({ page }) => {
@@ -229,3 +230,123 @@ for (const width of [360, 390, 430]) {
     expect(await overflow()).toBe(false);
   });
 }
+
+// ---------------------------------------------------------------- totals bar + expanded recommendations
+
+type RawOffer = { productId: string; priceCents: number; priceUnit: string; regularPriceCents: number | null };
+const rawOffers = (JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as { offers: RawOffer[] }).offers;
+const eur = (c: number) => `${Math.floor(c / 100)},${String(c % 100).padStart(2, "0")} €`;
+/** Mirrors src/lib/savings.ts for the current demo week: per-kg offers are left out, savings need a verified regular price. */
+function expectedTotals(ids: string[]) {
+  let total = 0;
+  let savings = 0;
+  for (const id of new Set(ids)) {
+    const o = rawOffers.find((x) => x.productId === id);
+    if (!o || o.priceUnit === "kg" || o.priceUnit === "100g") continue;
+    total += o.priceCents;
+    if (typeof o.regularPriceCents === "number") savings += Math.max(0, o.regularPriceCents - o.priceCents);
+  }
+  return { total: eur(total), savings: eur(savings) };
+}
+const packIds = rawOffers.filter((o) => o.priceUnit === "pack" || o.priceUnit === "kos");
+const WITH_REGULAR = packIds.find((o) => typeof o.regularPriceCents === "number" && o.regularPriceCents > o.priceCents)!.productId;
+const OTHER_PACK = packIds.find((o) => o.productId !== WITH_REGULAR)!.productId;
+
+const bar = (page: Page) => page.locator("[data-collection-summary]");
+
+async function expectTotals(page: Page, ids: string[]) {
+  const t = expectedTotals(ids);
+  await expect(bar(page).locator("[data-total-price]")).toHaveText(t.total);
+  await expect(bar(page).locator("[data-total-savings]")).toHaveText(t.savings);
+}
+
+test("totals bar: empty list shows 0,00 € for both values", async ({ page }) => {
+  await seed(page, []);
+  await expect(bar(page)).toBeVisible();
+  await expect(bar(page).locator("[data-total-price]")).toHaveText("0,00 €");
+  await expect(bar(page).locator("[data-total-savings]")).toHaveText("0,00 €");
+  await expect(bar(page)).toContainText("Cena izdelkov");
+  await expect(bar(page)).toContainText("Skupni prihranek");
+});
+
+test("totals bar: saving and removing update the values, reload keeps them", async ({ page }) => {
+  await seed(page, [WITH_REGULAR]);
+  await expectTotals(page, [WITH_REGULAR]);
+  const t = expectedTotals([WITH_REGULAR]);
+  expect(t.savings).not.toBe("0,00 €");
+  // Add a second product from the recommendations rail (any), then compare with the data-derived values.
+  await seed(page, [WITH_REGULAR, OTHER_PACK]);
+  await expectTotals(page, [WITH_REGULAR, OTHER_PACK]);
+  await page.getByRole("button", { name: "Odstrani izdelke" }).click();
+  await page.getByRole("button", { name: new RegExp(`^Odstrani: `) }).first().click();
+  await expect(rows(page)).toHaveCount(1);
+  const left = await rows(page).first().getAttribute("data-product-id");
+  await expectTotals(page, [left!]);
+  await page.reload();
+  await expect(rows(page)).toHaveCount(1);
+  await expectTotals(page, [left!]);
+});
+
+test("totals bar: info button explains the calculation", async ({ page }) => {
+  await seed(page, [WITH_REGULAR]);
+  const info = bar(page).getByRole("button", { name: "Kako je izračunano?" });
+  await expect(info).toHaveAttribute("aria-expanded", "false");
+  await info.click();
+  await expect(info).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("[data-summary-note]")).toContainText("Prihranek je izračunan za izdelke z znano redno ceno.");
+  await info.click();
+  await expect(page.locator("[data-summary-note]")).toHaveCount(0);
+});
+
+test("totals bar sits directly above the bottom navigation in both tabs and does not overlay content", async ({ page }) => {
+  await seed(page, SAVED);
+  for (const tab of ["Moji izdelki", "Priporočila zate"]) {
+    await page.getByRole("tab", { name: new RegExp(tab) }).click();
+    await expect(bar(page)).toBeVisible();
+    const b = (await bar(page).boundingBox())!;
+    const n = (await nav(page).boundingBox())!;
+    expect(b.y + b.height).toBeLessThanOrEqual(n.y + 1);
+    expect(n.y - (b.y + b.height)).toBeLessThan(4);
+    expect(b.height).toBeGreaterThanOrEqual(52);
+    expect(b.height).toBeLessThanOrEqual(72);
+    const scroll = (await page.locator("main .page-scroll").first().boundingBox())!;
+    expect(scroll.y + scroll.height).toBeLessThanOrEqual(b.y + 1);
+  }
+});
+
+test("'Poglej vse' shows an expanded list of at least 12 recommendations with a way back", async ({ page }) => {
+  await seed(page, [SPAR_IDS[0]]);
+  const railItems = page.locator("[data-reco-rail] [data-reco-item]");
+  expect(await railItems.count()).toBeGreaterThan(0);
+  expect(await railItems.count()).toBeLessThanOrEqual(8);
+  await page.getByRole("button", { name: /^Poglej vse/ }).click();
+  const expanded = page.locator("[data-reco-expanded]");
+  await expect(expanded).toBeVisible();
+  expect(await expanded.locator("[data-reco-item]").count()).toBeGreaterThanOrEqual(12);
+  expect(await expanded.locator("[data-reco-item]").count()).toBeGreaterThan(await railItems.count());
+  // The saved product is never offered.
+  await expect(expanded.locator(`[data-reco-item][data-product-id="${SPAR_IDS[0]}"]`)).toHaveCount(0);
+  await page.getByRole("button", { name: "Nazaj na Moje izdelke" }).click();
+  await expect(page.getByRole("tab", { name: /Moji izdelki/ })).toHaveAttribute("aria-selected", "true");
+});
+
+test("adding from the expanded list updates totals and the 'Moji izdelki' count; the item stays listed", async ({ page }) => {
+  await seed(page, [WITH_REGULAR]);
+  await page.getByRole("button", { name: /^Poglej vse/ }).click();
+  const expanded = page.locator("[data-reco-expanded]");
+  const first = expanded.locator("[data-reco-item]").first();
+  const id = (await first.getAttribute("data-product-id"))!;
+  const before = await expanded.locator("[data-reco-item]").count();
+  await first.getByRole("button", { name: /^Dodaj v Moj katalog/ }).click();
+  await expect(page.getByRole("tab", { name: "Moji izdelki (2)" })).toBeVisible();
+  await expectTotals(page, [WITH_REGULAR, id]);
+  // Frozen while open: same number of items, the added one is still there (and no longer offers "Dodaj").
+  await expect(expanded.locator("[data-reco-item]")).toHaveCount(before);
+  await expect(expanded.locator(`[data-reco-item][data-product-id="${id}"]`)).toBeVisible();
+  await expect(expanded.locator(`[data-reco-item][data-product-id="${id}"]`).getByRole("button", { name: /^Dodaj v Moj katalog/ })).toHaveCount(0);
+  // Leaving recomputes: the saved item is gone from the recommendations and is a row.
+  await page.getByRole("tab", { name: /Moji izdelki/ }).click();
+  await expect(rows(page)).toHaveCount(2);
+  await expect(page.locator(`[data-reco-rail] [data-reco-item][data-product-id="${id}"]`)).toHaveCount(0);
+  await expect(nav(page)).toContainText("2");
+});

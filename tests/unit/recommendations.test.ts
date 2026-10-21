@@ -171,4 +171,39 @@ describe("getRecommendations", () => {
     expect(JSON.stringify(products)).toBe(before);
     expect(saved).toEqual([LINE_PAIR.saved]);
   });
+
+  describe("expanded list (explicit limit above the default)", () => {
+    const opts = { limit: 18, fillEditorial: true };
+    const sets: string[][] = [[], [allIds[0]], [allIds[0], allIds[40], allIds[90]]];
+
+    it("produces at least 12 items, none saved, without duplicate ids or articles", () => {
+      for (const saved of sets) {
+        const recs = getRecommendations(saved, opts);
+        expect(recs.length).toBeGreaterThanOrEqual(12);
+        expect(recs.length).toBeLessThanOrEqual(18);
+        const ids = recs.map((r) => r.productId);
+        expect(new Set(ids).size).toBe(ids.length);
+        for (const id of ids) expect(saved).not.toContain(id);
+        const keys = recs.map((r) => {
+          const p = getProduct(r.productId)!;
+          return [p.brand, p.name, p.packSize].join("|").toLowerCase();
+        });
+        expect(new Set(keys).size).toBe(keys.length);
+      }
+    });
+
+    it("is deterministic and independent of saved order", () => {
+      const a = getRecommendations(sets[1], opts);
+      expect(getRecommendations(sets[1], opts)).toEqual(a);
+      expect(getRecommendations([...sets[2]].reverse(), opts)).toEqual(getRecommendations(sets[2], opts));
+    });
+
+    it("keeps the default limit and cap unchanged", () => {
+      for (const saved of sets) {
+        const recs = getRecommendations(saved, { fillEditorial: true });
+        expect(recs.length).toBeLessThanOrEqual(DEFAULT_RECOMMENDATION_LIMIT);
+        for (const n of checkDiversity(recs).values()) expect(n).toBeLessThanOrEqual(MAX_PER_PRIMARY_CATEGORY);
+      }
+    });
+  });
 });

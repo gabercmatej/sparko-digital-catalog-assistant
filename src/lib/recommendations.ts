@@ -11,6 +11,8 @@
  * Each signal kind counts once per candidate. Saved products and excludeIds are skipped,
  * zero-score items are dropped, at most two results share a primary category (filled
  * otherwise), ties break by editorialRank then id, max 6 by default.
+ * An explicit limit above 6 (expanded list) raises the category cap to max(2, ceil(limit/6)) and drops
+ * duplicate brand+name+pack articles (SPAR vs INTERSPAR twins), keeping the better-ranked one.
  */
 import { getPlacementsForProduct, getPrimaryOffer, getProduct, productForOffer, products, recipeLines, recipes } from "./catalog";
 import type { Product, Recipe } from "./types";
@@ -284,16 +286,42 @@ export type RecommendationOptions = {
   fillEditorial?: boolean;
 };
 
+/** Normalized brand+name+pack key: the same article sold by SPAR and INTERSPAR shares it. */
+function articleKey(p: Product): string {
+  const norm = (s: string | null | undefined) => (s ?? "").toLocaleLowerCase("sl").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  return [p.brand, p.name, p.packSize].map(norm).join("|");
+}
+
+/** Keep the first (best-ranked) item per article; `taken` seeds keys that must not repeat. */
+function dedupeArticles<T extends { product: Product }>(items: T[], taken: Set<string>): T[] {
+  const seen = new Set(taken);
+  return items.filter((it) => {
+    const k = articleKey(it.product);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+
+/** Expanded lists (explicit limit above the default) get a proportional category cap and article de-duplication. */
+function isExpanded(limit: number): boolean {
+  return limit > DEFAULT_RECOMMENDATION_LIMIT;
+}
+function categoryCap(limit: number): number {
+  return isExpanded(limit) ? Math.max(MAX_PER_PRIMARY_CATEGORY, Math.ceil(limit / 6)) : MAX_PER_PRIMARY_CATEGORY;
+}
+
 /** Editorial picks (lowest editorialRank, diversified). Never personalised. */
-export function getEditorialPicks(opts: { limit?: number; excludeIds?: string[] } = {}): Recommendation[] {
+export function getEditorialPicks(opts: { limit?: number; excludeIds?: string[]; /** internal: category cap override */ maxPerCategory?: number; /** internal: article keys already used */ takenKeys?: Set<string> } = {}): Recommendation[] {
   const limit = Math.max(0, opts.limit ?? DEFAULT_RECOMMENDATION_LIMIT);
   const exclude = new Set(opts.excludeIds ?? []);
-  const pool = [...products]
+  let pool = [...products]
     .sort(compareEditorial)
     .filter((p) => !exclude.has(p.id))
     .map((product) => ({ product, offerId: getPrimaryOffer(product.id)?.id }))
     .filter((x): x is { product: Product; offerId: string } => !!x.offerId);
-  return diversify(pool, limit).map(({ product, offerId }) => ({
+  if (isExpanded(limit) || opts.takenKeys) pool = dedupeArticles(pool, opts.takenKeys ?? new Set());
+  return diversify(pool, limit, opts.maxPerCategory ?? categoryCap(limit)).map(({ product, offerId }) => ({
     productId: product.id,
     offerId,
     score: 0,
@@ -310,7 +338,12 @@ export function getRecommendations(savedProductIds: string[], opts: Recommendati
   // Sorted editorially so results do not depend on the order of savedProductIds.
   const saved = [...savedIds].map((id) => getProduct(id)).filter((p): p is Product => !!p).sort(compareEditorial);
 
-  if (saved.length === 0) return getEditorialPicks({ limit, excludeIds: [...exclude] });
+  const expanded = isExpanded(limit);
+  const cap = categoryCap(limit);
+  // Expanded lists also skip the twin (other retailer) of an already saved article.
+  const savedKeys = new Set(expanded ? saved.map(articleKey) : []);
+
+  if (saved.length === 0) return getEditorialPicks({ limit, excludeIds: [...exclude], maxPerCategory: cap });
 
   const scored: Scored[] = [];
   for (const product of products) {
@@ -323,8 +356,9 @@ export function getRecommendations(savedProductIds: string[], opts: Recommendati
     scored.push({ product, offerId: offer.id, score, signals });
   }
   scored.sort((a, b) => b.score - a.score || compareEditorial(a.product, b.product));
+  const pool = expanded ? dedupeArticles(scored, savedKeys) : scored;
 
-  const result: Recommendation[] = diversify(scored, limit).map(({ product, offerId, score, signals }) => ({
+  const result: Recommendation[] = diversify(pool, limit, cap).map(({ product, offerId, score, signals }) => ({
     productId: product.id,
     offerId,
     score,
@@ -335,7 +369,8 @@ export function getRecommendations(savedProductIds: string[], opts: Recommendati
 
   if (opts.fillEditorial && result.length < limit) {
     const taken = new Set([...exclude, ...result.map((r) => r.productId)]);
-    result.push(...getEditorialPicks({ limit: limit - result.length, excludeIds: [...taken] }));
+    const takenKeys = expanded ? new Set([...savedKeys, ...result.map((r) => articleKey(getProduct(r.productId)!))]) : undefined;
+    result.push(...getEditorialPicks({ limit: limit - result.length, excludeIds: [...taken], maxPerCategory: cap, takenKeys }));
   }
   return result;
 }

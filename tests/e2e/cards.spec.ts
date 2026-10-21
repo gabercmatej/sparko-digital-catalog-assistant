@@ -6,7 +6,7 @@ const retailerOfProduct = (id: string) => catalogs.find((c) => c.id === catalogO
 const SPAR_ID = productsByPage(primary.id).get(pagesWithProducts(primary.id)[0])![0];
 const IS_ID = productsByPage(secondary.id).get(pagesWithProducts(secondary.id)[0])![0];
 
-type Geo = { id: string | null; w: number; h: number; nameFont: string; retailer: string | null; badge: DOMRect; price: DOMRect };
+type Geo = { id: string | null; w: number; h: number; nameFont: string; retailer: string | null; badge: DOMRect; price: DOMRect; card: DOMRect; pack: DOMRect; radius: string };
 
 /** Size, name font and badge/price geometry of every [data-mini-card] under `root`. */
 async function miniCards(root: Locator, max = 6): Promise<Geo[]> {
@@ -23,21 +23,29 @@ async function miniCards(root: Locator, max = 6): Promise<Geo[]> {
         retailer: badge.getAttribute("data-retailer"),
         badge: badge.getBoundingClientRect().toJSON(),
         price: price.getBoundingClientRect().toJSON(),
+        card: r.toJSON(),
+        pack: el.querySelector("[data-card-pack]")!.getBoundingClientRect().toJSON(),
+        radius: getComputedStyle(price).borderRadius,
       };
     });
   }, max) as Promise<Geo[]>;
 }
 
-function expectBadgeAbovePriceRight(g: Geo, ctx: string) {
-  expect(g.badge.bottom, `${ctx}: badge above price`).toBeLessThanOrEqual(g.price.top + 1);
-  expect(Math.abs(g.badge.right - g.price.right), `${ctx}: badge right-aligned with price`).toBeLessThanOrEqual(4);
+/** Approved mini-card anatomy: label top-left, price badge bottom-right, pack bottom-left; both square. */
+function expectMiniCardAnatomy(g: Geo, ctx: string) {
+  expect(g.badge.bottom, `${ctx}: label above price`).toBeLessThanOrEqual(g.price.top + 1);
+  expect(g.badge.left - g.card.left, `${ctx}: label top-left`).toBeLessThanOrEqual(14);
+  expect(g.card.right - g.price.right, `${ctx}: price near right edge`).toBeLessThanOrEqual(14);
+  expect(g.card.bottom - g.price.bottom, `${ctx}: price near bottom edge`).toBeLessThanOrEqual(14);
+  expect(g.pack.right, `${ctx}: pack left of price`).toBeLessThanOrEqual(g.price.left + 1);
+  expect(g.radius, `${ctx}: square price badge`).toBe("0px");
 }
 
 const homeRail = (page: Page) => page.locator("[data-testid=home-rail]");
 const chatCarousel = (page: Page) => page.locator('section[aria-label="Izdelki iz kataloga"]');
 
 for (const w of [360, 390, 430]) {
-  test(`home rail and chat carousel use the same mini card (size, font, badge above price) @${w}px`, async ({ page }) => {
+  test(`home rail and chat carousel use the same mini card (size, font, label top-left, price bottom-right) @${w}px`, async ({ page }) => {
     await page.setViewportSize({ width: w, height: 800 });
     await page.goto("/domov");
     await expect(homeRail(page).locator("[data-mini-card]").first()).toBeVisible();
@@ -58,11 +66,17 @@ for (const w of [360, 390, 430]) {
         expect(Math.abs(g.w - ref.w), `${where} width`).toBeLessThanOrEqual(1);
         expect(g.nameFont, `${where} name font-size`).toBe(ref.nameFont);
         expect(g.retailer, `${where} ${g.id} data-retailer matches its catalog`).toBe(retailerOfProduct(g.id!));
-        expectBadgeAbovePriceRight(g, `${where} ${g.id}`);
+        expectMiniCardAnatomy(g, `${where} ${g.id}`);
       }
     }
-    // Same card height in both places (compared on the shortest card: a unit line, e.g. "/ kg", adds height to a few).
-    expect(Math.abs(Math.min(...home.map((g) => g.h)) - Math.min(...chat.map((g) => g.h)))).toBeLessThanOrEqual(1);
+    // The home rail lives in a fixed-height no-scroll layout, so its card may be slightly squeezed (shorter image) but never
+    // taller than the chat card, and never by more than ~12px (compared on the shortest card: a unit line adds height to a few).
+    const dh = Math.min(...chat.map((g) => g.h)) - Math.min(...home.map((g) => g.h));
+    expect(dh, `${w}px chat card height minus home card height`).toBeGreaterThanOrEqual(-1);
+    expect(dh, `${w}px chat card height minus home card height`).toBeLessThanOrEqual(12);
+    // The price pill is identical in both places.
+    expect(Math.abs(home[0].price.width - chat[0].price.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs(home[0].price.height - chat[0].price.height)).toBeLessThanOrEqual(1);
     // Names are never clipped horizontally (2-line clamp, no overflow of the card).
     const overflow = await page.locator("[data-mini-card]").evaluateAll((els) => els.filter((el) => el.scrollWidth > el.clientWidth + 1).length);
     expect(overflow, `${w}px mini card horizontal overflow`).toBe(0);

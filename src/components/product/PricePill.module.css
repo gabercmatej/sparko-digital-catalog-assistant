@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   flex: none;
-  border-radius: 6px;
+  border-radius: var(--price-radius, 0);
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;

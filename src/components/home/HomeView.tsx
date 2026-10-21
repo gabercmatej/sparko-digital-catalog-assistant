@@ -11,6 +11,9 @@ import { CategorySheet } from "./CategorySheet";
 import { ItemPanel } from "./ItemPanel";
 import { homeReducer, initialHomeState, railItems, railTitle, topItems, type CategoryKey, type TopMode } from "./homeState";
 import styles from "./HomeView.module.css";
+import entry from "./ChatEntry.module.css";
+import { ChatEntryButton } from "./ChatEntryButton";
+import { useChatEntryTransition } from "./useChatEntryTransition";
 
 const SEGMENTS: { mode: TopMode; label: string; icon: IconName }[] = [
   { mode: "catalogs", label: "Katalogi", icon: "leaflet" },
@@ -25,6 +28,7 @@ const SEGMENTS: { mode: TopMode; label: string; icon: IconName }[] = [
  */
 export function HomeView() {
   const [state, dispatch] = useReducer(homeReducer, initialHomeState);
+  const { exiting, start } = useChatEntryTransition();
   const [sheetId, setSheetId] = useState<string | null>(null);
   const [storeOpen, setStoreOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
@@ -61,20 +65,9 @@ export function HomeView() {
   };
 
   return (
-    <div className={`page-scroll ${styles.home}`}>
+    <div className={exiting ? `${styles.home} ${entry.exiting}` : styles.home} data-home-root data-exiting={exiting || undefined}>
       <div className={styles.column}>
-        <section ref={topRef} className={styles.top} aria-label="Katalogi in izdelki">
-          {/* One box, one height, for both modes. */}
-          <div id={panelId} role="tabpanel" aria-labelledby={tabId(state.topMode)} className={styles.topBox}>
-            {products ? (
-              <ItemPanel state={state} ids={topItems(state)} onCategory={pickCategory} onSelect={setSheetId} />
-            ) : (
-              <div className={styles.fade}>
-                <CatalogCards />
-              </div>
-            )}
-          </div>
-
+        <section ref={topRef} className={styles.top} aria-label="Katalogi in izdelki" data-home-zone="top">
           <div className={styles.segments} role="tablist" aria-label="Prikaz" onKeyDown={onTabKey}>
             {SEGMENTS.map((s) => {
               const selected = state.topMode === s.mode;
@@ -90,18 +83,34 @@ export function HomeView() {
                   className={styles.segment}
                   onClick={() => setMode(s.mode)}
                 >
-                  <Icon name={s.icon} size={18} strokeWidth={2} />
+                  <Icon name={s.icon} size={16} strokeWidth={2} />
                   {s.label}
                 </button>
               );
             })}
           </div>
+
+          {/* One box, one height, for both modes. */}
+          <div id={panelId} role="tabpanel" aria-labelledby={tabId(state.topMode)} className={styles.topBox}>
+            {products ? (
+              <ItemPanel state={state} ids={topItems(state)} onCategory={pickCategory} onSelect={setSheetId} />
+            ) : (
+              <div className={styles.fade}>
+                <CatalogCards />
+              </div>
+            )}
+          </div>
         </section>
 
         <section className={styles.sparko} aria-label="Vprašaj Sparka">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={styles.mascot} src="/brand/sparko-mascot.webp" width={72} height={72} alt="" decoding="async" />
-          <div className={styles.actions}>
+          <div className={styles.mascotRow} data-home-zone="mascot">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={styles.mascot} src="/brand/sparko-mascot.webp" width={72} height={72} alt="" decoding="async" />
+            <span className={styles.chatSlot}>
+              <ChatEntryButton onClick={start} disabled={exiting} />
+            </span>
+          </div>
+          <div className={styles.actions} data-home-zone="actions">
             <ActionButton icon="percent" label="Kaj je najbolj znižano" pressed={products && state.activeDiscovery === "discounts"} onClick={() => dispatch({ type: "discover", discovery: "discounts" })} />
             <ActionButton icon="list" label="Poglej izdelke po kategoriji" pressed={products && state.activeDiscovery === "category"} haspopup onClick={() => setCategoriesOpen(true)} />
             <ActionButton icon="star" label="Kaj je novega v katalogu" pressed={products && state.activeDiscovery === "new"} onClick={() => dispatch({ type: "discover", discovery: "new" })} />
@@ -109,7 +118,7 @@ export function HomeView() {
           </div>
         </section>
 
-        <section className={styles.railSection} aria-labelledby={`${uid}-rail`}>
+        <section className={styles.railSection} aria-labelledby={`${uid}-rail`} data-home-zone="bottom">
           <div className={styles.railHead}>
             <h2 id={`${uid}-rail`} className={styles.railTitle}>
               {railTitle(state)}

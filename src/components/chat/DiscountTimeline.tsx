@@ -1,13 +1,7 @@
 "use client";
-import { useState } from "react";
-import { formatDate, formatPeriod, formatPrice, getCatalog, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { formatDate, formatPeriod, getCatalog, getOffer, getPrimaryOffer, getProduct } from "@/lib/catalog";
 import { DEMO_FORECAST_LABEL, forecastFor } from "@/lib/demoForecast";
 import { upcomingItem, upcomingPeriod } from "@/lib/futurePromos";
-import { ProductActions } from "../product/ProductActions";
-import { PricePill } from "../product/PricePill";
-import { brandLabel } from "../product/ProductSummary";
-import { ProductTile } from "../product/ProductTile";
-import { RetailerBadge } from "../product/RetailerBadge";
 import { Icon } from "../ui/Icon";
 import { ProductRow } from "./ProductsBlock";
 import chat from "./Chat.module.css";
@@ -106,62 +100,11 @@ export function DiscountTimeline({
   );
 }
 
-/**
- * A DEMO MOCK forecast row: a verified product simulated to be promoted next week, with NO future price.
- * Real packshot, name and pack size; the SPAR / INTERSPAR label sits right-aligned directly above the verified
- * current price; the period and the discreet "Demo napoved" tag replace any future price. Tapping toggles the
- * save actions beneath the row.
- */
+/** A DEMO MOCK forecast row: the shared ProductRow with the period + "Demo napoved" tag and no future price. */
 function ForecastRow({ productId, period }: { productId: string; period: { from: string; to: string } }) {
-  const [open, setOpen] = useState(false);
-  const product = getProduct(productId);
   const offer = getPrimaryOffer(productId);
-  if (!product || !offer) return null;
-  const brand = brandLabel(product);
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
-  const panelId = `row-forecast-${productId}`;
-  return (
-    <li className={styles.fcRow} data-product-row-id={productId} data-forecast-row>
-      <button
-        type="button"
-        className={styles.fcBtn}
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen((o) => !o)}
-        data-row-header
-        data-upcoming=""
-        data-forecast=""
-      >
-        <span className={styles.fcImg} aria-hidden="true">
-          <ProductTile productId={productId} size="carousel" thumb />
-        </span>
-        <span className={styles.fcInfo}>
-          {brand && <span className={styles.fcBrand}>{brand}</span>}
-          <span className={styles.fcName}>{product.name}</span>
-          <span className={styles.fcPack}>{product.packSize}</span>
-          <span className={styles.fcWhen}>
-            <span className={styles.fcWeek}>Naslednji teden</span>
-            <span className={styles.fcPeriod}>{formatPeriod(period.from, period.to)}</span>
-          </span>
-          <span className={styles.fcTag} data-demo-forecast>
-            {DEMO_FORECAST_LABEL}
-          </span>
-        </span>
-        <Icon name="chevron-down" size={16} className={styles.fcChevron} />
-        <span className={styles.fcSide} data-price-strip>
-          <RetailerBadge productId={productId} size="xs" />
-          <span className={styles.fcPriceLabel}>Zdaj{unit ? ` · ${unit}` : ""}</span>
-          <PricePill cents={offer.priceCents} tone="now" size="md" srPrefix="Zdaj" />
-          <span className="sr-only">{`Cena za naslednji teden še ni znana. Trenutna cena ${formatPrice(offer.priceCents)}.`}</span>
-        </span>
-      </button>
-      {open && (
-        <div id={panelId} className={styles.fcPanel} role="region" aria-label={`Dejanja: ${product.name}`}>
-          <ProductActions productId={productId} toggle />
-        </div>
-      )}
-    </li>
-  );
+  if (!offer) return null;
+  return <ProductRow productId={productId} offerId={offer.id} forecast={period} />;
 }
 
 /** Calendar glyph of the section titles (decorative; the heading carries the meaning). */

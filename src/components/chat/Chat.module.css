@@ -243,7 +243,8 @@
   width: 100%;
   max-width: 440px;
 }
-/* Each row is the approved chat card's white rectangle (no border, no rounding) on the grey bubble. */
+/* ONE row structure for generic results, "Znižano ta teden", upcoming promos and demo forecasts.
+   Columns: [packshot] [info] [chevron column, reserved]. Rows: label + chevron / brand + name / footer (meta left, prices right). */
 .row {
   display: flex;
   flex-direction: column;
@@ -251,19 +252,20 @@
   border: 0;
   border-radius: 0;
 }
-/* Compact row (approved mockup): small packshot left, text in the middle, red price pill right.
-   Upcoming rows (data-upcoming) put both prices in a strip under the text instead. */
 .rowBtn {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) 22px;
   grid-template-areas:
-    "img info price"
-    "img meta price";
-  align-content: center;
+    "img top ctrl"
+    "img info info"
+    "img foot foot";
+  grid-template-rows: auto auto 1fr;
   column-gap: 10px;
+  row-gap: 2px;
+  align-items: start;
   width: 100%;
   position: relative;
-  padding: 7px 8px;
+  padding: 9px 8px 9px 10px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -278,14 +280,39 @@
   outline-offset: -2px;
 }
 .rowImg {
-  --tile-carousel: 62px;
+  --tile-carousel: 66px;
   grid-area: img;
-  align-self: center;
+  align-self: start;
   display: flex;
+  margin-top: 2px;
+}
+/* The retailer label always sits top-left of the info column, the chevron in its own column: they cannot collide. */
+.rowTop {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 18px;
+  overflow: hidden;
+}
+.rowCtrl {
+  grid-area: ctrl;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 18px;
+  color: var(--c-ink-3);
+}
+.rowChevron {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s;
+}
+.rowBtn[aria-expanded="true"] .rowChevron {
+  transform: rotate(180deg);
 }
 .rowInfo {
   grid-area: info;
-  align-self: end;
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -310,44 +337,43 @@
   overflow: hidden;
   font-size: 15px;
   font-weight: 750;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--c-ink);
   overflow-wrap: anywhere;
 }
-/* Small chevron, top-right of the row (decorative: the whole row is the button). */
-.rowChevron {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 16px;
-  height: 16px;
-  color: var(--c-ink-3);
-  transition: transform 0.2s;
-}
-.rowBtn[aria-expanded="true"] .rowChevron {
-  transform: rotate(180deg);
-}
-.rowMeta {
-  grid-area: meta;
-  align-self: start;
+.rowFoot {
+  grid-area: foot;
+  align-self: end;
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 8px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4px 10px;
   min-width: 0;
-  padding-top: 2px;
+  padding-top: 4px;
+}
+.rowMeta {
+  flex: 1 1 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
 }
 .rowPack {
   font-size: 12px;
   line-height: 1.35;
   color: var(--c-ink-2);
 }
-.rowNote {
-  flex-basis: 100%;
+.rowNote,
+.rowWhen {
   font-size: var(--text-xs);
   line-height: 1.35;
   color: var(--c-ink-2);
   overflow-wrap: anywhere;
+}
+.rowWeek {
+  font-weight: 700;
+  color: var(--c-future-ink);
 }
 /* "Redna cena 1,39 €": muted, only the amount is struck through. */
 .rowRegular {
@@ -360,43 +386,29 @@
   text-decoration: line-through;
   text-decoration-thickness: 1px;
 }
+.rowTag {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 1px 6px;
+  background: var(--c-future-bg);
+  color: var(--c-future-ink);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.4;
+}
 .rowPanel {
   padding: 10px;
 }
-.stripBadge {
-  flex-basis: 100%;
-  justify-content: flex-end;
-}
-/* ---- upcoming-promo row: current (red) and upcoming (soft blue) prices share a strip under the text, never overlapping. */
-.rowBtn[data-upcoming] {
-  grid-template-areas:
-    "img info info"
-    "img meta meta"
-    "img prices prices";
-}
-.rowBtn[data-upcoming] .rowInfo {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1px 6px;
-  padding-right: 18px;
-}
-.rowBtn[data-upcoming] .rowBrand {
+/* Price badge(s): right-aligned; two prices sit side by side and stack (still right-aligned) when the row is narrow. */
+.rowPrices {
   flex: 0 1 auto;
-  min-width: 0;
-}
-.rowBtn[data-upcoming] .rowName {
-  flex-basis: 100%;
-}
-.priceStrip {
-  grid-area: prices;
+  margin-left: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: flex-end;
-  gap: 4px 10px;
+  gap: 4px 8px;
   min-width: 0;
-  padding-top: 6px;
 }
 .priceCol {
   display: flex;

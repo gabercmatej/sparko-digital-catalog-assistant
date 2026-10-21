@@ -1,0 +1,4 @@
+/* Only applied when arriving from the Home transition. "backwards" fill: no lingering transform afterwards. */
+.reveal { animation: chatReveal 240ms cubic-bezier(0.2, 0, 0, 1) backwards; }
+@keyframes chatReveal { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .reveal { animation: none; } }

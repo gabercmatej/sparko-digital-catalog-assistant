@@ -1,9 +1,10 @@
+/* Compact product card. Rows: top strip (retailer label left, add/check right) / packshot (flexes) / name / pack + price. */
 .card {
   position: relative;
   min-width: 0;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 0 1px var(--c-border), 0 1px 2px rgb(10 40 25 / 5%);
+  border-radius: var(--card-radius, 12px);
+  box-shadow: 0 0 0 1px var(--card-border, var(--c-border)), 0 1px 2px rgb(10 40 25 / 5%);
   overflow: hidden;
   container-type: inline-size;
 }
@@ -14,12 +15,13 @@
 }
 .hit {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   /* without an explicit track the column grows to the content's min-content and the price spills out */
   grid-template-columns: minmax(0, 1fr);
+  row-gap: 2px;
   width: 100%;
   height: 100%;
-  padding: 8px 8px 8px;
+  padding: 6px 8px 8px;
   border: 0;
   background: transparent;
   text-align: left;
@@ -33,22 +35,40 @@ button.hit {
 button.hit:active {
   background: var(--c-surface-muted);
 }
-.media {
+/* Reserved top strip: the label on the left, the round add/check button (absolute) on the right. */
+.top {
   display: flex;
   align-items: center;
-  justify-content: center;
-  aspect-ratio: 4 / 3;
-  padding: 6px 4px 4px;
+  min-width: 0;
+  height: 22px;
+  padding-right: 30px;
+}
+.badge {
+  max-width: 100%;
+}
+/* Intrinsic height from the ::before spacer (~16:9) when the parent is auto-height; when the parent is shorter the
+   1fr row shrinks and the packshot (absolute, contained) shrinks with it, never the text. */
+.media {
+  position: relative;
+  overflow: hidden;
   min-height: 0;
+  min-width: 0;
+}
+.media::before {
+  content: "";
+  display: block;
+  padding-top: 55%;
 }
 .media img {
-  width: 100%;
+  position: absolute;
+  inset: 0 2px;
+  width: calc(100% - 4px);
   height: 100%;
   object-fit: contain;
   user-select: none;
 }
 .name {
-  font-size: 12px;
+  font-size: var(--card-name-size, 12px);
   line-height: 1.3;
   font-weight: 700;
   text-transform: uppercase;
@@ -63,39 +83,41 @@ button.hit:active {
   min-height: 2.6em;
   padding-top: 1px;
 }
+/* Footer anchored at the bottom: pack size bottom-left, price badge bottom-right. */
 .foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 2px 4px;
-  margin-top: 4px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 4px;
+  margin-top: 3px;
   min-width: 0;
 }
 .pack {
-  /* own line above the right-aligned badge + price: never truncated by the wide INTERSPAR label */
-  flex: 1 0 100%;
   display: flex;
   flex-direction: column;
-  font-size: 11.5px;
+  font-size: var(--card-pack-size, 11.5px);
   color: var(--c-ink-3);
   line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
+  padding-bottom: 1px;
 }
 .unit {
   font-size: 10px;
 }
+.price {
+  justify-self: end;
+}
 .corner {
   position: absolute;
-  top: 6px;
+  top: 5px;
   right: 6px;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 999px;
 }
 .add {
@@ -109,8 +131,10 @@ button.hit:active {
   filter: brightness(0.92);
 }
 .saved {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
+  top: 7px;
+  right: 8px;
   background: var(--c-green-bright);
   color: #fff;
 }

@@ -149,3 +149,29 @@
   font-size: var(--text-sm);
   color: var(--c-ink-2);
 }
+
+/* Short screens (container = the Home root): squeeze the panel chrome so the list keeps room. */
+@container home (max-height: 600px) {
+  .panel {
+    gap: 2px;
+    padding-top: 6px;
+    border-radius: 12px;
+  }
+  .head {
+    min-height: 18px;
+  }
+  .title {
+    font-size: var(--text-sm);
+  }
+  .chip {
+    min-height: 30px;
+    padding: 0 12px;
+  }
+  .row {
+    min-height: 54px;
+  }
+  .thumb {
+    width: 40px;
+    height: 40px;
+  }
+}

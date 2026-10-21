@@ -6,7 +6,9 @@ import { Composer } from "./Composer";
 import { MessageItem } from "./MessageItem";
 import { ProductCarousel } from "./ProductCarousel";
 import { Welcome } from "./Welcome";
+import { clearChatEntryReveal, peekChatEntryReveal } from "@/lib/chatEntryFlag";
 import styles from "./Chat.module.css";
+import reveal from "./ChatEntryReveal.module.css";
 
 const NEAR_BOTTOM_PX = 120;
 
@@ -17,6 +19,11 @@ export function ChatView() {
   const nearBottom = useRef(true);
   const forceScroll = useRef(false);
   const [showPill, setShowPill] = useState(false);
+  // Subtle reveal only when arriving through the Home -> chat transition.
+  const [revealIn] = useState(() => peekChatEntryReveal());
+  useEffect(() => {
+    clearChatEntryReveal();
+  }, []);
 
   const messages = conversation?.messages ?? [];
   const last = messages[messages.length - 1];
@@ -102,7 +109,7 @@ export function ChatView() {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className={styles.page}>
+    <div className={revealIn ? `${styles.page} ${reveal.reveal}` : styles.page}>
       <div ref={scrollRef} className={`page-scroll ${styles.scroll}`} onScroll={onScroll} data-testid="chat-scroll">
         <ProductCarousel onSelect={handleProduct} />
         {!hydrated ? (

@@ -9,7 +9,7 @@ export function PricePill({ cents, tone = "now", size = "md", srPrefix, classNam
   const { euros, cents: c } = splitPrice(cents);
   return (
     <span className={`${styles.pill} ${styles[tone]} ${styles[size]}${className ? ` ${className}` : ""}`} data-price-pill={tone}>
-      <span aria-hidden="true" className={styles.num}>
+      <span aria-hidden="true" className={styles.num} data-price>
         {euros},{c}
         <span className={styles.eur}>€</span>
       </span>

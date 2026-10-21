@@ -117,6 +117,7 @@
   display: inline-flex;
   align-items: flex-start;
   background: var(--c-red);
+  border-radius: var(--price-radius, 0);
   color: #fff;
   font-size: 26px;
   font-weight: 800;

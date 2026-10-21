@@ -10,6 +10,8 @@ import { ProductMiniCard } from "../product/ProductMiniCard";
 import { Icon } from "../ui/Icon";
 import { PageHeader } from "../shell/Header";
 import { leafletQuery, pagesWithProducts } from "../leaflet/pages";
+import { collectionTotals } from "@/lib/savings";
+import { CollectionSummary } from "./CollectionSummary";
 import { ListMenu } from "./ListMenu";
 import { ProductSheet } from "./ProductSheet";
 import { SavedRow } from "./SavedRow";
@@ -19,6 +21,8 @@ const FLASH_MS = 2200;
 const ITEM_PREFIX = "izdelek-";
 
 type Tab = "moji" | "priporocila";
+const EXPANDED_LIMIT = 18;
+const RAIL_COUNT = 8;
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -71,10 +75,22 @@ export function CollectionView() {
   const savedKey = saved.map((s) => s.productId).join("|");
   const items = useMemo(() => sortSaved(saved), [saved]);
   const count = items.length;
-  const recs: Recommendation[] = useMemo(() => {
+  const freshRecs: Recommendation[] = useMemo(() => {
     const ids = savedKey ? savedKey.split("|") : [];
-    return getRecommendations(ids, { fillEditorial: true });
+    return getRecommendations(ids, { limit: EXPANDED_LIMIT, fillEditorial: true });
   }, [savedKey]);
+  // The expanded view freezes its list so a just-added item stays visible (with its check) until you leave.
+  const [frozenRecs, setFrozenRecs] = useState<Recommendation[] | null>(null);
+  const allRecs = tab === "priporocila" && frozenRecs ? frozenRecs : freshRecs;
+  const recs = tab === "priporocila" ? allRecs : allRecs.slice(0, RAIL_COUNT);
+  const totals = useMemo(() => collectionTotals(savedKey ? savedKey.split("|") : []), [savedKey]);
+  const goTab = useCallback(
+    (next: Tab) => {
+      setFrozenRecs(next === "priporocila" ? freshRecs : null);
+      setTab(next);
+    },
+    [freshRecs],
+  );
   const personalised = count > 0;
 
   // The removal mode only makes sense with something to remove.
@@ -99,14 +115,14 @@ export function CollectionView() {
     const fromHash = () => {
       const h = decodeURIComponent(window.location.hash.slice(1));
       if (h.startsWith(ITEM_PREFIX)) {
-        setTab("moji");
+        goTab("moji");
         flash(h.slice(ITEM_PREFIX.length));
       }
     };
     fromHash();
     window.addEventListener("hashchange", fromHash);
     return () => window.removeEventListener("hashchange", fromHash);
-  }, [hydrated, flash]);
+  }, [hydrated, flash, goTab]);
 
   useEffect(() => () => window.clearTimeout(flashTimer.current), []);
 
@@ -122,7 +138,7 @@ export function CollectionView() {
       e.preventDefault();
       const id = decodeURIComponent(href.slice(idx + 1 + ITEM_PREFIX.length));
       setSheetId(null);
-      setTab("moji");
+      goTab("moji");
       flash(id);
     }
   };
@@ -169,7 +185,7 @@ export function CollectionView() {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
     const next: Tab = tab === "moji" ? "priporocila" : "moji";
-    setTab(next);
+    goTab(next);
     document.getElementById(tabId(next))?.focus();
   };
 
@@ -201,10 +217,10 @@ export function CollectionView() {
       </PageHeader>
 
       <div className={styles.tabs} role="tablist" aria-label="Moj katalog" onKeyDown={onTabKey}>
-        <button type="button" role="tab" id={tabId("moji")} aria-selected={tab === "moji"} aria-controls={panelId} tabIndex={tab === "moji" ? 0 : -1} className={styles.tab} onClick={() => setTab("moji")}>
+        <button type="button" role="tab" id={tabId("moji")} aria-selected={tab === "moji"} aria-controls={panelId} tabIndex={tab === "moji" ? 0 : -1} className={styles.tab} onClick={() => goTab("moji")}>
           Moji izdelki{hydrated ? ` (${count})` : ""}
         </button>
-        <button type="button" role="tab" id={tabId("priporocila")} aria-selected={tab === "priporocila"} aria-controls={panelId} tabIndex={tab === "priporocila" ? 0 : -1} className={styles.tab} onClick={() => setTab("priporocila")}>
+        <button type="button" role="tab" id={tabId("priporocila")} aria-selected={tab === "priporocila"} aria-controls={panelId} tabIndex={tab === "priporocila" ? 0 : -1} className={styles.tab} onClick={() => goTab("priporocila")}>
           Priporočila zate
         </button>
       </div>
@@ -276,15 +292,15 @@ export function CollectionView() {
                         <Icon name="info" size={16} />
                       </button>
                     </h2>
-                    <button type="button" className={styles.seeAll} onClick={() => setTab("priporocila")}>
+                    <button type="button" className={styles.seeAll} onClick={() => goTab("priporocila")} data-see-all>
                       Poglej vse
                       <Icon name="arrow-right" size={16} strokeWidth={2.2} />
                     </button>
                   </div>
                   {infoOpen && <p className={styles.bandNote}>{infoText}</p>}
-                  <ul className={styles.rail}>
+                  <ul className={styles.rail} data-reco-rail>
                     {recs.map((r) => (
-                      <li key={r.productId} className={styles.railItem}>
+                      <li key={r.productId} className={styles.railItem} data-reco-item data-product-id={r.productId}>
                         <ProductMiniCard productId={r.productId} onSelect={() => setSheetId(r.productId)} onAdd={() => addRecommendation(r.productId)} />
                       </li>
                     ))}
@@ -300,12 +316,16 @@ export function CollectionView() {
                 </h2>
               </div>
               <p className={styles.bandNote}>{infoText}</p>
+              <button type="button" className={styles.backLink} onClick={() => goTab("moji")}>
+                <Icon name="arrow-right" size={16} strokeWidth={2.2} />
+                Nazaj na Moje izdelke
+              </button>
               {recs.length === 0 ? (
                 <p className={styles.bandNote}>Za zdaj nimamo novih predlogov.</p>
               ) : (
-                <ul className={styles.recGrid}>
+                <ul className={styles.recGrid} data-reco-expanded>
                   {recs.map((r) => (
-                    <li key={r.productId} className={styles.recItem} data-editorial={r.editorial || undefined}>
+                    <li key={r.productId} className={styles.recItem} data-reco-item data-product-id={r.productId} data-editorial={r.editorial || undefined}>
                       <ProductMiniCard productId={r.productId} onSelect={() => setSheetId(r.productId)} onAdd={() => addRecommendation(r.productId)} />
                       {(personalised || !r.editorial) && <p className={styles.reason}>{r.reason}</p>}
                     </li>
@@ -316,6 +336,8 @@ export function CollectionView() {
           )}
         </div>
       </div>
+
+      <CollectionSummary totals={totals} hydrated={hydrated} />
 
       <ProductSheet open={!!sheetProduct} onClose={closeSheet} label={sheetProduct ? `${sheetProduct.name}, ${sheetProduct.packSize}` : ""}>
         {sheetProduct && (

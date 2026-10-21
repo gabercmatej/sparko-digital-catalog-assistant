@@ -288,3 +288,26 @@
   overflow: hidden;
   overflow-wrap: anywhere;
 }
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+.backLink svg {
+  transform: scaleX(-1);
+}
+@media (min-width: 560px) {
+  .recGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

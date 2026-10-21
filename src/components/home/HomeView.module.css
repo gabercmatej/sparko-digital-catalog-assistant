@@ -1,37 +1,54 @@
+/*
+ * Viewport engineering: .home fills <main> (height:100%) and is a size container, so every zone can be
+ * sized from the real available height (cqh). TOP flexes (min/max), MASCOT + ACTIONS are compact auto,
+ * BOTTOM (rail) is a clamped height. If the sum of the zone minimums exceeds the height, .home scrolls
+ * vertically instead of clipping. Compact mode: @container home (max-height: 600px).
+ */
 .home {
-  padding: 14px 0 28px;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  container: home / size;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   color: var(--c-ink);
 }
-/* Centred readable column; the rail bleeds to its edges by cancelling the column padding. */
 .column {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--zone-gap);
+  justify-content: space-between;
+  min-height: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 0 var(--pad-x);
+  --rail-h: clamp(164px, 24cqh, 196px);
+  --rail-w: clamp(126px, calc(var(--rail-h) * 0.82), 144px);
+  --mascot-h: clamp(46px, 8.5cqh, 68px);
+  --action-h: 46px;
+  --zone-gap: 6px;
+  padding: 4px var(--pad-x) 6px;
 }
 .column > * {
-  flex-shrink: 0;
   min-width: 0;
 }
 
+/* TOP: segmented control + shared box. Flexes into whatever height is left. */
 .top {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
+  flex: 1 1 0;
+  min-height: 176px;
+  max-height: 340px;
   scroll-margin-top: 8px;
 }
-/* The shared top box: identical height in both modes (the catalog covers are 199/218/231/265 px tall at
-   360/390/430/desktop, so the box never clips them); the product list scrolls inside it. */
 .topBox {
-  height: clamp(232px, 60vw, 272px);
+  flex: 1 1 0;
   min-height: 0;
 }
 .fade {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   height: 100%;
   animation: home-fade 0.2s ease-out;
 }
@@ -42,12 +59,15 @@
   }
 }
 
-/* Segmented control: two equal pills, the selected one filled green. */
+/* Segmented control: compact two-option pill, fixed width so it never changes between modes. */
 .segments {
+  flex: none;
   display: flex;
   align-self: center;
-  width: min(100%, 300px);
-  padding: 3px;
+  width: 220px;
+  max-width: 100%;
+  height: 32px;
+  padding: 2px;
   border-radius: 999px;
   background: var(--c-tile);
 }
@@ -56,12 +76,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  min-height: 40px;
+  gap: 6px;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  font-size: var(--text-md);
+  font-size: var(--text-sm);
   font-weight: 700;
   color: var(--c-ink-2);
   transition: background-color 0.18s, color 0.18s;
@@ -69,25 +88,39 @@
 .segment[aria-selected="true"] {
   background: var(--c-green);
   color: #fff;
-  box-shadow: 0 2px 6px rgb(13 107 59 / 30%);
 }
 
 .sparko {
+  flex: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+}
+.mascotRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  height: var(--mascot-h);
 }
 .mascot {
-  width: 72px;
-  height: 72px;
+  grid-column: 2;
+  width: var(--mascot-h);
+  height: var(--mascot-h);
   object-fit: contain;
-  margin-bottom: -4px;
+}
+.chatSlot {
+  grid-column: 3;
+  justify-self: start;
+  margin-left: 8px;
+  width: 40px;
+  height: 40px;
 }
 .actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 .action {
@@ -95,10 +128,10 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 7px;
-  min-height: 60px;
-  padding: 8px 4px 8px 8px;
+  min-height: var(--action-h);
+  padding: 4px 4px 4px 8px;
   border: 1px solid var(--c-border);
-  border-radius: 14px;
+  border-radius: 12px;
   background: #fff;
   text-align: left;
   -webkit-tap-highlight-color: transparent;
@@ -115,8 +148,8 @@
 .actionIcon {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--c-green-050);
   color: var(--c-green);
@@ -139,11 +172,11 @@
   .action {
     grid-template-columns: auto minmax(0, 1fr);
     gap: 6px;
-    padding: 8px 6px 8px 8px;
+    padding: 4px 6px 4px 8px;
   }
   .actionIcon {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
   }
   .chevron {
     display: none;
@@ -154,18 +187,20 @@
 }
 
 .railSection {
+  flex: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 }
 .railHead {
+  min-height: 24px;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
 }
 .railTitle {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--c-green);
@@ -175,7 +210,7 @@
   align-items: center;
   gap: 4px;
   flex: none;
-  min-height: 36px;
+  min-height: 24px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -190,7 +225,8 @@
 .rail {
   list-style: none;
   margin: 0 calc(-1 * var(--pad-x));
-  padding: 2px var(--pad-x) 6px;
+  padding: 2px var(--pad-x) 2px;
+  height: var(--rail-h);
   scroll-padding-inline: var(--pad-x);
   display: flex;
   gap: 8px;
@@ -204,11 +240,23 @@
 }
 .railItem {
   flex: none;
-  width: 134px;
+  width: var(--rail-w);
+  height: 100%;
   scroll-snap-align: start;
 }
 .railItem > * {
   height: 100%;
+}
+
+/* Short screens: tighter everything. */
+@container home (max-height: 600px) {
+  .column {
+    --rail-h: 164px;
+    --rail-w: 128px;
+    --mascot-h: 40px;
+    --action-h: 40px;
+    --zone-gap: 5px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -219,5 +267,14 @@
   .segment,
   .action {
     transition: none;
+  }
+}
+
+@media (max-width: 350px) {
+  .railTitle {
+    font-size: 14.5px;
+  }
+  .viewAll {
+    font-size: 12.5px;
   }
 }

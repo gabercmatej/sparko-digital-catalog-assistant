@@ -109,6 +109,7 @@ button.tile:active {
   font-weight: 700;
   line-height: 1;
   background: #fff;
+  border-radius: var(--price-radius, 0);
   color: var(--c-red-ink);
   padding: 2px 3px;
   text-transform: uppercase;
@@ -118,6 +119,7 @@ button.tile:active {
   display: inline-flex;
   align-items: flex-start;
   background: var(--c-red);
+  border-radius: var(--price-radius, 0);
   color: #fff;
   font-weight: 800;
   line-height: 1;
