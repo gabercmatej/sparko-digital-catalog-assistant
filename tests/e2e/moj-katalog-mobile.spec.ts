@@ -107,7 +107,7 @@ test("bar is in the viewport directly above the bottom nav", async ({ page }) =>
   expect(b.y + b.height).toBeLessThanOrEqual(vh);
   expect(Math.abs(b.y + b.height - n.y)).toBeLessThanOrEqual(1);
   // A soft shadow lifts the bar (cast upward); the shared bottom nav gets none.
-  expect(await bar(page).evaluate((el) => getComputedStyle(el).boxShadow)).toMatch(/^rgba\(0, 0, 0, 0\.17\) 0px -4px 14px/);
+  expect(await bar(page).evaluate((el) => getComputedStyle(el).boxShadow)).toMatch(/^rgba\(0, 0, 0, 0\.22\) 0px -5px 18px/);
   expect(await nav(page).evaluate((el) => getComputedStyle(el).boxShadow)).toBe("none");
 });
 
@@ -140,4 +140,14 @@ test("the summary is not present on /domov or /", async ({ page }) => {
   await expect(bar(page)).toHaveCount(0);
   await page.goto("/");
   await expect(bar(page)).toHaveCount(0);
+});
+
+test("summary labels and amounts are visible; no recommendation info icon; no '1 kg · za kg'", async ({ page }) => {
+  await seed(page, SAVED);
+  for (const t of ["Skupni znesek", "Skupni prihranek"]) await expect(bar(page).getByText(t)).toBeVisible();
+  await expect(bar(page).locator("[data-total-price]")).toBeVisible();
+  await expect(bar(page).locator("[data-total-savings]")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Zakaj ta priporočila?" })).toHaveCount(0);
+  await expect(page.locator("[data-reco-rail]")).toBeVisible();
+  await expect(page.locator("main")).not.toContainText(/1\s?kg\s*·\s*za kg/);
 });

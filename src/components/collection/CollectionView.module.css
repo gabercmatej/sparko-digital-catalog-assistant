@@ -190,7 +190,7 @@
 }
 .bandHead {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
@@ -201,20 +201,6 @@
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: #fff;
-}
-.infoBtn {
-  display: inline-grid;
-  vertical-align: -6px;
-  margin-left: 2px;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: rgb(255 255 255 / 85%);
-  -webkit-tap-highlight-color: transparent;
 }
 .seeAll {
   flex: none;

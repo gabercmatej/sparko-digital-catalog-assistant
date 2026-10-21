@@ -137,6 +137,19 @@ export const PRICE_UNIT_LABEL: Record<Offer["priceUnit"], string> = {
   kos: "za kos",
 };
 
+/** Pack sizes that already say what the price unit says ("1 kg" priced per kg). */
+const UNIT_PACK: Partial<Record<Offer["priceUnit"], string>> = { kg: "1 kg", "100g": "100 g", kos: "1 kos" };
+
+/**
+ * The price-unit label to show beside a pack size: "za kg" for a 750 g loaf priced per kg, but "" for "1 kg" priced
+ * per kg, so a card never reads "1 kg · za kg". The price itself (and every €/kg calculation) is unchanged.
+ */
+export function unitLabel(packSize: string, priceUnit: Offer["priceUnit"]): string {
+  const same = UNIT_PACK[priceUnit];
+  if (same && packSize.replace(/\s+/g, " ").trim().toLowerCase() === same) return "";
+  return PRICE_UNIT_LABEL[priceUnit];
+}
+
 /** Human condition line, e.g. "s SPAR plus kartico · redna cena 1,99 €" or null. */
 export function conditionText(o: Offer): string | null {
   const parts: string[] = [];

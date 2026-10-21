@@ -1,5 +1,5 @@
 "use client";
-import { conditionText, formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { conditionText, formatPrice, getOffer, getPrimaryOffer, getProduct, unitLabel } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
 import { ProductTile } from "./ProductTile";
 import styles from "./ProductSummary.module.css";
@@ -30,7 +30,7 @@ export function ProductSummary({
   const offer = (offerId && getOffer(offerId)) || getPrimaryOffer(productId);
   if (!product || !offer) return null;
   const cond = conditionText(offer);
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  const unit = unitLabel(product.packSize, offer.priceUnit);
   const Name = heading ? (`h${heading}` as "h3") : "span";
 
   return (

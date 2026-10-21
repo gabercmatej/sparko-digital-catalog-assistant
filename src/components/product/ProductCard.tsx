@@ -1,5 +1,5 @@
 "use client";
-import { badgePrice, formatPrice, getOffer, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { badgePrice, formatPrice, getOffer, getPrimaryOffer, getProduct, unitLabel } from "@/lib/catalog";
 import type { Offer } from "@/lib/types";
 import { ProductActions } from "./ProductActions";
 import { brandLabel, ProductSummary } from "./ProductSummary";
@@ -65,7 +65,7 @@ export function ProductCard({
  * is meant to sit flush in the bottom-right corner of its white row. Inline markup only (spans).
  */
 export function PriceBlock({ offer, productId, compact = false }: { offer: Offer; productId?: string; compact?: boolean }) {
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  const unit = unitLabel(getProduct(offer.productId)?.packSize ?? "", offer.priceUnit);
   return (
     <span className={`${styles.priceWrap}${compact ? ` ${styles.compact}` : ""}`} data-price-block>
       {productId && <RetailerBadge productId={productId} size="xs" className={styles.badge} />}

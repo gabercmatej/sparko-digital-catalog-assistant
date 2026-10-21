@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { catalogs, DEMO_LABEL, formatPrice, getOffer, getPrimaryOffer, getProduct, placements, PRICE_UNIT_LABEL, RETAILER_LABEL, retailerOf } from "@/lib/catalog";
+import { catalogs, DEMO_LABEL, formatPrice, getOffer, getPrimaryOffer, getProduct, placements, unitLabel, RETAILER_LABEL, retailerOf } from "@/lib/catalog";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { removeProduct, saveProduct, showToast, useStore } from "@/lib/store/store";
 import type { SavedItem } from "@/lib/types";
@@ -53,7 +53,7 @@ function shareText(items: SavedItem[]): string {
     const o = getPrimaryOffer(it.productId);
     const r = retailerOf(it.productId);
     if (!p || !o) return [];
-    const unit = PRICE_UNIT_LABEL[o.priceUnit];
+    const unit = unitLabel(p.packSize, o.priceUnit);
     return [`${p.name}, ${p.packSize} – ${formatPrice(o.priceCents)}${unit ? " " + unit : ""}${r ? ` (${RETAILER_LABEL[r]})` : ""}`];
   });
   return ["Moj katalog (Sparko)", ...lines.map((l) => `• ${l}`)].join("\n");
@@ -66,7 +66,6 @@ export function CollectionView() {
   const [sheetId, setSheetId] = useState<string | null>(null);
   const [flashId, setFlashId] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
   const flashTimer = useRef<number | undefined>(undefined);
   const uid = useId();
   const tabId = (t: Tab) => `${uid}-tab-${t}`;
@@ -288,16 +287,12 @@ export function CollectionView() {
                   <div className={styles.bandHead}>
                     <h2 id={`${uid}-reco`} className={styles.bandTitle}>
                       {recTitle}
-                      <button type="button" className={styles.infoBtn} aria-expanded={infoOpen} aria-label="Zakaj ta priporočila?" onClick={() => setInfoOpen((o) => !o)}>
-                        <Icon name="info" size={16} />
-                      </button>
                     </h2>
                     <button type="button" className={styles.seeAll} onClick={() => goTab("priporocila")} data-see-all>
                       Poglej vse
                       <Icon name="arrow-right" size={16} strokeWidth={2.2} />
                     </button>
                   </div>
-                  {infoOpen && <p className={styles.bandNote}>{infoText}</p>}
                   <ul className={styles.rail} data-reco-rail>
                     {recs.map((r) => (
                       <li key={r.productId} className={styles.railItem} data-reco-item data-product-id={r.productId}>

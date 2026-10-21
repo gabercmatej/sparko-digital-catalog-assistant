@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { formatPeriod, formatPrice, formatShortDate, getOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { formatPeriod, formatPrice, formatShortDate, getOffer, getProduct, unitLabel } from "@/lib/catalog";
 import { DEMO_FORECAST_LABEL } from "@/lib/demoForecast";
 import type { FuturePromo } from "@/lib/types";
 import { ProductActions } from "../product/ProductActions";
@@ -75,7 +75,7 @@ export function ProductRow({
   const future = !!(upcoming || forecast);
   const panelId = `row-${upcoming ? upcoming.id : forecast ? `forecast-${productId}` : offerId}`;
   const brand = brandLabel(product);
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  const unit = unitLabel(product.packSize, offer.priceUnit);
   const nowLabel = future ? `Zdaj${unit ? ` · ${unit}` : ""}` : unit;
   const regular = !future && offer.regularPriceCents != null && (
     <span className={styles.rowRegular} data-regular-price>

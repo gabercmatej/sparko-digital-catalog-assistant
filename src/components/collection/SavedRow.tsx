@@ -1,5 +1,5 @@
 "use client";
-import { formatPrice, getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { formatPrice, getPrimaryOffer, getProduct, unitLabel } from "@/lib/catalog";
 import { Icon } from "../ui/Icon";
 import { PricePill } from "../product/PricePill";
 import { PriceStack } from "../product/PriceStack";
@@ -29,7 +29,7 @@ export function SavedRow({
   const product = getProduct(productId);
   const offer = getPrimaryOffer(productId);
   if (!product || !offer) return null;
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  const unit = unitLabel(product.packSize, offer.priceUnit);
   const regular = offer.regularPriceCents != null && offer.regularPriceCents > offer.priceCents ? offer.regularPriceCents : null;
   const label = `${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}, ${formatPrice(offer.priceCents)}${unit ? " " + unit : ""}`;
 

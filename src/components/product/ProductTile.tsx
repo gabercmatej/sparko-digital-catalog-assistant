@@ -1,5 +1,5 @@
 "use client";
-import { badgePrice, getPrimaryOffer, getProduct, splitPrice, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { badgePrice, getPrimaryOffer, getProduct, splitPrice, unitLabel as priceUnitLabel } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import { RetailerBadge } from "./RetailerBadge";
@@ -37,7 +37,7 @@ export function ProductTile({
   if (!product || !offer) return null;
   const saved = showSaved && isSaved(productId, store);
   const { euros, cents } = splitPrice(offer.priceCents);
-  const unitLabel = PRICE_UNIT_LABEL[offer.priceUnit];
+  const unitLabel = priceUnitLabel(product.packSize, offer.priceUnit);
   const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}, ${euros},${cents} €${unitLabel ? " " + unitLabel : ""}${offer.conditions.spPlusRequired ? ", s kartico SPAR plus" : ""}${saved ? ", v Mojem katalogu" : ""}`;
 
   const inner = (

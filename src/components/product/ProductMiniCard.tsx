@@ -1,5 +1,5 @@
 "use client";
-import { getPrimaryOffer, getProduct, PRICE_UNIT_LABEL } from "@/lib/catalog";
+import { getPrimaryOffer, getProduct, unitLabel } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
 import { PricePill } from "./PricePill";
@@ -35,7 +35,7 @@ export function ProductMiniCard({
   const offer = getPrimaryOffer(productId);
   if (!product || !offer) return null;
   const saved = isSaved(productId, store);
-  const unit = PRICE_UNIT_LABEL[offer.priceUnit];
+  const unit = unitLabel(product.packSize, offer.priceUnit);
   const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}${saved ? ", v Mojem katalogu" : ""}`;
 
   const body = (

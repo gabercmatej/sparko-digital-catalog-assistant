@@ -194,7 +194,7 @@
   color: #fff;
 }
 .actionLabel {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.2;
   overflow-wrap: anywhere;
@@ -217,7 +217,7 @@
     display: none;
   }
   .actionLabel {
-    font-size: 13.5px;
+    font-size: 12px;
   }
 }
 
