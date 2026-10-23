@@ -10,10 +10,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "validate:data": "tsx scripts/validate-data.ts"
+    "validate:data": "tsx scripts/validate-data.ts",
+    "auth:generate": "tsx scripts/auth/generate-auth-env.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
+    "iron-session": "^8.0.4",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",

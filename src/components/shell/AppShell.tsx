@@ -34,6 +34,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     hydrate();
   }, []);
 
+  // A page restored from the back/forward cache (e.g. Back after Odjava) skips the server, so re-check the session.
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (!e.persisted) return;
+      fetch("/api/auth/session", { cache: "no-store" })
+        .then((r) => r.json() as Promise<{ authenticated?: boolean }>)
+        .then((s) => {
+          if (!s.authenticated) window.location.replace("/prijava");
+        })
+        .catch(() => {});
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
+
   // Track the visual viewport: detect the on-screen keyboard (iOS overlays it; Android with
   // interactive-widget=resizes-content shrinks innerHeight too, so compare against the tallest
   // unzoomed height seen at this width). Only while the iOS keyboard is open does the shell get an

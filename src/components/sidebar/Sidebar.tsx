@@ -77,6 +77,18 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
     }
   };
 
+  // Clears the session cookie only; saved products and conversations stay in this browser.
+  const [loggingOut, setLoggingOut] = useState(false);
+  const logout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch("/api/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" }, cache: "no-store" });
+    } finally {
+      // Full navigation (not router.push) drops the client router cache; replace keeps the app out of Back.
+      window.location.replace("/prijava");
+    }
+  };
+
   const goChat = (id: string | null) => {
     if (id) setActiveConversation(id);
     else startNewChat();
@@ -162,6 +174,10 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                 <Icon name="settings" size={21} />
                 <span>Nastavitve</span>
                 <Icon name="chevron-right" size={18} className={styles.navChevron} />
+              </button>
+              <button type="button" className={styles.navItem} onClick={logout} disabled={loggingOut} aria-busy={loggingOut || undefined}>
+                <Icon name="logout" size={21} />
+                <span>Odjava</span>
               </button>
             </div>
           </>

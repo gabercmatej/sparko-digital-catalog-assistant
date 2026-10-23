@@ -37,6 +37,7 @@ const PATHS: Record<string, string> = {
   map: "M9 4.5 3.5 6.5v13L9 17.5l6 2 5.5-2v-13L15 6.5zM9 4.5v13M15 6.5v13",
   navigation: "M20 4 4 10.8l6.8 2.4L13.2 20z",
   store: "M4 10v10h16V10M3 6.5 5 4h14l2 2.5V8a2.5 2.5 0 0 1-4.5 1.5 2.5 2.5 0 0 1-4.5 0 2.5 2.5 0 0 1-4.5 0A2.5 2.5 0 0 1 3 8zM10 20v-5h4v5",
+  logout: "M14 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h10",
   share: "M12 15V4M8 8l4-4 4 4M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6",
   "more-vertical": "M12 5.5h.01M12 12h.01M12 18.5h.01",
   minus: "M5 12h14",

@@ -3,6 +3,7 @@
  * Secrets stay server-side; errors never expose internals; logs contain only categories.
  */
 import { providerFromEnv } from "@/lib/assistant/anthropic";
+import { rejectUnauthenticated } from "@/lib/auth/server";
 import { BAD_REQUEST_TEXT, handleChat } from "@/lib/assistant/orchestrate";
 import { burstLimiter, checkLiveQuota, clientIp, hashIp } from "@/lib/assistant/ratelimit";
 import type { ChatErrorResponse } from "@/lib/types";
@@ -17,6 +18,9 @@ function error(status: number, body: ChatErrorResponse, extra: Record<string, st
 }
 
 export async function POST(request: Request) {
+  const unauthorized = await rejectUnauthenticated();
+  if (unauthorized) return unauthorized;
+
   const ipHash = hashIp(clientIp(request.headers));
   const burst = burstLimiter.check(ipHash);
   if (!burst.allowed) {

@@ -11,6 +11,14 @@ import { buildDeterministicReply } from "@/lib/assistant/respond";
 import { checkLiveQuota, createBurstLimiter } from "@/lib/assistant/ratelimit";
 import { checkProse, validateModelOutput } from "@/lib/assistant/validate";
 
+// The chat route is session-gated; these tests exercise chat behaviour, so the gate is mocked open.
+// (The 401 path itself is covered in auth-route / e2e auth specs.)
+const mockSession = vi.hoisted(() => ({ signedIn: true }));
+vi.mock("@/lib/auth/server", () => ({
+  rejectUnauthenticated: async () => (mockSession.signedIn ? null : Response.json({ code: "unauthorized" }, { status: 401 })),
+  hasValidSession: async () => mockSession.signedIn,
+}));
+
 // Data-driven anchor: an S-BUDGET product without a printed discount (the role "skuta" played in the old catalog).
 const ANCHOR = products.find((p) => p.line === "S-BUDGET" && fold(p.name).startsWith("sampinjon"))!;
 const ANCHOR_ID = ANCHOR.id;
