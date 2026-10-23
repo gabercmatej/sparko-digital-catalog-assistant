@@ -314,6 +314,23 @@
   flex: none;
 }
 
+.legal {
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.72);
+}
+.legalStrong {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 @media (max-height: 700px) {
   .mascot {
     width: clamp(96px, 20vh, 150px);

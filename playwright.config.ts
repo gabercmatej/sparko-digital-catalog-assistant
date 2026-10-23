@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import { AUTH_STATE_FILE, E2E_EMAIL, E2E_LOGIN, E2E_SECRET, e2ePasswordHash } from "./tests/e2e/auth-credentials";
+import { AUTH_STATE_FILE, E2E_SECRET, E2E_STORE_PREFIX, E2E_UPSTASH_PORT, E2E_UPSTASH_TOKEN, E2E_UPSTASH_URL } from "./tests/e2e/auth-credentials";
 
 const PORT = Number(process.env.E2E_PORT ?? 3100);
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${PORT}`;
@@ -37,21 +37,31 @@ export default defineConfig({
   // Runs against a production build. Build first with `npm run build`.
   webServer: process.env.E2E_BASE_URL
     ? undefined
-    : {
-        command: `npx next start -p ${PORT}`,
-        url: baseURL,
-        reuseExistingServer: true,
-        timeout: 120_000,
-        // Ensure the fallback path is exercised deterministically in tests.
-        env: {
-          ANTHROPIC_API_KEY: "",
-          NODE_ENV: "production",
-          CHAT_BURST_LIMIT: "200",
-          // TEST-ONLY demo login (applies only when Playwright starts the server itself).
-          SPARKO_DEMO_LOGIN: E2E_LOGIN,
-          SPARKO_DEMO_EMAIL: E2E_EMAIL,
-          SPARKO_DEMO_PASSWORD_HASH: e2ePasswordHash(),
-          SPARKO_AUTH_SECRET: E2E_SECRET,
+    : [
+        // TEST-ONLY in-memory Upstash stand-in (accounts, sessions, stats live here).
+        {
+          command: "npx tsx tests/support/fake-upstash-server.ts",
+          port: E2E_UPSTASH_PORT,
+          reuseExistingServer: true,
+          timeout: 60_000,
+          env: { E2E_UPSTASH_PORT: String(E2E_UPSTASH_PORT) },
         },
-      },
+        {
+          command: `npx next start -p ${PORT}`,
+          url: baseURL,
+          reuseExistingServer: true,
+          timeout: 120_000,
+          // Ensure the fallback path is exercised deterministically in tests.
+          env: {
+            ANTHROPIC_API_KEY: "",
+            NODE_ENV: "production",
+            CHAT_BURST_LIMIT: "200",
+            // TEST-ONLY auth backend (applies only when Playwright starts the server itself).
+            UPSTASH_REDIS_REST_URL: E2E_UPSTASH_URL,
+            UPSTASH_REDIS_REST_TOKEN: E2E_UPSTASH_TOKEN,
+            SPARKO_STORE_PREFIX: E2E_STORE_PREFIX,
+            SPARKO_AUTH_SECRET: E2E_SECRET,
+          },
+        },
+      ],
 });

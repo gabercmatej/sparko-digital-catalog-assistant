@@ -1,49 +1,60 @@
 import { describe, expect, it } from "vitest";
-import { LOGIN_LIMIT, LOGIN_WINDOW_SECONDS, checkLoginAttempt } from "@/lib/auth/ratelimit";
+import { LOGIN_ACCOUNT_LIMIT, LOGIN_IP_LIMIT, LOGIN_WINDOW_SECONDS, checkLoginAttempt, refundLoginAttempt } from "@/lib/auth/ratelimit";
+import { StoreError } from "@/lib/auth/store";
+import { dumpRedis, makeStore } from "./auth-helpers";
 
-describe("login rate limit (in-memory)", () => {
-  it("allows LOGIN_LIMIT attempts then blocks, per IP", async () => {
-    const ip = "198.51.100.1";
-    const now = 1_000_000_000_000;
-    for (let i = 0; i < LOGIN_LIMIT; i++) {
-      expect(await checkLoginAttempt(ip, { env: {}, now })).toEqual({ allowed: true, durable: false });
+describe("login rate limit (durable store)", () => {
+  const now = 1_800_000_000_000;
+
+  it("allows LOGIN_IP_LIMIT attempts per IP, then blocks; other IPs unaffected", async () => {
+    const { store } = makeStore();
+    for (let i = 0; i < LOGIN_IP_LIMIT; i++) expect(await checkLoginAttempt(store, "203.0.113.1", `u${i}`, now)).toBe(true);
+    expect(await checkLoginAttempt(store, "203.0.113.1", "fresh", now)).toBe(false);
+    expect(await checkLoginAttempt(store, "203.0.113.2", "u", now)).toBe(true);
+  });
+
+  it("every attempt counts against a username up front; case/accent-insensitive key", async () => {
+    const { store } = makeStore();
+    for (let i = 0; i < LOGIN_ACCOUNT_LIMIT; i++) expect(await checkLoginAttempt(store, `203.0.113.${10 + i}`, i % 2 ? "AlešP" : " alesp ", now)).toBe(true);
+    expect(await checkLoginAttempt(store, "203.0.113.4", "ALEŠP", now)).toBe(false);
+    expect(await checkLoginAttempt(store, "203.0.113.4", "someone-else", now)).toBe(true);
+  });
+
+  it("parallel bursts cannot overshoot the username budget", async () => {
+    const { store } = makeStore();
+    const results = await Promise.all(Array.from({ length: 30 }, (_, i) => checkLoginAttempt(store, `198.51.100.${i}`, "victim", now)));
+    expect(results.filter(Boolean)).toHaveLength(LOGIN_ACCOUNT_LIMIT);
+  });
+
+  it("successful sign-ins give their attempt back", async () => {
+    const { store } = makeStore();
+    for (let i = 0; i < LOGIN_ACCOUNT_LIMIT * 2; i++) {
+      expect(await checkLoginAttempt(store, `192.0.2.${i}`, "u", now)).toBe(true);
+      await refundLoginAttempt(store, "u", now);
     }
-    expect((await checkLoginAttempt(ip, { env: {}, now })).allowed).toBe(false);
-    expect((await checkLoginAttempt("198.51.100.2", { env: {}, now })).allowed).toBe(true);
   });
-  it("recovers after the window", async () => {
-    const ip = "198.51.100.3";
-    const now = 2_000_000_000_000;
-    for (let i = 0; i <= LOGIN_LIMIT; i++) await checkLoginAttempt(ip, { env: {}, now });
-    expect((await checkLoginAttempt(ip, { env: {}, now })).allowed).toBe(false);
-    expect((await checkLoginAttempt(ip, { env: {}, now: now + (LOGIN_WINDOW_SECONDS + 1) * 1000 })).allowed).toBe(true);
-  });
-});
 
-describe("login rate limit (Upstash)", () => {
-  const env = { UPSTASH_REDIS_REST_URL: "https://redis.example.test/", UPSTASH_REDIS_REST_TOKEN: "tok" };
-  const fake = (count: number, calls: { url: string; init: RequestInit }[] = []) =>
-    (async (url: string, init: RequestInit) => {
-      calls.push({ url, init });
-      return new Response(JSON.stringify([{ result: count }, { result: 1 }]), { status: 200 });
-    }) as unknown as typeof fetch;
-
-  it("allows up to the limit and blocks above it, durable", async () => {
-    const calls: { url: string; init: RequestInit }[] = [];
-    expect(await checkLoginAttempt("203.0.113.1", { env, fetchImpl: fake(LOGIN_LIMIT, calls), now: 5 })).toEqual({ allowed: true, durable: true });
-    expect(await checkLoginAttempt("203.0.113.1", { env, fetchImpl: fake(LOGIN_LIMIT + 1), now: 5 })).toEqual({ allowed: false, durable: true });
-    expect(calls[0].url).toBe("https://redis.example.test/pipeline");
-    expect((calls[0].init.headers as Record<string, string>).Authorization).toBe("Bearer tok");
-    const body = JSON.parse(String(calls[0].init.body));
-    expect(body[0][0]).toBe("INCR");
-    expect(body[0][1]).not.toContain("203.0.113.1");
+  it("recovers in the next window", async () => {
+    const { store } = makeStore();
+    for (let i = 0; i < LOGIN_ACCOUNT_LIMIT; i++) await checkLoginAttempt(store, `203.0.113.${i}`, "u", now);
+    expect(await checkLoginAttempt(store, "203.0.113.5", "u", now)).toBe(false);
+    expect(await checkLoginAttempt(store, "203.0.113.5", "u", now + (LOGIN_WINDOW_SECONDS + 1) * 1000)).toBe(true);
   });
-  it("falls back to in-memory when Upstash errors", async () => {
-    const boom = (async () => {
-      throw new Error("net");
-    }) as unknown as typeof fetch;
-    expect(await checkLoginAttempt("203.0.113.9", { env, fetchImpl: boom })).toEqual({ allowed: true, durable: false });
-    const bad = (async () => new Response("no", { status: 500 })) as unknown as typeof fetch;
-    expect((await checkLoginAttempt("203.0.113.9", { env, fetchImpl: bad })).durable).toBe(false);
+
+  it("keys carry an expiry and never contain the raw IP or username", async () => {
+    const { store, redis } = makeStore();
+    await checkLoginAttempt(store, "203.0.113.77", "SecretUserName", now);
+    const keys = redis.keys();
+    expect(keys.length).toBe(2);
+    for (const k of keys) expect(redis.ttl(k)).toBeGreaterThan(0);
+    const dump = dumpRedis(redis);
+    expect(dump).not.toContain("203.0.113.77");
+    expect(dump.toLowerCase()).not.toContain("secretusername");
+  });
+
+  it("throws StoreError when the store is down (fail closed)", async () => {
+    const { store } = makeStore({ fail: () => true });
+    await expect(checkLoginAttempt(store, "203.0.113.9", "u", now)).rejects.toBeInstanceOf(StoreError);
+    await expect(refundLoginAttempt(store, "u", now)).rejects.toBeInstanceOf(StoreError);
   });
 });

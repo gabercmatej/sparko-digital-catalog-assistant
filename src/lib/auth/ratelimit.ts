@@ -1,48 +1,38 @@
 /**
- * Login attempt limits (per hashed IP, fixed window).
- *
- * Durable when UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN are set (shared by all Vercel
- * instances). Without Upstash, or if Upstash errors, only a best-effort per-instance in-memory
- * limiter applies — it is NOT reliable protection across serverless instances. Either way the
- * password check itself (scrypt) costs a few hundred ms per attempt.
+ * Durable sign-in attempt limits (fixed windows in the store, shared by all Vercel instances):
+ *   - per client IP (hashed): every attempt counts, LOGIN_IP_LIMIT per window;
+ *   - per username (hashed, also unknown ones): every attempt is counted atomically BEFORE the password
+ *     check (so parallel bursts cannot overshoot), and a successful sign-in gives its attempt back —
+ *     effectively LOGIN_ACCOUNT_LIMIT failures per window.
+ * The store is required: if it errors, sign-in is refused (fail closed). The scrypt check itself
+ * also costs a few hundred ms per attempt.
  */
-import { createBurstLimiter, hashIp, upstashConfigured, type Env } from "@/lib/assistant/ratelimit";
+import { hashIp } from "@/lib/assistant/ratelimit";
+import { foldUsername, sha256 } from "./accounts";
+import type { Store } from "./store";
 
-export const LOGIN_LIMIT = 10;
+export const LOGIN_IP_LIMIT = 20;
+export const LOGIN_ACCOUNT_LIMIT = 10;
 export const LOGIN_WINDOW_SECONDS = 15 * 60;
 
-const memoryLimiter = createBurstLimiter(LOGIN_LIMIT, LOGIN_WINDOW_SECONDS * 1000);
+const windowId = (now: number) => Math.floor(now / 1000 / LOGIN_WINDOW_SECONDS);
+const accountKey = (store: Store, identifier: string, now: number) =>
+  store.key("rl", "acct", sha256(`sparko-login:${foldUsername(identifier)}`).slice(0, 32), windowId(now));
 
-export type LoginLimitResult = { allowed: boolean; durable: boolean };
+/** Counts this attempt against the IP and checks the username's failure budget. Throws StoreError. */
+export async function checkLoginAttempt(store: Store, ip: string, identifier: string, now = Date.now()): Promise<boolean> {
+  const ipKey = store.key("rl", "ip", hashIp(ip, "sparko-login-v2"), windowId(now));
+  const acctKey = accountKey(store, identifier, now);
+  const [ipCount, , attempts] = await store.pipeline([
+    ["INCR", ipKey],
+    ["EXPIRE", ipKey, LOGIN_WINDOW_SECONDS + 60],
+    ["INCR", acctKey],
+    ["EXPIRE", acctKey, LOGIN_WINDOW_SECONDS + 60],
+  ]);
+  return Number(ipCount) <= LOGIN_IP_LIMIT && Number(attempts) <= LOGIN_ACCOUNT_LIMIT;
+}
 
-export async function checkLoginAttempt(
-  ip: string,
-  opts: { env?: Env; fetchImpl?: typeof fetch; now?: number } = {},
-): Promise<LoginLimitResult> {
-  const env = opts.env ?? process.env;
-  const now = opts.now ?? Date.now();
-  const ipHash = hashIp(ip, "sparko-login-v1");
-  if (upstashConfigured(env)) {
-    const windowId = Math.floor(now / 1000 / LOGIN_WINDOW_SECONDS);
-    const key = `sparko:login:${ipHash}:${windowId}`;
-    const url = env.UPSTASH_REDIS_REST_URL!.trim().replace(/\/+$/, "");
-    try {
-      const res = await (opts.fetchImpl ?? fetch)(`${url}/pipeline`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${env.UPSTASH_REDIS_REST_TOKEN!.trim()}`, "Content-Type": "application/json" },
-        body: JSON.stringify([
-          ["INCR", key],
-          ["EXPIRE", key, String(LOGIN_WINDOW_SECONDS + 60)],
-        ]),
-        signal: AbortSignal.timeout(2000),
-        cache: "no-store",
-      });
-      const data = res.ok ? ((await res.json()) as { result?: unknown }[]) : null;
-      const count = Number(Array.isArray(data) ? data[0]?.result : NaN);
-      if (Number.isFinite(count)) return { allowed: count <= LOGIN_LIMIT, durable: true };
-    } catch {
-      // fall through to the in-memory limiter
-    }
-  }
-  return { allowed: memoryLimiter.check(ipHash, now).allowed, durable: false };
+/** Gives a successful sign-in's attempt back, so only failures use up the username's budget. */
+export async function refundLoginAttempt(store: Store, identifier: string, now = Date.now()): Promise<void> {
+  await store.run("DECR", accountKey(store, identifier, now));
 }

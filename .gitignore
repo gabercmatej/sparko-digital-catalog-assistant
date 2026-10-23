@@ -55,3 +55,6 @@ next-env.d.ts
 /.tmp/
 .tmp-*.log
 /.playwright-mcp/
+
+# operator credential files (passwords, activation links)
+/.secrets/

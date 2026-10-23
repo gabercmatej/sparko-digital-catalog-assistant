@@ -118,32 +118,18 @@ Without any environment variables SPARko runs in **limited mode** (deterministic
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Persistent rate limiting, required for live AI in production |
 | `ALLOW_UNLIMITED_AI` | `true` enables live AI in production without rate limiting (private demos only) |
 
-### Demo login
+### Reviewer access (login)
 
-The whole app (pages, `/api/*`, leaflet pages and product photos) sits behind one preconfigured demo account. There is no registration, user database or password reset. Authentication **fails closed**: without valid auth variables nobody can sign in, in development too.
+The whole app (pages, `/api/*`, leaflet pages and product photos) is behind individual accounts: each reviewer gets a one-time activation link plus a personal username and password, bound to exactly one browser (installation/profile). State (accounts, browser bindings, visit counts) lives in Upstash Redis; sessions last 24 hours. Authentication **fails closed**: without the store and `SPARKO_AUTH_SECRET` nobody can sign in.
 
-| Variable | Purpose |
-| --- | --- |
-| `SPARKO_DEMO_LOGIN` | Demo username (matched case-insensitively) |
-| `SPARKO_DEMO_PASSWORD_HASH` | scrypt hash of the demo password (never the password itself) |
-| `SPARKO_AUTH_SECRET` | ≥ 32 random characters; encrypts/signs the session cookie |
-| `SPARKO_DEMO_EMAIL` | Optional email alias accepted instead of the username |
-
-Generate the values locally (nothing is sent anywhere; the password is asked for without echo):
+Required: `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` (or `KV_REST_API_URL` / `KV_REST_API_TOKEN`) and `SPARKO_AUTH_SECRET` (at least 32 random characters). Optional: `SPARKO_PUBLIC_URL`, `SPARKO_STORE_PREFIX`.
 
 ```bash
-npm run auth:generate -- --login SPAR --out .env.local   # or omit --out to print them
+npm run auth:provision -- create --reviewer <username> --admin <admin> --base-url https://<deployment> --env-file .env.local
+npm run auth:provision -- status --env-file .env.local
 ```
 
-On Vercel add the three values under *Settings → Environment Variables* (Production, type *Sensitive*) and **redeploy**; env changes only apply to new deployments. To change the password later, generate a new hash and replace `SPARKO_DEMO_PASSWORD_HASH`: existing sessions stop working automatically. Replacing `SPARKO_AUTH_SECRET` also signs everyone out.
-
-How it works and its limits:
-
-- Sessions are an [iron-session](https://github.com/vvo/iron-session) sealed, `HttpOnly`, `SameSite=Lax` (and `Secure` on HTTPS) cookie valid for **24 hours**. They are stateless: *Odjava* deletes the cookie in that browser, but a copied cookie stays valid until it expires or the secret is rotated.
-- `src/proxy.ts` gates every request. `src/app/(app)/layout.tsx` and `/api/chat` re-check the session on the server.
-- Public without login: the login page, `/api/auth/*`, `/brand/*` images, favicon, web manifest and `/_next/static/*` build chunks. Those chunks are shared with the login page, so **catalog data compiled into client JavaScript is reachable by someone who knows a chunk URL**. Treat this as access control for a demo, not data confidentiality.
-- Failed-login limiting: 10 attempts / 15 min per IP. It is durable only when Upstash is configured; otherwise it is a best-effort per-instance limit. This is a demo gate, not production identity management: rotate the password after the review.
-- Saved products and conversations stay in each browser's localStorage. One shared login on several devices does **not** synchronise them.
+Generated passwords and links are written only to `.secrets/` (git-ignored), never printed. Admin operations live at `/skrbnik`. Setup, distribution, admin operations and the **security limitations** are in [docs/ACCESS.md](docs/ACCESS.md).
 
 Other scripts: `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run validate:data`.
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent, ReactNode, SVGProps } from "react";
+import { LOGIN_MESSAGES, messageForQuery } from "@/lib/auth/messages";
 import { LoginBackground } from "./LoginBackground";
 import styles from "./LoginView.module.css";
 
@@ -72,7 +73,15 @@ const AlertIcon = () => (
   </Svg>
 );
 
-export function LoginView({ next, configError }: { next: string; configError: boolean }) {
+export function LoginView({
+  next,
+  configError,
+  activation,
+}: {
+  next: string;
+  configError: boolean;
+  activation?: { ready: boolean };
+}) {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -83,10 +92,9 @@ export function LoginView({ next, configError }: { next: string; configError: bo
 
   useEffect(() => {
     // No-JS fallback redirect brings the error in the query string.
-    const q = new URLSearchParams(window.location.search).get("napaka");
+    const q = messageForQuery(new URLSearchParams(window.location.search).get("napaka"));
     /* eslint-disable react-hooks/set-state-in-effect -- one-time read of the URL after mount */
-    if (q === "1") setError("Napačno uporabniško ime ali geslo.");
-    else if (q === "omejitev") setError("Preveč poskusov prijave. Poskusite znova čez nekaj minut.");
+    if (q) setError(q);
     /* eslint-enable react-hooks/set-state-in-effect */
     // Autofocus only with a precise pointer (never on phones).
     if (window.matchMedia("(pointer: fine)").matches) idRef.current?.focus();
@@ -112,7 +120,7 @@ export function LoginView({ next, configError }: { next: string; configError: bo
         window.location.replace(data.redirect);
         return; // keep loading state until navigation
       }
-      setError(data?.error && [401, 429, 503].includes(res.status) ? data.error : GENERIC_ERROR);
+      setError(data?.error && [401, 403, 429, 503].includes(res.status) ? data.error : GENERIC_ERROR);
     } catch {
       setError(GENERIC_ERROR);
     }
@@ -137,8 +145,12 @@ export function LoginView({ next, configError }: { next: string; configError: bo
         <p className={styles.wordmark} aria-hidden="true">
           Sparko
         </p>
-        <h1 className={styles.title}>Prijava</h1>
-        <p className={styles.subtitle}>Vpišite podatke za dostop do aplikacije.</p>
+        <h1 className={styles.title}>{activation ? "Aktivacija" : "Prijava"}</h1>
+        <p className={styles.subtitle}>
+          {activation
+            ? "Za aktivacijo osebnega dostopa vpišite prejeto uporabniško ime in geslo."
+            : "Vpišite podatke za dostop do aplikacije."}
+        </p>
 
         <form className={styles.panel} method="post" action="/api/auth/login" onSubmit={onSubmit}>
           <input type="hidden" name="next" value={next} />
@@ -212,16 +224,19 @@ export function LoginView({ next, configError }: { next: string; configError: bo
             </p>
           )}
           {configError && <p className={styles.notice}>{CONFIG_NOTICE}</p>}
+          {activation && !activation.ready && (
+            <p className={styles.notice}>{LOGIN_MESSAGES.activation_invalid}</p>
+          )}
 
           <button type="submit" className={styles.submit} disabled={loading} aria-busy={loading}>
             {loading ? (
               <>
                 <span className={styles.spinner} aria-hidden="true" />
-                Prijavljanje…
+                {activation ? "Aktiviranje…" : "Prijavljanje…"}
               </>
             ) : (
               <>
-                Prijavi se
+                {activation ? "Aktiviraj dostop" : "Prijavi se"}
                 <ArrowIcon />
               </>
             )}
@@ -249,6 +264,13 @@ export function LoginView({ next, configError }: { next: string; configError: bo
           <InfoIcon />
           <span>Podatke za prijavo prejmete od skrbnika.</span>
         </p>
+
+        <footer className={styles.legal}>
+          <span>Demo je last podjetja Sedem d.o.o.</span>
+          <span className={styles.legalStrong} lang="en">
+            Strictly confidential
+          </span>
+        </footer>
       </main>
     </div>
   );

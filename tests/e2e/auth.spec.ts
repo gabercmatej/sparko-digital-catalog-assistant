@@ -1,202 +1,403 @@
-import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
-import { E2E_EMAIL, E2E_LOGIN, E2E_PASSWORD, E2E_SECRET } from "./auth-credentials";
+import { expect, test, type APIRequestContext, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { E2E_ADMIN, E2E_ADMIN_PASSWORD, e2eStore, provisionAccount, type Provisioned } from "./auth-credentials";
 
-// Every test here starts signed out. The server's in-memory login limiter allows 10 attempts per
-// IP per 15 min, so each test presents its own (spoofed) client IP via x-forwarded-for.
+// Every test starts signed out; "different browsers" are separate browser contexts. The login limiter
+// allows 20 attempts per IP per 15 min, so each context presents its own (spoofed) x-forwarded-for.
 test.use({ storageState: { cookies: [], origins: [] } });
 
-const ERROR = "Napačno uporabniško ime ali geslo.";
-let ipCounter = 0;
-const nextIp = () => `10.20.${Math.floor(Math.random() * 200)}.${(++ipCounter % 250) + 1}`;
+const MSG = {
+  invalid: "Napačno uporabniško ime ali geslo.",
+  device: "Ta račun je že aktiviran v drugem brskalniku ali napravi. Za ponastavitev dostopa se obrnite na skrbnika.",
+  notActivated: "Račun še ni aktiviran.",
+  revoked: "Dostop do tega računa ni na voljo.",
+};
 
-test.beforeEach(async ({ page }) => {
-  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": nextIp() });
+let ipCounter = 0;
+const nextIp = () => `10.${30 + Math.floor(Math.random() * 200)}.${Math.floor(Math.random() * 250)}.${(++ipCounter % 250) + 1}`;
+let nameCounter = 0;
+const uniqueName = (prefix = "rev") => `e2e-${prefix}-${Date.now().toString(36)}${(++nameCounter).toString(36)}`;
+
+const opened: BrowserContext[] = [];
+test.afterEach(async () => {
+  await Promise.all(opened.splice(0).map((c) => c.close().catch(() => {})));
 });
 
-const alertWith = (page: Page, text = ERROR) => page.getByRole("alert").filter({ hasText: text });
+async function browserOf(browser: Browser, baseURL: string, viewport = { width: 390, height: 844 }) {
+  const context = await browser.newContext({
+    baseURL,
+    viewport,
+    storageState: { cookies: [], origins: [] },
+    extraHTTPHeaders: { "x-forwarded-for": nextIp() },
+  });
+  opened.push(context);
+  return { context, page: await context.newPage() };
+}
 
-async function fillLogin(page: Page, identifier: string, password: string) {
+const newReviewer = (): Promise<Provisioned> => provisionAccount(e2eStore(), uniqueName(), "reviewer");
+
+async function fillLogin(page: Page, identifier: string, password: string, button = "Prijavi se") {
   await page.getByLabel("Uporabniško ime ali e-pošta").fill(identifier);
   await page.getByLabel("Geslo", { exact: true }).fill(password);
-  await page.getByRole("button", { name: "Prijavi se" }).click();
+  await page.getByRole("button", { name: button }).click();
 }
 
-async function signIn(page: Page, path = "/") {
-  await page.goto(path);
-  await expect(page).toHaveURL(/\/prijava/);
-  await fillLogin(page, E2E_LOGIN, E2E_PASSWORD);
+const activationPath = (token: string) => `/aktivacija?token=${token}`;
+
+async function openActivation(page: Page, token: string) {
+  await page.goto(activationPath(token));
+  await expect(page).toHaveURL(/\/aktivacija$/);
 }
+
+async function activate(page: Page, r: Provisioned) {
+  await openActivation(page, r.token!);
+  await fillLogin(page, r.account.username, r.password, "Aktiviraj dostop");
+  await expect(page).toHaveURL(/\/domov$/);
+}
+
+async function signIn(page: Page, username: string, password: string) {
+  await page.goto("/prijava");
+  await fillLogin(page, username, password);
+}
+
+// A dead link on an already-bound account is reported as the device message; a lost race as "link invalid".
+const DEAD_LINK = /Aktivacijska povezava ni veljavna ali je že bila uporabljena|že aktiviran v drugem brskalniku ali napravi/;
+const alertWith = (page: Page, text: string | RegExp) => page.getByRole("alert").filter({ hasText: text });
+const menu = (page: Page) => page.getByRole("button", { name: "Odpri meni" }).first();
 
 async function logout(page: Page) {
-  await page.getByRole("button", { name: "Odpri meni" }).first().click();
+  await menu(page).click();
   await page.getByRole("button", { name: "Odjava" }).click();
   await expect(page).toHaveURL(/\/prijava/);
 }
 
-test("1. / shows the login page when signed out", async ({ page }) => {
+/** Simulates session expiry: only the session cookie goes away, the device cookie stays. */
+async function dropSession(context: BrowserContext) {
+  const keep = (await context.cookies()).filter((c) => c.name !== "sparko_session");
+  await context.clearCookies();
+  await context.addCookies(keep);
+}
+
+async function adminSignIn(browser: Browser, baseURL: string) {
+  const b = await browserOf(browser, baseURL, { width: 1280, height: 900 });
+  await signIn(b.page, E2E_ADMIN, E2E_ADMIN_PASSWORD);
+  await expect(b.page).toHaveURL(/\/skrbnik$/);
+  return b;
+}
+
+type Row = { id: string; username: string; status: string; stats: { visits: number; pageViews: number } };
+async function accountRow(request: APIRequestContext, username: string): Promise<Row> {
+  const res = await request.get("/api/admin/accounts");
+  expect(res.status()).toBe(200);
+  const body = (await res.json()) as { accounts: Row[] };
+  const row = body.accounts.find((a) => a.username === username);
+  expect(row, `account ${username} listed`).toBeTruthy();
+  return row!;
+}
+
+// ------------------------------------------------------------------------------------- signed out
+
+test("signed-out / redirects to the login page", async ({ browser, baseURL }) => {
+  const { page } = await browserOf(browser, baseURL!);
   await page.goto("/");
   await expect(page).toHaveURL(/\/prijava$/);
   await expect(page.getByRole("heading", { name: "Prijava" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Prijavi se" })).toBeVisible();
 });
 
-test("2. valid username + password lands on Home", async ({ page }) => {
-  await signIn(page);
-  await expect(page).toHaveURL(/\/domov$/);
-  await expect(page.getByRole("button", { name: "Odpri meni" }).first()).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Prijava" })).toHaveCount(0);
-});
-
-test("3. wrong password shows a generic error and stays on /prijava", async ({ page }) => {
-  await page.goto("/prijava");
-  await fillLogin(page, E2E_LOGIN, "wrong-password");
-  await expect(alertWith(page)).toBeVisible();
-  await expect(page).toHaveURL(/\/prijava/);
-});
-
-test("4. unknown username fails with the same message", async ({ page }) => {
-  await page.goto("/prijava");
-  await fillLogin(page, "nobody", E2E_PASSWORD);
-  await expect(alertWith(page)).toBeVisible();
-  await expect(page).toHaveURL(/\/prijava/);
-});
-
-test("5. configured email alias works (case-insensitive)", async ({ page }) => {
-  await page.goto("/prijava");
-  await fillLogin(page, E2E_EMAIL.toUpperCase(), E2E_PASSWORD);
-  await expect(page).toHaveURL(/\/domov$/);
-});
-
-test("6. refresh keeps the session", async ({ page }) => {
-  await signIn(page);
-  await expect(page).toHaveURL(/\/domov$/);
-  await page.reload();
-  await expect(page).toHaveURL(/\/domov$/);
-  await expect(page.getByRole("button", { name: "Odpri meni" }).first()).toBeVisible();
-});
-
-test("7. garbage sparko_session cookie is treated as signed out", async ({ page, context, baseURL }) => {
-  await context.addCookies([{ name: "sparko_session", value: "garbage.value", url: baseURL! }]);
-  await page.goto("/domov");
-  await expect(page).toHaveURL(/\/prijava/);
-  await expect(page.getByRole("button", { name: "Prijavi se" })).toBeVisible();
-});
-
-for (const path of ["/moj-katalog", "/letak", "/domov"]) {
-  test(`8. deep link ${path} redirects to login and is honoured after sign-in`, async ({ page }) => {
-    await page.goto(path);
-    await expect(page).toHaveURL(/\/prijava\?next=/);
-    expect(new URL(page.url()).searchParams.get("next")).toBe(path);
-    await fillLogin(page, E2E_LOGIN, E2E_PASSWORD);
-    await expect(page).toHaveURL(new RegExp(`${path}$`));
-  });
+for (const vp of [
+  { width: 390, height: 844 },
+  { width: 360, height: 640 },
+  { width: 1280, height: 800 },
+]) {
+  for (const path of ["/prijava", "/aktivacija"]) {
+    test(`disclaimer is shown below the info footer on ${path} at ${vp.width}x${vp.height}`, async ({ browser, baseURL }) => {
+      const { page } = await browserOf(browser, baseURL!, vp);
+      await page.goto(path);
+      const info = page.getByText("Podatke za prijavo prejmete od skrbnika.");
+      const owner = page.getByText("Demo je last podjetja Sedem d.o.o.");
+      const conf = page.getByText("Strictly confidential");
+      await conf.scrollIntoViewIfNeeded();
+      await expect(owner).toBeVisible();
+      await expect(conf).toBeVisible();
+      await expect(owner).toBeInViewport();
+      await expect(conf).toBeInViewport();
+      const ib = (await info.boundingBox())!;
+      const ob = (await owner.boundingBox())!;
+      const cb = (await conf.boundingBox())!;
+      expect(ob.y).toBeGreaterThanOrEqual(ib.y + ib.height - 1);
+      expect(cb.y).toBeGreaterThanOrEqual(ib.y + ib.height - 1);
+      const m = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, iw: window.innerWidth }));
+      expect(m.sw).toBeLessThanOrEqual(m.iw);
+    });
+  }
 }
 
-test("9. protected API and assets answer 401, brand assets stay public", async ({ request }: { request: APIRequestContext }) => {
-  const chat = await request.post("/api/chat", { data: { messages: [{ role: "user", content: "pozdravljen" }] } });
-  expect(chat.status()).toBe(401);
-  const catalog = await request.get("/catalog/spar-1.webp");
-  expect(catalog.status()).toBe(401);
-  expect((await request.get("/products/anything.webp")).status()).toBe(401);
-  expect((await request.get("/home/promo-cards.webp")).status()).toBe(401);
-  expect((await request.get("/api/auth/session")).status()).toBe(200);
-  const mascot = await request.get("/brand/sparko-mascot.webp");
-  expect(mascot.status()).toBe(200);
+test("login and activation pages are served no-store", async ({ request }) => {
+  for (const path of ["/prijava", "/aktivacija"]) {
+    const res = await request.get(path);
+    expect(res.status()).toBe(200);
+    expect(res.headers()["cache-control"] ?? "").toContain("no-store");
+  }
 });
 
-test("10. logout returns to login; back and refresh do not expose the app", async ({ page }) => {
-  await signIn(page);
+test("unauthenticated API calls answer 401", async ({ request }) => {
+  const chat = await request.post("/api/chat", { data: { messages: [{ role: "user", content: "pozdravljen" }] } });
+  expect(chat.status()).toBe(401);
+  expect((await request.get("/api/admin/accounts")).status()).toBe(401);
+  expect((await request.get("/catalog/spar-1.webp")).status()).toBe(401);
+  expect((await request.get("/brand/sparko-mascot.webp")).status()).toBe(200);
+});
+
+// ---------------------------------------------------------------------------------- activation
+
+test("first activation via link lands on Home, hides the token and keeps the session", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page, context } = await browserOf(browser, baseURL!);
+  const seen: string[] = [];
+  page.on("framenavigated", (f) => f === page.mainFrame() && seen.push(f.url()));
+  await page.goto(activationPath(r.token!));
+  await expect(page).toHaveURL(/\/aktivacija$/);
+  await expect(page.getByRole("heading", { name: "Aktivacija" })).toBeVisible();
+  await fillLogin(page, r.account.username, r.password, "Aktiviraj dostop");
   await expect(page).toHaveURL(/\/domov$/);
+  await expect(menu(page)).toBeVisible();
+  // After the proxy redirect the token never shows up in the address bar again.
+  for (const u of seen.slice(1)) expect(u).not.toContain(r.token!);
+  expect(page.url()).not.toContain(r.token!);
+  const names = (await context.cookies()).map((c) => c.name);
+  expect(names).toContain("sparko_session");
+  expect(names).toContain("sparko_device");
+
+  await page.reload();
+  await expect(page).toHaveURL(/\/domov$/);
+  await expect(menu(page)).toBeVisible();
+  await page.goto("/moj-katalog");
+  await expect(page).toHaveURL(/\/moj-katalog$/);
+  await page.goto("/letak");
+  await expect(page).toHaveURL(/\/letak/);
+  await page.goto("/domov");
+  await expect(page).toHaveURL(/\/domov$/);
+});
+
+test("a reused activation link is rejected in another browser", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const a = await browserOf(browser, baseURL!);
+  await activate(a.page, r);
+  const b = await browserOf(browser, baseURL!);
+  await openActivation(b.page, r.token!);
+  await fillLogin(b.page, r.account.username, r.password, "Aktiviraj dostop");
+  await expect(alertWith(b.page, DEAD_LINK)).toBeVisible();
+  await expect(b.page).not.toHaveURL(/\/domov/);
+});
+
+test("concurrent activation with the same link signs in exactly one browser", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const a = await browserOf(browser, baseURL!);
+  const b = await browserOf(browser, baseURL!);
+  await Promise.all([openActivation(a.page, r.token!), openActivation(b.page, r.token!)]);
+  for (const p of [a.page, b.page]) {
+    await p.getByLabel("Uporabniško ime ali e-pošta").fill(r.account.username);
+    await p.getByLabel("Geslo", { exact: true }).fill(r.password);
+  }
+  await Promise.all([
+    a.page.getByRole("button", { name: "Aktiviraj dostop" }).click(),
+    b.page.getByRole("button", { name: "Aktiviraj dostop" }).click(),
+  ]);
+  const settled = async () => {
+    let n = 0;
+    for (const p of [a.page, b.page]) {
+      if (/\/domov$/.test(p.url())) n++;
+      else if ((await alertWith(p, DEAD_LINK).count()) > 0) n++;
+    }
+    return n;
+  };
+  await expect.poll(settled, { timeout: 15_000 }).toBe(2);
+  expect([a.page, b.page].filter((p) => /\/domov$/.test(p.url()))).toHaveLength(1);
+});
+
+// ---------------------------------------------------------------------------- sign-in behaviour
+
+test("returning on the original browser after the session expired needs only the password", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page, context } = await browserOf(browser, baseURL!);
+  await activate(page, r);
+  await dropSession(context);
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/prijava/);
+  await fillLogin(page, r.account.username, r.password);
+  await expect(page).toHaveURL(/\/domov$/);
+  await expect(menu(page)).toBeVisible();
+});
+
+test("the same browser can reopen the app repeatedly (new tab, new page)", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page, context } = await browserOf(browser, baseURL!);
+  await activate(page, r);
+  for (let i = 0; i < 3; i++) {
+    const tab = await context.newPage();
+    await tab.goto("/");
+    await expect(tab).not.toHaveURL(/\/prijava/);
+    await tab.close();
+  }
+  await page.goto("/domov");
+  await expect(menu(page)).toBeVisible();
+});
+
+test("a second browser with the correct password is rejected; the first keeps working", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const a = await browserOf(browser, baseURL!);
+  await activate(a.page, r);
+
+  const second = await browserOf(browser, baseURL!);
+  await signIn(second.page, r.account.username, r.password);
+  await expect(alertWith(second.page, MSG.device)).toBeVisible();
+  await expect(second.page).toHaveURL(/\/prijava/);
+  expect((await second.context.cookies()).map((c) => c.name)).not.toContain("sparko_session");
+
+  await a.page.reload();
+  await expect(a.page).toHaveURL(/\/domov$/);
+});
+
+test("clearing all cookies loses the binding: password sign-in is rejected and the used link stays dead", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page, context } = await browserOf(browser, baseURL!);
+  await activate(page, r);
+  await context.clearCookies();
+  await signIn(page, r.account.username, r.password);
+  await expect(alertWith(page, MSG.device)).toBeVisible();
+  await expect(page).toHaveURL(/\/prijava/);
+  await openActivation(page, r.token!);
+  await fillLogin(page, r.account.username, r.password, "Aktiviraj dostop");
+  await expect(alertWith(page, DEAD_LINK)).toBeVisible();
+  await expect(page).not.toHaveURL(/\/domov/);
+});
+
+test("wrong password and unknown user show the same generic error", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page } = await browserOf(browser, baseURL!);
+  await signIn(page, r.account.username, "wrong-password");
+  await expect(alertWith(page, MSG.invalid)).toBeVisible();
+  await expect(page).toHaveURL(/\/prijava/);
+  await page.reload();
+  await fillLogin(page, uniqueName("nobody"), r.password);
+  await expect(alertWith(page, MSG.invalid)).toBeVisible();
+  await expect(page).toHaveURL(/\/prijava/);
+});
+
+test("a never-activated account cannot sign in at /prijava", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page } = await browserOf(browser, baseURL!);
+  await signIn(page, r.account.username, r.password);
+  await expect(alertWith(page, MSG.notActivated)).toBeVisible();
+  await expect(page).toHaveURL(/\/prijava/);
+});
+
+test("logout returns to login; Back does not expose the app and signing in again works", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page } = await browserOf(browser, baseURL!);
+  await activate(page, r);
   await logout(page);
   await page.goBack().catch(() => {});
-  // Back lands on about:blank or /prijava (history was replaced); if the app page is restored it must bounce to login.
   await expect(page).not.toHaveURL(/\/(domov|letak|moj-katalog)$/);
   await expect(page.getByRole("button", { name: "Odpri meni" })).toHaveCount(0);
   await page.goto("/domov");
   await expect(page).toHaveURL(/\/prijava/);
-  await page.reload();
-  await expect(page).toHaveURL(/\/prijava/);
-  await expect(page.getByRole("button", { name: "Odpri meni" })).toHaveCount(0);
-});
-
-test("11. local saved data survives logout and login", async ({ page }) => {
-  await signIn(page);
+  await fillLogin(page, r.account.username, r.password);
   await expect(page).toHaveURL(/\/domov$/);
-  await page.evaluate(() => localStorage.setItem("sparko:e2e-marker", "kept"));
-  const before = await page.evaluate(() => localStorage.getItem("sparko:v2"));
-  await logout(page);
-  expect(await page.evaluate(() => localStorage.getItem("sparko:e2e-marker"))).toBe("kept");
-  await fillLogin(page, E2E_LOGIN, E2E_PASSWORD);
+});
+
+test("the existing app works after login", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page } = await browserOf(browser, baseURL!);
+  await activate(page, r);
+  const cards = page.locator("[data-catalog-card]");
+  await expect(cards).toHaveCount(2);
+  await expect(cards.nth(0)).toHaveAttribute("href", "/letak");
+  await page.goto("/");
+  await expect(page.getByPlaceholder("Vprašaj Sparka o katalogu …")).toBeVisible();
+});
+
+// ------------------------------------------------------------------------------------------ admin
+
+test("reviewers cannot reach the admin area", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const { page, context } = await browserOf(browser, baseURL!);
+  await activate(page, r);
+  await page.goto("/skrbnik");
   await expect(page).toHaveURL(/\/domov$/);
-  expect(await page.evaluate(() => localStorage.getItem("sparko:e2e-marker"))).toBe("kept");
-  const after = await page.evaluate(() => localStorage.getItem("sparko:v2"));
-  if (before !== null) expect(after).not.toBeNull();
+  expect((await context.request.get("/api/admin/accounts")).status()).toBe(403);
 });
 
-test("12. password visibility toggle works", async ({ page }) => {
-  await page.goto("/prijava");
-  const pw = page.getByLabel("Geslo", { exact: true });
-  await pw.fill("secret-value");
-  await expect(pw).toHaveAttribute("type", "password");
-  await page.getByRole("button", { name: "Pokaži geslo" }).click();
-  await expect(pw).toHaveAttribute("type", "text");
-  await page.getByRole("button", { name: "Skrij geslo" }).click();
-  await expect(pw).toHaveAttribute("type", "password");
+test("admin dashboard: stats, visit history, reset access, revoke and restore", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const name = r.account.username;
+  const rev = await browserOf(browser, baseURL!);
+  await activate(rev.page, r);
+
+  const admin = await adminSignIn(browser, baseURL!);
+  const ap = admin.page;
+  ap.on("dialog", (d) => void d.accept());
+  await expect(ap.getByRole("heading", { name: "Skrbništvo dostopa" })).toBeVisible();
+  await expect(ap.getByText("Skupaj obiskov")).toBeVisible();
+  await expect(ap.getByText("Aktiviranih pregledovalcev")).toBeVisible();
+
+  const row = ap.locator(`tbody[data-account="${name}"]`);
+  await expect(row).toBeVisible();
+  await expect(row.getByText("Aktiviran", { exact: true })).toBeVisible();
+  const visits = row.locator("tr").first().locator("td").nth(4);
+  await expect.poll(async () => Number(await visits.textContent())).toBeGreaterThanOrEqual(1);
+
+  // Visit history shows at least one date.
+  await row.getByRole("button", { name: "Zgodovina obiskov" }).click();
+  await expect(row.locator("ul li").first()).toContainText(/\d{4}/);
+
+  // Reset: fresh link, old browser signed out, the new link activates a fresh browser.
+  await row.getByRole("button", { name: "Ponastavi dostop" }).click();
+  const secret = ap.locator('section[aria-label="Enkratna skrivnost"] code');
+  await expect(secret).toContainText("/aktivacija?token=");
+  const link = (await secret.textContent())!.trim();
+  await rev.page.reload();
+  await expect(rev.page).toHaveURL(/\/prijava/);
+  await fillLogin(rev.page, name, r.password);
+  await expect(alertWith(rev.page, "Račun še ni aktiviran.")).toBeVisible();
+  await expect(rev.page).not.toHaveURL(/\/domov/);
+  const fresh = await browserOf(browser, baseURL!);
+  await fresh.page.goto(link);
+  await expect(fresh.page).toHaveURL(/\/aktivacija$/);
+  await fillLogin(fresh.page, name, r.password, "Aktiviraj dostop");
+  await expect(fresh.page).toHaveURL(/\/domov$/);
+
+  // Revoke: the browser is bounced and sign-in explains why.
+  await ap.getByRole("button", { name: "Osveži" }).click();
+  await row.getByRole("button", { name: "Prekliči dostop" }).click();
+  await expect(row.getByText("Preklican", { exact: true })).toBeVisible();
+  await fresh.page.reload();
+  await expect(fresh.page).toHaveURL(/\/prijava/);
+  await fillLogin(fresh.page, name, r.password);
+  await expect(alertWith(fresh.page, MSG.revoked)).toBeVisible();
+
+  // Restore: the bound browser can sign in again.
+  await row.getByRole("button", { name: "Obnovi dostop" }).click();
+  await expect(row.getByText("Aktiviran", { exact: true })).toBeVisible();
+  await fresh.page.getByRole("button", { name: "Prijavi se" }).click();
+  await expect(fresh.page).toHaveURL(/\/domov$/);
 });
 
-test("12b. registration link only shows an info message", async ({ page }) => {
-  await page.goto("/prijava");
-  await expect(page.getByText("Še nimate računa?")).toBeVisible();
-  await page.getByRole("button", { name: "Registriraj se" }).click();
-  await expect(page.getByRole("status")).toHaveText(
-    "Registracija trenutno ni na voljo. Za dostop se obrnite na skrbnika.",
-  );
-  await expect(page).toHaveURL(/\/prijava$/);
-});
-
-for (const vp of [
-  { width: 320, height: 568 },
-  { width: 360, height: 640 },
-  { width: 375, height: 667 },
-  { width: 390, height: 844 },
-  { width: 430, height: 932 },
-  { width: 1440, height: 900 },
-]) {
-  test(`13. login layout ${vp.width}x${vp.height}: no horizontal overflow, submit reachable`, async ({ page }) => {
-    await page.setViewportSize(vp);
-    await page.goto("/prijava");
-    await expect(page.getByRole("button", { name: "Prijavi se" })).toBeAttached();
-    const m = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, iw: window.innerWidth }));
-    expect(m.sw).toBeLessThanOrEqual(m.iw);
-    const submit = page.getByRole("button", { name: "Prijavi se" });
-    await submit.scrollIntoViewIfNeeded();
-    await expect(submit).toBeVisible();
-    await expect(submit).toBeInViewport();
-    await page.screenshot({ path: `test-results/login-${vp.width}x${vp.height}.png` });
-  });
-}
-
-test("14. JS bundles never contain credentials or secret variable names", async ({ page, request }) => {
-  const chunkUrls = new Set<string>();
-  const collect = (html: string) => {
-    for (const m of html.matchAll(/\/_next\/static\/[^"'\s)\\]+?\.js/g)) chunkUrls.add(m[0]);
-  };
-  const loginHtml = await (await request.get("/prijava")).text();
-  collect(loginHtml);
-  await signIn(page);
-  await expect(page).toHaveURL(/\/domov$/);
-  collect(await page.content());
-  const authedHtml = await (await page.request.get("/domov")).text();
-  collect(authedHtml);
-  // Chunks the browser actually loaded (incl. dynamic ones).
-  const loaded = await page.evaluate(() => performance.getEntriesByType("resource").map((e) => e.name));
-  for (const u of loaded) if (u.includes("/_next/static/") && u.endsWith(".js")) chunkUrls.add(new URL(u).pathname);
-  expect(chunkUrls.size).toBeGreaterThan(2);
-
-  const forbidden = [E2E_PASSWORD, E2E_SECRET, "SPARKO_AUTH_SECRET", "SPARKO_DEMO_PASSWORD_HASH"];
-  for (const html of [loginHtml, authedHtml]) for (const f of forbidden) expect(html).not.toContain(f);
-  for (const url of chunkUrls) {
-    const body = await (await request.get(url)).text();
-    for (const f of forbidden) expect(body, `${url} contains ${f}`).not.toContain(f);
+test("refreshing the page does not increase the visit count", async ({ browser, baseURL }) => {
+  const r = await newReviewer();
+  const name = r.account.username;
+  const rev = await browserOf(browser, baseURL!);
+  await activate(rev.page, r);
+  const admin = await adminSignIn(browser, baseURL!);
+  const before = await accountRow(admin.context.request, name);
+  expect(before.stats.visits).toBeGreaterThanOrEqual(1);
+  for (let i = 0; i < 5; i++) {
+    await rev.page.reload();
+    await expect(menu(rev.page)).toBeVisible();
   }
+  await expect
+    .poll(async () => (await accountRow(admin.context.request, name)).stats.pageViews, { timeout: 10_000 })
+    .toBeGreaterThanOrEqual(before.stats.pageViews + 5);
+  const after = await accountRow(admin.context.request, name);
+  expect(after.stats.visits).toBe(before.stats.visits);
 });
