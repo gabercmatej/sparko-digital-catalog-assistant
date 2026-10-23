@@ -144,6 +144,16 @@ test("12. password visibility toggle works", async ({ page }) => {
   await expect(pw).toHaveAttribute("type", "password");
 });
 
+test("12b. registration link only shows an info message", async ({ page }) => {
+  await page.goto("/prijava");
+  await expect(page.getByText("Še nimate računa?")).toBeVisible();
+  await page.getByRole("button", { name: "Registriraj se" }).click();
+  await expect(page.getByRole("status")).toHaveText(
+    "Registracija trenutno ni na voljo. Za dostop se obrnite na skrbnika.",
+  );
+  await expect(page).toHaveURL(/\/prijava$/);
+});
+
 for (const vp of [
   { width: 320, height: 568 },
   { width: 360, height: 640 },

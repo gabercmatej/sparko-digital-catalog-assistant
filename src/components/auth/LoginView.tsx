@@ -7,6 +7,7 @@ import styles from "./LoginView.module.css";
 
 const GENERIC_ERROR = "Prijava trenutno ni mogoča. Poskusite znova čez trenutek.";
 const CONFIG_NOTICE = "Prijava trenutno ni na voljo. Skrbnik mora dokončati nastavitev.";
+const REGISTER_INFO = "Registracija trenutno ni na voljo. Za dostop se obrnite na skrbnika.";
 
 function Svg({ children, ...rest }: SVGProps<SVGSVGElement> & { children: ReactNode }) {
   return (
@@ -77,6 +78,7 @@ export function LoginView({ next, configError }: { next: string; configError: bo
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [registerInfo, setRegisterInfo] = useState(false);
   const idRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -122,15 +124,6 @@ export function LoginView({ next, configError }: { next: string; configError: bo
       <LoginBackground />
       <main className={styles.column}>
         <div className={styles.hero}>
-          <svg className={styles.sparksL} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
-            <path
-              d="M6 14 18 8M4 24h14M8 34l10-6"
-              stroke="#f5c518"
-              strokeWidth="4"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </svg>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={styles.mascot}
@@ -139,15 +132,6 @@ export function LoginView({ next, configError }: { next: string; configError: bo
             width={375}
             height={360}
           />
-          <svg className={styles.sparksR} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
-            <path
-              d="M34 14 22 8M36 24H22M32 34l-10-6"
-              stroke="#f5c518"
-              strokeWidth="4"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </svg>
         </div>
 
         <p className={styles.wordmark} aria-hidden="true">
@@ -242,6 +226,23 @@ export function LoginView({ next, configError }: { next: string; configError: bo
               </>
             )}
           </button>
+
+          {/* Registration is not available yet: the link only explains how to get access. */}
+          <p className={styles.register}>
+            Še nimate računa?{" "}
+            <button
+              type="button"
+              className={styles.registerLink}
+              aria-controls="login-register-info"
+              aria-expanded={registerInfo}
+              onClick={() => setRegisterInfo(true)}
+            >
+              Registriraj se
+            </button>
+          </p>
+          <p id="login-register-info" className={styles.registerInfo} role="status">
+            {registerInfo && REGISTER_INFO}
+          </p>
         </form>
 
         <p className={styles.footer}>
