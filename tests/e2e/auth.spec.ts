@@ -80,6 +80,9 @@ async function dropSession(context: BrowserContext) {
 async function adminSignIn(browser: Browser, baseURL: string) {
   const b = await browserOf(browser, baseURL, { width: 1280, height: 900 });
   await signIn(b.page, E2E_ADMIN, E2E_ADMIN_PASSWORD);
+  await expect(b.page).toHaveURL(/\/domov$/);
+  await menu(b.page).click();
+  await b.page.getByRole("link", { name: "Statistika obiskov" }).click();
   await expect(b.page).toHaveURL(/\/skrbnik$/);
   return b;
 }
@@ -323,9 +326,21 @@ test("reviewers cannot reach the admin area", async ({ browser, baseURL }) => {
   const r = await newReviewer();
   const { page, context } = await browserOf(browser, baseURL!);
   await activate(page, r);
+  await menu(page).click();
+  await expect(page.getByRole("dialog", { name: "Meni" }).getByRole("link", { name: /Moj katalog/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Statistika obiskov" })).toHaveCount(0);
   await page.goto("/skrbnik");
   await expect(page).toHaveURL(/\/domov$/);
   expect((await context.request.get("/api/admin/accounts")).status()).toBe(403);
+});
+
+test("admin lands in the normal app and moves between it and the dashboard without signing in again", async ({ browser, baseURL }) => {
+  const admin = await adminSignIn(browser, baseURL!);
+  await admin.page.getByRole("link", { name: "Nazaj v SPARko" }).click();
+  await expect(admin.page).toHaveURL(/\/domov$/);
+  await menu(admin.page).click();
+  await admin.page.getByRole("link", { name: "Statistika obiskov" }).click();
+  await expect(admin.page.getByRole("heading", { name: "Skrbništvo dostopa" })).toBeVisible();
 });
 
 test("admin dashboard: stats, visit history, reset access, revoke and restore", async ({ browser, baseURL }) => {

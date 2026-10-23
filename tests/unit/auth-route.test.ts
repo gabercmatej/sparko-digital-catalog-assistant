@@ -134,11 +134,11 @@ describe("POST /api/auth/login", () => {
     expect((await res.json()).code).toBe("not_activated");
   });
 
-  it("admin login redirects to /skrbnik and sets no device cookie", async () => {
+  it("admin login opens the normal app (/domov) and sets no device cookie", async () => {
     const { password } = await provision(authBackend()!.store, "Skrbnik", "admin");
     const res = await login({ identifier: "skrbnik", password });
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true, redirect: "/skrbnik" });
+    expect(await res.json()).toEqual({ ok: true, redirect: "/domov" });
     expect(cookiesOf(res)[SESSION_COOKIE]).toBeDefined();
     expect(cookiesOf(res)[DEVICE_COOKIE]).toBeUndefined();
   });

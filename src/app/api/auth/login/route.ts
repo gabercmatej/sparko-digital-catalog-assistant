@@ -112,10 +112,10 @@ export async function POST(request: Request) {
 
     const token = await createSession(backend.store, backend.secret, result.account, result.device);
     await recordActivity(backend.store, result.account.id).catch(() => console.error("[auth] visit not recorded: store unavailable"));
-    const redirect = result.account.role === "admin" && next === "/domov" ? "/skrbnik" : next;
+    // Admins land in the normal app too; the dashboard is reached from the menu (Statistika obiskov).
     const res = form
-      ? NextResponse.redirect(new URL(redirect, request.url), { status: 303, headers: NO_STORE })
-      : NextResponse.json({ ok: true, redirect }, { headers: NO_STORE });
+      ? NextResponse.redirect(new URL(next, request.url), { status: 303, headers: NO_STORE })
+      : NextResponse.json({ ok: true, redirect: next }, { headers: NO_STORE });
     res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions(secure));
     if (result.deviceCredential) res.cookies.set(DEVICE_COOKIE, result.deviceCredential, deviceCookieOptions(secure));
     if (activationToken) res.cookies.set(ACTIVATION_COOKIE, "", { ...activationCookieOptions(secure), maxAge: 0 });

@@ -76,6 +76,11 @@
   font-weight: 600;
   cursor: pointer;
 }
+a.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
 .btnPrimary {
   background: #07482b;
   border-color: #07482b;

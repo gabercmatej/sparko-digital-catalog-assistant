@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./AdminDashboard.module.css";
 
@@ -142,6 +143,9 @@ export function AdminDashboard() {
           <p className={styles.subtitle}>Pregledovalci, aktivacije, brskalniki in obiski.</p>
         </div>
         <div className={styles.headerActions}>
+          <Link href="/domov" className={styles.btnPrimary}>
+            Nazaj v SPARko
+          </Link>
           <button type="button" className={styles.btn} onClick={refresh}>
             Osveži
           </button>

@@ -24,7 +24,7 @@ export const useShell = () => useContext(Ctx);
  * Persistent mobile shell: header (menu · Sparko logo · new chat; Moj katalog brings its own), page area, bottom nav.
  * Lives in the root layout so state survives navigation between Domov / Sparko / Moj katalog / letak.
  */
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children, isAdmin = false }: { children: React.ReactNode; isAdmin?: boolean }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   // Moj katalog renders its own page header (menu · title · actions) instead of the logo header.
@@ -125,7 +125,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </main>
         {!keyboardOpen && <BottomNav />}
         <Toasts />
-        <Sidebar open={sidebarOpen} onClose={closeSidebar} />
+        <Sidebar open={sidebarOpen} onClose={closeSidebar} isAdmin={isAdmin} />
       </div>
     </Ctx.Provider>
   );

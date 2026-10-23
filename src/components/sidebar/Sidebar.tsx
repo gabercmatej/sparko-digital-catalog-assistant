@@ -12,8 +12,8 @@ import styles from "./Sidebar.module.css";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-/** Slide-in navigation panel: new chat, Moj katalog, digital leaflets, history, examples, settings. */
-export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+/** Slide-in navigation panel: new chat, Moj katalog, digital leaflets, (admins) visit statistics, history, examples, settings. */
+export function Sidebar({ open, onClose, isAdmin = false }: { open: boolean; onClose: () => void; isAdmin?: boolean }) {
   const store = useStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -130,6 +130,12 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                   <Icon name="leaflet" size={21} />
                   <span>Digitalni letaki</span>
                 </Link>
+                {isAdmin && (
+                  <Link href="/skrbnik" className={styles.navItem} onClick={onClose}>
+                    <Icon name="grid" size={21} />
+                    <span>Statistika obiskov</span>
+                  </Link>
+                )}
               </nav>
 
               <section className={styles.section} aria-labelledby="sb-history">
