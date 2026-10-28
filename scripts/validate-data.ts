@@ -12,7 +12,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import raw from "../src/data/catalog.json";
 import rawPromos from "../src/data/future-promos.json";
-import { catalogDataSchema, futurePromoDataSchema } from "../src/lib/schemas";
+import rawLeaflets from "../src/data/leaflets.json";
+import { catalogDataSchema, futurePromoDataSchema, leafletDataSchema } from "../src/lib/schemas";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -112,6 +113,33 @@ for (const c of catalogs) {
     checkImage(`${c.id} page ${p.pdfPageNumber} image`, p.image);
     checkImage(`${c.id} page ${p.pdfPageNumber} thumb`, p.thumb);
   }
+}
+
+// ------------------------------------------------------------- browse-only leaflets (Home carousel, leaflets.json)
+const leafletParsed = leafletDataSchema.safeParse(rawLeaflets);
+if (!leafletParsed.success) {
+  for (const issue of leafletParsed.error.issues) err(`leaflets schema: ${issue.path.join(".")}: ${issue.message}`);
+} else {
+  const leaflets = leafletParsed.data.leaflets;
+  unique("leaflet", leaflets.map((l) => l.id));
+  for (const l of leaflets) if (catalogById.has(l.id)) err(`leaflet ${l.id}: id also used by a product-data catalog`);
+  unique("leaflet homeOrder", leaflets.map((l) => String(l.homeOrder)));
+  for (const l of leaflets) {
+    if (!existsExactCase(l.pdfUrl)) err(`leaflet ${l.id}: pdfUrl missing: ${l.pdfUrl}`);
+    if (!l.pdfUrl.startsWith(`/catalog/${l.id}/`)) err(`leaflet ${l.id}: pdfUrl outside /catalog/${l.id}/`);
+    checkImage(`leaflet ${l.id} cover`, l.cover);
+    if (l.pages.length !== l.pageCount) err(`leaflet ${l.id}: ${l.pages.length} page entries but pageCount=${l.pageCount}`);
+    if (l.validFrom > l.validTo) err(`leaflet ${l.id}: validFrom ${l.validFrom} after validTo ${l.validTo}`);
+    if (!fs.existsSync(path.join(ROOT, l.sourceFile))) warn(`leaflet ${l.id}: source file ${l.sourceFile} not found in repo root`);
+    l.pages.forEach((pg, i) => {
+      if (pg.pdfPageIndex !== i || pg.pdfPageNumber !== i + 1) err(`leaflet ${l.id}: page ${i} out of order`);
+      checkImage(`${l.id} page ${pg.pdfPageNumber} image`, pg.image);
+      checkImage(`${l.id} page ${pg.pdfPageNumber} thumb`, pg.thumb);
+    });
+  }
+  for (const pl of placements) if (leaflets.some((l) => l.id === pl.catalogId)) err(`placement ${pl.id}: browse-only leaflet ${pl.catalogId} must not carry placements`);
+  for (const o of offers) if (leaflets.some((l) => l.id === o.catalogId)) err(`offer ${o.id}: browse-only leaflet ${o.catalogId} must not carry offers`);
+  console.log(`Letaki na Domov (samo listanje): ${leaflets.map((l) => `${l.title} (${l.pageCount} str.)`).join(", ")}`);
 }
 
 // ------------------------------------------------------------- products, offers, placements

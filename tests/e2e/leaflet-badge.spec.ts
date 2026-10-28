@@ -22,7 +22,7 @@ for (const width of [360, 390, 430, 1280]) {
   test(`'V Mojem katalogu' label is anchored top-left to its own box and stays inside it @${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 1000 ? 800 : 900 });
     await seed(page, PAGE_IDS);
-    await page.goto(`/letak?stran=${BUSY.index + 1}`);
+    await page.goto(`/letak?katalog=${primary.id}&stran=${BUSY.index + 1}`);
     const stage = page.getByTestId("leaflet-stage");
     await expect(stage.locator("[data-saved] [data-badge]")).toHaveCount(PAGE_IDS.length);
     await page.waitForTimeout(300);

@@ -35,7 +35,7 @@
   --cat-gap: clamp(10px, 2.4cqh, 18px);
   --seg-w: 28px; /* slim icon-only Katalogi / Izdelki rail, right of the top box */
   --seg-gap: 8px; /* room for the tabs' widened hit area */
-  --mascot-h: 48px;
+  --composer-h: 54px; /* the Chat composer field: 44px send button + padding + border */
   --action-h: 46px;
   --head-h: 24px;
   --card-h: 112px; /* estimated natural height of a rail ProductMiniCard (phones), incl. rounding */
@@ -51,7 +51,7 @@
   --row-lines: 1;
   --cat-h: calc(var(--ip-pad-t) + var(--ip-head-h) + var(--ip-chips-h) + 2 * var(--ip-gap) + 2 * var(--row-h) + 1px);
   --others: calc(
-    var(--pad-t) + var(--pad-b) + var(--cat-gap) + var(--mascot-h) + 6px + 2 * var(--action-h) +
+    var(--pad-t) + var(--pad-b) + var(--cat-gap) + var(--composer-h) + 6px + 2 * var(--action-h) +
       6px + var(--zone-gap) + var(--head-h) + 2px + var(--card-h) + var(--rail-pad)
   );
   /* 45% of the unused height to each zone gap (capped); the remaining 10% is split above and below by centring. */
@@ -132,25 +132,8 @@
   align-items: center;
   gap: 6px;
 }
-/* The mascot is centred on its own (middle track); the "Pogovor" pill sits in the right track, beside it. */
-.mascotRow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  column-gap: 8px;
+.composerRow {
   width: 100%;
-  height: var(--mascot-h);
-}
-.mascot {
-  grid-column: 2;
-  width: var(--mascot-h);
-  height: var(--mascot-h);
-  object-fit: contain;
-}
-.chatSlot {
-  grid-column: 3;
-  justify-self: start;
-  display: flex;
 }
 .actions {
   display: grid;
@@ -283,7 +266,6 @@
 /* Short screens: tighter everything, including the Izdelki panel chrome and rows (so a shorter top zone). */
 @container home (max-height: 600px) {
   .column {
-    --mascot-h: 40px;
     --action-h: 40px;
     --zone-gap: 14px;
     --cat-gap: 14px;
@@ -294,22 +276,19 @@
     --row-h: 60px;
   }
 }
-/* Tall screens: a larger mascot and roomier actions. */
+/* Tall screens: roomier actions. */
 @container home (min-height: 700px) {
   .column {
-    --mascot-h: 76px;
     --action-h: 54px;
   }
 }
 @container home (min-height: 780px) {
   .column {
-    --mascot-h: 84px;
     --action-h: 58px;
   }
 }
 @container home (min-height: 800px) {
   .column {
-    --mascot-h: 100px;
     --action-h: 62px;
     --row-h: 72px;
     --extra-max: 56px;
@@ -326,7 +305,6 @@
     --row-lines: 2;
     --seg-w: 34px;
     --seg-gap: 10px;
-    --mascot-h: 64px;
     --action-h: 54px;
     /* desktop spacing as before */
     --zone-gap: clamp(8px, 1.8cqh, 14px);

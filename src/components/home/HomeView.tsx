@@ -6,14 +6,12 @@ import { NearestStoreCard } from "../chat/demo/NearestStoreCard";
 import { ProductCard } from "../product/ProductCard";
 import { ProductMiniCard } from "../product/ProductMiniCard";
 import { Icon, type IconName } from "../ui/Icon";
-import { CatalogCards } from "./CatalogCards";
+import { CatalogCarousel } from "./CatalogCarousel";
 import { CategorySheet } from "./CategorySheet";
 import { ItemPanel } from "./ItemPanel";
 import { homeReducer, initialHomeState, railItems, railTitle, topItems, type CategoryKey, type TopMode } from "./homeState";
 import styles from "./HomeView.module.css";
-import entry from "./ChatEntry.module.css";
-import { ChatEntryButton } from "./ChatEntryButton";
-import { useChatEntryTransition } from "./useChatEntryTransition";
+import { HomeComposer } from "./HomeComposer";
 
 const SEGMENTS: { mode: TopMode; label: string; icon: IconName }[] = [
   { mode: "catalogs", label: "Katalogi", icon: "leaflet" },
@@ -21,14 +19,13 @@ const SEGMENTS: { mode: TopMode; label: string; icon: IconName }[] = [
 ];
 
 /**
- * `/domov`: three fixed zones. TOP (one bounded box shared by the catalog covers and the product list,
- * with the vertical Katalogi / Izdelki control rail on its right), MIDDLE (SPARko mascot + four actions) and BOTTOM (product rail).
+ * `/domov`: three fixed zones. TOP (one bounded box shared by the catalog carousel and the product list,
+ * with the vertical Katalogi / Izdelki control rail on its right), MIDDLE (chat input + four actions) and BOTTOM (product rail).
  * Content changes never change any zone's size, so the middle and bottom never move.
  * What the list and the rail show is derived from one `homeReducer` state (see homeState.ts).
  */
 export function HomeView() {
   const [state, dispatch] = useReducer(homeReducer, initialHomeState);
-  const { exiting, start } = useChatEntryTransition();
   const [sheetId, setSheetId] = useState<string | null>(null);
   const [storeOpen, setStoreOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
@@ -65,7 +62,7 @@ export function HomeView() {
   };
 
   return (
-    <div className={exiting ? `${styles.home} ${entry.exiting}` : styles.home} data-home-root data-exiting={exiting || undefined}>
+    <div className={styles.home} data-home-root>
       <div className={styles.column}>
         <section ref={topRef} className={styles.top} aria-label="Katalogi in izdelki" data-home-zone="top">
           {/* One box, one height, for both modes. */}
@@ -74,7 +71,7 @@ export function HomeView() {
               <ItemPanel state={state} ids={topItems(state)} onCategory={pickCategory} onSelect={setSheetId} />
             ) : (
               <div className={styles.fade}>
-                <CatalogCards />
+                <CatalogCarousel />
               </div>
             )}
           </div>
@@ -105,12 +102,8 @@ export function HomeView() {
         </section>
 
         <section className={styles.sparko} aria-label="Vprašaj Sparka">
-          <div className={styles.mascotRow} data-home-zone="mascot">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className={styles.mascot} src="/brand/sparko-mascot.webp" width={72} height={72} alt="" decoding="async" />
-            <span className={styles.chatSlot}>
-              <ChatEntryButton onClick={start} disabled={exiting} />
-            </span>
+          <div className={styles.composerRow} data-home-zone="composer">
+            <HomeComposer />
           </div>
           <div className={styles.actions} data-home-zone="actions">
             <ActionButton icon="percent" label="Kaj je najbolj znižano" pressed={products && state.activeDiscovery === "discounts"} onClick={() => dispatch({ type: "discover", discovery: "discounts" })} />

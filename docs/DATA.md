@@ -15,6 +15,31 @@ The root PDF and the old scripts (`build_catalog.py`, `render_pages.py`) stay in
 INTERSPAR p. 2). Only food items from the 13. 10. period were catalogued; the 20. 10. pages are non-food (kitchenware, Tupperware,
 textiles, books, advent calendars).
 
+## V3: the six Home leaflets (browse-only)
+
+Since 28. 10. 2026 Home shows the six leaflets published on spar.si/letak. They live in **`src/data/leaflets.json`**
+(schema `leafletDataSchema`, type `LeafletData`), separate from `catalog.json`, and carry **no products, offers or placements**:
+they open in the same page viewer (`/letak?katalog=<id>`) for browsing only. The product-data catalogs above (SPAR 41/26,
+INTERSPAR 14/26) are unchanged and still drive chat, product cards, Moj katalog, leaflet boxes and the demo date model
+(`promoCalendar.referenceDate` only looks at `catalogs`, so the new leaflets never make the verified 41/26 prices "current").
+They stay reachable in the viewer's catalog switcher under »Prejšnji katalogi s preverjenimi izdelki« and through product links.
+
+| Home | id | Category | Source file (repo root, not deployed) | Pages | Validity (printed) |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `spar-4426` – SPAR katalog 44/26 | spar | `261028-1-Katalog_4426.pdf` | 44 | 28. 10. – 3. 11. 2026; pages 22–27 until 10. 11. |
+| 2 | `interspar-1526` – INTERSPAR katalog 15/26 | interspar | `261021-2-Katalog_INTERSPAR_1526.pdf` | 8 | 21. 10. – 27. 10. 2026; pages 3–7 until 3. 11. |
+| 3 | `spar-online-4426` – SPAR Online katalog 44/26 | spar-online | `261028-3-SPAR_online_katalog_4426.pdf` | 1 | 28. 10. – 10. 11. 2026 (online, while stocks last) |
+| 4 | `despar-koper-1626` – DESPAR Koper katalog 16/26 | despar | `261021-3-Katalog_DESPAR_plant_KOPER_1626.pdf` | 4 | 21. 10. – 3. 11. 2026, only DESPAR Koper |
+| 5 | `mega-spar-0826` – MEGA SPAR prihranki 08/26 | spar | `261028-2-Katalog_MEGA_SPAR_prihranki_0826.pdf` | 8 | 28. 10. – 10. 11. 2026 |
+| 6 | `spar-4326` – SPAR katalog 43/26 | spar | `261021-1-Katalog_4326.pdf` | 42 | 21. 10. – 27. 10. 2026; pages 3 and 23 until 3. 11. |
+
+The exact printed sentence behind each date is kept in `validityEvidence`. `/letak` without `katalog` opens the first Home leaflet.
+
+**Replacing or reordering leaflets:** put the PDFs in the project root, edit `LEAFLETS` in `scripts/catalog/leaflets.py`
+(list order = Home order; id, category, title, dates, note, evidence, file), add the file names to `.vercelignore`, then run
+`python scripts/catalog/render_pages_v3.py` (pages 1400 px, thumbs 240 px, cover 720 px, PDF copy) and `python scripts/catalog/leaflets.py`,
+and finally `npm run validate:data`. Remove the old `public/catalog/<id>/` folders of leaflets you drop.
+
 ## What is in the dataset
 
 | Item | SPAR 41/26 | INTERSPAR 14/26 | Total |

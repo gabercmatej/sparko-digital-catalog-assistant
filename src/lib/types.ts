@@ -44,6 +44,39 @@ export type Catalog = {
   pages: CatalogPage[];
 };
 
+/** Store-format category of a leaflet: drives the colour and the label of its Home card and the leaflet switcher. */
+export type LeafletCategory = "spar" | "interspar" | "spar-online" | "despar";
+
+/**
+ * A leaflet the viewer can open: either one of the browse-only leaflets in src/data/leaflets.json (no
+ * products attached) or one of the product-data catalogs of catalog.json (interactive: verified offers and
+ * placement boxes). Never mixed: an offer's catalogId always names an interactive one.
+ */
+export type ViewerCatalog = {
+  id: string;
+  category: LeafletCategory;
+  title: string;
+  issueLabel: string;
+  validFrom: string;
+  validTo: string;
+  /** Printed exception to the general validity (other end date for some pages, single store …), or null. */
+  validityNote: string | null;
+  pdfUrl: string;
+  pageCount: number;
+  cover: { src: string; width: number; height: number };
+  pages: CatalogPage[];
+  /** True when verified products and placement boxes exist for it (the product-data catalogs). */
+  interactive: boolean;
+  /** Position on Home (1 = first), or null when not shown there (the earlier product-data catalogs). */
+  homeOrder: number | null;
+};
+
+/** src/data/leaflets.json, written by scripts/catalog/leaflets.py. */
+export type LeafletData = {
+  version: 1;
+  leaflets: (Omit<ViewerCatalog, "interactive" | "homeOrder"> & { homeOrder: number; sourceFile: string; validityEvidence: string })[];
+};
+
 export type QuantityUnit = "g" | "kg" | "ml" | "l" | "kos";
 
 export type Product = {

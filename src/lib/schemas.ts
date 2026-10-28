@@ -112,6 +112,31 @@ export const catalogDataSchema = z.object({
   recipes: z.array(recipeSchema),
 });
 
+/** src/data/leaflets.json — the browse-only Home leaflets (scripts/catalog/leaflets.py). */
+export const leafletDataSchema = z.object({
+  version: z.literal(1),
+  leaflets: z
+    .array(
+      z.object({
+        id: z.string().regex(/^[a-z0-9-]+$/),
+        category: z.enum(["spar", "interspar", "spar-online", "despar"]),
+        title: z.string().min(1),
+        issueLabel: z.string().min(1),
+        validFrom: isoDate,
+        validTo: isoDate,
+        validityNote: z.string().nullable(),
+        validityEvidence: z.string().min(1),
+        sourceFile: z.string().min(1),
+        homeOrder: z.number().int().positive(),
+        pdfUrl: publicPath,
+        pageCount: z.number().int().positive(),
+        cover: imageRef,
+        pages: z.array(catalogPageSchema).min(1),
+      }),
+    )
+    .min(1),
+});
+
 /** src/data/future-promos.json — DEMO MOCK of upcoming promotions (see FuturePromo in types.ts). */
 export const futurePromoDataSchema = z.object({
   version: z.literal(1),

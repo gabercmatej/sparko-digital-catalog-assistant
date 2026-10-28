@@ -16,10 +16,10 @@ test("vertical segmented control sits right of the catalog cards; Katalogi is th
   await expect(tablist(page)).toBeVisible();
   await expect(tablist(page)).toHaveAttribute("aria-orientation", "vertical");
   const seg = (await tablist(page).boundingBox())!;
-  const last = (await page.locator("[data-catalog-card]").last().boundingBox())!;
-  expect(seg.x, "tablist right of the last card").toBeGreaterThanOrEqual(last.x + last.width - 0.5);
-  expect(seg.y, "tablist within the cards' height").toBeGreaterThanOrEqual(last.y);
-  expect(seg.y + seg.height, "tablist within the cards' height").toBeLessThanOrEqual(last.y + last.height);
+  const last = (await page.getByTestId("catalog-carousel").boundingBox())!;
+  expect(seg.x, "tablist right of the carousel").toBeGreaterThanOrEqual(last.x + last.width - 0.5);
+  expect(seg.y, "tablist within the carousel's height").toBeGreaterThanOrEqual(last.y);
+  expect(seg.y + seg.height, "tablist within the carousel's height").toBeLessThanOrEqual(last.y + last.height);
   const kat = (await page.getByRole("tab", { name: "Katalogi" }).boundingBox())!;
   const izd = (await page.getByRole("tab", { name: "Izdelki" }).boundingBox())!;
   expect(izd.y, "Izdelki stacked under Katalogi").toBeGreaterThanOrEqual(kat.y + kat.height - 0.5);
@@ -28,26 +28,28 @@ test("vertical segmented control sits right of the catalog cards; Katalogi is th
   await expect(page.getByRole("tab", { name: "Izdelki" })).toHaveAttribute("aria-selected", "false");
 });
 
-test("both catalog covers render", async ({ page }) => {
+test("all six catalog covers render", async ({ page }) => {
   await openHome(page);
   const covers = page.locator("[data-catalog-cover] img");
-  await expect(covers).toHaveCount(2);
+  await expect(covers).toHaveCount(6);
   for (const img of await covers.all()) {
+    await img.scrollIntoViewIfNeeded();
     await expect(img).toBeVisible();
-    expect(await img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
+    await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
   }
 });
 
-test("retailer labels sit in the top-left corner of the catalog cards and have square corners", async ({ page }) => {
+test("store labels sit in the top-left corner of the catalog cards and have square corners", async ({ page }) => {
   await openHome(page);
   const cards = page.locator("[data-catalog-card]");
-  await expect(cards).toHaveCount(2);
-  for (let i = 0; i < 2; i++) {
+  await expect(cards).toHaveCount(6);
+  for (let i = 0; i < 6; i++) {
     const card = cards.nth(i);
-    await expect(card.locator("[data-retailer]")).toHaveCount(1);
+    await card.scrollIntoViewIfNeeded();
+    await expect(card.locator("[role=img][data-category]")).toHaveCount(1);
     const g = await card.evaluate((c) => {
       const cr = c.getBoundingClientRect();
-      const l = c.querySelector("[data-retailer]")!;
+      const l = c.querySelector("[role=img][data-category]")!;
       const lr = l.getBoundingClientRect();
       const radii = [l, ...l.querySelectorAll("*")].flatMap((e) => {
         const cs = getComputedStyle(e);
@@ -70,6 +72,7 @@ test("exactly four quick actions with the approved labels; rail is present", asy
   for (let i = 0; i < 4; i++) await expect(buttons.nth(i)).toContainText(ACTIONS[i]);
   await expect(page.getByTestId("home-rail")).toBeVisible();
   expect(await page.locator("[data-testid=home-rail] li").count()).toBeGreaterThan(0);
+  await expect(page.locator("[data-home-composer]")).toBeVisible();
 });
 
 test("switching Izdelki / Katalogi does not move the actions or the bottom zone", async ({ page }) => {

@@ -1,0 +1,270 @@
+/*
+ * One horizontal, scroll-snapped row of leaflet cards inside the top box (explicit height --cat-h from
+ * HomeView, so the zone keeps the footprint of the former two-card grid). The carousel is an inline-size
+ * container, so the slide width is a fraction of its own width: about 1.5 cards on phones (the next card is
+ * visibly cut off at the right edge), about 2.3 in wider boxes. Each slide is a size container with an explicit
+ * width and height, so the card sizes its cover from cqw/cqh exactly like the former cards did.
+ */
+.carousel {
+  --gap: 8px;
+  --prog-h: 11px;
+  position: relative;
+  height: var(--cat-h);
+  container: carousel / inline-size;
+}
+.track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--gap);
+  height: calc(var(--cat-h) - var(--prog-h));
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  /* keep the focus ring and card shadow inside the clipped track */
+  padding-block: 1px 2px;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.slide {
+  flex: none;
+  width: calc((100cqw - var(--gap)) / 1.5);
+  height: 100%;
+  scroll-snap-align: start;
+  container: card / size;
+}
+
+.card {
+  --pad: 7px;
+  --cgap: 3px;
+  --head-h: 31px;
+  --date-h: 13px;
+  --cta-h: 28px;
+  --cover-h: calc(100cqh - var(--pad) * 2 - var(--head-h) - var(--date-h) - var(--cta-h) - var(--cgap) * 3);
+  --cover-w: max(0px, min(calc(100cqw - var(--pad) * 2 - 12px), calc(var(--cover-h) * var(--cover-ar, 0.737))));
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--head-h) minmax(0, 1fr) var(--date-h) var(--cta-h);
+  row-gap: var(--cgap);
+  height: 100%;
+  padding: var(--pad);
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgb(10 40 25 / 18%);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.card::before {
+  /* soft light bloom behind the leaflet */
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 15%;
+  top: 18%;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 24%), transparent);
+}
+.card:active {
+  filter: brightness(0.96);
+}
+.card:focus-visible {
+  outline: 2px solid var(--c-ink);
+  outline-offset: -2px;
+}
+
+/* Store-format colours: SPAR green, INTERSPAR red, SPAR Online the brighter green of its leaflet, DESPAR charcoal (its red wordmark carries the brand). */
+.spar {
+  background: linear-gradient(170deg, #19924f 0%, var(--c-green) 75%);
+}
+.interspar {
+  background: linear-gradient(170deg, #ee1d2a 0%, #c20613 80%);
+}
+.spar-online {
+  background: linear-gradient(170deg, #1fae55 0%, #0a8a40 78%);
+}
+.despar {
+  background: linear-gradient(170deg, #4a4a4a 0%, #1f1f1f 80%);
+}
+.despar::before {
+  background: radial-gradient(closest-side, rgb(255 255 255 / 16%), transparent);
+}
+
+/* Header: label on top, title right below (both left-aligned), so a long title never fights the label. */
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+}
+.brand {
+  flex: none;
+  display: inline-flex;
+  padding: 2px 3px;
+  background: #fff;
+}
+.brand [data-retailer],
+.brand [data-category],
+.brand [data-category] span {
+  border-radius: 0;
+}
+.title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 800;
+  /* room for descenders (g, j): overflow is hidden for the ellipsis */
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* Complete cover (never cropped or stretched), centred; width from the card's definite height and the cover's own ratio. */
+.coverWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.cover {
+  display: block;
+  width: var(--cover-w);
+  height: auto;
+  aspect-ratio: var(--cover-ar, 0.737);
+  object-fit: contain;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 32%);
+  transform: rotate(2deg);
+}
+.dates {
+  align-self: center;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: var(--date-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: var(--cta-h);
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--c-ink);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Roomier cards (tablet / desktop boxes and tall phones). */
+@container card (min-width: 220px) {
+  .card {
+    --pad: 10px;
+    --cgap: 5px;
+    --head-h: 38px;
+    --date-h: 16px;
+    --cta-h: 34px;
+  }
+  .title {
+    font-size: 15px;
+  }
+  .dates {
+    font-size: 13px;
+  }
+  .cta {
+    font-size: 14px;
+  }
+}
+
+/* Progress: a slim track under the row; the thumb is the visible share of the row and moves with the scroll. */
+.progress {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: min(96px, 40%);
+  height: 4px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--c-border);
+  overflow: hidden;
+}
+.progressThumb {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: var(--c-green);
+}
+
+/* Previous / next: pointer devices only (touch users swipe). Round white buttons over the row's edges. */
+.arrow {
+  display: none;
+  position: absolute;
+  top: calc((var(--cat-h) - var(--prog-h)) / 2 - 18px);
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--c-ink);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 18%);
+  place-items: center;
+  transition: opacity 0.15s;
+}
+.arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.prev {
+  left: 6px;
+}
+.next {
+  right: 6px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .arrow {
+    display: grid;
+  }
+  .arrow:hover {
+    background: var(--c-surface-muted);
+  }
+}
+
+/* Wider boxes (tablet / desktop): about 2.3 cards. */
+@container carousel (min-width: 480px) {
+  .track {
+    --gap: 10px;
+  }
+  .slide {
+    width: calc((100cqw - 2 * var(--gap)) / 2.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    transition: none;
+  }
+}

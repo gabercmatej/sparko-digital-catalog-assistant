@@ -1,8 +1,7 @@
-import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
+import { leaflets } from "./leaflets-data";
 
 // Runs in the Chromium project (390x844) and the WebKit iPhone project (390x664, iOS engine).
-const data = JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as { catalogs: { id: string; validFrom: string; validTo: string }[] };
 
 const d = (iso: string) => {
   const [y, m, day] = iso.split("-").map(Number);
@@ -33,22 +32,23 @@ async function checkHome(page: Page) {
   };
   const navBox = await box('nav[aria-label="Glavna navigacija"]');
   const cards = page.locator("[data-catalog-card]");
-  await expect(cards).toHaveCount(2);
+  await expect(cards).toHaveCount(6);
 
   const tab = await box('[role=tablist][aria-label="Prikaz"]');
   inside("tablist", tab);
   const c0 = await box("[data-catalog-card]", 0);
   const c1 = await box("[data-catalog-card]", 1);
+  const car = await box("[data-testid=catalog-carousel]");
   // Vertical control rail on the far right of the top zone, vertically centred on the cards, compact.
   await expect(page.getByRole("tablist", { name: "Prikaz" })).toHaveAttribute("aria-orientation", "vertical");
-  expect(tab.x, "rail right of the cards").toBeGreaterThanOrEqual(c1.x + c1.width - 0.5);
+  expect(tab.x, "rail right of the carousel").toBeGreaterThanOrEqual(car.x + car.width - 0.5);
   // Nudged ~6px into the right gutter, but never clipped (`inside` above).
   expect(vp.width - (tab.x + tab.width), "rail at the right edge (part of the gutter)").toBeLessThanOrEqual(20);
   expect(tab.width, "rail is slim (layout width)").toBeLessThanOrEqual(30);
   // ~50% taller than the former 94px rail, from taller options (icons stay 18px).
   expect(tab.height, "tall rail").toBeGreaterThanOrEqual(135);
   expect(tab.height, "options stacked").toBeGreaterThan(tab.width);
-  expect(Math.abs(tab.y + tab.height / 2 - (c0.y + c0.height / 2)), "rail vertically centred").toBeLessThan(3);
+  expect(Math.abs(tab.y + tab.height / 2 - (car.y + car.height / 2)), "rail vertically centred").toBeLessThan(3);
   const [kat, izd] = [await box("[role=tab]", 0), await box("[role=tab]", 1)];
   expect(izd.y, "Izdelki below Katalogi").toBeGreaterThanOrEqual(kat.y + kat.height - 0.5);
   for (const t of [kat, izd]) expect(t.height, "touch target").toBeGreaterThanOrEqual(64);
@@ -71,32 +71,36 @@ async function checkHome(page: Page) {
   }
   // The top zone starts right under the app header (no horizontal toggle above it any more).
   const headerBottom = await page.evaluate(() => document.querySelector("header")!.getBoundingClientRect().bottom);
-  expect(c0.y - headerBottom, "catalog close to the header").toBeLessThanOrEqual(36);
+  // Leftover height is shared between the zone gaps and centring (the composer is shorter than the old mascot row, so a bit more).
+  expect(c0.y - headerBottom, "catalog close to the header").toBeLessThanOrEqual(56);
+  // First card whole; the second one is deliberately cut off at the right edge of the track.
+  inside("card 0", c0);
+  expect(c1.x + c1.width, "second card runs past the track edge").toBeGreaterThan(car.x + car.width + 2);
+  expect(c1.x, "second card starts inside the track").toBeLessThan(car.x + car.width - 20);
   for (const [i, c] of [c0, c1].entries()) {
-    inside(`card ${i}`, c);
     expect(c.height, `card ${i} height`).toBeGreaterThanOrEqual(140);
     const img = await box("[data-catalog-cover] img", i);
-    inside(`cover ${i}`, img);
-    expect(img.height, `cover ${i} height`).toBeGreaterThanOrEqual(90);
-    expect(img.width, `cover ${i} width`).toBeGreaterThanOrEqual(60);
+    if (i === 0) inside(`cover ${i}`, img);
+    expect(img.height, `cover ${i} height`).toBeGreaterThanOrEqual(75);
+    expect(img.width, `cover ${i} width`).toBeGreaterThanOrEqual(55);
     expect(Math.abs(img.width / img.height - 720 / 977), `cover ${i} ratio`).toBeLessThan(0.03);
   }
   expect(c1.x, "cards side by side").toBeGreaterThan(c0.x + c0.width - 1);
   expect(Math.abs(c0.y - c1.y)).toBeLessThan(1);
 
-  const mascot = await box('[data-home-zone="mascot"]');
-  inside("mascot", mascot);
+  const composer = await box('[data-home-zone="composer"]');
+  inside("composer", composer);
   // Responsive breathing room between the zones: never crowded, never a large empty band.
-  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeLessThanOrEqual(80);
-  expect(mascot.y - (c0.y + c0.height), "catalog-to-mascot gap").toBeGreaterThanOrEqual(12);
+  expect(composer.y - (car.y + car.height), "catalog-to-composer gap").toBeLessThanOrEqual(80);
+  expect(composer.y - (car.y + car.height), "catalog-to-composer gap").toBeGreaterThanOrEqual(12);
   // Compact top zone on phones: the catalog cards take at most ~42% of the space between header and nav.
-  expect(c0.height, "catalog section height").toBeLessThanOrEqual((navBox.y - headerBottom) * 0.42);
+  expect(car.height, "catalog section height").toBeLessThanOrEqual((navBox.y - headerBottom) * 0.42);
   const actionsBox = await box('[data-home-zone="actions"]');
   const railBox = await box('[data-home-zone="bottom"]');
   expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeGreaterThanOrEqual(12);
   expect(railBox.y - (actionsBox.y + actionsBox.height), "actions-to-products gap").toBeLessThanOrEqual(80);
   // Balanced: the two zone gaps match.
-  expect(Math.abs(railBox.y - (actionsBox.y + actionsBox.height) - (mascot.y - (c0.y + c0.height))), "balanced gaps").toBeLessThan(2);
+  expect(Math.abs(railBox.y - (actionsBox.y + actionsBox.height) - (composer.y - (car.y + car.height))), "balanced gaps").toBeLessThan(2);
   inside("actions", await box('[data-home-zone="actions"]'));
   inside("rail section", await box('[data-home-zone="bottom"]'));
   const railCards = page.locator("[data-testid=home-rail] li");
@@ -108,27 +112,29 @@ async function checkHome(page: Page) {
   }
   inside("nav", navBox);
 
-  // Card text from catalog data, per card.
-  for (let i = 0; i < 2; i++) {
+  // Card text from leaflet data, per card (all six; lazy covers load as the track scrolls).
+  for (let i = 0; i < 6; i++) {
     const card = cards.nth(i);
-    await expect(card).toContainText("Aktualni katalog");
+    await card.scrollIntoViewIfNeeded();
+    const rec = leaflets[i];
     const dates = ((await card.locator("[data-catalog-dates]").textContent()) ?? "").replace(/\s+/g, " ").trim();
-    expect(dates).toBe(period(data.catalogs[i].validFrom, data.catalogs[i].validTo));
+    expect(dates).toBe(period(rec.validFrom, rec.validTo));
     await expect(card.getByText("Odpri katalog", { exact: true })).toBeVisible();
 
-    // Layout: [label  Aktualni katalog] (narrow phone cards: label, then the title on one line under it) /
-    // centred cover / one-line dates / CTA.
+    // Layout: [label] / [title under it, one line] / centred cover / one-line dates / CTA.
     const g = await card.evaluate((el) => {
       const r = (q: string) => el.querySelector(q)!.getBoundingClientRect();
-      const label = r("[data-retailer]");
-      const head = el.querySelector("[data-retailer]")!.parentElement!.nextElementSibling!.getBoundingClientRect();
+      const labelEl = el.querySelector("[role=img][data-category]")!;
+      const label = labelEl.getBoundingClientRect();
+      const titleEl = labelEl.parentElement!.nextElementSibling as HTMLElement;
+      const head = titleEl.getBoundingClientRect();
       const datesEl = el.querySelector("[data-catalog-dates]") as HTMLElement;
       const cs = getComputedStyle(datesEl);
       return {
         card: el.getBoundingClientRect().toJSON(),
         label: label.toJSON(),
         title: head.toJSON(),
-        titleOneLine: head.height <= parseFloat(getComputedStyle(el.querySelector("[data-retailer]")!.parentElement!.nextElementSibling!).fontSize) * 1.6,
+        titleOneLine: head.height <= parseFloat(getComputedStyle(titleEl).fontSize) * 1.6,
         cover: r("[data-catalog-cover] img").toJSON(),
         dates: r("[data-catalog-dates]").toJSON(),
         datesOneLine: datesEl.scrollWidth <= datesEl.clientWidth + 1 && datesEl.getBoundingClientRect().height <= parseFloat(cs.fontSize) * 1.6,
@@ -137,14 +143,9 @@ async function checkHome(page: Page) {
     });
     expect(g.label.x - g.card.x, `card ${i} label left`).toBeLessThan(16);
     expect(g.label.y - g.card.y, `card ${i} label top`).toBeLessThan(20);
-    if (g.card.width <= 160) {
-      expect(g.title.y, `card ${i} title under label`).toBeGreaterThanOrEqual(g.label.bottom - 0.5);
-      expect(Math.abs(g.title.x - g.label.x), `card ${i} title left-aligned with label`).toBeLessThan(4);
-      expect(g.titleOneLine, `card ${i} title on one line`).toBe(true);
-    } else {
-      expect(g.title.x, `card ${i} title right of label`).toBeGreaterThanOrEqual(g.label.right - 0.5);
-      expect(Math.abs(g.title.y + g.title.height / 2 - (g.label.y + g.label.height / 2)), `card ${i} header aligned`).toBeLessThan(3);
-    }
+    expect(g.title.y, `card ${i} title under label`).toBeGreaterThanOrEqual(g.label.bottom - 0.5);
+    expect(Math.abs(g.title.x - g.label.x), `card ${i} title left-aligned with label`).toBeLessThan(4);
+    expect(g.titleOneLine, `card ${i} title on one line`).toBe(true);
     expect(g.title.right, `card ${i} title inside`).toBeLessThanOrEqual(g.card.right + 0.5);
     expect(g.cover.y, `card ${i} cover below header`).toBeGreaterThanOrEqual(g.title.bottom - 3);
     expect(Math.abs(g.cover.x + g.cover.width / 2 - (g.card.x + g.card.width / 2)), `card ${i} cover centred`).toBeLessThan(4);
@@ -152,25 +153,24 @@ async function checkHome(page: Page) {
     expect(g.datesOneLine, `card ${i} dates on one line`).toBe(true);
     expect(g.cta.y, `card ${i} CTA below dates`).toBeGreaterThanOrEqual(g.dates.bottom - 0.5);
   }
+  await page.locator("[data-testid=catalog-carousel] ul").evaluate((el) => el.scrollTo({ left: 0, behavior: "instant" }));
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
-  // Mascot centred on its own; the "Pogovor" pill beside it on the right, vertically aligned.
-  const pic = await box('[data-home-zone="mascot"] img');
-  const chat = await box("[data-chat-entry]");
-  await expect(page.locator("[data-chat-entry]")).toHaveText("Pogovor");
-  expect(chat.x, "Pogovor right of the mascot").toBeGreaterThan(pic.x + pic.width);
-  expect(Math.abs(pic.x + pic.width / 2 - vp.width / 2), "mascot centred").toBeLessThan(1.5);
-  expect(chat.x - (pic.x + pic.width), "Pogovor close to the mascot").toBeLessThanOrEqual(12);
-  expect(chat.x + chat.width, "Pogovor inside the viewport").toBeLessThanOrEqual(vp.width);
-  expect(Math.abs(pic.y + pic.height / 2 - (chat.y + chat.height / 2)), "group vertically aligned").toBeLessThan(2);
+  // The mascot and the "Pogovor" pill are gone; the composer is one full-width line in the middle zone.
+  await expect(page.locator("[data-chat-entry]")).toHaveCount(0);
+  await expect(page.locator('[data-home-zone="mascot"]')).toHaveCount(0);
+  const comp = await box("[data-home-composer]");
+  expect(Math.abs(comp.width - actionsBox.width), "composer as wide as the actions").toBeLessThan(1);
+  expect(Math.abs(comp.x - actionsBox.x)).toBeLessThan(1);
+  expect(comp.y + comp.height, "composer above the actions").toBeLessThanOrEqual(actionsBox.y + 0.5);
 
   // Izdelki: same top-zone height (nothing below moves), exactly two complete list rows, the rest scrolls inside.
-  const before = { mascot, rail: railBox };
+  const before = { composer, rail: railBox };
   await page.getByRole("tab", { name: "Izdelki" }).click();
   const panel = await box("[role=tabpanel]");
-  expect(Math.abs(panel.height - c0.height), "same top height in both modes").toBeLessThan(1);
-  const after = { mascot: await box('[data-home-zone="mascot"]'), rail: await box('[data-home-zone="bottom"]') };
-  expect(Math.abs(after.mascot.y - before.mascot.y), "mascot does not jump").toBeLessThan(1);
+  expect(Math.abs(panel.height - car.height), "same top height in both modes").toBeLessThan(1);
+  const after = { composer: await box('[data-home-zone="composer"]'), rail: await box('[data-home-zone="bottom"]') };
+  expect(Math.abs(after.composer.y - before.composer.y), "composer does not jump").toBeLessThan(1);
   expect(Math.abs(after.rail.y - before.rail.y), "products rail does not jump").toBeLessThan(1);
   const list = await page.getByTestId("home-list").evaluate((el) => {
     const l = el.getBoundingClientRect();

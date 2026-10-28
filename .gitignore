@@ -58,3 +58,6 @@ next-env.d.ts
 
 # operator credential files (passwords, activation links)
 /.secrets/
+
+# python bytecode
+__pycache__/

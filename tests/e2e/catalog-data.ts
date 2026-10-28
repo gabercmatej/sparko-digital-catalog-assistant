@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 
 type Img = { src: string; width: number; height: number };
-export type CatalogRec = { id: string; retailer: "spar" | "interspar"; pageCount: number; pages: { pdfPageIndex: number; image: Img }[] };
+export type CatalogRec = { id: string; title: string; retailer: "spar" | "interspar"; pageCount: number; pages: { pdfPageIndex: number; image: Img }[] };
 type Placement = { id: string; offerId: string; pdfPageIndex: number; pdfPageNumber: number; catalogId: string; bbox: { x: number; y: number; width: number; height: number } };
 
 const data = JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as {

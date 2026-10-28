@@ -12,3 +12,6 @@
 /.secrets
 .env*
 !.env.example
+# V3 source leaflets (served copies live in public/catalog/<id>/katalog.pdf)
+/261021-*.pdf
+/261028-*.pdf

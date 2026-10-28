@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
-import { busiestPage, offerOf, pageImage, pageNum, pagesWithProducts, placementsOnPage, primary, productName, productsByPage, retailerLabel, secondary } from "./catalog-data";
+import { leaflets } from "./leaflets-data";
+import { busiestPage, offerOf, pageImage, pageNum, pagesWithProducts, placementsOnPage, primary, productName, productsByPage, secondary } from "./catalog-data";
 
 const N = primary.pageCount;
 /** The busiest SPAR page: all product ids on it, its 0-based index and 1-based number. */
@@ -68,7 +69,7 @@ for (const [w, h] of [
 ]) {
   test(`page fits whole and as large as possible at ${w}x${h} (no vertical scrolling)`, async ({ page }) => {
     await page.setViewportSize({ width: w, height: h });
-    await seed(page, [], `/letak?stran=${BUSY_NO}`);
+    await seed(page, [], `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
     await expect(stage(page).locator(":scope > img")).toBeVisible();
     await page.waitForLoadState("networkidle");
     const g = await geometry(page);
@@ -87,15 +88,15 @@ for (const [w, h] of [
 }
 
 test("no 'Izdelki na tej strani' list and no extra chrome above the page", async ({ page }) => {
-  await seed(page, [FIRST_ID], `/letak?stran=${BUSY_NO}`);
+  await seed(page, [FIRST_ID], `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   await expect(stage(page).locator(":scope > img")).toBeVisible();
   await expect(page.getByText(/Izdelki na tej strani/)).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Izdelki na tej strani" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "SPAR letak" })).toBeAttached(); // screen-reader heading only
+  await expect(page.getByRole("heading", { name: primary.title })).toBeAttached(); // screen-reader heading only
 });
 
 test("pages flip left/right through all pages in natural order", async ({ page }) => {
-  await seed(page, [], "/letak?stran=1");
+  await seed(page, [], `/letak?katalog=${primary.id}&stran=1`);
   await expect(page.getByRole("button", { name: "Prejšnja stran" })).toHaveCount(0);
   for (let n = 2; n <= N; n++) {
     await next(page).click();
@@ -107,7 +108,7 @@ test("pages flip left/right through all pages in natural order", async ({ page }
 
 test("'Moje strani' starts OFF on a fresh open, also with saved items; switching it on still filters", async ({ page }) => {
   // Clean state: nothing stored at all.
-  await page.goto("/letak");
+  await page.goto(`/letak?katalog=${primary.id}`);
   const toggle = page.getByTestId("filter-toggle");
   await expect(toggle).toHaveAttribute("aria-checked", "false");
   await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${N}$`));
@@ -115,7 +116,7 @@ test("'Moje strani' starts OFF on a fresh open, also with saved items; switching
   // Moj katalog already has items: its leaflet button must NOT switch the filter on.
   await seed(page, [...A_IDS, B_ID], "/moj-katalog");
   await page.getByRole("link", { name: "Pokaži na letaku" }).click();
-  await expect(page).toHaveURL(new RegExp(`/letak\\?stran=${PA + 1}$`));
+  await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${primary.id}&stran=${PA + 1}$`));
   await expect(toggle).toHaveAttribute("aria-checked", "false");
   await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N}$`));
   await expect(box(page, A_IDS[0])).toHaveAttribute("data-saved", "true");
@@ -123,7 +124,7 @@ test("'Moje strani' starts OFF on a fresh open, also with saved items; switching
   await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 2} / ${N}$`));
 
   // Plain /letak with saved items: still off.
-  await page.goto("/letak");
+  await page.goto(`/letak?katalog=${primary.id}`);
   await expect(toggle).toHaveAttribute("aria-checked", "false");
 
   // Manually on → only the saved pages (A, B).
@@ -137,7 +138,7 @@ test("'Moje strani' starts OFF on a fresh open, also with saved items; switching
 });
 
 test("fresh open: 'Moje strani' helper microcopy and the first-open swipe hint (passes clicks, auto-hides)", async ({ page }) => {
-  await page.goto("/letak");
+  await page.goto(`/letak?katalog=${primary.id}`);
   const toggle = page.getByTestId("filter-toggle");
   await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${N}$`));
   await expect(toggle).toHaveAttribute("aria-checked", "false");
@@ -195,17 +196,18 @@ test("fresh open: 'Moje strani' helper microcopy and the first-open swipe hint (
   expect(look.color).toBe("rgb(255, 255, 255)");
 
   // Stays fully visible for ~3 s, then fades out and is removed (~3.5 s) without interaction.
-  await page.waitForTimeout(2500);
+  // (The checks above already take ~1 s, so a shorter wait keeps this clear of the 3 s fade start on slow machines.)
+  await page.waitForTimeout(1200);
   await expect(hint).toBeVisible();
   expect(await hint.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
-  await expect(hint).toHaveCount(0, { timeout: 2500 });
+  await expect(hint).toHaveCount(0, { timeout: 5000 });
   await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${N}$`));
 });
 
 for (const width of [360, 390, 430, 1280]) {
   test(`swipe hint copy fits, centred and prominent @${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 1000 ? 780 : 900 });
-    await page.goto("/letak");
+    await page.goto(`/letak?katalog=${primary.id}`);
     const hint = page.getByTestId("swipe-hint");
     await expect(hint).toBeVisible();
     const m = await hint.evaluate((el) => {
@@ -234,7 +236,7 @@ for (const width of [360, 390, 430, 1280]) {
 }
 
 test("swipe hint hides immediately on interaction and shows only once per session", async ({ page }) => {
-  await page.goto(`/letak?stran=${BUSY_NO}`);
+  await page.goto(`/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   const hint = page.getByTestId("swipe-hint");
   await expect(hint).toBeVisible();
   // Pointer interaction on the page viewport.
@@ -256,13 +258,13 @@ test("swipe hint hides immediately on interaction and shows only once per sessio
   await page.waitForTimeout(1500);
   await expect(hint).toHaveCount(0);
   await page.goto("/");
-  await page.goto("/letak");
+  await page.goto(`/letak?katalog=${primary.id}`);
   await page.waitForTimeout(1500);
   await expect(hint).toHaveCount(0);
 });
 
 test("swipe hint: the 'Naslednja stran' arrow passes through and dismisses it right away", async ({ page }) => {
-  await page.goto("/letak");
+  await page.goto(`/letak?katalog=${primary.id}`);
   const hint = page.getByTestId("swipe-hint");
   await expect(hint).toBeVisible();
   await next(page).click();
@@ -272,7 +274,7 @@ test("swipe hint: the 'Naslednja stran' arrow passes through and dismisses it ri
 
 test("Moj katalog filter: off = all pages, on = only saved pages (deduped, in order), live updates", async ({ page }) => {
   // Several products on page A, one on page B.
-  await seed(page, [...A_IDS, B_ID], "/letak?moji=1");
+  await seed(page, [...A_IDS, B_ID], `/letak?katalog=${primary.id}&moji=1`);
   const toggle = page.getByTestId("filter-toggle");
   await expect(toggle).toHaveAttribute("aria-checked", "true");
   await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N} · moje 1/2`));
@@ -304,7 +306,7 @@ test("all saved products on one page are highlighted together; add/remove update
   const k = PAGE_IDS.length;
   const initial = PAGE_IDS.slice(0, k - 1);
   const extra = PAGE_IDS[k - 1];
-  await seed(page, initial, `/letak?stran=${BUSY_NO}`);
+  await seed(page, initial, `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   const saved = stage(page).locator('[data-saved="true"]');
   await expect(saved).toHaveCount(k - 1);
   for (const id of initial) await expect(box(page, id)).toContainText("V Mojem katalogu");
@@ -328,7 +330,7 @@ test("all saved products on one page are highlighted together; add/remove update
 });
 
 test("saved overlay: fixed size, only the golden light pulses (A bright ↔ B calm, 2 s); no scaling, no orbs", async ({ page }) => {
-  await seed(page, [FIRST_ID], `/letak?stran=${BUSY_NO}`);
+  await seed(page, [FIRST_ID], `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   const host = box(page, FIRST_ID);
   await expect(host.locator("[data-saved-ring]")).toBeAttached();
   await expect(host).toContainText("V Mojem katalogu");
@@ -417,7 +419,7 @@ test("saved overlay: fixed size, only the golden light pulses (A bright ↔ B ca
 test("only saved products animate; unsaved neighbours stay untouched", async ({ page }) => {
   const savedIds = PAGE_IDS.slice(-2);
   const unsavedIds = PAGE_IDS.slice(0, -2);
-  await seed(page, savedIds, `/letak?stran=${BUSY_NO}`);
+  await seed(page, savedIds, `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   for (const id of savedIds) {
     await expect(box(page, id).locator("[data-saved-box]")).toHaveCount(1);
     await expect(box(page, id).locator("[data-saved-box]")).toHaveCSS("animation-name", /savedGlow/);
@@ -435,7 +437,7 @@ test("only saved products animate; unsaved neighbours stay untouched", async ({ 
 
 test("reduced motion: saved overlay is the static gold state A (no pulse, no transform)", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await seed(page, [FIRST_ID], `/letak?stran=${BUSY_NO}`);
+  await seed(page, [FIRST_ID], `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   const host = box(page, FIRST_ID);
   const boxEl = host.locator("[data-saved-box]");
   await expect(host.locator("[data-saved-ring]")).toBeVisible();
@@ -455,7 +457,7 @@ test("product → 'Poglej v ... katalogu' opens the right page, emphasises the p
   await page.getByPlaceholder("Vprašaj Sparka o katalogu …").press("Enter");
   const card = page.getByRole("log", { name: "Pogovor s Sparkom" }).locator(`[data-product-card="${FIRST_ID}"]`).first();
   await card.getByRole("button", { name: /^Poglej v .* katalogu/ }).click();
-  await expect(page).toHaveURL(new RegExp(`/letak\\?stran=${BUSY_NO}`));
+  await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${primary.id}&stran=${BUSY_NO}`));
   await expect(indicator(page)).toHaveText(pageNum(BUSY_NO, primary));
   const ring = box(page, FIRST_ID).locator("[data-focus-ring]");
   await expect.poll(() => ring.evaluate((e) => e.getAnimations().length)).toBeGreaterThan(0);
@@ -465,16 +467,22 @@ test("product → 'Poglej v ... katalogu' opens the right page, emphasises the p
 
 // ---------------------------------------------------------------- multi-catalog
 
-const switchTo = (page: Page, label: string) => page.getByRole("button", { name: label, exact: true });
-const SECONDARY_LABEL = retailerLabel(secondary);
+/** Switch catalog through the single switch button + "Izberi katalog" picker. */
+async function switchTo(page: Page, catalogId: string) {
+  await page.getByTestId("catalog-switch").click();
+  const dialog = page.getByRole("dialog", { name: "Izberi katalog" });
+  await dialog.locator(`[data-picker-catalog="${catalogId}"]`).click();
+  await expect(dialog).toHaveCount(0);
+}
+const currentCatalog = (page: Page) => page.getByTestId("catalog-switch");
+const DEFAULT_LEAFLET = leaflets[0];
 
 test("INTERSPAR deep link opens the INTERSPAR page with the saved highlight and the product glow", async ({ page }) => {
   await seed(page, [IS_ID], `/letak?katalog=${secondary.id}&stran=${IS_PAGE + 1}&izdelek=${IS_ID}`);
-  await expect(switchTo(page, SECONDARY_LABEL)).toHaveAttribute("aria-pressed", "true");
-  await expect(switchTo(page, "SPAR")).toHaveAttribute("aria-pressed", "false");
+  await expect(currentCatalog(page)).toHaveAttribute("data-catalog-id", secondary.id);
   await expect(indicator(page)).toHaveText(pageNum(IS_PAGE + 1, secondary));
   await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(secondary, IS_PAGE).src);
-  await expect(page.getByRole("heading", { name: `${SECONDARY_LABEL} letak` })).toBeAttached();
+  await expect(page.getByRole("heading", { name: secondary.title })).toBeAttached();
   await expect(box(page, IS_ID)).toHaveAttribute("data-saved", "true");
   await expect(box(page, IS_ID)).toContainText("V Mojem katalogu");
   await expect.poll(() => box(page, IS_ID).locator("[data-focus-ring]").evaluate((e) => e.getAnimations().length)).toBeGreaterThan(0);
@@ -482,18 +490,18 @@ test("INTERSPAR deep link opens the INTERSPAR page with the saved highlight and 
   await expect(stage(page).locator("[data-placement-id]")).toHaveCount(placementsOnPage(secondary, IS_PAGE).length);
 });
 
-test("the product wins over a conflicting katalog parameter; unknown katalog falls back to SPAR", async ({ page }) => {
+test("the product wins over a conflicting katalog parameter; unknown katalog falls back to the default leaflet", async ({ page }) => {
   await seed(page, [], `/letak?katalog=${primary.id}&izdelek=${IS_ID}`);
-  await expect(switchTo(page, SECONDARY_LABEL)).toHaveAttribute("aria-pressed", "true");
+  await expect(currentCatalog(page)).toHaveAttribute("data-catalog-id", secondary.id);
   await expect(indicator(page)).toHaveText(pageNum(IS_PAGE + 1, secondary));
   await page.goto("/letak?katalog=nope");
-  await expect(switchTo(page, "SPAR")).toHaveAttribute("aria-pressed", "true");
-  await expect(indicator(page)).toHaveText(pageNum(1, primary));
+  await expect(currentCatalog(page)).toHaveAttribute("data-catalog-id", DEFAULT_LEAFLET.id);
+  await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${DEFAULT_LEAFLET.pageCount}`));
 });
 
-test("catalog switch: page 1 of the other catalog, URL follows, switching back drops the parameter", async ({ page }) => {
-  await seed(page, [], `/letak?stran=${BUSY_NO}`);
-  await switchTo(page, SECONDARY_LABEL).click();
+test("catalog switch: page 1 of the other catalog, URL follows, switching back to the default leaflet drops the parameter", async ({ page }) => {
+  await seed(page, [], `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
+  await switchTo(page, secondary.id);
   await expect(indicator(page)).toHaveText(pageNum(1, secondary));
   await expect(page).toHaveURL(new RegExp(`katalog=${secondary.id}&stran=1`));
   await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(secondary, 0).src);
@@ -503,18 +511,23 @@ test("catalog switch: page 1 of the other catalog, URL follows, switching back d
   await page.getByRole("button", { name: /Izberi stran/ }).click();
   await expect(page.getByRole("dialog").getByRole("listitem")).toHaveCount(secondary.pageCount);
   await page.keyboard.press("Escape");
-  await switchTo(page, "SPAR").click();
-  await expect(indicator(page)).toHaveText(pageNum(1, primary));
+  await switchTo(page, DEFAULT_LEAFLET.id);
+  await expect(indicator(page)).toHaveText(new RegExp(`^1 / ${DEFAULT_LEAFLET.pageCount}`));
   await expect(page).not.toHaveURL(/katalog=/);
+  await expect(currentCatalog(page)).toHaveAttribute("data-catalog-id", DEFAULT_LEAFLET.id);
+  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", new RegExp(`/catalog/${DEFAULT_LEAFLET.id}/`));
+  // The earlier SPAR 41/26 stays reachable and now carries its id in the URL.
+  await switchTo(page, primary.id);
+  await expect(page).toHaveURL(new RegExp(`katalog=${primary.id}&stran=1`));
   await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(primary, 0).src);
 });
 
 test("'Moje strani' is per catalog and survives a catalog switch", async ({ page }) => {
-  await seed(page, [FIRST_ID, IS_ID], "/letak?moji=1");
+  await seed(page, [FIRST_ID, IS_ID], `/letak?katalog=${primary.id}&moji=1`);
   const toggle = page.getByTestId("filter-toggle");
   await expect(toggle).toHaveAttribute("aria-checked", "true");
   await expect(indicator(page)).toHaveText(new RegExp(`^${BUSY_NO} / ${N} · moje 1/1`));
-  await switchTo(page, SECONDARY_LABEL).click();
+  await switchTo(page, secondary.id);
   await expect(toggle).toHaveAttribute("aria-checked", "true");
   await expect(indicator(page)).toHaveText(new RegExp(`^${IS_PAGE + 1} / ${secondary.pageCount} · moje 1/1`));
   await expect(page).toHaveURL(/moji=1/);
@@ -522,17 +535,17 @@ test("'Moje strani' is per catalog and survives a catalog switch", async ({ page
 });
 
 test("'Moje strani' in a catalog without saved products falls back to all pages with a notice", async ({ page }) => {
-  await seed(page, [FIRST_ID], "/letak?moji=1");
+  await seed(page, [FIRST_ID], `/letak?katalog=${primary.id}&moji=1`);
   await expect(page.getByTestId("filter-toggle")).toHaveAttribute("aria-checked", "true");
-  await switchTo(page, SECONDARY_LABEL).click();
+  await switchTo(page, secondary.id);
   await expect(page.getByTestId("filter-toggle")).toHaveAttribute("aria-checked", "false");
-  await expect(page.getByRole("status").filter({ hasText: `V katalogu ${SECONDARY_LABEL} nimaš izdelkov` })).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: `V katalogu ${secondary.title} nimaš izdelkov` })).toBeVisible();
   await expect(indicator(page)).toHaveText(pageNum(1, secondary));
 });
 
 test("overlays stay aligned with the page image across responsive sizes", async ({ page }) => {
   const pls = placementsOnPage(primary, BUSY.index);
-  await seed(page, PAGE_IDS, `/letak?stran=${BUSY_NO}`);
+  await seed(page, PAGE_IDS, `/letak?katalog=${primary.id}&stran=${BUSY_NO}`);
   for (const [w, h] of [
     [360, 640],
     [390, 844],
@@ -567,14 +580,14 @@ test("overlays stay aligned with the page image across responsive sizes", async 
 const COVER_IDS = ["svinjska-rebra-eu-1kg", "radler-cola-limeta-union-0-5l"];
 
 test("SPAR cover: Svinjska rebra EU and Radler Cola Limeta are tappable regions next to the already mapped products", async ({ page }) => {
-  await seed(page, [], "/letak?stran=1");
+  await seed(page, [], `/letak?katalog=${primary.id}&stran=1`);
   await expect(indicator(page)).toHaveText(pageNum(1, primary));
   for (const id of [...COVER_IDS, "nutella-1kg", "sitarjev-hlebec-750g", "belo-grozdje-1kg"]) await expect(box(page, id)).toHaveCount(1);
 });
 
 for (const id of COVER_IDS) {
   test(`SPAR cover: tapping ${id} opens the product sheet; saving gives the golden highlight, shows it in Moj katalog and survives a reload`, async ({ page }) => {
-    await seed(page, [], "/letak?stran=1");
+    await seed(page, [], `/letak?katalog=${primary.id}&stran=1`);
     await box(page, id).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog).toContainText(productName(id));
@@ -590,7 +603,7 @@ for (const id of COVER_IDS) {
     await expect(page.getByText(productName(id)).first()).toBeVisible();
 
     // remove again from the leaflet
-    await page.goto("/letak?stran=1");
+    await page.goto(`/letak?katalog=${primary.id}&stran=1`);
     await box(page, id).click();
     await page.getByRole("dialog").getByRole("button", { name: "Odstrani" }).click();
     await page.keyboard.press("Escape");
@@ -599,10 +612,10 @@ for (const id of COVER_IDS) {
 }
 
 test("INTERSPAR still switches and a newly mapped INTERSPAR product (page 8) is tappable", async ({ page }) => {
-  await seed(page, [], "/letak");
-  await switchTo(page, SECONDARY_LABEL).click();
+  await seed(page, [], `/letak?katalog=${primary.id}`);
+  await switchTo(page, secondary.id);
   await expect(indicator(page)).toHaveText(pageNum(1, secondary));
-  await page.goto("/letak?katalog=interspar-1426&stran=8");
+  await page.goto(`/letak?katalog=${secondary.id}&stran=8`);
   await expect(box(page, "pecena-piscancja-prsa-1kg")).toHaveCount(1);
   await box(page, "tiramisu-to-go-200g").click();
   await expect(page.getByRole("dialog")).toContainText(productName("tiramisu-to-go-200g"));

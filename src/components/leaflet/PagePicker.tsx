@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { getPage } from "@/lib/catalog";
+import { getViewerPage } from "@/lib/catalog";
 import { Icon } from "../ui/Icon";
 import styles from "./PagePicker.module.css";
 
@@ -20,7 +20,7 @@ export function PagePicker({ catalogId, pages, current, savedPages, onPick }: { 
   return (
     <ul className={styles.grid} ref={gridRef}>
       {pages.map((idx) => {
-        const p = getPage(idx, catalogId);
+        const p = getViewerPage(idx, catalogId);
         const isCurrent = idx === current;
         const hasSaved = saved.has(idx);
         return (

@@ -314,8 +314,9 @@ test("the existing app works after login", async ({ browser, baseURL }) => {
   const { page } = await browserOf(browser, baseURL!);
   await activate(page, r);
   const cards = page.locator("[data-catalog-card]");
-  await expect(cards).toHaveCount(2);
+  await expect(cards).toHaveCount(6);
   await expect(cards.nth(0)).toHaveAttribute("href", "/letak");
+  await expect(cards.nth(1)).toHaveAttribute("href", "/letak?katalog=interspar-1526");
   await page.goto("/");
   await expect(page.getByPlaceholder("Vprašaj Sparka o katalogu …")).toBeVisible();
 });

@@ -1,0 +1,14 @@
+/* Full width of the Home column; the field itself comes from Composer.module.css (same pill as the Chat tab). */
+.form {
+  width: 100%;
+}
+.field {
+  align-items: center;
+  min-height: var(--composer-h, 52px);
+}
+.input {
+  height: calc(var(--composer-h, 52px) - 10px);
+  padding: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

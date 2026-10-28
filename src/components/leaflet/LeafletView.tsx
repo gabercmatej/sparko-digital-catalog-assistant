@@ -2,23 +2,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  catalogs,
+  defaultLeaflet,
+  leafletShortTitle,
   formatShortDate,
   formatPrice,
-  getCatalog,
+  getViewerCatalog,
   getOffer,
-  getPage,
+  getViewerPage,
   getPlacementsForProduct,
   getPlacementsOnPage,
   getProduct,
   placements as allPlacements,
   primaryCatalog,
-  RETAILER_LABEL,
 } from "@/lib/catalog";
 import { useStore } from "@/lib/store/store";
 import { ProductCard } from "../product/ProductCard";
 import { Icon } from "../ui/Icon";
 import { PageViewer, type OverlayItem, type ViewerControls } from "./PageViewer";
+import { CatalogPicker } from "./CatalogPicker";
+import { CatalogBadge } from "./CatalogBadge";
 import { PagePicker } from "./PagePicker";
 import { Sheet } from "./Sheet";
 import { adjacentPage, allPageIndexes, leafletQuery, nearestPage, pagesWithProducts, parsePageParam } from "./pages";
@@ -31,27 +33,29 @@ type Nav = { page: number; token: number; target: string | null };
 const productIdForOffer = (offerId: string) => getOffer(offerId)?.productId;
 
 function pageLabelFor(index: number, catalogId: string): string {
-  const p = getPage(index, catalogId);
+  const p = getViewerPage(index, catalogId);
   const base = `PDF-stran ${index + 1}`;
   return p?.printedPageLabel ? `${base} (tiskana stran ${p.printedPageLabel})` : base;
 }
 
 /**
- * Active catalog from the URL: `katalog` (unknown/missing = primary SPAR); a valid `izdelek` wins over it,
- * so a product link always opens the catalog the product is printed in.
+ * Active catalog from the URL: `katalog` (unknown/missing = the first Home leaflet); a valid `izdelek` wins over it,
+ * so a product link always opens the catalog the product is printed in. `moji=1` without `katalog` (links from
+ * before V3) opens the primary product catalog: the browse-only default leaflet has no saved products to filter.
  */
 function catalogIdFromParams(sp: URLSearchParams): string {
   const izdelek = sp.get("izdelek");
   const own = izdelek && getProduct(izdelek) ? getPlacementsForProduct(izdelek)[0]?.catalogId : undefined;
-  if (own && getCatalog(own)) return own;
+  if (own && getViewerCatalog(own)) return own;
   const kat = sp.get("katalog");
-  return (kat && getCatalog(kat)?.id) || primaryCatalog.id;
+  const fallback = sp.get("moji") === "1" && !defaultLeaflet.interactive ? primaryCatalog.id : defaultLeaflet.id;
+  return (kat && getViewerCatalog(kat)?.id) || fallback;
 }
 
 /** Resolve the initial catalog/page/target from the URL. `pendingMine` = wait for hydration to pick the first saved page. */
 function initialFromParams(sp: URLSearchParams): { catalogId: string; nav: Nav; pendingMine: boolean; mine: boolean } {
   const catalogId = catalogIdFromParams(sp);
-  const cat = getCatalog(catalogId)!;
+  const cat = getViewerCatalog(catalogId)!;
   const stran = parsePageParam(sp.get("stran"), cat.pageCount);
   const izdelek = sp.get("izdelek");
   const mine = sp.get("moji") === "1";
@@ -177,7 +181,7 @@ export function LeafletView() {
 
   const [init] = useState(() => initialFromParams(new URLSearchParams(qs)));
   const [catalogId, setCatalogId] = useState(init.catalogId);
-  const catalog = getCatalog(catalogId)!;
+  const catalog = getViewerCatalog(catalogId)!;
   const [nav, setNav] = useState<Nav>(init.nav);
   const [pendingMine, setPendingMine] = useState(init.pendingMine);
   const [filterOn, setFilterOn] = useState(init.mine);
@@ -186,6 +190,7 @@ export function LeafletView() {
   const [issued, setIssued] = useState<string[]>([]);
   const [sheet, setSheet] = useState<{ productId: string; offerId: string } | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [catalogsOpen, setCatalogsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
   // Zoom level reported by the viewer, tagged with the navigation token it belongs to.
   const [zoom, setZoom] = useState({ token: 0, scale: 1 });
@@ -229,7 +234,7 @@ export function LeafletView() {
     setFilterNotice(
       savedIds.length === 0
         ? "Moj katalog je prazen, zato filter ni več vklopljen. Prikazane so vse strani."
-        : `V katalogu ${RETAILER_LABEL[catalog.retailer]} nimaš izdelkov, zato filter ni vklopljen. Prikazane so vse strani.`,
+        : `V katalogu ${catalog.title} nimaš izdelkov, zato filter ni vklopljen. Prikazane so vse strani.`,
     );
   }
 
@@ -239,7 +244,7 @@ export function LeafletView() {
     if (!issued.includes(qs)) {
       const params = new URLSearchParams(qs);
       const kat = catalogIdFromParams(params);
-      const p = parsePageParam(params.get("stran"), getCatalog(kat)!.pageCount);
+      const p = parsePageParam(params.get("stran"), getViewerCatalog(kat)!.pageCount);
       const iz = params.get("izdelek");
       const target = iz && getPlacementsForProduct(iz).some((pl) => pl.catalogId === kat && pl.pdfPageIndex === (p ?? -1)) ? iz : null;
       if (kat !== catalogId) {
@@ -253,7 +258,7 @@ export function LeafletView() {
 
   const filterActive = filterOn && savedPages.length > 0;
   const visible = filterActive ? savedPages : allPageIndexes(catalog.pageCount);
-  const page = getPage(nav.page, catalogId);
+  const page = getViewerPage(nav.page, catalogId);
   const prevPage = adjacentPage(nav.page, visible, -1);
   const nextPage = adjacentPage(nav.page, visible, 1);
   const onFilteredPageWithoutSaved = filterActive && !savedPages.includes(nav.page);
@@ -320,7 +325,7 @@ export function LeafletView() {
   };
 
   // Keyboard paging (←/→) when no dialog is open and focus is not in a text field.
-  const anyModal = sheet !== null || pickerOpen || emailOpen;
+  const anyModal = sheet !== null || pickerOpen || emailOpen || catalogsOpen;
   useEffect(() => {
     if (anyModal) return;
     const onKey = (e: KeyboardEvent) => {
@@ -337,7 +342,7 @@ export function LeafletView() {
   // Preload only the neighbouring page images.
   useEffect(() => {
     for (const idx of [prevPage, nextPage]) {
-      const p = idx === null ? undefined : getPage(idx, catalogId);
+      const p = idx === null ? undefined : getViewerPage(idx, catalogId);
       if (p) {
         const img = new Image();
         img.decoding = "async";
@@ -379,19 +384,29 @@ export function LeafletView() {
   const pageLabel = pageLabelFor(nav.page, catalogId);
   const position = filterActive && savedPages.includes(nav.page) ? `${savedPages.indexOf(nav.page) + 1}/${savedPages.length}` : null;
   const filterDisabled = !hydrated || savedPages.length === 0;
+  // Browse-only leaflets carry no products, so there is nothing to save from them (yet).
+  const filterHelp = catalog.interactive ? "Najprej dodaj izdelek v Moj katalog." : "Ta katalog je na voljo za listanje; izdelki v njem še niso interaktivni.";
 
   return (
     <div className={styles.root}>
-      <h1 className="sr-only">{RETAILER_LABEL[catalog.retailer]} letak</h1>
+      <h1 className="sr-only">{catalog.title}</h1>
       <div className={styles.catalogBar}>
-        <div role="group" aria-label="Katalog" className={styles.segment}>
-          {catalogs.map((c) => (
-            <button key={c.id} type="button" className={styles.segmentBtn} aria-pressed={c.id === catalogId} data-catalog-id={c.id} onClick={() => switchCatalog(c.id)}>
-              {RETAILER_LABEL[c.retailer]}
-            </button>
-          ))}
-        </div>
-        <span className={styles.validity} data-testid="catalog-validity">
+        <button
+          type="button"
+          className={styles.catalogBtn}
+          onClick={() => setCatalogsOpen(true)}
+          aria-haspopup="dialog"
+          aria-label={`Katalog: ${catalog.title}. Izberi drug katalog`}
+          data-testid="catalog-switch"
+          data-catalog-id={catalog.id}
+        >
+          <CatalogBadge category={catalog.category} />
+          <span className={styles.catalogTitle} data-testid="catalog-title">
+            {leafletShortTitle(catalog)}
+          </span>
+          <Icon name="chevron-down" size={16} />
+        </button>
+        <span className={styles.validity} data-testid="catalog-validity" title={catalog.validityNote ?? undefined}>
           {formatShortDate(catalog.validFrom)} – {formatShortDate(catalog.validTo)}
         </span>
       </div>
@@ -402,7 +417,7 @@ export function LeafletView() {
           aria-checked={filterActive}
           aria-label="Samo strani z mojimi izdelki"
           aria-describedby={filterDisabled && hydrated ? "leaflet-filter-helper leaflet-filter-help" : "leaflet-filter-helper"}
-          title={filterDisabled && hydrated ? "Najprej dodaj izdelek v Moj katalog." : "Samo strani z mojimi izdelki"}
+          title={filterDisabled && hydrated ? filterHelp : "Samo strani z mojimi izdelki"}
           className={styles.switchBtn}
           onClick={toggleFilter}
           disabled={filterDisabled}
@@ -422,7 +437,7 @@ export function LeafletView() {
         </button>
         {filterDisabled && hydrated && (
           <span id="leaflet-filter-help" className="sr-only">
-            Najprej dodaj izdelek v Moj katalog.
+            {filterHelp}
           </span>
         )}
         <button type="button" className={styles.pickerBtn} onClick={() => setPickerOpen(true)} aria-haspopup="dialog" aria-label={`${pageLabel} od ${catalog.pageCount}. Izberi stran`}>
@@ -492,6 +507,16 @@ export function LeafletView() {
 
       <Sheet open={sheet !== null} onClose={() => setSheet(null)} title="Izdelek iz letaka">
         {sheet && <ProductCard productId={sheet.productId} offerId={sheet.offerId} showLeaflet={false} headingLevel={3} />}
+      </Sheet>
+
+      <Sheet open={catalogsOpen} onClose={() => setCatalogsOpen(false)} title="Izberi katalog">
+        <CatalogPicker
+          current={catalogId}
+          onPick={(id) => {
+            setCatalogsOpen(false);
+            switchCatalog(id);
+          }}
+        />
       </Sheet>
 
       <Sheet open={pickerOpen} onClose={() => setPickerOpen(false)} title={filterActive ? "Strani z mojimi izdelki" : "Izberi stran"}>

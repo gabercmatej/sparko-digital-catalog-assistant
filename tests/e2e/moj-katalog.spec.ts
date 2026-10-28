@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { offerOf, primary, productsByPage, secondary, pagesWithProducts, retailerLabel } from "./catalog-data";
+import { offerOf, primary, productsByPage, secondary, pagesWithProducts } from "./catalog-data";
 
 // Three SPAR products and one INTERSPAR product, derived from the data.
 const SPAR_IDS = pagesWithProducts(primary.id)
@@ -124,11 +124,11 @@ test("'Pokaži na letaku' opens the leaflet at the first saved page; INTERSPAR-o
   await seed(page, SAVED);
   const firstPage = pagesWithProducts(primary.id).find((i) => productsByPage(primary.id).get(i)!.some((id) => SPAR_IDS.includes(id)))!;
   await page.getByRole("link", { name: "Pokaži na letaku" }).click();
-  await expect(page).toHaveURL(new RegExp(`/letak\\?stran=${firstPage + 1}$`));
+  await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${primary.id}&stran=${firstPage + 1}$`));
   await seed(page, [IS_ID]);
   await page.getByRole("link", { name: "Pokaži na letaku" }).click();
   await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${secondary.id}&stran=${pagesWithProducts(secondary.id)[0] + 1}$`));
-  await expect(page.getByRole("button", { name: retailerLabel(secondary), exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("catalog-switch")).toHaveAttribute("data-catalog-id", secondary.id);
 });
 
 test("'Deli seznam' shares a plain-text list (navigator.share) and falls back to the clipboard with a toast", async ({ page, context }) => {

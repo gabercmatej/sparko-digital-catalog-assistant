@@ -15,6 +15,7 @@ import {
   newId,
   removeProduct,
   saveProduct,
+  setActiveConversation,
   updateMessage,
   useStore,
 } from "../store/store";
@@ -143,6 +144,19 @@ export function sendMessage(rawText: string): boolean {
   appendMessage(conversationId, placeholder);
   void request(conversationId, placeholder.id, user.id);
   return true;
+}
+
+/**
+ * Home chat input: the same send as the Chat composer, done BEFORE navigating to the Chat tab, so the question
+ * and its pending answer are already in the store when Chat renders (one request, no timers). It continues the
+ * active conversation (its history stays); a demo example or no active chat starts a new one instead of
+ * forking the example. Returns false when ignored (empty, not hydrated yet or a request is pending).
+ */
+export function sendFromHome(rawText: string): boolean {
+  const s = getState();
+  if (!s.hydrated || !rawText.trim()) return false;
+  if (s.activeConversationId && isDemoId(s.activeConversationId)) setActiveConversation(null);
+  return sendMessage(rawText);
 }
 
 /** Retry an errored assistant message in place (the user message is not duplicated). */

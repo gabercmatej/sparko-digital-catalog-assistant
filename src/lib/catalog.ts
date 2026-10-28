@@ -3,7 +3,8 @@
  * Isomorphic: safe in server routes, client components and tests.
  */
 import raw from "@/data/catalog.json";
-import type { Catalog, CatalogData, CatalogPage, Offer, Placement, Product, Recipe, Retailer } from "./types";
+import leafletRaw from "@/data/leaflets.json";
+import type { Catalog, CatalogData, CatalogPage, LeafletCategory, LeafletData, Offer, Placement, Product, Recipe, Retailer, ViewerCatalog } from "./types";
 
 export const data = raw as unknown as CatalogData;
 /** All catalogs, SPAR (primary) first. */
@@ -174,17 +175,91 @@ export function validityText(o: Offer): string {
 
 export const DEMO_LABEL = `Demo katalog · ${formatDate(primaryCatalog.publishedDate)}`;
 
+// ---------------------------------------------------------------- viewer leaflets (Home carousel + /letak)
+
+/**
+ * Every leaflet the viewer can open. First the browse-only leaflets of src/data/leaflets.json in Home order,
+ * then the product-data catalogs above (interactive, reached through product links and the leaflet switcher).
+ * `catalogs` (the AI / offer data) is deliberately NOT extended: the demo date model and every price stay
+ * tied to the verified catalogs only.
+ */
+export const homeLeaflets: ViewerCatalog[] = (leafletRaw as unknown as LeafletData).leaflets
+  .map(
+    (l): ViewerCatalog => ({
+      id: l.id,
+      category: l.category,
+      title: l.title,
+      issueLabel: l.issueLabel,
+      validFrom: l.validFrom,
+      validTo: l.validTo,
+      validityNote: l.validityNote ?? null,
+      pdfUrl: l.pdfUrl,
+      pageCount: l.pageCount,
+      cover: l.cover,
+      pages: l.pages,
+      interactive: false,
+      homeOrder: l.homeOrder,
+    }),
+  )
+  .sort((a, b) => (a.homeOrder ?? 0) - (b.homeOrder ?? 0));
+
+export const viewerCatalogs: ViewerCatalog[] = [
+  ...homeLeaflets,
+  ...catalogs.map(
+    (c): ViewerCatalog => ({
+      id: c.id,
+      category: c.retailer,
+      title: c.title,
+      issueLabel: c.issueLabel,
+      validFrom: c.validFrom,
+      validTo: c.validTo,
+      validityNote: null,
+      pdfUrl: c.pdfUrl,
+      pageCount: c.pageCount,
+      cover: c.cover,
+      pages: c.pages,
+      interactive: true,
+      homeOrder: null,
+    }),
+  ),
+];
+/** What /letak opens without a `katalog` parameter: the first Home leaflet. */
+export const defaultLeaflet: ViewerCatalog = viewerCatalogs[0];
+
+const viewerById = new Map<string, ViewerCatalog>(viewerCatalogs.map((c) => [c.id, c]));
+const viewerPageByKey = new Map<string, CatalogPage>(viewerCatalogs.flatMap((c) => c.pages.map((p) => [pageKey(c.id, p.pdfPageIndex), p] as const)));
+
+export function getViewerCatalog(id: string): ViewerCatalog | undefined {
+  return viewerById.get(id);
+}
+/** A page of any viewer leaflet (browse-only or interactive). */
+export function getViewerPage(pdfPageIndex: number, catalogId: string): CatalogPage | undefined {
+  return viewerPageByKey.get(pageKey(catalogId, pdfPageIndex));
+}
+
+export const CATEGORY_LABEL: Record<LeafletCategory, string> = {
+  spar: "SPAR",
+  interspar: "INTERSPAR",
+  "spar-online": "SPAR Online",
+  despar: "DESPAR",
+};
+/** The title without the store name the badge beside it already shows: "SPAR katalog 44/26" -> "katalog 44/26". */
+export function leafletShortTitle(c: Pick<ViewerCatalog, "title">): string {
+  const short = c.title.replace(/^(SPAR Online|INTERSPAR|DESPAR|SPAR)\s+/, "");
+  return short.charAt(0).toUpperCase() + short.slice(1);
+}
+
 // ---------------------------------------------------------------- links
 
-/** The leaflet of one catalog: /letak?katalog=<id> (the primary catalog needs no parameter). */
+/** The leaflet of one catalog: /letak?katalog=<id> (the default Home leaflet needs no parameter). */
 export function catalogHref(catalogId: string): string {
-  return catalogId === primaryCatalog.id ? "/letak" : `/letak?katalog=${encodeURIComponent(catalogId)}`;
+  return catalogId === defaultLeaflet.id ? "/letak" : `/letak?katalog=${encodeURIComponent(catalogId)}`;
 }
 /** Deep link to the interactive leaflet at the product's first placement, in the product's own catalog. */
 export function leafletHref(productId: string): string {
   const pl = getPlacementsForProduct(productId)[0];
   if (!pl) return "/letak";
-  const kat = pl.catalogId === primaryCatalog.id ? "" : `katalog=${encodeURIComponent(pl.catalogId)}&`;
+  const kat = pl.catalogId === defaultLeaflet.id ? "" : `katalog=${encodeURIComponent(pl.catalogId)}&`;
   return `/letak?${kat}stran=${pl.pdfPageNumber}&izdelek=${encodeURIComponent(productId)}`;
 }
 export function collectionHref(productId?: string): string {

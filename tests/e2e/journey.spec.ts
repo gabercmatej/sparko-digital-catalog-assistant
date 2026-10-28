@@ -142,7 +142,7 @@ test("contextual follow-up: kje je v letaku?", async ({ page }) => {
 
 test("Domov: add from the rail sheet → Moj katalog badge, row and saved rail card stay consistent", async ({ page }) => {
   await fresh(page, "/domov");
-  await expect(page.locator("[data-catalog-card]")).toHaveCount(2);
+  await expect(page.locator("[data-catalog-card]")).toHaveCount(6);
   const card = page.locator("[data-testid=home-rail] [data-mini-card]").first();
   const id = (await card.getAttribute("data-product-id"))!;
   await card.locator("button").first().click();
@@ -155,7 +155,7 @@ test("Domov: add from the rail sheet → Moj katalog badge, row and saved rail c
 });
 
 test("email PDF button only explains availability and sends nothing", async ({ page }) => {
-  await fresh(page, "/letak?stran=5");
+  await fresh(page, `/letak?katalog=${primary.id}&stran=5`);
   const requests: string[] = [];
   page.on("request", (r) => {
     if (!/\.(webp|png|svg|woff2?|js|css)(\?|$)/.test(r.url())) requests.push(`${r.method()} ${r.url()}`);
@@ -191,7 +191,7 @@ for (const width of [360, 390, 430]) {
   test(`layout at ${width}px: no horizontal overflow, square tiles, no avatar gutter`, async ({ page }) => {
     await page.setViewportSize({ width, height: 800 });
     await fresh(page);
-    for (const path of ["/", "/moj-katalog", "/letak?stran=5"]) {
+    for (const path of ["/", "/moj-katalog", `/letak?katalog=${primary.id}&stran=5`]) {
       await page.goto(path);
       await page.waitForLoadState("networkidle");
       const overflow = await page.evaluate(() => {

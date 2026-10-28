@@ -1,0 +1,8 @@
+.badge {
+  color: var(--c-ink);
+}
+.suffix {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}

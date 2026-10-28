@@ -1,23 +1,22 @@
 import { expect, test } from "@playwright/test";
+import { LEAFLET_IDS, cardHref } from "./leaflets-data";
 
 test.describe("home", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/domov");
   });
 
-  test("shows both catalog cards with dates and working links", async ({ page }) => {
+  test("shows the six catalog cards with dates and working links", async ({ page }) => {
     const cards = page.locator("[data-catalog-card]");
-    await expect(cards).toHaveCount(2);
-    for (let i = 0; i < 2; i++) {
+    await expect(cards).toHaveCount(6);
+    for (let i = 0; i < 6; i++) {
       const card = cards.nth(i);
       // The compact card shows the wordmark + CTA; the validity dates live in its accessible name.
-      await expect(card).toHaveAttribute("aria-label", /^Odpri katalog .*\d+\.\s\d+\.\s– \d+\.\s\d+\.\s\d{4}/);
+      await expect(card).toHaveAttribute("aria-label", /^Odpri .*\d+\.\s\d+\.\s– \d+\.\s\d+\.\s\d{4}/);
       await expect(card).toContainText("Odpri katalog");
     }
-    await expect(page.locator('[data-catalog-card] [data-retailer="spar"]')).toHaveCount(1);
-    await expect(page.locator('[data-catalog-card] [data-retailer="interspar"]')).toHaveCount(1);
-    await expect(cards.nth(0)).toHaveAttribute("href", "/letak");
-    await expect(cards.nth(1)).toHaveAttribute("href", "/letak?katalog=interspar-1426");
+    expect(await cards.evaluateAll((els) => els.map((e) => e.getAttribute("data-catalog-card")))).toEqual(LEAFLET_IDS);
+    for (const [i, id] of LEAFLET_IDS.entries()) await expect(cards.nth(i)).toHaveAttribute("href", cardHref(id));
   });
 
   test("segmented control defaults to Katalogi and switches to the list", async ({ page }) => {
@@ -31,7 +30,7 @@ test.describe("home", () => {
     await expect(page.getByRole("group", { name: "Kategorije" }).getByRole("button").first()).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("[data-catalog-card]")).toHaveCount(0);
     await katalogi.click();
-    await expect(page.locator("[data-catalog-card]")).toHaveCount(2);
+    await expect(page.locator("[data-catalog-card]")).toHaveCount(6);
   });
 
   test("Izdelki defaults to VSI and chips filter the list", async ({ page }) => {
@@ -94,12 +93,12 @@ test.describe("home", () => {
     test(`middle section and rail do not move when the top changes @${w}px`, async ({ page }) => {
       await page.setViewportSize({ width: w, height: 800 });
       await page.goto("/domov");
-      const mascot = page.locator("img[src*=sparko-mascot]");
+      const composer = page.locator("[data-home-composer]");
       const firstAction = page.getByRole("button", { name: "Kaj je najbolj znižano" });
       const lastAction = page.getByRole("button", { name: "Kje je najbližji SPAR" });
       const rail = page.getByTestId("home-rail");
       const seg = page.getByRole("tablist", { name: "Prikaz" });
-      const ys = async () => [mascot, firstAction, lastAction, rail, seg].map(async (l) => (await l.boundingBox())!.y);
+      const ys = async () => [composer, firstAction, lastAction, rail, seg].map(async (l) => (await l.boundingBox())!.y);
       const snap = async () => Promise.all(await ys());
       await expect(page.locator("[data-catalog-card]").first()).toBeVisible();
       const base = await snap();
@@ -172,7 +171,7 @@ test.describe("home", () => {
           return { text: label.textContent, lines: Math.round(label.getBoundingClientRect().height / lh) };
         }),
       );
-      expect(lines.length).toBe(4); // exactly the four actions; the chat entry button is not one of them
+      expect(lines.length).toBe(4); // exactly the four actions; the chat composer is not one of them
       for (const l of lines) expect(l.lines, `${l.text} @${w}px`).toBeLessThanOrEqual(2);
       // The Home root fits at this height (nothing to scroll); the rail card must end above the bottom navigation.
       const gap = await page.evaluate(() => {
@@ -202,7 +201,7 @@ test.describe("home", () => {
         const nav = document.querySelector('nav[aria-label="Glavna navigacija"]')!.getBoundingClientRect();
         const card = document.querySelector("[data-testid=home-rail] [data-mini-card]")!.getBoundingClientRect();
         const seg = document.querySelector('[role=tablist][aria-label="Prikaz"]')!.getBoundingClientRect();
-        const cover = document.querySelector("[data-catalog-card]")!.getBoundingClientRect();
+        const cover = document.querySelector("[data-testid=catalog-carousel]")!.getBoundingClientRect();
         return { overflow: root.scrollHeight - root.clientHeight, gap: nav.top - card.bottom, cardH: card.height, segRightOfCards: seg.left >= cover.right - 0.5 && seg.top >= cover.top && seg.bottom <= cover.bottom };
       });
       expect(m.overflow, "home root needs no scroll").toBeLessThanOrEqual(1);

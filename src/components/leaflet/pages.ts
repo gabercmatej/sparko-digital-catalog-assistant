@@ -2,7 +2,7 @@
  * Pure page-navigation helpers for the leaflet (no React, unit-tested).
  * Internally pages are addressed by 0-based pdfPageIndex; URLs use the 1-based pdfPageNumber.
  */
-import { primaryCatalog } from "@/lib/catalog";
+import { defaultLeaflet } from "@/lib/catalog";
 import type { Placement } from "@/lib/types";
 
 /** Parses the `stran` search param (1-based PDF page number) into a 0-based index, or null. */
@@ -57,11 +57,11 @@ export function nearestPage(current: number, visible: number[]): number | null {
 
 /**
  * Search string for the leaflet URL: ?katalog=<id>&stran=N&izdelek=<id>&moji=1.
- * `katalog` is omitted for the primary (SPAR) catalog, which is also what a missing parameter means.
+ * `katalog` is omitted for the default Home leaflet, which is also what a missing parameter means.
  */
 export function leafletQuery(pageIndex: number, opts: { productId?: string | null; mine?: boolean; catalogId?: string | null } = {}): string {
   const params = new URLSearchParams();
-  if (opts.catalogId && opts.catalogId !== primaryCatalog.id) params.set("katalog", opts.catalogId);
+  if (opts.catalogId && opts.catalogId !== defaultLeaflet.id) params.set("katalog", opts.catalogId);
   params.set("stran", String(pageIndex + 1));
   if (opts.productId) params.set("izdelek", opts.productId);
   if (opts.mine) params.set("moji", "1");

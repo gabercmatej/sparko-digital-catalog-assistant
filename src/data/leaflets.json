@@ -1,0 +1,1843 @@
+{
+  "version": 1,
+  "leaflets": [
+    {
+      "id": "spar-4426",
+      "category": "spar",
+      "title": "SPAR katalog 44/26",
+      "issueLabel": "44/26",
+      "validFrom": "2026-10-28",
+      "validTo": "2026-11-03",
+      "validityNote": "Izdelki na straneh 22–27 do 10. 11. 2026.",
+      "validityEvidence": "p. 9: »Cene izdelkov v katalogu veljajo od srede 28. 10. … najkasneje do torka 3. 11. 2026, cene izdelkov na strani označeni s št. 22–27 pa veljajo do torka 10. 11. 2026«",
+      "sourceFile": "261028-1-Katalog_4426.pdf",
+      "homeOrder": 1,
+      "pdfUrl": "/catalog/spar-4426/katalog.pdf",
+      "pageCount": 44,
+      "cover": {
+        "src": "/catalog/spar-4426/cover.webp",
+        "width": 720,
+        "height": 977
+      },
+      "pages": [
+        {
+          "pdfPageIndex": 0,
+          "pdfPageNumber": 1,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-01.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-01.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 1,
+          "pdfPageNumber": 2,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-02.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-02.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 2,
+          "pdfPageNumber": 3,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-03.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-03.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 3,
+          "pdfPageNumber": 4,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-04.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-04.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 4,
+          "pdfPageNumber": 5,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-05.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-05.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 5,
+          "pdfPageNumber": 6,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-06.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-06.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 6,
+          "pdfPageNumber": 7,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-07.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-07.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 7,
+          "pdfPageNumber": 8,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-08.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-08.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 8,
+          "pdfPageNumber": 9,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-09.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-09.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 9,
+          "pdfPageNumber": 10,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-10.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-10.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 10,
+          "pdfPageNumber": 11,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-11.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-11.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 11,
+          "pdfPageNumber": 12,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-12.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-12.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 12,
+          "pdfPageNumber": 13,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-13.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-13.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 13,
+          "pdfPageNumber": 14,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-14.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-14.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 14,
+          "pdfPageNumber": 15,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-15.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-15.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 15,
+          "pdfPageNumber": 16,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-16.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-16.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 16,
+          "pdfPageNumber": 17,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-17.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-17.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 17,
+          "pdfPageNumber": 18,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-18.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-18.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 18,
+          "pdfPageNumber": 19,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-19.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-19.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 19,
+          "pdfPageNumber": 20,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-20.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-20.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 20,
+          "pdfPageNumber": 21,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-21.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-21.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 21,
+          "pdfPageNumber": 22,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-22.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-22.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 22,
+          "pdfPageNumber": 23,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-23.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-23.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 23,
+          "pdfPageNumber": 24,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-24.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-24.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 24,
+          "pdfPageNumber": 25,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-25.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-25.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 25,
+          "pdfPageNumber": 26,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-26.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-26.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 26,
+          "pdfPageNumber": 27,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-27.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-27.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 27,
+          "pdfPageNumber": 28,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-28.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-28.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 28,
+          "pdfPageNumber": 29,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-29.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-29.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 29,
+          "pdfPageNumber": 30,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-30.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-30.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 30,
+          "pdfPageNumber": 31,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-31.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-31.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 31,
+          "pdfPageNumber": 32,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-32.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-32.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 32,
+          "pdfPageNumber": 33,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-33.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-33.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 33,
+          "pdfPageNumber": 34,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-34.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-34.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 34,
+          "pdfPageNumber": 35,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-35.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-35.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 35,
+          "pdfPageNumber": 36,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-36.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-36.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 36,
+          "pdfPageNumber": 37,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-37.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-37.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 37,
+          "pdfPageNumber": 38,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-38.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-38.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 38,
+          "pdfPageNumber": 39,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-39.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-39.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 39,
+          "pdfPageNumber": 40,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-40.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-40.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 40,
+          "pdfPageNumber": 41,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-41.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-41.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 41,
+          "pdfPageNumber": 42,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-42.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-42.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 42,
+          "pdfPageNumber": 43,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-43.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-43.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 43,
+          "pdfPageNumber": 44,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4426/pages/page-44.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4426/thumbs/page-44.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        }
+      ]
+    },
+    {
+      "id": "interspar-1526",
+      "category": "interspar",
+      "title": "INTERSPAR katalog 15/26",
+      "issueLabel": "15/26",
+      "validFrom": "2026-10-21",
+      "validTo": "2026-10-27",
+      "validityNote": "Ponudba na straneh 3–7 do 3. 11. 2026.",
+      "validityEvidence": "p. 2: »Ponudba izdelkov v katalogu velja od srede 21. 10. … najkasneje do torka, 27. 10. 2026, ponudba na straneh 3-7 pa velja do torka, 3. 11. 2026«",
+      "sourceFile": "261021-2-Katalog_INTERSPAR_1526.pdf",
+      "homeOrder": 2,
+      "pdfUrl": "/catalog/interspar-1526/katalog.pdf",
+      "pageCount": 8,
+      "cover": {
+        "src": "/catalog/interspar-1526/cover.webp",
+        "width": 720,
+        "height": 977
+      },
+      "pages": [
+        {
+          "pdfPageIndex": 0,
+          "pdfPageNumber": 1,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-01.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-01.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 1,
+          "pdfPageNumber": 2,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-02.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-02.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 2,
+          "pdfPageNumber": 3,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-03.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-03.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 3,
+          "pdfPageNumber": 4,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-04.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-04.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 4,
+          "pdfPageNumber": 5,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-05.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-05.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 5,
+          "pdfPageNumber": 6,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-06.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-06.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 6,
+          "pdfPageNumber": 7,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-07.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-07.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 7,
+          "pdfPageNumber": 8,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/interspar-1526/pages/page-08.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/interspar-1526/thumbs/page-08.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        }
+      ]
+    },
+    {
+      "id": "spar-online-4426",
+      "category": "spar-online",
+      "title": "SPAR Online katalog 44/26",
+      "issueLabel": "44/26",
+      "validFrom": "2026-10-28",
+      "validTo": "2026-11-10",
+      "validityNote": "Online akcija, do prodaje akcijskih zalog.",
+      "validityEvidence": "p. 1: »Ponudba ONLINE AKCIJA velja od 28. 10. do 10. 11. 2026 oz. do prodaje akcijskih zalog.«",
+      "sourceFile": "261028-3-SPAR_online_katalog_4426.pdf",
+      "homeOrder": 3,
+      "pdfUrl": "/catalog/spar-online-4426/katalog.pdf",
+      "pageCount": 1,
+      "cover": {
+        "src": "/catalog/spar-online-4426/cover.webp",
+        "width": 720,
+        "height": 1029
+      },
+      "pages": [
+        {
+          "pdfPageIndex": 0,
+          "pdfPageNumber": 1,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-online-4426/pages/page-01.webp",
+            "width": 1400,
+            "height": 2001
+          },
+          "thumb": {
+            "src": "/catalog/spar-online-4426/thumbs/page-01.webp",
+            "width": 240,
+            "height": 343
+          },
+          "theme": null
+        }
+      ]
+    },
+    {
+      "id": "despar-koper-1626",
+      "category": "despar",
+      "title": "DESPAR Koper katalog 16/26",
+      "issueLabel": "16/26",
+      "validFrom": "2026-10-21",
+      "validTo": "2026-11-03",
+      "validityNote": "Velja samo v trgovini DESPAR Koper.",
+      "validityEvidence": "p. 1: »PONUDBA VELJA SAMO V TRGOVINI DESPAR KOPER OD SREDE 21. 10. DO TORKA 3. 11. 2026.«",
+      "sourceFile": "261021-3-Katalog_DESPAR_plant_KOPER_1626.pdf",
+      "homeOrder": 4,
+      "pdfUrl": "/catalog/despar-koper-1626/katalog.pdf",
+      "pageCount": 4,
+      "cover": {
+        "src": "/catalog/despar-koper-1626/cover.webp",
+        "width": 720,
+        "height": 1018
+      },
+      "pages": [
+        {
+          "pdfPageIndex": 0,
+          "pdfPageNumber": 1,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/despar-koper-1626/pages/page-01.webp",
+            "width": 1400,
+            "height": 1980
+          },
+          "thumb": {
+            "src": "/catalog/despar-koper-1626/thumbs/page-01.webp",
+            "width": 240,
+            "height": 339
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 1,
+          "pdfPageNumber": 2,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/despar-koper-1626/pages/page-02.webp",
+            "width": 1400,
+            "height": 1980
+          },
+          "thumb": {
+            "src": "/catalog/despar-koper-1626/thumbs/page-02.webp",
+            "width": 240,
+            "height": 339
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 2,
+          "pdfPageNumber": 3,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/despar-koper-1626/pages/page-03.webp",
+            "width": 1400,
+            "height": 1980
+          },
+          "thumb": {
+            "src": "/catalog/despar-koper-1626/thumbs/page-03.webp",
+            "width": 240,
+            "height": 339
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 3,
+          "pdfPageNumber": 4,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/despar-koper-1626/pages/page-04.webp",
+            "width": 1400,
+            "height": 1980
+          },
+          "thumb": {
+            "src": "/catalog/despar-koper-1626/thumbs/page-04.webp",
+            "width": 240,
+            "height": 339
+          },
+          "theme": null
+        }
+      ]
+    },
+    {
+      "id": "mega-spar-0826",
+      "category": "spar",
+      "title": "MEGA SPAR prihranki 08/26",
+      "issueLabel": "08/26",
+      "validFrom": "2026-10-28",
+      "validTo": "2026-11-10",
+      "validityNote": "Velja v tipu trgovin, označenem pri izdelku.",
+      "validityEvidence": "p. 1: »OD SREDE 28. 10. DO TORKA 10. 11. 2026«; p. 2: »… najkasneje do torka 10. 11. 2026, razen označenih izdelkov«",
+      "sourceFile": "261028-2-Katalog_MEGA_SPAR_prihranki_0826.pdf",
+      "homeOrder": 5,
+      "pdfUrl": "/catalog/mega-spar-0826/katalog.pdf",
+      "pageCount": 8,
+      "cover": {
+        "src": "/catalog/mega-spar-0826/cover.webp",
+        "width": 720,
+        "height": 977
+      },
+      "pages": [
+        {
+          "pdfPageIndex": 0,
+          "pdfPageNumber": 1,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-01.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-01.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 1,
+          "pdfPageNumber": 2,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-02.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-02.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 2,
+          "pdfPageNumber": 3,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-03.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-03.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 3,
+          "pdfPageNumber": 4,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-04.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-04.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 4,
+          "pdfPageNumber": 5,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-05.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-05.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 5,
+          "pdfPageNumber": 6,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-06.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-06.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 6,
+          "pdfPageNumber": 7,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-07.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-07.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 7,
+          "pdfPageNumber": 8,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/mega-spar-0826/pages/page-08.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/mega-spar-0826/thumbs/page-08.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        }
+      ]
+    },
+    {
+      "id": "spar-4326",
+      "category": "spar",
+      "title": "SPAR katalog 43/26",
+      "issueLabel": "43/26",
+      "validFrom": "2026-10-21",
+      "validTo": "2026-10-27",
+      "validityNote": "Izdelki na straneh 3 in 23 do 3. 11. 2026.",
+      "validityEvidence": "p. 2: »Cene izdelkov v katalogu veljajo od srede 21. 10. … najkasneje do torka 27. 10. 2026, cene izdelkov na strani označeni s št. 3 in 23 pa veljajo do torka 3. 11. 2026«",
+      "sourceFile": "261021-1-Katalog_4326.pdf",
+      "homeOrder": 6,
+      "pdfUrl": "/catalog/spar-4326/katalog.pdf",
+      "pageCount": 42,
+      "cover": {
+        "src": "/catalog/spar-4326/cover.webp",
+        "width": 720,
+        "height": 977
+      },
+      "pages": [
+        {
+          "pdfPageIndex": 0,
+          "pdfPageNumber": 1,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-01.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-01.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 1,
+          "pdfPageNumber": 2,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-02.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-02.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 2,
+          "pdfPageNumber": 3,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-03.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-03.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 3,
+          "pdfPageNumber": 4,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-04.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-04.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 4,
+          "pdfPageNumber": 5,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-05.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-05.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 5,
+          "pdfPageNumber": 6,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-06.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-06.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 6,
+          "pdfPageNumber": 7,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-07.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-07.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 7,
+          "pdfPageNumber": 8,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-08.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-08.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 8,
+          "pdfPageNumber": 9,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-09.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-09.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 9,
+          "pdfPageNumber": 10,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-10.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-10.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 10,
+          "pdfPageNumber": 11,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-11.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-11.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 11,
+          "pdfPageNumber": 12,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-12.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-12.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 12,
+          "pdfPageNumber": 13,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-13.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-13.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 13,
+          "pdfPageNumber": 14,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-14.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-14.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 14,
+          "pdfPageNumber": 15,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-15.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-15.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 15,
+          "pdfPageNumber": 16,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-16.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-16.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 16,
+          "pdfPageNumber": 17,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-17.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-17.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 17,
+          "pdfPageNumber": 18,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-18.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-18.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 18,
+          "pdfPageNumber": 19,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-19.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-19.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 19,
+          "pdfPageNumber": 20,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-20.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-20.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 20,
+          "pdfPageNumber": 21,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-21.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-21.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 21,
+          "pdfPageNumber": 22,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-22.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-22.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 22,
+          "pdfPageNumber": 23,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-23.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-23.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 23,
+          "pdfPageNumber": 24,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-24.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-24.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 24,
+          "pdfPageNumber": 25,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-25.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-25.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 25,
+          "pdfPageNumber": 26,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-26.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-26.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 26,
+          "pdfPageNumber": 27,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-27.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-27.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 27,
+          "pdfPageNumber": 28,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-28.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-28.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 28,
+          "pdfPageNumber": 29,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-29.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-29.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 29,
+          "pdfPageNumber": 30,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-30.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-30.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 30,
+          "pdfPageNumber": 31,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-31.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-31.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 31,
+          "pdfPageNumber": 32,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-32.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-32.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 32,
+          "pdfPageNumber": 33,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-33.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-33.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 33,
+          "pdfPageNumber": 34,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-34.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-34.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 34,
+          "pdfPageNumber": 35,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-35.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-35.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 35,
+          "pdfPageNumber": 36,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-36.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-36.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 36,
+          "pdfPageNumber": 37,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-37.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-37.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 37,
+          "pdfPageNumber": 38,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-38.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-38.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 38,
+          "pdfPageNumber": 39,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-39.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-39.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 39,
+          "pdfPageNumber": 40,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-40.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-40.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 40,
+          "pdfPageNumber": 41,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-41.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-41.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        },
+        {
+          "pdfPageIndex": 41,
+          "pdfPageNumber": 42,
+          "printedPageLabel": null,
+          "image": {
+            "src": "/catalog/spar-4326/pages/page-42.webp",
+            "width": 1400,
+            "height": 1900
+          },
+          "thumb": {
+            "src": "/catalog/spar-4326/thumbs/page-42.webp",
+            "width": 240,
+            "height": 326
+          },
+          "theme": null
+        }
+      ]
+    }
+  ]
+}

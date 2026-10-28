@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { adjacentPage, allPageIndexes, leafletQuery, nearestPage, pagesWithProducts, parsePageParam } from "@/components/leaflet/pages";
-import { catalogs, primaryCatalog } from "@/lib/catalog";
+import { defaultLeaflet, primaryCatalog, viewerCatalogs } from "@/lib/catalog";
 import type { Placement } from "@/lib/types";
 
 const pl = (offerId: string, idx: number): Placement => ({
@@ -58,9 +58,10 @@ describe("leaflet pages", () => {
     expect(leafletQuery(4, { productId: "sb-skuta-1kg", mine: true })).toBe("?stran=5&izdelek=sb-skuta-1kg&moji=1");
   });
 
-  it("carries the catalog only for non-primary catalogs", () => {
-    expect(leafletQuery(4, { catalogId: primaryCatalog.id })).toBe("?stran=5");
-    const other = catalogs.find((c) => c.id !== primaryCatalog.id)!;
+  it("carries the catalog only for non-default leaflets", () => {
+    expect(leafletQuery(4, { catalogId: defaultLeaflet.id })).toBe("?stran=5");
+    expect(leafletQuery(4, { catalogId: primaryCatalog.id })).toBe(`?katalog=${primaryCatalog.id}&stran=5`);
+    const other = viewerCatalogs.find((c) => c.id !== defaultLeaflet.id)!;
     expect(leafletQuery(0, { catalogId: other.id })).toBe(`?katalog=${other.id}&stran=1`);
     expect(leafletQuery(2, { catalogId: other.id, productId: "x", mine: true })).toBe(`?katalog=${other.id}&stran=3&izdelek=x&moji=1`);
   });
