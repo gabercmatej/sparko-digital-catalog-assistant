@@ -2,6 +2,7 @@
 import { badgePrice, getPrimaryOffer, getProduct, splitPrice, unitLabel as priceUnitLabel } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
+import { offerNotes } from "./offerNotes";
 import { RetailerBadge } from "./RetailerBadge";
 import styles from "./ProductTile.module.css";
 
@@ -35,10 +36,11 @@ export function ProductTile({
   const product = getProduct(productId);
   const offer = getPrimaryOffer(productId);
   if (!product || !offer) return null;
+  const notes = offerNotes(offer);
   const saved = showSaved && isSaved(productId, store);
   const { euros, cents } = splitPrice(offer.priceCents);
   const unitLabel = priceUnitLabel(product.packSize, offer.priceUnit);
-  const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}, ${euros},${cents} €${unitLabel ? " " + unitLabel : ""}${offer.conditions.spPlusRequired ? ", s kartico SPAR plus" : ""}${saved ? ", v Mojem katalogu" : ""}`;
+  const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}, ${euros},${cents} €${unitLabel ? " " + unitLabel : ""}${offer.conditions.spPlusRequired ? ", s kartico SPAR plus" : ""}${notes.status ? ", " + notes.status : ""}${saved ? ", v Mojem katalogu" : ""}`;
 
   const inner = (
     <>
@@ -54,7 +56,7 @@ export function ProductTile({
             {/* SPAR / INTERSPAR source label: right-aligned directly above the price (thumb tiles: the row prints it). */}
             <RetailerBadge productId={productId} size="xs" className={styles.retailer} />
             {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
-            <span className={styles.price} aria-hidden="true" data-price>
+            <span className={`${styles.price}${notes.current ? "" : ` ${styles.expired}`}`} aria-hidden="true" data-price>
               {badgePrice(offer.priceCents)}
             </span>
           </span>

@@ -170,3 +170,9 @@ button.tile:active {
   align-self: flex-end;
   margin: 0 0 2px;
 }
+
+/* Expired / historical offer: muted neutral price instead of the promotion red. */
+.price.expired {
+  background: #e9ecea;
+  color: var(--c-ink-3);
+}

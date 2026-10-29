@@ -228,10 +228,11 @@ export function detectIntent(messages: ChatRequestMessage[]): DetectedIntent {
   if (
     prev &&
     fold(prev) === fold(ASK_TIMING_PRODUCT_TEXT) &&
-    folded.split(" ").length <= 6 &&
-    // A reply that names a catalog product always counts ("Jedilna čokolada"); otherwise other intents' wording wins.
-    (searchProducts(text, { limit: 1 }).length > 0 ||
-      (!RE.discounts.test(folded) && !RE.where.test(folded) && !RE.meal.test(folded) && !RE.breakfast.test(folded) && !RE.recommend.test(folded) && !RE.outOfScope.test(folded)))
+    // A reply that names a catalog product always counts ("Jedilna čokolada", or a long printed name such as
+    // "Trajno Pomursko mleko 3,5 % m. m."); otherwise other intents' wording wins.
+    ((folded.split(" ").length <= 10 && searchProducts(text, { limit: 1 }).length > 0) ||
+      (folded.split(" ").length <= 6 &&
+        !RE.discounts.test(folded) && !RE.where.test(folded) && !RE.meal.test(folded) && !RE.breakfast.test(folded) && !RE.recommend.test(folded) && !RE.outOfScope.test(folded)))
   ) {
     return { ...base, intent: "discount_timing" };
   }

@@ -1,9 +1,9 @@
 """Single source of the V3 browse catalogs (the six leaflets on Home, spar.si/letak, 28. 10. 2026).
 
 Run after render_pages_v3.py: python scripts/catalog/leaflets.py
-Writes src/data/leaflets.json. Order here = order on Home (change `homeOrder` to reorder).
+Writes scripts/catalog/v3/leaflets.json (page images, cover, Home order), the input of v3/combine.py. Order here = order on Home (change `homeOrder` to reorder).
 Facts were read from the PDFs themselves (cover + printed footnote); `validityEvidence` quotes them.
-These leaflets are browse-only: no products, offers or placements are attached to them.
+Products / offers come from the V3.1 indexing (scripts/catalog/v3/README.md).
 """
 import json
 import pathlib
@@ -106,7 +106,7 @@ def build():
                 "pages": pages,
             }
         )
-    target = ROOT / "src" / "data" / "leaflets.json"
+    target = ROOT / "scripts" / "catalog" / "v3" / "leaflets.json"  # layout manifest, merged into src/data/catalog.json by v3/combine.py
     target.write_text(json.dumps({"version": 1, "leaflets": out}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {target} ({len(out)} leaflets, {sum(x['pageCount'] for x in out)} pages)")
 

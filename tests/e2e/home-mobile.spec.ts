@@ -81,8 +81,9 @@ async function checkHome(page: Page) {
     expect(c.height, `card ${i} height`).toBeGreaterThanOrEqual(140);
     const img = await box("[data-catalog-cover] img", i);
     if (i === 0) inside(`cover ${i}`, img);
-    expect(img.height, `cover ${i} height`).toBeGreaterThanOrEqual(75);
-    expect(img.width, `cover ${i} width`).toBeGreaterThanOrEqual(55);
+    // the extra "Del ponudbe do …" validity line (V3.1) costs the cover one text line on short screens
+    expect(img.height, `cover ${i} height`).toBeGreaterThanOrEqual(60);
+    expect(img.width, `cover ${i} width`).toBeGreaterThanOrEqual(44); // 60 px × the 720:977 cover ratio
     expect(Math.abs(img.width / img.height - 720 / 977), `cover ${i} ratio`).toBeLessThan(0.03);
   }
   expect(c1.x, "cards side by side").toBeGreaterThan(c0.x + c0.width - 1);
@@ -118,7 +119,8 @@ async function checkHome(page: Page) {
     await card.scrollIntoViewIfNeeded();
     const rec = leaflets[i];
     const dates = ((await card.locator("[data-catalog-dates]").textContent()) ?? "").replace(/\s+/g, " ").trim();
-    expect(dates).toBe(period(rec.validFrom, rec.validTo));
+    expect(dates.startsWith(period(rec.validFrom, rec.validTo)), dates).toBe(true);
+    expect(dates.slice(period(rec.validFrom, rec.validTo).length)).toMatch(/^(Del ponudbe do .*)?$/);
     await expect(card.getByText("Odpri katalog", { exact: true })).toBeVisible();
 
     // Layout: [label] / [title under it, one line] / centred cover / one-line dates / CTA.
@@ -137,7 +139,11 @@ async function checkHome(page: Page) {
         titleOneLine: head.height <= parseFloat(getComputedStyle(titleEl).fontSize) * 1.6,
         cover: r("[data-catalog-cover] img").toJSON(),
         dates: r("[data-catalog-dates]").toJSON(),
-        datesOneLine: datesEl.scrollWidth <= datesEl.clientWidth + 1 && datesEl.getBoundingClientRect().height <= parseFloat(cs.fontSize) * 1.6,
+        // the period itself stays on one line; a partial catalog adds a second "Del ponudbe do …" line below it
+        datesOneLine: (() => {
+          const period = datesEl.firstElementChild as HTMLElement;
+          return period.scrollWidth <= period.clientWidth + 1 && period.getBoundingClientRect().height <= parseFloat(cs.fontSize) * 1.6;
+        })(),
         cta: Array.from(el.querySelectorAll("span")).find((s) => s.textContent?.trim() === "Odpri katalog")!.getBoundingClientRect().toJSON(),
       };
     });

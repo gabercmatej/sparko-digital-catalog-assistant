@@ -37,7 +37,7 @@ export function Welcome({
             Tvoj pomočnik Sparko
           </h1>
           <p className={styles.subtitle}>
-            Poznam ves aktualni katalog. Vprašaj me o izdelkih, cenah in
+            Poznam aktualne SPAR kataloge. Vprašaj me o izdelkih, cenah in
             akcijah.
           </p>
         </div>

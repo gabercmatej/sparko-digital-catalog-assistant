@@ -4,6 +4,8 @@ import {
   catalogs,
   defaultLeaflet,
   getViewerCatalog,
+  historical,
+  historicalCatalogs,
   homeLeaflets,
   leafletHref,
   offers,
@@ -29,10 +31,15 @@ describe("home leaflets", () => {
     expect(new Set(homeLeaflets.map((l) => l.category)).size).toBe(4);
   });
 
-  it("have unique ids that do not collide with the product-data catalogs", () => {
+  it("have unique ids; the Home leaflets are exactly the current product-data catalogs, historical ones are separate and flagged", () => {
     const ids = viewerCatalogs.map((c) => c.id);
     expect(new Set(ids).size).toBe(ids.length);
-    for (const c of catalogs) expect(homeLeaflets.some((l) => l.id === c.id)).toBe(false);
+    expect(homeLeaflets.map((l) => l.id).sort()).toEqual(catalogs.map((c) => c.id).sort());
+    for (const c of historicalCatalogs) {
+      expect(homeLeaflets.some((l) => l.id === c.id)).toBe(false);
+      expect(getViewerCatalog(c.id)).toMatchObject({ historical: true, homeOrder: null });
+    }
+    for (const l of homeLeaflets) expect(l.historical).toBe(false);
   });
 
   it.each(ORDER)("%s has consistent pages, pdf and cover", (id) => {
@@ -47,14 +54,15 @@ describe("home leaflets", () => {
     expect(l.pdfUrl).toBe(`/catalog/${id}/katalog.pdf`);
     expect(l.cover.src.startsWith(`/catalog/${id}/`)).toBe(true);
     expect(l.validFrom <= l.validTo).toBe(true);
-    expect(l.interactive).toBe(false);
+    expect(l.interactive).toBe(true);
+    expect(l.historical).toBe(false);
   });
 
-  it("have no offers or placements", () => {
+  it("are all interactive: each has offers, placements and products of its own", () => {
     for (const id of ORDER) {
-      expect(offers.some((o) => o.catalogId === id)).toBe(false);
-      expect(placements.some((p) => p.catalogId === id)).toBe(false);
-      expect(productsInCatalog(id)).toEqual([]);
+      expect(offers.some((o) => o.catalogId === id), id).toBe(true);
+      expect(placements.some((p) => p.catalogId === id), id).toBe(true);
+      expect(productsInCatalog(id).length, id).toBeGreaterThan(0);
     }
   });
 
@@ -63,26 +71,50 @@ describe("home leaflets", () => {
     for (const id of ORDER.slice(1)) expect(catalogHref(id)).toBe(`/letak?katalog=${id}`);
   });
 
-  it("links into the product catalogs carry katalog=", () => {
-    const p = placements.find((pl) => pl.catalogId === "spar-4126")!;
-    const productId = offers.find((o) => o.id === p.offerId)!.productId;
-    expect(leafletHref(productId)).toContain("katalog=spar-4126");
+  it("links into the product catalogs carry katalog= unless the product is in the default leaflet", () => {
+    const other = placements.find((pl) => pl.catalogId !== defaultLeaflet.id)!;
+    const otherProduct = offers.find((o) => o.id === other.offerId)!.productId;
+    expect(leafletHref(otherProduct)).toContain(`katalog=${other.catalogId}`);
+    expect(leafletHref(otherProduct)).toContain(`izdelek=${otherProduct}`);
+    const def = placements.find((pl) => pl.catalogId === defaultLeaflet.id)!;
+    const defProduct = offers.find((o) => o.id === def.offerId)!.productId;
+    expect(leafletHref(defProduct)).not.toContain("katalog=");
+    expect(leafletHref(defProduct)).toContain(`stran=${def.pdfPageNumber}`);
   });
 
-  it("viewer catalogs resolve all eight, interactive only for the data catalogs", () => {
-    expect(viewerCatalogs.length).toBe(8);
-    for (const c of viewerCatalogs) expect(getViewerCatalog(c.id)).toBeDefined();
-    expect(viewerCatalogs.filter((c) => c.interactive).map((c) => c.id)).toEqual(catalogs.map((c) => c.id));
+  it("links to saved historical products open the historical leaflet", () => {
+    const pl = historical.placements[0];
+    expect(pl).toBeDefined();
+    const productId = historical.offers.find((o) => o.id === pl.offerId)!.productId;
+    expect(leafletHref(productId)).toContain(`katalog=${pl.catalogId}`);
+  });
+
+  it("viewer catalogs resolve: the six current ones first, then the historical ones; all have placements and are interactive", () => {
+    expect(viewerCatalogs.length).toBe(homeLeaflets.length + historicalCatalogs.length);
+    expect(viewerCatalogs.slice(0, ORDER.length).map((c) => c.id)).toEqual(ORDER);
+    for (const c of viewerCatalogs) {
+      expect(getViewerCatalog(c.id)).toBeDefined();
+      expect([...placements, ...historical.placements].some((p) => p.catalogId === c.id), c.id).toBe(true);
+      expect(c.interactive, c.id).toBe(true);
+    }
     expect(getViewerCatalog("nope")).toBeUndefined();
   });
 
-  it("do not change the product-data model or the demo date", () => {
-    expect(catalogs.length).toBe(2);
-    expect(catalogs.map((c) => c.id)).toEqual(["spar-4126", "interspar-1426"]);
-    const inRange = catalogs.some((c) => c.validFrom <= referenceDate() && referenceDate() <= c.validTo);
-    expect(inRange).toBe(true);
-    expect(referenceDate(new Date("2026-10-28T12:00:00Z"))).toBe(catalogs.map((c) => c.validFrom).sort()[0]);
-    expect(offers.some((o) => isOfferCurrent(o))).toBe(true);
+  it("historical catalogs are never current: they end before the reference date and none of their offers is valid", () => {
+    const ref = referenceDate();
+    for (const c of historicalCatalogs) expect(c.validTo < ref, c.id).toBe(true);
+    for (const o of historical.offers) expect(isOfferCurrent(o), o.id).toBe(false);
+    expect(offers.some((o) => historicalCatalogs.some((c) => c.id === o.catalogId))).toBe(false);
+  });
+
+  it("reference date: the real Ljubljana date inside the offers' span, the earliest start before it, the newest catalog start after it", () => {
+    const starts = catalogs.map((c) => c.validFrom).sort();
+    const today = new Date("2026-10-28T12:00:00Z");
+    expect(referenceDate(today)).toBe("2026-10-28");
+    expect(referenceDate(new Date("2020-01-01T12:00:00Z")) <= starts[0]).toBe(true);
+    expect(referenceDate(new Date("2030-01-01T12:00:00Z"))).toBe(starts[starts.length - 1]);
+    expect(offers.some((o) => isOfferCurrent(o, today))).toBe(true);
+    expect(catalogs.some((c) => c.validFrom <= referenceDate(today) && referenceDate(today) <= c.validTo)).toBe(true);
   });
 });
 
@@ -97,7 +129,7 @@ describe("sendFromHome", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("ignores empty text", () => {
-    expect(sendFromHome("   ")).toBe(false);
+    expect(sendFromHome("   ")).toBeNull();
     expect(getState().conversations.length).toBe(0);
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -105,10 +137,11 @@ describe("sendFromHome", () => {
   it("starts a new user conversation when a demo is active (no fork)", () => {
     const demo = DEMO_CONVERSATIONS[0];
     setActiveConversation(demo.id);
-    expect(sendFromHome("Koliko stane mleko?")).toBe(true);
+    const id = sendFromHome("Koliko stane mleko?");
+    expect(id).toBeTruthy();
     const s = getState();
-    expect(s.activeConversationId).not.toBe(demo.id);
-    const conv = getConversation(s.activeConversationId!)!;
+    expect(s.activeConversationId).toBe(id);
+    const conv = getConversation(id!)!;
     expect(conv.kind).toBe("user");
     expect(conv.forkedFrom).toBeUndefined();
     expect(conv.messages.map((m) => m.role)).toEqual(["user", "assistant"]);
@@ -118,19 +151,39 @@ describe("sendFromHome", () => {
   });
 
   it("creates a conversation when none is active", () => {
-    expect(sendFromHome("Živjo")).toBe(true);
+    expect(sendFromHome("Živjo")).toBeTruthy();
     expect(getState().conversations.length).toBe(1);
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
-  it("appends to the active user conversation, keeping history", () => {
-    const cid = createConversation("Moj", [{ id: "m0", role: "user", createdAt: 1, text: "Prej", status: "ok" }]);
-    expect(sendFromHome("Zdaj")).toBe(true);
-    expect(getState().activeConversationId).toBe(cid);
-    expect(getState().conversations.length).toBe(1);
-    const conv = getConversation(cid)!;
-    expect(conv.messages.map((m) => m.text).slice(0, 2)).toEqual(["Prej", "Zdaj"]);
-    expect(conv.messages.length).toBe(3);
+  it("always starts a NEW conversation, leaving the active one untouched in history", () => {
+    const old = createConversation("Kava", [{ id: "m0", role: "user", createdAt: 1, text: "Kaj je s kavo?", status: "ok" }]);
+    const id = sendFromHome("Koliko stane mleko?")!;
+    expect(id).not.toBe(old);
+    expect(getState().activeConversationId).toBe(id);
+    expect(getState().conversations.map((c) => c.id)).toEqual([id, old]);
+    expect(getConversation(old)!.messages.map((m) => m.text)).toEqual(["Kaj je s kavo?"]);
+    const conv = getConversation(id)!;
+    expect(conv.messages.map((m) => m.text)[0]).toBe("Koliko stane mleko?");
+    expect(conv.messages.length).toBe(2);
+    expect(conv.title).toBe("Koliko stane mleko?");
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("each Home question is its own conversation with exactly one request", () => {
+    const a = sendFromHome("Prvo")!;
+    const b = sendFromHome("Drugo")!;
+    expect(a).not.toBe(b);
+    expect(getState().conversations.length).toBe(2);
+    expect(getConversation(a)!.messages.length).toBe(2);
+    expect(getConversation(b)!.messages.length).toBe(2);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("starts a new conversation even while the active one is still waiting for its answer", () => {
+    const first = sendFromHome("Prvo")!;
+    const second = sendFromHome("Drugo")!;
+    expect(getConversation(first)!.messages[1].status).toBe("pending");
+    expect(getState().activeConversationId).toBe(second);
   });
 });

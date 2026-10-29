@@ -1,15 +1,18 @@
 import { RETAILER_LABEL, retailerOf } from "@/lib/catalog";
+import { CatalogBadge } from "../leaflet/CatalogBadge";
 import type { Retailer } from "@/lib/types";
 import styles from "./RetailerBadge.module.css";
 
 /**
- * The SPAR / INTERSPAR source label shown on EVERY product card, row and tile: a red wordmark box
+ * The SPAR / INTERSPAR / SPAR Online / DESPAR source label shown on EVERY product card, row and tile: a red wordmark box
  * plus the green SPAR tree roundel. Pass `retailer` directly or a `productId` to derive it from the
  * product's catalog. Renders nothing for an unknown product.
  */
 export function RetailerBadge({ retailer, productId, size = "sm", className }: { retailer?: Retailer; productId?: string; size?: "xs" | "sm" | "md"; className?: string }) {
   const r = retailer ?? (productId ? retailerOf(productId) : undefined);
   if (!r) return null;
+  // SPAR Online / DESPAR share the catalog badge look (SPAR Online carries its ONLINE suffix), never SPAR or INTERSPAR.
+  if (r === "spar-online" || r === "despar") return <CatalogBadge category={r} size={size} className={className} />;
   const label = RETAILER_LABEL[r];
   return (
     <span className={`${styles.badge} ${styles[size]}${className ? ` ${className}` : ""}`} data-retailer={r} aria-label={label} role="img">

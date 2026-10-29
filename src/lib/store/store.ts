@@ -5,7 +5,7 @@
  * so saved state is always consistent. Persisted to versioned localStorage.
  */
 import { useSyncExternalStore } from "react";
-import { getPrimaryOffer, getProduct, products } from "../catalog";
+import { getPrimaryOffer, getProduct, knownProductIds } from "../catalog";
 import type { Conversation, Message, SpPlusSetting } from "../types";
 import { emptyState, load, save, STORAGE_KEY, type PersistedState } from "./persistence";
 
@@ -25,7 +25,8 @@ export type StoreState = PersistedState & {
   highlight: HighlightEvent | null;
 };
 
-const knownIds = new Set(products.map((p) => p.id));
+// Saved items may point at historical (41/26, 14/26) products: they stay, shown as an expired offer.
+const knownIds = knownProductIds as Set<string>;
 
 let state: StoreState = { ...emptyState(), hydrated: false, storageStatus: "ok", toasts: [], highlight: null };
 const listeners = new Set<() => void>();

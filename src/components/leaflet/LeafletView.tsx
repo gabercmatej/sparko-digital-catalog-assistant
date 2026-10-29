@@ -41,7 +41,7 @@ function pageLabelFor(index: number, catalogId: string): string {
 /**
  * Active catalog from the URL: `katalog` (unknown/missing = the first Home leaflet); a valid `izdelek` wins over it,
  * so a product link always opens the catalog the product is printed in. `moji=1` without `katalog` (links from
- * before V3) opens the primary product catalog: the browse-only default leaflet has no saved products to filter.
+ * before V3) opens the primary product catalog: the default leaflet may carry no saved products to filter.
  */
 function catalogIdFromParams(sp: URLSearchParams): string {
   const izdelek = sp.get("izdelek");
@@ -384,8 +384,8 @@ export function LeafletView() {
   const pageLabel = pageLabelFor(nav.page, catalogId);
   const position = filterActive && savedPages.includes(nav.page) ? `${savedPages.indexOf(nav.page) + 1}/${savedPages.length}` : null;
   const filterDisabled = !hydrated || savedPages.length === 0;
-  // Browse-only leaflets carry no products, so there is nothing to save from them (yet).
-  const filterHelp = catalog.interactive ? "Najprej dodaj izdelek v Moj katalog." : "Ta katalog je na voljo za listanje; izdelki v njem še niso interaktivni.";
+  // A catalog without placed products simply shows its pages.
+  const filterHelp = catalog.interactive ? "Najprej dodaj izdelek v Moj katalog." : "V tem katalogu ni označenih izdelkov; listaš lahko po straneh.";
 
   return (
     <div className={styles.root}>

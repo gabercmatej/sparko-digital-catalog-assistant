@@ -3,11 +3,16 @@
  * catalog at module load: prices and pages are computed, never hard-coded.
  * They are static (never persisted); continuing one forks a user conversation.
  */
-import { formatPrice, getOffer, getPlacements, getPrimaryOffer, products, recipes, recipeTotals } from "./catalog";
+import { activeProducts, activeRecipes } from "./activeCatalog";
+import { formatPrice, getOffer, getPlacements, getPrimaryOffer, recipeTotals } from "./catalog";
 import { productSummary, type ChatMessage } from "./chat/messages";
 import type { Conversation } from "./types";
 
-const BASE = Date.UTC(2026, 9, 7, 8, 0, 0); // 7. 10. 2026 (start of the current catalogs)
+/** Built from the offers that are current when the module loads (one card per article). */
+const products = activeProducts();
+const recipes = activeRecipes();
+
+const BASE = Date.UTC(2026, 9, 28, 8, 0, 0); // 28. 10. 2026 (start of SPAR 44/26)
 
 function conv(id: string, title: string, offsetMin: number, messages: Omit<ChatMessage, "createdAt" | "status">[]): Conversation {
   const created = BASE + offsetMin * 60_000;

@@ -1,44 +1,68 @@
 # Sparko – catalog data & assets
 
-All catalog data lives in **`src/data/catalog.json`** (data version **2**; types: `src/lib/types.ts`, zod schema:
-`src/lib/schemas.ts`). Two original leaflets are the source of truth:
+## V3.1 (28. 10. 2026): the six current catalogs, re-indexed
 
-| Catalog | Source file (repo root, not deployed) | Served copy | Pages | Validity printed |
-| --- | --- | --- | --- | --- |
-| `spar-4126` – SPAR katalog 41/26 | `261007-1-Katalog_4126.pdf` | `/catalog/spar-4126/katalog.pdf` | 36 | od srede 7. 10. 2026; product pages »DO TORKA 13. 10.«; printed pages 20–23 (PDF pp. 28–31) »DO TORKA 20. 10.« |
-| `interspar-1426` – INTERSPAR katalog 14/26 | `261007-2-Katalog_INTERSPAR_1426.pdf` | `/catalog/interspar-1426/katalog.pdf` | 8 | od srede 7. 10. 2026; food pages »DO TORKA 13. 10.«; pp. 4–7 (non-food) do torka 20. 10.; Tefal items on p. 1/4 »7. 10. do 3. 11. 2026« |
-
-The previous demo catalog (SPAR 40/26, `260930-1-Katalog_4026.pdf`) and its runtime assets were removed from `public/`.
-The root PDF and the old scripts (`build_catalog.py`, `render_pages.py`) stay in the repo for history only.
-
-`Catalog.validFrom/validTo` = general validity of the food offers (2026-10-07 → 2026-10-13, from the footnote on SPAR p. 4 and
-INTERSPAR p. 2). Only food items from the 13. 10. period were catalogued; the 20. 10. pages are non-food (kitchenware, Tupperware,
-textiles, books, advent calendars).
-
-## V3: the six Home leaflets (browse-only)
-
-Since 28. 10. 2026 Home shows the six leaflets published on spar.si/letak. They live in **`src/data/leaflets.json`**
-(schema `leafletDataSchema`, type `LeafletData`), separate from `catalog.json`, and carry **no products, offers or placements**:
-they open in the same page viewer (`/letak?katalog=<id>`) for browsing only. The product-data catalogs above (SPAR 41/26,
-INTERSPAR 14/26) are unchanged and still drive chat, product cards, Moj katalog, leaflet boxes and the demo date model
-(`promoCalendar.referenceDate` only looks at `catalogs`, so the new leaflets never make the verified 41/26 prices "current").
-They stay reachable in the viewer's catalog switcher under »Prejšnji katalogi s preverjenimi izdelki« and through product links.
+All current catalog data lives in **`src/data/catalog.json`** (data version **3**; types `src/lib/types.ts`, zod schema
+`src/lib/schemas.ts`): the six catalogs published on spar.si/letak, in Home order, with every verified offer, its placement box,
+packshot and offer-level validity. Coverage, exclusions and validity exceptions per catalog and page: **`docs/INDEXING-REPORT.md`**.
 
 | Home | id | Category | Source file (repo root, not deployed) | Pages | Validity (printed) |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `spar-4426` – SPAR katalog 44/26 | spar | `261028-1-Katalog_4426.pdf` | 44 | 28. 10. – 3. 11. 2026; pages 22–27 until 10. 11. |
+| 1 | `spar-4426` – SPAR katalog 44/26 | spar | `261028-1-Katalog_4426.pdf` | 44 | 28. 10. – 3. 11. 2026; pages **printed** 22–27 (PDF pp. 34–39) until 10. 11. |
 | 2 | `interspar-1526` – INTERSPAR katalog 15/26 | interspar | `261021-2-Katalog_INTERSPAR_1526.pdf` | 8 | 21. 10. – 27. 10. 2026; pages 3–7 until 3. 11. |
-| 3 | `spar-online-4426` – SPAR Online katalog 44/26 | spar-online | `261028-3-SPAR_online_katalog_4426.pdf` | 1 | 28. 10. – 10. 11. 2026 (online, while stocks last) |
-| 4 | `despar-koper-1626` – DESPAR Koper katalog 16/26 | despar | `261021-3-Katalog_DESPAR_plant_KOPER_1626.pdf` | 4 | 21. 10. – 3. 11. 2026, only DESPAR Koper |
-| 5 | `mega-spar-0826` – MEGA SPAR prihranki 08/26 | spar | `261028-2-Katalog_MEGA_SPAR_prihranki_0826.pdf` | 8 | 28. 10. – 10. 11. 2026 |
-| 6 | `spar-4326` – SPAR katalog 43/26 | spar | `261021-1-Katalog_4326.pdf` | 42 | 21. 10. – 27. 10. 2026; pages 3 and 23 until 3. 11. |
+| 3 | `spar-online-4426` – SPAR Online katalog 44/26 | spar-online | `261028-3-SPAR_online_katalog_4426.pdf` | 1 | 28. 10. – 10. 11. 2026, online shop only, while stocks last |
+| 4 | `despar-koper-1626` – DESPAR Koper katalog 16/26 | despar | `261021-3-Katalog_DESPAR_plant_KOPER_1626.pdf` | 4 | 21. 10. – 3. 11. 2026, **only DESPAR Koper** |
+| 5 | `mega-spar-0826` – MEGA SPAR prihranki 08/26 | spar | `261028-2-Katalog_MEGA_SPAR_prihranki_0826.pdf` | 8 | 28. 10. – 10. 11. 2026; store type printed per product |
+| 6 | `spar-4326` – SPAR katalog 43/26 | spar | `261021-1-Katalog_4326.pdf` | 42 | 21. 10. – 27. 10. 2026; pages printed 3 and 23 (PDF pp. 3, 36) until 3. 11. |
 
-The exact printed sentence behind each date is kept in `validityEvidence`. `/letak` without `katalog` opens the first Home leaflet.
+**Printed vs PDF page numbers.** The footnotes name *printed* page numbers (»cene izdelkov na strani označeni s št. 22–27«).
+They differ from PDF page numbers (e.g. SPAR 44/26 printed 22 = PDF 34). `scripts/catalog/v3/common.py` maps them through the
+page-corner labels of the text layer (`PRINTED_LABELS`) into `PAGE_RULES` keyed by PDF page; `Catalog.pageRules` carries them.
 
-**Replacing or reordering leaflets:** put the PDFs in the project root, edit `LEAFLETS` in `scripts/catalog/leaflets.py`
-(list order = Home order; id, category, title, dates, note, evidence, file), add the file names to `.vercelignore`, then run
-`python scripts/catalog/render_pages_v3.py` (pages 1400 px, thumbs 240 px, cover 720 px, PDF copy) and `python scripts/catalog/leaflets.py`,
-and finally `npm run validate:data`. Remove the old `public/catalog/<id>/` folders of leaflets you drop.
+**Offer-level validity.** Every offer has its own `validity` = printed dates on the offer / its block (override with a quoted
+evidence, e.g. SPAR 44/26 PDF p. 44 »PONUDBA VELJA 29. IN 30. 10. 2026«) > page rule > general catalog validity.
+`src/lib/promoCalendar.ts` decides current / expired per offer (Europe/Ljubljana date; inside the span of all offers the real
+date is the reference date). `src/lib/activeCatalog.ts` (`activeProducts`) is the shopping view every list starts from: only
+current offers, one card per article (`identityKey` = brand + key + pack; restricted DESPAR Koper / SPAR Online offers lose to an
+unrestricted twin). Expired offers stay reachable by id and are shown greyed with their end date (`src/lib/offerStatus.ts`).
+
+**Store restrictions.** `Offer.availability` — DESPAR Koper and SPAR Online offers always carry their restriction; MEGA SPAR /
+INTERSPAR offers carry the store type printed at the product. The UI and the assistant ({{availability:<offerId>}}) show it.
+
+**Lean runtime file + audit trail.** `catalog.json` ships to the browser without long audit texts. The printed source quote,
+validity evidence, verification method / notes, packshot provenance, excluded offers and per-page coverage are in
+**`src/data/catalog-sources.json`** (read by `scripts/validate-data.ts` and the tests, not by the app).
+
+**Historical data.** The previous product-data catalogs (SPAR 41/26, INTERSPAR 14/26, valid 7.–13. 10. 2026) moved to
+**`src/data/historical.json`**. They are never listed, searched, recommended or current; they exist so saved products and old
+chats still resolve (shown as »Pretekla ponudba«). Moj katalog offers »Posodobi na aktualno ponudbo« only when the identical
+article (same `identityKey`) has a current offer — never by a similar name.
+
+### Pipeline (reproducible)
+
+1. `python scripts/catalog/render_pages_v3.py` and `python scripts/catalog/leaflets.py` — page images, thumbs, covers and the
+   layout manifest `scripts/catalog/v3/leaflets.json` (Home order = list order in `leaflets.py`).
+2. `python scripts/catalog/v3/inspect_page.py <catalogId> <page> [--draft | --crop x0,y0,x1,y1]` — text lines, price prints,
+   images, cells (normalized coordinates) and a grid render for visual reading.
+3. Hand-verified offer specs: `scripts/catalog/v3/offers/<catalogId>[.<part>].json` (rules: `scripts/catalog/v3/README.md`).
+4. `python scripts/catalog/v3/build_offers.py <catalogId>` — validates every spec and cross-checks price, regular price,
+   printed percentage, PC and the name anchor against the PDF text layer inside the offer box; renders packshots
+   (`public/products/<productId>.webp`), overlays and sheets for review (`.tmp/v3/`).
+5. `python scripts/catalog/v3/combine.py` — writes `catalog.json`, `catalog-sources.json`, `docs/INDEXING-REPORT.md` and the
+   simulated next-week promos (`future_promos.py`).
+6. `npm run validate:data`.
+
+### Future promos – DEMO MOCK
+
+`src/data/future-promos.json` is generated by `scripts/catalog/v3/future_promos.py`: simulated next-week promotions
+(4.–10. 11. 2026) on real SPAR 44/26 products whose offer ends 3. 11. They are labelled `mock: true` / »Demo napoved«, are never
+written into `catalog.json` and never enter current prices or savings.
+
+---
+
+# Historical: V2 data (SPAR 41/26 + INTERSPAR 14/26)
+
+The sections below describe how the earlier dataset (now `src/data/historical.json`) was produced.
 
 ## What is in the dataset
 

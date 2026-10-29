@@ -1,8 +1,11 @@
 /**
- * Validates src/data/catalog.json (version 2: several catalogs) and src/data/future-promos.json (DEMO MOCK):
- * schema, referential integrity, per-catalog page/placement geometry, asset paths (exact case) + real WebP
- * dimensions, price/discount consistency, validity dates, isNew/newSource consistency, whole-pack recipe totals
- * and the future-promo rules (price below the current offer, dates after the catalog's validity, inside the period).
+ * Validates src/data/catalog.json (version 3: the six catalogs of the V3.1 indexing), its audit trail
+ * src/data/catalog-sources.json, src/data/historical.json (earlier catalogs, never current) and
+ * src/data/future-promos.json (DEMO MOCK): schema, referential integrity, per-catalog page/placement geometry,
+ * asset paths (exact case) + real WebP dimensions, price/discount consistency (no regular price or percentage
+ * that is not consistent with the printed price), offer-level validity (general dates, page rules mapped through
+ * printed page labels, printed per-offer dates with evidence), store restrictions (DESPAR Koper, SPAR Online),
+ * per-page coverage (indexed + excluded = printed offers), whole-pack recipe totals and the future-promo rules.
  * Exit code 1 on any error.
  *
  * Run: npx tsx scripts/validate-data.ts   (npm run validate:data)
@@ -11,9 +14,20 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import raw from "../src/data/catalog.json";
+import rawSources from "../src/data/catalog-sources.json";
 import rawPromos from "../src/data/future-promos.json";
-import rawLeaflets from "../src/data/leaflets.json";
-import { catalogDataSchema, futurePromoDataSchema, leafletDataSchema } from "../src/lib/schemas";
+import rawHistorical from "../src/data/historical.json";
+import { catalogDataSchema, futurePromoDataSchema, historicalDataSchema } from "../src/lib/schemas";
+
+type Sources = {
+  products: Record<string, { imageProvenance: string }>;
+  offers: Record<string, { sourceQuote: string; validityEvidence: string | null; verificationMethod: string; verificationNotes: string | null }>;
+  excluded: Record<string, { page: number; text?: string; reason?: string }[]>;
+  pages: Record<string, Record<string, { theme: string | null; offersOnPage: number | null; notes: string | null }>>;
+};
+const sources = rawSources as unknown as Sources;
+/** Reference date of the release ("today" for the current / expired checks). */
+const REFERENCE_DATE = "2026-10-28";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -44,8 +58,9 @@ const productIds = unique("product", products.map((p) => p.id));
 unique("offer", offers.map((o) => o.id));
 unique("placement", placements.map((p) => p.id));
 unique("recipe", recipes.map((r) => r.id));
-if (catalogs.length < 2) warn(`expected 2 catalogs (SPAR + INTERSPAR), found ${catalogs.length}`);
-if (catalogs[0]?.retailer !== "spar") warn("first catalog is expected to be the SPAR one");
+if (catalogs.length !== 6) err(`expected the 6 catalogs of V3.1, found ${catalogs.length}`);
+if (catalogs[0]?.id !== "spar-4426") warn("first catalog (Home order) is expected to be SPAR 44/26");
+unique("catalog homeOrder", catalogs.map((c) => String(c.homeOrder)));
 
 // ------------------------------------------------------------- asset helpers
 /** Exists with exact case on every path segment (Vercel is case-sensitive). */
@@ -103,6 +118,17 @@ for (const c of catalogs) {
   if (c.pages.length !== c.pageCount) err(`catalog ${c.id}: ${c.pages.length} page entries but pageCount=${c.pageCount}`);
   if (c.validFrom > c.validTo) err(`catalog ${c.id}: validFrom ${c.validFrom} after validTo ${c.validTo}`);
   if (!fs.existsSync(path.join(ROOT, c.sourceFile))) warn(`catalog ${c.id}: source file ${c.sourceFile} not found in repo root`);
+  if (c.homeOrder === null) err(`catalog ${c.id}: current catalogs need a homeOrder`);
+  for (const r of c.pageRules) {
+    if (r.from > r.to) err(`catalog ${c.id}: page rule ${r.pdfPages.join(",")} from after to`);
+    if (r.to <= c.validTo) warn(`catalog ${c.id}: page rule ${r.pdfPages.join(",")} does not extend the general validity`);
+    r.pdfPages.forEach((n, i) => {
+      if (n < 1 || n > c.pageCount) err(`catalog ${c.id}: page rule page ${n} outside 1..${c.pageCount}`);
+      const label = c.pages[n - 1]?.printedPageLabel ?? null;
+      if (label !== r.printedLabels[i]) err(`catalog ${c.id}: page rule PDF page ${n} printed label ${r.printedLabels[i]} != page label ${label}`);
+    });
+  }
+  if ((c.retailer === "despar" || c.retailer === "spar-online") && !c.availability) err(`catalog ${c.id}: ${c.retailer} needs its store restriction`);
   const idx = new Set<number>();
   for (const p of c.pages) {
     if (idx.has(p.pdfPageIndex)) err(`catalog ${c.id}: duplicate page index ${p.pdfPageIndex}`);
@@ -115,31 +141,27 @@ for (const c of catalogs) {
   }
 }
 
-// ------------------------------------------------------------- browse-only leaflets (Home carousel, leaflets.json)
-const leafletParsed = leafletDataSchema.safeParse(rawLeaflets);
-if (!leafletParsed.success) {
-  for (const issue of leafletParsed.error.issues) err(`leaflets schema: ${issue.path.join(".")}: ${issue.message}`);
+// ------------------------------------------------------------- historical data (SPAR 41/26, INTERSPAR 14/26)
+const histParsed = historicalDataSchema.safeParse(rawHistorical);
+const histImages = new Set<string>();
+if (!histParsed.success) {
+  for (const issue of histParsed.error.issues) err(`historical schema: ${issue.path.join(".")}: ${issue.message}`);
 } else {
-  const leaflets = leafletParsed.data.leaflets;
-  unique("leaflet", leaflets.map((l) => l.id));
-  for (const l of leaflets) if (catalogById.has(l.id)) err(`leaflet ${l.id}: id also used by a product-data catalog`);
-  unique("leaflet homeOrder", leaflets.map((l) => String(l.homeOrder)));
-  for (const l of leaflets) {
-    if (!existsExactCase(l.pdfUrl)) err(`leaflet ${l.id}: pdfUrl missing: ${l.pdfUrl}`);
-    if (!l.pdfUrl.startsWith(`/catalog/${l.id}/`)) err(`leaflet ${l.id}: pdfUrl outside /catalog/${l.id}/`);
-    checkImage(`leaflet ${l.id} cover`, l.cover);
-    if (l.pages.length !== l.pageCount) err(`leaflet ${l.id}: ${l.pages.length} page entries but pageCount=${l.pageCount}`);
-    if (l.validFrom > l.validTo) err(`leaflet ${l.id}: validFrom ${l.validFrom} after validTo ${l.validTo}`);
-    if (!fs.existsSync(path.join(ROOT, l.sourceFile))) warn(`leaflet ${l.id}: source file ${l.sourceFile} not found in repo root`);
-    l.pages.forEach((pg, i) => {
-      if (pg.pdfPageIndex !== i || pg.pdfPageNumber !== i + 1) err(`leaflet ${l.id}: page ${i} out of order`);
-      checkImage(`${l.id} page ${pg.pdfPageNumber} image`, pg.image);
-      checkImage(`${l.id} page ${pg.pdfPageNumber} thumb`, pg.thumb);
-    });
+  const h = histParsed.data;
+  const earliestCurrent = catalogs.map((c) => c.validFrom).sort()[0];
+  for (const c of h.catalogs) {
+    if (catalogById.has(c.id)) err(`historical catalog ${c.id}: id also used by a current catalog`);
+    if (!existsExactCase(c.pdfUrl)) err(`historical catalog ${c.id}: pdfUrl missing: ${c.pdfUrl}`);
+    if (c.homeOrder !== null) err(`historical catalog ${c.id}: must not be on Home`);
   }
-  for (const pl of placements) if (leaflets.some((l) => l.id === pl.catalogId)) err(`placement ${pl.id}: browse-only leaflet ${pl.catalogId} must not carry placements`);
-  for (const o of offers) if (leaflets.some((l) => l.id === o.catalogId)) err(`offer ${o.id}: browse-only leaflet ${o.catalogId} must not carry offers`);
-  console.log(`Letaki na Domov (samo listanje): ${leaflets.map((l) => `${l.title} (${l.pageCount} str.)`).join(", ")}`);
+  for (const p of h.products) {
+    if (productIds.has(p.id)) err(`historical product ${p.id}: id also used by a current product`);
+    if (!existsExactCase(p.image.src)) err(`historical product ${p.id}: missing packshot ${p.image.src}`);
+    histImages.add(p.image.src);
+  }
+  for (const o of h.offers)
+    if (!o.validity.to || o.validity.to >= earliestCurrent) err(`historical offer ${o.id}: must end before the current catalogs (${o.validity.to})`);
+  console.log(`Zgodovinski podatki (samo shranjeni izdelki): ${h.catalogs.map((c) => c.title).join(", ")} – ${h.products.length} izdelkov`);
 }
 
 // ------------------------------------------------------------- products, offers, placements
@@ -148,6 +170,8 @@ for (const o of offers) offersByProduct.set(o.productId, [...(offersByProduct.ge
 const referencedImages = new Set<string>();
 for (const p of products) {
   checkImage(`product ${p.id}`, p.image);
+  if (!sources.products[p.id]?.imageProvenance) err(`product ${p.id}: no packshot provenance in catalog-sources.json`);
+  if (!p.identityKey) err(`product ${p.id}: identityKey missing`);
   referencedImages.add(p.image.src);
   const own = offersByProduct.get(p.id) ?? [];
   if (own.length === 0) err(`product ${p.id}: no offer`);
@@ -162,6 +186,17 @@ for (const o of offers) {
   if (!cat) err(`offer ${o.id}: unknown catalog ${o.catalogId}`);
   if (!placements.some((pl) => pl.offerId === o.id)) err(`offer ${o.id}: no placement`);
   if (o.priceKind === "loyalty_price" && !o.conditions.spPlusRequired) err(`offer ${o.id}: loyalty_price without spPlusRequired`);
+  const src = sources.offers[o.id];
+  if (!src?.sourceQuote) err(`offer ${o.id}: no printed source quote in catalog-sources.json`);
+  else {
+    const e = Math.floor(o.priceCents / 100);
+    const c2 = String(o.priceCents % 100).padStart(2, "0");
+    if (!src.sourceQuote.includes(`${e},${c2}`) && !src.sourceQuote.includes(`${e} ${c2}`)) warn(`offer ${o.id}: price ${e},${c2} not in its source quote`);
+  }
+  if (o.verification.status !== "verified") warn(`offer ${o.id}: verification ${o.verification.status}`);
+  if (cat && (cat.retailer === "despar" || cat.retailer === "spar-online") && !o.availability.restricted)
+    err(`offer ${o.id}: ${cat.title} offers must carry the store restriction`);
+  if (o.availability.restricted && !o.availability.note) err(`offer ${o.id}: restricted without a note`);
   if (o.priceKind === "coupon_price" && !o.conditions.couponRequired) err(`offer ${o.id}: coupon_price without couponRequired`);
   if (o.regularPriceCents !== null && o.regularPriceCents <= o.priceCents)
     err(`offer ${o.id}: regular price ${o.regularPriceCents} not above price ${o.priceCents}`);
@@ -175,10 +210,17 @@ for (const o of offers) {
   const v = o.validity;
   if (v.from && v.to && v.from > v.to) err(`offer ${o.id}: validity from ${v.from} after to ${v.to}`);
   if (v.status === "explicit" && (!v.from || !v.to)) warn(`offer ${o.id}: explicit validity without both dates`);
-  if (v.status !== "unknown" && !v.evidence) err(`offer ${o.id}: validity ${v.status} without evidence`);
+  if (v.status !== "unknown" && !src?.validityEvidence) err(`offer ${o.id}: validity ${v.status} without evidence`);
   if (v.status === "unknown" && (v.from || v.to)) err(`offer ${o.id}: unknown validity must not carry dates`);
-  if (cat && v.from && v.from < cat.validFrom) err(`offer ${o.id}: validity starts ${v.from} before catalog ${cat.validFrom}`);
-  if (cat && v.to && v.to > cat.validTo) err(`offer ${o.id}: validity ends ${v.to} after the general catalog validity ${cat.validTo}`);
+  if (v.status === "unknown") err(`offer ${o.id}: every V3.1 offer needs printed validity`);
+  const pl0 = placements.find((pl) => pl.offerId === o.id);
+  const rule = cat && pl0 ? cat.pageRules.find((r) => r.pdfPages.includes(pl0.pdfPageNumber)) : undefined;
+  if (cat && v.status === "catalog_default" && (v.from !== cat.validFrom || v.to !== cat.validTo))
+    err(`offer ${o.id}: catalog_default validity ${v.from}..${v.to} differs from the catalog ${cat.validFrom}..${cat.validTo}`);
+  if (cat && rule && v.status === "catalog_default") err(`offer ${o.id}: page ${pl0!.pdfPageNumber} has a page rule (${rule.to}) but the offer uses the general dates`);
+  if (cat && v.to && v.to > cat.validTo && !rule && !(src?.validityEvidence ?? "").includes("»"))
+    err(`offer ${o.id}: validity ends ${v.to} after the general catalog validity ${cat.validTo} without a page rule or printed evidence`);
+  if (cat && v.from && v.from < cat.validFrom) warn(`offer ${o.id}: printed validity starts ${v.from} before the catalog ${cat.validFrom} (${src?.validityEvidence?.slice(0, 80)})`);
 }
 for (const pl of placements) {
   const o = offerById.get(pl.offerId);
@@ -212,12 +254,35 @@ for (const list of byPage.values())
 // packshots on disk that no product references (stale assets)
 const productDir = path.join(PUBLIC, "products");
 if (fs.existsSync(productDir))
-  for (const f of fs.readdirSync(productDir)) if (!referencedImages.has(`/products/${f}`)) warn(`unreferenced packshot public/products/${f}`);
+  for (const f of fs.readdirSync(productDir))
+    if (!referencedImages.has(`/products/${f}`) && !histImages.has(`/products/${f}`)) warn(`unreferenced packshot public/products/${f}`);
 
 const percentOffers = offers.filter((o) => o.discountPercent !== null).length;
 if (percentOffers < 10) err(`only ${percentOffers} offers with a printed discount percentage (need >= 10 for the discount ranking)`);
-const newCount = products.filter((p) => p.isNew).length;
-if (newCount < 6 || newCount > 8) warn(`${newCount} products flagged isNew (6-8 expected)`);
+if (products.some((p) => p.newSource === "demo_editorial")) err("V3.1 data must not contain demo_editorial NOVO flags (printed badges only)");
+
+// ------------------------------------------------------------- coverage (indexed + excluded = printed offers per page)
+const coverageLines: string[] = [];
+for (const c of catalogs) {
+  const pages = sources.pages[c.id] ?? {};
+  const excluded = sources.excluded[c.id] ?? [];
+  let printed = 0;
+  for (let n = 1; n <= c.pageCount; n++) {
+    const pg = pages[String(n)];
+    if (!pg) {
+      err(`coverage ${c.id}: PDF page ${n} has no coverage entry`);
+      continue;
+    }
+    const indexed = placements.filter((pl) => pl.catalogId === c.id && pl.pdfPageNumber === n).length;
+    const ex = excluded.filter((e) => e.page === n).length;
+    if (pg.offersOnPage === null) warn(`coverage ${c.id}: PDF page ${n} has no printed-offer count`);
+    else if (pg.offersOnPage !== indexed + ex) err(`coverage ${c.id}: PDF page ${n} prints ${pg.offersOnPage} offers, indexed ${indexed} + excluded ${ex}`);
+    printed += pg.offersOnPage ?? 0;
+  }
+  const own = offers.filter((o) => o.catalogId === c.id);
+  const current = own.filter((o) => o.validity.from! <= REFERENCE_DATE && REFERENCE_DATE <= o.validity.to!).length;
+  coverageLines.push(`  ${c.title}: natisnjenih ${printed}, indeksiranih ${own.length}, izločenih ${excluded.length}, aktualnih ${REFERENCE_DATE}: ${current}`);
+}
 
 // ------------------------------------------------------------- recipes
 const recipeTotals: string[] = [];
@@ -262,6 +327,7 @@ if (!promoParsed.success) {
   if (fp.period.from > fp.period.to) err(`future-promos: period from ${fp.period.from} after to ${fp.period.to}`);
   unique("future promo", fp.promos.map((p) => p.id));
   const offerOfProduct = new Map(offers.map((o) => [o.productId, o]));
+  if (!fp.mock) err("future-promos must stay marked as DEMO MOCK");
   for (const p of fp.promos) {
     const o = offerOfProduct.get(p.productId);
     if (!o) {
@@ -272,8 +338,7 @@ if (!promoParsed.success) {
     if (p.priceCents >= o.priceCents) err(`future promo ${p.id}: price ${p.priceCents} not below current offer price ${o.priceCents}`);
     if (p.validFrom > p.validTo) err(`future promo ${p.id}: validFrom after validTo`);
     if (p.validFrom < fp.period.from || p.validTo > fp.period.to) err(`future promo ${p.id}: dates outside period ${fp.period.from}..${fp.period.to}`);
-    const cat = catalogById.get(p.catalogId);
-    if (cat && p.validFrom <= cat.validTo) err(`future promo ${p.id}: validFrom ${p.validFrom} not after catalog validTo ${cat.validTo}`);
+    if (o.validity.to && p.validFrom <= o.validity.to) err(`future promo ${p.id}: validFrom ${p.validFrom} not after the current offer's validity ${o.validity.to}`);
     if (p.regularPriceCents !== null) {
       if (p.regularPriceCents < p.priceCents) err(`future promo ${p.id}: regular price below promo price`);
       const computed = Math.round(((p.regularPriceCents - p.priceCents) / p.regularPriceCents) * 100);
@@ -281,9 +346,7 @@ if (!promoParsed.success) {
         err(`future promo ${p.id}: discountPercent ${p.discountPercent} vs computed ${computed}`);
     } else if (p.discountPercent !== null) err(`future promo ${p.id}: discountPercent without regular price`);
   }
-  const ptuj = fp.promos.filter((p) => /perutnina ptuj/i.test(products.find((x) => x.id === p.productId)?.brand ?? "")).length;
-  if (ptuj < 3) warn(`future promos: only ${ptuj} Perutnina Ptuj promos (>= 3 expected)`);
-  promoLines.push(`Prihodnje akcije (DEMO MOCK): ${fp.promos.length}, obdobje ${fp.period.from} – ${fp.period.to}, Perutnina Ptuj: ${ptuj}`);
+  promoLines.push(`Prihodnje akcije (DEMO MOCK, simulirano): ${fp.promos.length}, obdobje ${fp.period.from} – ${fp.period.to}`);
 }
 
 function fmt(c: number) {
@@ -305,6 +368,7 @@ function report(): never {
     console.log(`  s SPAR plus kartico: ${loyalty}, s tiskanim popustom: ${percentOffers}, z izrecno veljavnostjo: ${explicit}`);
     console.log(`  novo: ${isNew.length} (printed_badge: ${isNew.filter((p) => p.newSource === "printed_badge").length}, demo_editorial: ${isNew.filter((p) => p.newSource === "demo_editorial").length})`);
     if (recipeTotals.length) console.log("Recepti:\n" + recipeTotals.join("\n"));
+    if (coverageLines.length) console.log("Pokritost:\n" + coverageLines.join("\n"));
     for (const l of promoLines) console.log(l);
   }
   for (const w of warnings) console.warn(`WARN  ${w}`);

@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getPrimaryOffer, getProduct, newProducts, products, productsInCategory } from "@/lib/catalog";
+import { activeProducts } from "@/lib/activeCatalog";
+import { getPrimaryOffer, getProduct } from "@/lib/catalog";
+import { isOfferCurrent } from "@/lib/promoCalendar";
+import { newInCatalog } from "@/lib/assistant/catalogQuery";
 import { rankDiscounts } from "@/lib/assistant/discounts";
 import { categoryLabel } from "@/lib/recommendations";
 import {
@@ -17,6 +20,11 @@ import {
   type HomeState,
 } from "@/components/home/homeState";
 
+/** Home lists the shopping view: current offers only, one card per article. */
+const products = activeProducts();
+const productsInCategory = (slug: string) => products.filter((p) => p.categories.includes(slug));
+const newProducts = () => newInCatalog().products;
+
 const select = (category: string): HomeState => homeReducer(initialHomeState, { type: "selectCategory", category });
 const discounts = homeReducer(initialHomeState, { type: "discover", discovery: "discounts" });
 const news = homeReducer(initialHomeState, { type: "discover", discovery: "new" });
@@ -27,7 +35,7 @@ describe("homeReducer", () => {
   it("starts with the catalogs on top, VSI and no discovery", () => {
     expect(initialHomeState).toEqual({ topMode: "catalogs", activeCategory: "all", activeDiscovery: "default" });
   });
-  it("Izdelki defaults to VSI (all products, both catalogs); Katalogi resets", () => {
+  it("Izdelki defaults to VSI (all current products of every catalog); Katalogi resets", () => {
     expect(izdelki).toEqual({ topMode: "products", activeCategory: "all", activeDiscovery: "default" });
     expect(topItems(izdelki)).toEqual(products.map((p) => p.id));
     expect(homeReducer(select("zajtrk"), { type: "setTopMode", mode: "catalogs" })).toEqual(initialHomeState);
@@ -61,6 +69,11 @@ describe("homeReducer", () => {
 });
 
 describe("categories", () => {
+  it("Home lists only current offers: every listed product has an offer valid on the reference date, one card per article", () => {
+    expect(products.length).toBeGreaterThan(0);
+    for (const p of products) expect(isOfferCurrent(getPrimaryOffer(p.id)!), p.id).toBe(true);
+    expect(new Set(products.map((p) => p.identityKey)).size).toBe(products.length);
+  });
   it("options start with VSI, then the priority categories in order, then the rest", () => {
     const opts = categoryOptions();
     expect(opts[0]).toMatchObject({ key: "all", label: "VSI", count: products.length });
@@ -108,7 +121,7 @@ describe("selectors", () => {
       expect(railItems(s)).toEqual(visibleIds(s).slice(0, RAIL_MAX));
     }
   });
-  it("the rail of a category shows that category (and its SPAR/INTERSPAR products)", () => {
+  it("the rail of a category shows that category (current products of every catalog)", () => {
     const s = select("mlecni-izdelki");
     const rail = railItems(s);
     expect(rail.length).toBeGreaterThan(0);
@@ -132,10 +145,18 @@ describe("selectors", () => {
     expect(railItems(discounts)).toEqual(ids.slice(0, RAIL_MAX));
     expect(railTitle(discounts)).toBe("Najbolj znižano");
   });
-  it("new list contains only isNew products", () => {
+  it("new list is the printed NOVO offers, else the newest-start offers (never a made-up flag); all current", () => {
     const ids = topItems(news);
     expect(ids).toEqual(newProducts().map((p) => p.id));
-    for (const id of ids) expect(getProduct(id)!.isNew).toBeTruthy();
+    expect(ids.length).toBeGreaterThan(0);
+    const activeIds = new Set(products.map((p) => p.id));
+    for (const id of ids) expect(activeIds.has(id), id).toBe(true);
+    if (products.some((p) => p.isNew)) for (const id of ids) expect(getProduct(id)!.isNew).toBe(true);
+    else {
+      const starts = ids.map((id) => getPrimaryOffer(id)!.validity.from);
+      expect(new Set(starts).size).toBe(1);
+      expect(starts[0]).toBe(products.map((p) => getPrimaryOffer(p.id)!.validity.from ?? "").sort().reverse()[0]);
+    }
     expect(railTitle(news)).toBe("Novo v katalogu");
   });
   it("is deterministic", () => {

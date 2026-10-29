@@ -1,6 +1,7 @@
 "use client";
 import { conditionText, formatPrice, getOffer, getPrimaryOffer, getProduct, unitLabel } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
+import { offerNotes } from "./offerNotes";
 import { ProductTile } from "./ProductTile";
 import styles from "./ProductSummary.module.css";
 
@@ -30,6 +31,7 @@ export function ProductSummary({
   const offer = (offerId && getOffer(offerId)) || getPrimaryOffer(productId);
   if (!product || !offer) return null;
   const cond = conditionText(offer);
+  const notes = offerNotes(offer);
   const unit = unitLabel(product.packSize, offer.priceUnit);
   const Name = heading ? (`h${heading}` as "h3") : "span";
 
@@ -46,6 +48,8 @@ export function ProductSummary({
           {unit ? ` ${unit}` : ""}
         </span>
         {cond && <span className={styles.note}>{cond}</span>}
+        {notes.status && <span className={`${styles.note} ${styles.status}`}>{notes.status}</span>}
+        {notes.availability && <span className={styles.note}>{notes.availability}</span>}
         {note && <span className={styles.note}>{note}</span>}
       </span>
     </span>

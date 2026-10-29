@@ -109,7 +109,7 @@ describe("getRecommendations", () => {
         }
       }
     }
-  });
+  }, 30_000); // pairwise check over ~500 current products
 
   it("is deterministic", () => {
     for (const saved of probes) {

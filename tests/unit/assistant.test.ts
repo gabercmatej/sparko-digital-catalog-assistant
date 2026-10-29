@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { formatPrice, getOffer, getPlacementsForProduct, getPrimaryOffer, getProduct, offers, products, recipes, recipeTotals } from "@/lib/catalog";
+import { isOfferCurrent } from "@/lib/promoCalendar";
+import { formatPrice, validityText, getOffer, getPlacementsForProduct, getPrimaryOffer, getProduct, offers, products, recipes, recipeTotals } from "@/lib/catalog";
 import type { ChatRequest, ChatRequestMessage, Recipe, SpPlusSetting } from "@/lib/types";
 import { fold, stem } from "@/lib/assistant/normalize";
 import { searchProducts, cheaperAlternatives, comparablePrice } from "@/lib/assistant/search";
@@ -10,7 +11,7 @@ import { render, resolvePlaceholders } from "@/lib/assistant/placeholders";
 import { buildDeterministicReply } from "@/lib/assistant/respond";
 
 // Data-driven anchor: an S-BUDGET product without a printed discount (the role "skuta" played in the old catalog).
-const ANCHOR = products.find((p) => p.line === "S-BUDGET" && fold(p.name).startsWith("sampinjon"))!;
+const ANCHOR = products.find((p) => p.line === "S-BUDGET" && fold(p.name).startsWith("zasek"))!;
 const ANCHOR_ID = ANCHOR.id;
 const ANCHOR_OFFER = getPrimaryOffer(ANCHOR_ID)!.id;
 const PRICE = formatPrice(getPrimaryOffer(ANCHOR_ID)!.priceCents);
@@ -31,8 +32,8 @@ function productOfferIds(r: { blocks: { type: string; offerIds?: string[]; curre
 }
 
 const anchorContext: ChatRequestMessage[] = [
-  { role: "user", text: "Koliko stane šampinjoni?" },
-  { role: "assistant", text: `V demo katalogu je S-BUDGET šampinjoni, ${ANCHOR.packSize}, po ${PRICE}.`, contextProductIds: [ANCHOR_ID] },
+  { role: "user", text: "Koliko stane zaseka?" },
+  { role: "assistant", text: `V demo katalogu je SPAR zaseka, ${ANCHOR.packSize}, po ${PRICE}.`, contextProductIds: [ANCHOR_ID] },
 ];
 
 describe("normalize", () => {
@@ -53,7 +54,7 @@ describe("normalize", () => {
 });
 
 describe("search", () => {
-  it.each(["Koliko stane šampinjoni?", "koliko stane šampinjone", "šampinjone", "sbudget šampinjoni", "S-BUDGET šampinjoni", "sampinjni"])("finds the šampinjoni anchor for %s", (q) => {
+  it.each(["Koliko stane zaseka?", "koliko stane zaseko", "zaseko", "sbudget zaseka", "SPAR zaseka", "zasaka"])("finds the zaseka anchor for %s", (q) => {
     const hits = searchProducts(q);
     expect(hits.map((h) => h.product.id)).toContain(ANCHOR_ID);
     expect(hits[0].score).toBeGreaterThan(0);
@@ -84,7 +85,7 @@ describe("intents", () => {
   const intentOf = (t: string, history: ChatRequestMessage[] = []) => detectIntent([...history, { role: "user", text: t }]).intent;
   it("classifies the starter prompts and common requests", () => {
     expect(intentOf("Koliko stane izdelek?")).toBe("price_lookup");
-    expect(intentOf("Koliko stane šampinjoni?")).toBe("price_lookup");
+    expect(intentOf("Koliko stane zaseka?")).toBe("price_lookup");
     expect(intentOf("Kaj je najbolj znižano?")).toBe("discounts");
     expect(intentOf("Večerja za dva do 10 €")).toBe("meal");
     expect(intentOf("Predlagaj hiter zajtrk")).toBe("breakfast");
@@ -96,7 +97,7 @@ describe("intents", () => {
     expect(intentOf("shrani", anchorContext)).toBe("save");
     expect(intentOf("odstrani to", anchorContext)).toBe("remove");
     expect(intentOf("kje je v letaku?", anchorContext)).toBe("where_in_leaflet");
-    expect(intentOf("na kateri strani je šampinjoni")).toBe("where_in_leaflet");
+    expect(intentOf("na kateri strani je zaseka")).toBe("where_in_leaflet");
     expect(intentOf("Živjo")).toBe("greeting");
     expect(intentOf("Kakšno bo vreme jutri?")).toBe("out_of_scope");
     expect(intentOf("napiši mi kodo v pythonu")).toBe("out_of_scope");
@@ -117,7 +118,7 @@ describe("intents", () => {
 });
 
 describe("deterministic responder — product lookups", () => {
-  it.each(["Koliko stane šampinjoni?", "koliko stane šampinjone", "šampinjone", "sbudget šampinjoni", "sampinjni"])(`%s → šampinjoni offer with ${PRICE}`, (q) => {
+  it.each(["Koliko stane zaseka?", "koliko stane zaseko", "zaseko", "sbudget zaseka", "zasaka"])(`%s → zaseka offer with ${PRICE}`, (q) => {
     const r = buildDeterministicReply(req(q));
     expect(productOfferIds(r)).toContain(ANCHOR_OFFER);
     expect(r.text).toContain(`${PRICE}`);
@@ -125,15 +126,16 @@ describe("deterministic responder — product lookups", () => {
     expect(r.actions).toEqual([]);
   });
 
-  it("exact šampinjoni sentence uses data-rendered price and pack", () => {
-    const r = buildDeterministicReply(req("Koliko stane šampinjoni?"));
+  it("exact zaseka sentence uses data-rendered price and pack", () => {
+    const r = buildDeterministicReply(req("Koliko stane zaseka?"));
     if (r.kind !== "ambiguous") {
-      expect(r.text).toBe(`V aktualnem katalogu je S-BUDGET šampinjoni, ${ANCHOR.packSize}, po ${PRICE}.`);
+      // source catalog and the offer's own validity are part of every price answer (V3.1)
+      expect(r.text).toBe(`V katalogu SPAR 44/26 je SPAR zaseka, ${ANCHOR.packSize}, po ${PRICE}. ${validityText(getPrimaryOffer(ANCHOR_ID)!)}.`);
       expect(r.blocks[0]).toEqual({ type: "products", offerIds: [ANCHOR_OFFER], layout: "card" });
     }
   });
 
-  it("where_in_leaflet follow-up resolves šampinjoni context to PDF page 5 with open_leaflet", () => {
+  it("where_in_leaflet follow-up resolves zaseka context to PDF page 5 with open_leaflet", () => {
     const r = buildDeterministicReply(req("kje je v letaku?", { history: anchorContext }));
     expect(r.intent).toBe("where_in_leaflet");
     expect(r.text).toContain(`PDF-strani ${PAGE}`);
@@ -142,10 +144,10 @@ describe("deterministic responder — product lookups", () => {
     expect(r.allowModel).toBe(false);
   });
 
-  it("'kaj pa cenejša možnost?' uses the šampinjoni context", () => {
+  it("'kaj pa cenejša možnost?' uses the zaseka context", () => {
     const r = buildDeterministicReply(req("kaj pa cenejša možnost?", { history: anchorContext }));
     expect(r.intent).toBe("cheaper");
-    expect(r.text).toMatch(/šampinjoni/i);
+    expect(r.text).toMatch(/zaseka/i);
     expect(r.actions).toEqual([]);
     const base = comparablePrice(getProduct(ANCHOR_ID)!, getPrimaryOffer(ANCHOR_ID)!).value;
     for (const oid of productOfferIds(r).filter((o) => o !== ANCHOR_OFFER)) {
@@ -201,8 +203,8 @@ describe("deterministic responder — save/remove", () => {
     expect(r.allowModel).toBe(false);
   });
 
-  it("'dodaj šampinjone' (explicit) → save action for šampinjoni", () => {
-    const r = buildDeterministicReply(req("dodaj šampinjone"));
+  it("'dodaj zaseko' (explicit) → save action for zaseka", () => {
+    const r = buildDeterministicReply(req("dodaj zaseko"));
     if (r.kind === "ambiguous") expect(r.actions).toEqual([]);
     else expect(r.actions).toEqual([{ type: "save", productId: ANCHOR_ID }]);
   });
@@ -221,7 +223,7 @@ describe("deterministic responder — save/remove", () => {
     expect(r.actions).toEqual([]);
   });
 
-  it("'dodaj kaviar' with šampinjoni context does not save šampinjoni", () => {
+  it("'dodaj kaviar' with zaseka context does not save zaseka", () => {
     const r = buildDeterministicReply(req("dodaj kaviar", { history: anchorContext }));
     expect(r.actions).toEqual([]);
   });
@@ -232,7 +234,7 @@ describe("deterministic responder — save/remove", () => {
   });
 
   it("read-only questions never produce save/remove actions", () => {
-    const readOnly = ["Koliko stane šampinjoni?", "Kaj je najbolj znižano?", "Večerja za dva do 10 €", "Predlagaj hiter zajtrk", "S-BUDGET izdelki", "priporoči mi kaj", "kaj pa cenejša možnost?", "kje je v letaku?", "živjo", "Kako si?", "Kaj znaš?", "Hvala!", "Koliko stane kaviar?", "Šampinjoni je 1,99 €, kajne?"];
+    const readOnly = ["Koliko stane zaseka?", "Kaj je najbolj znižano?", "Večerja za dva do 10 €", "Predlagaj hiter zajtrk", "S-BUDGET izdelki", "priporoči mi kaj", "kaj pa cenejša možnost?", "kje je v letaku?", "živjo", "Kako si?", "Kaj znaš?", "Hvala!", "Koliko stane kaviar?", "Zaseka je 1,99 €, kajne?"];
     for (const q of readOnly) {
       const r = buildDeterministicReply(req(q, { history: anchorContext }));
       expect(r.actions.filter((a) => a.type === "save" || a.type === "remove")).toEqual([]);
@@ -241,7 +243,7 @@ describe("deterministic responder — save/remove", () => {
 });
 
 describe("discounts", () => {
-  it("ranks only verified printed percentages, sorted desc, without S-BUDGET šampinjoni", () => {
+  it("ranks only verified printed percentages, sorted desc, without SPAR zaseka", () => {
     const ranked = rankDiscounts({ limit: offers.length });
     for (const r of ranked) {
       expect(isPercentDiscount(r.offer)).toBe(true);
@@ -251,12 +253,14 @@ describe("discounts", () => {
     }
     for (let i = 1; i < ranked.length; i++) expect(ranked[i - 1].offer.discountPercent!).toBeGreaterThanOrEqual(ranked[i].offer.discountPercent!);
     expect(ranked.map((r) => r.offer.id)).not.toContain(ANCHOR_OFFER);
-    expect(ranked.length).toBe(offers.filter(isPercentDiscount).length);
+    // only offers that are current on the reference date are ranked; never an expired one
+    expect(ranked.length).toBe(offers.filter((o) => isPercentDiscount(o) && isOfferCurrent(o)).length);
+    for (const r of ranked) expect(isOfferCurrent(r.offer)).toBe(true);
   });
 
   it("answer is scoped to the catalog's verified selection and shows at most 4", () => {
     const r = buildDeterministicReply(req("Kaj je najbolj znižano?"));
-    expect(r.text).toContain("Med preverjenimi izdelki v aktualnem katalogu");
+    expect(r.text).toContain("Med preverjenimi izdelki v aktualni ponudbi");
     expect(r.text).not.toMatch(/trenutno v trgovini|danes/i);
     const ids = productOfferIds(r);
     expect(ids.length).toBeLessThanOrEqual(4);
@@ -364,7 +368,7 @@ describe("meals", () => {
 
 describe("placeholders", () => {
   it("resolves from data and rejects ids outside the allowed sets", () => {
-    expect(render(`{{name:${ANCHOR_ID}}} {{pack:${ANCHOR_ID}}} {{price:${ANCHOR_OFFER}}} stran {{page:${ANCHOR_ID}}}`, { spPlus: "unset" })).toBe(`S-BUDGET šampinjoni ${ANCHOR.packSize} ${PRICE} stran ${PAGE}`);
+    expect(render(`{{name:${ANCHOR_ID}}} {{pack:${ANCHOR_ID}}} {{price:${ANCHOR_OFFER}}} stran {{page:${ANCHOR_ID}}}`, { spPlus: "unset" })).toBe(`SPAR zaseka ${ANCHOR.packSize} ${PRICE} stran ${PAGE}`);
     expect(resolvePlaceholders(`{{price:${ANCHOR_OFFER}}}`, { spPlus: "unset", allowedOfferIds: new Set() }).ok).toBe(false);
     expect(resolvePlaceholders("{{price:offer-ne-obstaja}}", { spPlus: "unset" }).ok).toBe(false);
     expect(resolvePlaceholders(`{{discount:${ANCHOR_OFFER}}}`, { spPlus: "unset" }).ok).toBe(false); // no printed discount
@@ -387,7 +391,7 @@ describe("conversation (limited mode, deterministic)", () => {
   });
 
   it("a greeting with a product question answers the product", () => {
-    expect(productOfferIds(buildDeterministicReply(req("Živjo, koliko stane šampinjoni?")))).toEqual([ANCHOR_OFFER]);
+    expect(productOfferIds(buildDeterministicReply(req("Živjo, koliko stane zaseka?")))).toEqual([ANCHOR_OFFER]);
   });
 
   it("help lists capabilities exactly (never via the model)", () => {
@@ -407,16 +411,16 @@ describe("conversation (limited mode, deterministic)", () => {
   });
 
   it("small talk is framed around the current catalog", () => {
-    expect(buildDeterministicReply(req("Živjo")).text).toBe("Živjo! 👋 Kaj bi rad preveril v aktualnem SPAR katalogu?");
+    expect(buildDeterministicReply(req("Živjo")).text).toBe("Živjo! 👋 Kaj bi rad preveril v aktualnih SPAR katalogih?");
     expect(buildDeterministicReply(req("Kako si?")).text).toBe(
-      "Super, hvala 😊 Pripravljen sem ti pomagati z izdelki, cenami, akcijami ali idejami iz aktualnega kataloga.",
+      "Super, hvala 😊 Pripravljen sem ti pomagati z izdelki, cenami, akcijami ali idejami iz aktualne ponudbe.",
     );
     expect(buildDeterministicReply(req("Hvala!")).text).toMatch(/katalog/);
   });
 
   it("capability answer positions Sparko as the catalog assistant; 'Kaj vse te lahko vprašam?' adds examples", () => {
     const what = buildDeterministicReply(req("Kaj znaš?"));
-    expect(what.text).toMatch(/^Pomagam ti raziskovati aktualni SPAR katalog/);
+    expect(what.text).toMatch(/^Pomagam ti raziskovati aktualne SPAR kataloge/);
     for (const part of [/cene in akcije/, /proračun/, /Moj katalog/, /letaku/, /najbližji SPAR/, /v trgovini/]) expect(what.text).toMatch(part);
     expect(what.text).not.toMatch(/Na primer/);
     expect(buildDeterministicReply(req("Kaj vse te lahko vprašam?")).text).toContain(`Na primer: »Koliko stane ${products[0].name}?«`);
@@ -425,10 +429,10 @@ describe("conversation (limited mode, deterministic)", () => {
   it("new catalog starters route to the same flows as before", () => {
     const ask = buildDeterministicReply(req("Koliko stane izdelek v katalogu?"));
     expect(ask.text).toBe("Seveda. Kateri izdelek te zanima?");
-    const šampinjoni = buildDeterministicReply(
-      req("šampinjoni", { history: [{ role: "user", text: "Koliko stane izdelek v katalogu?" }, { role: "assistant", text: ask.text }] }),
+    const zaseka = buildDeterministicReply(
+      req("zaseka", { history: [{ role: "user", text: "Koliko stane izdelek v katalogu?" }, { role: "assistant", text: ask.text }] }),
     );
-    expect(productOfferIds(šampinjoni)).toEqual([ANCHOR_OFFER]);
+    expect(productOfferIds(zaseka)).toEqual([ANCHOR_OFFER]);
     expect(buildDeterministicReply(req("Kaj je najbolj znižano v katalogu?")).intent).toBe("discounts");
     expect(buildDeterministicReply(req("Kje je meni najbližji SPAR?")).intent).toBe("nearest_store");
     const store = buildDeterministicReply(req("Kje v trgovini je izdelek iz kataloga?"));
@@ -439,14 +443,14 @@ describe("conversation (limited mode, deterministic)", () => {
     );
     expect(bread.blocks).toEqual([{ type: "store_map", sectionId: "pekarna" }]);
     // Asking for a place in the catalog still never routes to the store map.
-    expect(buildDeterministicReply(req("Kje v trgovini je šampinjoni v katalogu?")).intent).not.toBe("store_location");
+    expect(buildDeterministicReply(req("Kje v trgovini je zaseka v katalogu?")).intent).not.toBe("store_location");
     expect(buildDeterministicReply(req("Kje je kruh v letaku?")).intent).toBe("where_in_leaflet");
   });
 
   it("recommendations are grounded in the named catalog category", () => {
     const r = buildDeterministicReply(req("kaj mi priporočaš od mesa"));
     expect(r.intent).toBe("recommend");
-    expect(r.text).toMatch(/^Med izdelki v aktualnem katalogu ti priporočam:/);
+    expect(r.text).toMatch(/^Med izdelki v aktualni ponudbi ti priporočam:/);
     const ids = productOfferIds(r);
     expect(ids.length).toBeGreaterThan(0);
     for (const oid of ids) expect(getProduct(getOffer(oid)!.productId)!.categories.some((c) => /^mes/.test(c))).toBe(true);
@@ -459,8 +463,8 @@ describe("conversation (limited mode, deterministic)", () => {
       expect(r.text, q).toMatch(/aktualno ponudbo v katalogu, lahko v okviru 10,00 €/);
       expect(r.blocks.some((b) => b.type === "recipe"), q).toBe(true);
     }
-    expect(buildDeterministicReply(req("Priporoči mi nekaj za večerjo.")).text).toMatch(/^Seveda – pogledal sem aktualni katalog. Za večerjo/);
-    expect(buildDeterministicReply(req("kaj lahko jem za zajtrk?")).text).toMatch(/iz aktualnega kataloga/i);
+    expect(buildDeterministicReply(req("Priporoči mi nekaj za večerjo.")).text).toMatch(/^Seveda – pogledal sem aktualno ponudbo. Za večerjo/);
+    expect(buildDeterministicReply(req("kaj lahko jem za zajtrk?")).text).toMatch(/iz aktualne ponudbe/i);
   });
 
   it("multi-turn: product → cheaper → add it → where in catalog keeps the referenced product", () => {
@@ -470,7 +474,7 @@ describe("conversation (limited mode, deterministic)", () => {
       history.push({ role: "user", text }, { role: "assistant", text: r.text, contextProductIds: r.contextProductIds });
       return r;
     };
-    expect(productOfferIds(turn("Koliko stane šampinjoni?"))).toEqual([ANCHOR_OFFER]);
+    expect(productOfferIds(turn("Koliko stane zaseka?"))).toEqual([ANCHOR_OFFER]);
     const cheaper = turn("kaj pa cenejša?");
     expect(cheaper.intent).toBe("cheaper");
     const alt = cheaper.contextProductIds.find((id) => id !== ANCHOR_ID)!;
@@ -501,7 +505,7 @@ describe("conversation (limited mode, deterministic)", () => {
       { role: "user", text: "Koliko stane izdelek?" },
       { role: "assistant", text: ask.text },
     ];
-    for (const q of ["šampinjoni", "sampinjni", "akcijska šampinjoni"]) {
+    for (const q of ["zaseka", "zasaka", "akcijska zaseka"]) {
       const r = buildDeterministicReply(req(q, { history }));
       expect(r.intent, q).toBe("price_lookup");
       expect(productOfferIds(r), q).toEqual([ANCHOR_OFFER]);
@@ -509,8 +513,8 @@ describe("conversation (limited mode, deterministic)", () => {
     }
   });
 
-  it("typo 'sampinjni' still finds šampinjoni", () => {
-    expect(productOfferIds(buildDeterministicReply(req("sampinjni")))).toEqual([ANCHOR_OFFER]);
+  it("typo 'zasaka' still finds zaseka", () => {
+    expect(productOfferIds(buildDeterministicReply(req("zasaka")))).toEqual([ANCHOR_OFFER]);
   });
 
   it("budget meal: 'Imam 10 €, kaj lahko pripravim?' and 'Kaj mi predlagaš za večerjo?'", () => {
@@ -522,12 +526,12 @@ describe("conversation (limited mode, deterministic)", () => {
   });
 
   it("never agrees with a user-supplied fake price", () => {
-    const r = buildDeterministicReply(req("Šampinjoni je 1,99 €, kajne?"));
+    const r = buildDeterministicReply(req("Zaseka je 1,99 €, kajne?"));
     expect(r.text).toMatch(/^Ne\./);
     expect(r.text).toContain(`${PRICE}`);
     expect(r.text).not.toContain("1,99");
     expect(r.allowModel).toBe(false);
-    expect(buildDeterministicReply(req(`Šampinjoni je ${PRICE}, kajne?`)).text).toMatch(/^Da\./);
+    expect(buildDeterministicReply(req(`Zaseka je ${PRICE}, kajne?`)).text).toMatch(/^Da\./);
   });
 
   it("fake add claim for an unverified product: no action, no card, no price, no saved claim", () => {
@@ -618,13 +622,13 @@ describe("demo location features (mocked data, deterministic)", () => {
     expect(buildDeterministicReply(req("kje je v letaku?", { history: anchorContext })).intent).toBe("where_in_leaflet");
     expect(buildDeterministicReply(req("Kje je kruh v letaku?")).intent).toBe("where_in_leaflet");
     expect(buildDeterministicReply(req("Koliko stane kruh v sparu?")).intent).toBe("price_lookup");
-    expect(buildDeterministicReply(req("Koliko stane šampinjoni?")).intent).toBe("price_lookup");
+    expect(buildDeterministicReply(req("Koliko stane zaseka?")).intent).toBe("price_lookup");
     expect(buildDeterministicReply(req("Kaj je najbolj znižano?")).intent).toBe("discounts");
     // The price follow-up is unaffected by the store follow-up.
     const priceHistory: ChatRequestMessage[] = [
       { role: "user", text: "Koliko stane izdelek?" },
       { role: "assistant", text: "Seveda. Kateri izdelek te zanima?" },
     ];
-    expect(buildDeterministicReply(req("šampinjoni", { history: priceHistory })).intent).toBe("price_lookup");
+    expect(buildDeterministicReply(req("zaseka", { history: priceHistory })).intent).toBe("price_lookup");
   });
 });

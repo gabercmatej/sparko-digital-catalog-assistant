@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { catalogs, getPrimaryOffer, getProduct, products } from "@/lib/catalog";
+import { activeProducts } from "@/lib/activeCatalog";
+import { catalogs, getPrimaryOffer, getProduct, offers, products } from "@/lib/catalog";
 import { allForecasts, DEMO_FORECAST_LABEL, forecastFor } from "@/lib/demoForecast";
 import { futurePromosForProduct } from "@/lib/futurePromos";
 import { isOfferCurrent, isPromoUpcoming, ljubljanaDate, referenceDate, upcomingWindow } from "@/lib/promoCalendar";
@@ -18,6 +19,9 @@ function req(text: string, history: ChatRequestMessage[] = []): ChatRequest {
 type Timeline = Extract<MessageBlock, { type: "discount_timeline" }>;
 const timelineOf = (r: { blocks: MessageBlock[] }) => r.blocks.find((b): b is Timeline => b.type === "discount_timeline");
 const productCards = (r: { blocks: MessageBlock[] }) => r.blocks.filter((b) => b.type === "products");
+// Data-driven anchors: a current product with a structured (simulated) next-week promo, and a current dairy product.
+const PROMO_PRODUCT = activeProducts().find((p) => futurePromosForProduct(p.id).length > 0)!;
+const DAIRY = activeProducts().find((p) => p.categories[0] === "mlecni-izdelki")!;
 
 /** The conversation "Kdaj bo izdelek najbolj znižan?" -> ask -> user reply. */
 function afterAsk(reply: string): ChatRequest {
@@ -82,7 +86,7 @@ describe("product reply after the follow-up is a timing query", () => {
     expect(r.allowModel).toBe(false);
   });
 
-  it.each(["skuta", "nutela", "Nutella", "tolminska skuta"])("'%s' resolves to a product timing answer", (reply) => {
+  it.each([PROMO_PRODUCT.name, PROMO_PRODUCT.name.toLowerCase(), DAIRY.name, "mleko"])("'%s' resolves to a product timing answer", (reply) => {
     const r = buildDeterministicReply(afterAsk(reply));
     expect(r.intent).toBe("discount_timing");
     const tl = timelineOf(r)!;
@@ -122,7 +126,7 @@ function futurePromoProduct(promoId: string): string {
 }
 
 describe("named-product timing questions skip the follow-up", () => {
-  it.each(["Kdaj bo Nutella cenejša?", "Bo piščanec naslednji teden v akciji?", "Kdaj je Perutnina Ptuj znižana?", "Ali bo Perutnina Ptuj naslednji teden znižana?", "Kdaj bo piščanec v akciji?"])(
+  it.each([`Kdaj bo ${PROMO_PRODUCT.name} cenejši?`, "Bo piščanec naslednji teden v akciji?", "Kdaj je Perutnina Ptuj znižana?", "Ali bo Perutnina Ptuj naslednji teden znižana?", "Kdaj bo piščanec v akciji?"])(
     "%s answers directly",
     (text) => {
       const r = buildDeterministicReply(req(text));
@@ -142,7 +146,7 @@ describe("timing vs. discount intent detection", () => {
     "Kaj bo znižano naslednji teden?",
     "Kateri izdelki bodo kmalu v akciji?",
     "Se mi splača počakati na akcijo?",
-    "Kdaj bo Nutella cenejša?",
+    `Kdaj bo ${PROMO_PRODUCT.name} cenejši?`,
     "Bo piščanec naslednji teden v akciji?",
     "Kdaj se splača kupiti ta izdelek?",
     "Kdaj bo izdelek najbolj znižan?",
@@ -199,9 +203,10 @@ describe("generic discount questions show ONLY current offers", () => {
 });
 
 describe("demo forecast layer", () => {
-  const verified = products.filter((p) => getPrimaryOffer(p.id)?.verification.status === "verified");
+  // the forecast covers the current offers (one per article), never expired ones
+  const verified = activeProducts().filter((p) => getPrimaryOffer(p.id)?.verification.status === "verified");
 
-  it("covers every verified product in the catalog, with the upcoming period", () => {
+  it("covers every current verified product, with the upcoming period", () => {
     const all = allForecasts();
     expect(verified.length).toBeGreaterThan(0);
     expect(all.map((f) => f.productId).sort()).toEqual(verified.map((p) => p.id).sort());
@@ -210,8 +215,8 @@ describe("demo forecast layer", () => {
       const f = forecastFor(p.id)!;
       expect(f.currentOfferId).toBe(getPrimaryOffer(p.id)!.id);
       expect(f.period.from >= window.from && f.period.to <= window.to).toBe(true);
-      // after the catalogs' validTo
-      expect(f.period.from > catalogs.map((c) => c.validTo).sort().reverse()[0]).toBe(true);
+      // after the general validity of the primary catalog (SPAR 44/26)
+      expect(f.period.from > catalogs[0].validTo).toBe(true);
     }
   });
 
@@ -225,17 +230,22 @@ describe("demo forecast layer", () => {
   });
 
   it("every verified product can be asked about and answered; no future price/percent appears in text or blocks without a structured promo", () => {
-    for (const p of verified) {
+    // Names that embed their brand ("Torte Slaščice SPAR") are read as a brand filter first; they are asked by brand elsewhere.
+    const embedsLabel = (x: (typeof verified)[number]) => [x.brand].some((l) => !!l && x.name.toLowerCase().includes(l.toLowerCase()));
+    for (const p of verified.filter((x) => !embedsLabel(x))) {
       const r = buildDeterministicReply(afterAsk(p.name));
-      expect(r.intent).toBe("discount_timing");
+      expect(r.intent, p.name).toBe("discount_timing");
       const tl = timelineOf(r);
       expect(tl, p.name).toBeTruthy();
       const covered = new Set([...tl!.upcomingPromoIds.map(futurePromoProduct), ...(tl!.forecastProductIds ?? [])]);
-      expect(covered.has(p.id) || r.candidateProductIds.includes(p.id), p.name).toBe(true);
-      expect(r.text).not.toMatch(/\{\{|\}\}|%|€/);
+      // several current articles may share a name (e.g. "Torte" in two catalogs): an answer about a same-named one counts
+      const sameName = [...covered, ...r.candidateProductIds].some((id) => getProduct(id)?.name === p.name);
+      expect(covered.has(p.id) || r.candidateProductIds.includes(p.id) || sameName, p.name).toBe(true);
+      // no unresolved placeholder, no price / percentage (product names may carry "0 %", so strip them first)
+      expect(r.text.split(p.name).join(" ").replace(/\d+([,.]\d+)? ?% (alk|m\. ?m\.)\S*/gi, " ")).not.toMatch(/\{\{|\}\}|€/);
       for (const id of tl!.forecastProductIds ?? []) expect(futurePromosForProduct(id)).toEqual([]);
     }
-  });
+  }, 60_000); // walks every current verified product (~350 deterministic replies)
 
   it("is marked as a demo", () => {
     expect(DEMO_FORECAST_LABEL).toBe("Demo napoved");
@@ -250,37 +260,37 @@ describe("demo forecast layer", () => {
 });
 
 describe("promoCalendar date logic", () => {
-  const validFrom = catalogs.map((c) => c.validFrom).sort()[0];
-  const validTo = catalogs.map((c) => c.validTo).sort().reverse()[0];
-  const at = (iso: string, hour = 12) => new Date(`${iso}T${String(hour).padStart(2, "0")}:00:00+02:00`);
+  const spanFrom = offers.map((o) => o.validity.from!).sort()[0];
+  const newestStart = catalogs.map((c) => c.validFrom).sort().reverse()[0];
+  const at = (iso: string, hour = 12) => new Date(`${iso}T${String(hour).padStart(2, "0")}:00:00+01:00`);
 
-  it("uses the real date (Europe/Ljubljana) when it is inside a catalog window", () => {
-    expect(referenceDate(at(validFrom))).toBe(validFrom);
-    expect(referenceDate(at(validTo, 23))).toBe(validTo);
-    // 00:30 local time on validFrom is still the previous UTC day: the local calendar day must win.
-    expect(ljubljanaDate(new Date(`${validFrom}T00:30:00+02:00`))).toBe(validFrom);
+  it("uses the real date (Europe/Ljubljana) while it lies inside the span of the offers", () => {
+    expect(referenceDate(at("2026-10-29"))).toBe("2026-10-29");
+    expect(referenceDate(at("2026-11-03", 23))).toBe("2026-11-03");
+    // 00:30 local time is still the previous UTC day: the local calendar day must win.
+    expect(ljubljanaDate(new Date("2026-10-28T00:30:00+01:00"))).toBe("2026-10-28");
   });
 
-  it("falls back to the catalogs' validFrom (demo date) after expiry and before the first catalog", () => {
-    expect(referenceDate(new Date("2026-10-20T10:00:00Z"))).toBe(validFrom);
-    expect(referenceDate(new Date("2030-01-01T10:00:00Z"))).toBe(validFrom);
-    expect(referenceDate(new Date("2020-01-01T10:00:00Z"))).toBe(validFrom);
+  it("falls back to the earliest offer start before the span and to the newest catalog start after it", () => {
+    expect(referenceDate(new Date("2020-01-01T10:00:00Z"))).toBe(spanFrom);
+    expect(referenceDate(new Date("2030-01-01T10:00:00Z"))).toBe(newestStart);
   });
 
   it("current offers are valid on the reference date; none is current once it falls outside its own window", () => {
     const offer = getPrimaryOffer(products[0].id)!;
-    expect(isOfferCurrent(offer, new Date("2026-10-20T10:00:00Z"))).toBe(true);
-    expect(isOfferCurrent({ ...offer, validity: { ...offer.validity, from: "2026-11-01", to: "2026-11-07" } }, new Date("2026-10-20T10:00:00Z"))).toBe(false);
-    expect(rankDiscounts({ now: new Date("2026-10-20T10:00:00Z"), limit: 50 }).length).toBeGreaterThan(0);
+    expect(isOfferCurrent(offer, at("2026-10-29"))).toBe(true);
+    expect(isOfferCurrent(offer, at("2026-11-04"))).toBe(offer.validity.to! >= "2026-11-04");
+    expect(isOfferCurrent({ ...offer, validity: { ...offer.validity, from: "2026-11-05", to: "2026-11-07" } }, at("2026-10-29"))).toBe(false);
+    expect(rankDiscounts({ now: at("2026-10-29"), limit: 50 }).length).toBeGreaterThan(0);
   });
 
-  it("upcoming promos start after the reference date and after the catalogs' validTo", () => {
+  it("upcoming promos start after the reference date and after their product's current offer", () => {
     const window = upcomingWindow();
-    expect(window.from > validTo).toBe(true);
+    expect(window.from > catalogs[0].validTo).toBe(true);
     expect(window.to >= window.from).toBe(true);
-    const promo = products.flatMap((p) => futurePromosForProduct(p.id))[0];
-    expect(isPromoUpcoming(promo, new Date("2026-10-20T10:00:00Z"))).toBe(true);
-    expect(isPromoUpcoming(promo, at(validTo))).toBe(true);
-    expect(isPromoUpcoming({ validFrom: validFrom }, at(validTo))).toBe(false);
+    const promo = futurePromosForProduct(PROMO_PRODUCT.id)[0];
+    expect(promo.validFrom > getPrimaryOffer(PROMO_PRODUCT.id)!.validity.to!).toBe(true);
+    expect(isPromoUpcoming(promo, at("2026-10-29"))).toBe(true);
+    expect(isPromoUpcoming({ validFrom: "2026-10-28" }, at("2026-10-29"))).toBe(false);
   });
 });

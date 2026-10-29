@@ -1,16 +1,18 @@
 "use client";
-import { formatPeriod, viewerCatalogs } from "@/lib/catalog";
+import { viewerCatalogs } from "@/lib/catalog";
+import { catalogValidity } from "@/lib/offerStatus";
 import type { ViewerCatalog } from "@/lib/types";
 import { CatalogBadge } from "./CatalogBadge";
 import styles from "./CatalogPicker.module.css";
 
-const current = viewerCatalogs.filter((c) => c.homeOrder !== null);
-const earlier = viewerCatalogs.filter((c) => c.homeOrder === null);
+const current = viewerCatalogs.filter((c) => !c.historical);
+const earlier = viewerCatalogs.filter((c) => c.historical);
 
-/** Leaflet switcher: the Home leaflets (Home order), then the earlier catalogs that carry the verified demo products. */
+/** Leaflet switcher: the six current catalogs (Home order, with period and validity line), then the historical ones that only exist for saved products. */
 export function CatalogPicker({ current: currentId, onPick }: { current: string; onPick: (catalogId: string) => void }) {
   const row = (c: ViewerCatalog) => {
     const selected = c.id === currentId;
+    const { period, extra } = catalogValidity(c);
     return (
       <li key={c.id}>
         <button type="button" className={styles.item} aria-current={selected ? "true" : undefined} data-autofocus={selected || undefined} data-picker-catalog={c.id} onClick={() => onPick(c.id)}>
@@ -20,9 +22,9 @@ export function CatalogPicker({ current: currentId, onPick }: { current: string;
             <CatalogBadge category={c.category} size="xs" />
             <span className={styles.title}>{c.title}</span>
             <span className={styles.meta}>
-              {formatPeriod(c.validFrom, c.validTo)} · {c.pageCount} {c.pageCount === 1 ? "stran" : "strani"}
+              {period} · {c.pageCount} {c.pageCount === 1 ? "stran" : "strani"}
             </span>
-            {c.interactive && <span className={styles.tag}>Interaktivni izdelki (demo)</span>}
+            {c.historical ? <span className={styles.tag}>Za shranjene izdelke</span> : extra && <span className={`${styles.tag} ${styles.extra}`}>{extra}</span>}
           </span>
         </button>
       </li>
@@ -34,7 +36,7 @@ export function CatalogPicker({ current: currentId, onPick }: { current: string;
       <ul className={styles.list}>{current.map(row)}</ul>
       {earlier.length > 0 && (
         <>
-          <h3 className={styles.heading}>Prejšnji katalogi s preverjenimi izdelki</h3>
+          <h3 className={styles.heading}>Pretekli katalogi</h3>
           <ul className={styles.list}>{earlier.map(row)}</ul>
         </>
       )}

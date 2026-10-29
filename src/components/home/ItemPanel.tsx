@@ -1,5 +1,6 @@
 "use client";
 import { formatPrice, getPrimaryOffer, getProduct } from "@/lib/catalog";
+import { offerNotes } from "../product/offerNotes";
 import { PricePill } from "../product/PricePill";
 import { PriceStack } from "../product/PriceStack";
 import { categoryOptions, discountedProducts, topTitle, type CategoryKey, type HomeState } from "./homeState";
@@ -33,7 +34,7 @@ function Row({ productId, percent, onSelect }: { productId: string; percent?: nu
         <span className={styles.side}>
           {percent != null && <span className={styles.percent}>-{percent} %</span>}
           <PriceStack productId={productId}>
-            <PricePill cents={offer.priceCents} size="md" />
+            <PricePill cents={offer.priceCents} tone={offerNotes(offer).current ? "now" : "expired"} size="md" />
           </PriceStack>
         </span>
       </button>

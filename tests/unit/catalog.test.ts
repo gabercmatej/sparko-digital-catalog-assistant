@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import sources from "@/data/catalog-sources.json";
+import { activeProducts, activeRecipes, isProductActive } from "@/lib/activeCatalog";
+import { newInCatalog } from "@/lib/assistant/catalogQuery";
+import { rankDiscounts } from "@/lib/assistant/discounts";
 import {
   catalogs,
   getCatalog,
@@ -6,13 +10,21 @@ import {
   getPlacementsForProduct,
   getPrimaryOffer,
   getProduct,
+  isHistoricalProduct,
   newProducts,
   offers,
   placements,
+  primaryCatalog,
   products,
   recipes,
 } from "@/lib/catalog";
 import { futurePromos } from "@/lib/futurePromos";
+import { offerState } from "@/lib/offerStatus";
+import { isOfferCurrent, offerWindow, referenceDate } from "@/lib/promoCalendar";
+import { categoryLabel } from "@/lib/recommendations";
+import type { Product } from "@/lib/types";
+
+const src = sources as unknown as { offers: Record<string, { sourceQuote: string; validityEvidence: string | null }> };
 
 describe("leaflet bounding boxes follow the printed cell grid", () => {
   const bb = (productId: string) => getPlacementsForProduct(productId)[0].bbox;
@@ -37,7 +49,7 @@ describe("leaflet bounding boxes follow the printed cell grid", () => {
     expect(b.x + b.width).toBeLessThanOrEqual(c.x + 1e-6);
   });
 
-  it("boxes on the same page of the same catalog never overlap and stay inside the page", () => {
+  it("boxes stay inside the page and, on the same page of the same catalog, only touch slightly (lifestyle layouts overlap a little, never replace each other)", () => {
     const byPage = new Map<string, typeof placements>();
     for (const pl of placements) {
       const key = `${pl.catalogId}#${pl.pdfPageIndex}`;
@@ -54,23 +66,25 @@ describe("leaflet bounding boxes follow the printed cell grid", () => {
         for (let j = i + 1; j < list.length; j++) {
           const a = list[i].bbox;
           const c = list[j].bbox;
-          const overlap = a.x < c.x + c.width && c.x < a.x + a.width && a.y < c.y + c.height && c.y < a.y + a.height;
-          expect(overlap, `${list[i].id} × ${list[j].id}`).toBe(false);
+          const ox = Math.min(a.x + a.width, c.x + c.width) - Math.max(a.x, c.x);
+          const oy = Math.min(a.y + a.height, c.y + c.height) - Math.max(a.y, c.y);
+          const inter = ox > 0 && oy > 0 ? ox * oy : 0;
+          const iou = inter / (a.width * a.height + c.width * c.height - inter);
+          expect(iou, `${list[i].id} × ${list[j].id}`).toBeLessThan(0.5);
         }
     }
   });
 });
 
-describe("data version 2: two catalogs", () => {
-  it("has SPAR 41/26 first and INTERSPAR 14/26 second with the printed validity", () => {
-    expect(catalogs.map((c) => c.id)).toEqual(["spar-4126", "interspar-1426"]);
-    expect(catalogs.map((c) => c.retailer)).toEqual(["spar", "interspar"]);
-    expect(catalogs.map((c) => c.pageCount)).toEqual([36, 8]);
+describe("data version 3: six catalogs", () => {
+  it("has the six current catalogs in Home order with consistent pages, pdf and cover", () => {
+    expect(catalogs.map((c) => c.id)).toEqual(["spar-4426", "interspar-1526", "spar-online-4426", "despar-koper-1626", "mega-spar-0826", "spar-4326"]);
+    expect(catalogs.map((c) => c.retailer)).toEqual(["spar", "interspar", "spar-online", "despar", "spar", "spar"]);
     for (const c of catalogs) {
-      expect(c.publishedDate).toBe("2026-10-07");
-      expect(c.validFrom).toBe("2026-10-07");
-      expect(c.validTo).toBe("2026-10-13");
-      expect(c.pages).toHaveLength(c.pageCount);
+      expect(c.pageCount, c.id).toBeGreaterThan(0);
+      expect(c.pages, c.id).toHaveLength(c.pageCount);
+      expect(c.validFrom <= c.validTo, c.id).toBe(true);
+      expect(c.publishedDate <= c.validFrom, c.id).toBe(true);
       expect(c.cover.src).toBe(`/catalog/${c.id}/cover.webp`);
       expect(c.pdfUrl).toBe(`/catalog/${c.id}/katalog.pdf`);
     }
@@ -87,93 +101,135 @@ describe("data version 2: two catalogs", () => {
         expect(pl.catalogId).toBe(o.catalogId);
         expect(pl.pdfPageIndex).toBeLessThan(cat!.pageCount);
       }
-      expect(o.id.endsWith(o.catalogId === "spar-4126" ? "-4126" : "-1426")).toBe(true);
     }
   });
 
-  it("both retailers are represented in the top of the editorial order", () => {
-    const topIds = products.slice(0, 10).map((p) => getPrimaryOffer(p.id)!.catalogId);
-    expect(new Set(topIds)).toEqual(new Set(["spar-4126", "interspar-1426"]));
+  it("the shopping view (current offers) spans more than one catalog and more than one retailer", () => {
+    const cats = activeProducts().map((p) => getPrimaryOffer(p.id)!.catalogId);
+    expect(new Set(cats).size).toBeGreaterThanOrEqual(2);
+    expect(new Set(cats.map((id) => getCatalog(id)!.retailer)).size).toBeGreaterThanOrEqual(2);
   });
 
-  it("covers the categories the home screen browses", () => {
+  it("covers the categories the home screen browses (among current products)", () => {
     for (const slug of ["meso", "mlecni-izdelki", "sadje", "zelenjava", "osnovna-zivila", "sladko", "pijace", "pekovsko", "zajtrk"]) {
-      expect(products.filter((p) => p.categories.includes(slug)).length, slug).toBeGreaterThanOrEqual(3);
+      expect(activeProducts().filter((p) => p.categories.includes(slug)).length, slug).toBeGreaterThanOrEqual(3);
     }
   });
 
   it("has enough printed percent discounts for the discount ranking, and plain-price items too", () => {
     expect(offers.filter((o) => o.discountPercent !== null).length).toBeGreaterThanOrEqual(10);
     expect(offers.filter((o) => o.discountPercent === null).length).toBeGreaterThan(0);
+    expect(rankDiscounts({ limit: Infinity }).length).toBeGreaterThanOrEqual(10);
   });
 });
 
-describe("Perutnina Ptuj", () => {
-  const ptuj = products.filter((p) => p.brand === "Perutnina Ptuj");
+describe("branded products", () => {
+  // The brand with the most current products stands in for the old fixed brand (Perutnina Ptuj): it must be searchable.
+  const byBrand = new Map<string, Product[]>();
+  for (const p of activeProducts()) if (p.brand) byBrand.set(p.brand, [...(byBrand.get(p.brand) ?? []), p]);
+  const [brand, list] = [...byBrand.entries()].sort((a, b) => b[1].length - a[1].length)[0];
 
-  it("has at least three clean single-pack offers, all verified, with the expected search aliases", () => {
-    expect(ptuj.length).toBeGreaterThanOrEqual(3);
-    for (const p of ptuj) {
-      expect(getPrimaryOffer(p.id)?.verification.status).toBe("verified");
-      for (const alias of ["perutnina ptuj", "perutnina", "ptuj", "piščanec"]) expect(p.aliases, `${p.id} ${alias}`).toContain(alias);
+  it("the most frequent brand has at least three current offers, all verified, with the brand among the search aliases or name", () => {
+    expect(list.length).toBeGreaterThanOrEqual(3);
+    for (const p of list) {
+      expect(getPrimaryOffer(p.id)?.verification.status, p.id).toBe("verified");
+      const hay = [p.name, ...p.aliases].join(" ").toLowerCase();
+      expect(hay, `${p.id} ${brand}`).toContain(brand.toLowerCase());
     }
   });
 
-  it("prices on the leaflet are the verified ones (SPAR p. 6 and p. 15)", () => {
-    const o = (id: string) => getPrimaryOffer(id)!;
-    expect(o("piscancje-meso-po-italijansko-800g")).toMatchObject({ priceCents: 519, regularPriceCents: 699, discountPercent: 25 });
-    expect(o("stajerski-piscanec-1kg")).toMatchObject({ priceCents: 539, regularPriceCents: 719, discountPercent: 25 });
-    expect(o("piscancji-medaljoni-ptuj-750g")).toMatchObject({ priceCents: 699, regularPriceCents: 1119, discountPercent: 37 });
+  it("every product has search aliases and every offer is verified", () => {
+    for (const p of products) expect(p.aliases.length, p.id).toBeGreaterThan(0);
+    for (const o of offers) expect(o.verification.status, o.id).toBe("verified");
+  });
+
+  it("prices of offers with a printed discount are internally consistent and traceable to the printed quote", () => {
+    const withDiscount = activeProducts()
+      .map((p) => getPrimaryOffer(p.id)!)
+      .filter((o) => o.discountPercent != null && o.regularPriceCents != null);
+    expect(withDiscount.length).toBeGreaterThanOrEqual(10);
+    for (const o of withDiscount) {
+      expect(o.regularPriceCents!, o.id).toBeGreaterThan(o.priceCents);
+      expect(Math.abs(Math.round((1 - o.priceCents / o.regularPriceCents!) * 100) - o.discountPercent!), o.id).toBeLessThanOrEqual(1);
+      expect(src.offers[o.id]?.sourceQuote, o.id).toBeTruthy();
+    }
   });
 });
 
 describe("novo v katalogu flags", () => {
-  it("every isNew product has a documented source; the printed NOVO badges are the two found in the SPAR text layer", () => {
+  it("every isNew product has a documented source and a real placement; newProducts() lists exactly the flagged ones", () => {
     const flagged = newProducts();
-    expect(flagged.length).toBeGreaterThanOrEqual(6);
-    expect(flagged.length).toBeLessThanOrEqual(8);
+    expect(flagged.map((p) => p.id)).toEqual(products.filter((p) => p.isNew).map((p) => p.id));
+    expect(flagged.length).toBeGreaterThan(0);
     for (const p of products) {
       if (p.isNew) expect(["printed_badge", "demo_editorial"]).toContain(p.newSource);
       else expect(p.newSource).toBeNull();
     }
-    expect(flagged.filter((p) => p.newSource === "printed_badge").map((p) => p.id).sort()).toEqual(["bio-kombucha-330ml", "ocvirki-ave-100g"]);
-    // printed badges are on SPAR pages 7 and 13
-    expect(getPlacementsForProduct("ocvirki-ave-100g")[0].pdfPageNumber).toBe(7);
-    expect(getPlacementsForProduct("bio-kombucha-330ml")[0].pdfPageNumber).toBe(13);
+    for (const p of flagged) {
+      const pl = getPlacementsForProduct(p.id)[0];
+      expect(pl, p.id).toBeDefined();
+      expect(pl.pdfPageNumber).toBeGreaterThanOrEqual(1);
+    }
   });
 
-  it("flagged products come from both catalogs", () => {
-    expect(new Set(newProducts().map((p) => getPrimaryOffer(p.id)!.catalogId)).size).toBe(2);
+  it("Home »Kaj je novega« lists printed NOVO offers among the current ones, else the newest-start offers", () => {
+    const { products: list } = newInCatalog();
+    const active = new Set(activeProducts().map((p) => p.id));
+    expect(list.length).toBeGreaterThan(0);
+    for (const p of list) expect(active.has(p.id), p.id).toBe(true);
+    if (activeProducts().some((p) => p.isNew)) for (const p of list) expect(p.isNew).toBe(true);
+  });
+
+  it("flagged products come from more than one catalog", () => {
+    expect(new Set(newProducts().map((p) => getPrimaryOffer(p.id)!.catalogId)).size).toBeGreaterThanOrEqual(2);
   });
 });
 
 describe("verified facts of selected offers", () => {
-  it("cover offers (SPAR p. 1, INTERSPAR p. 1)", () => {
-    expect(getPrimaryOffer("nutella-1kg")).toMatchObject({ priceCents: 719, regularPriceCents: 959, discountPercent: 25, priceKind: "loyalty_price" });
-    expect(getPrimaryOffer("belo-grozdje-1kg")).toMatchObject({ priceCents: 169, regularPriceCents: 249, discountPercent: 32, priceUnit: "kg" });
-    expect(getPrimaryOffer("jedilna-cokolada-250g")).toMatchObject({ priceCents: 275, regularPriceCents: 369, discountPercent: 25 });
-    expect(getPrimaryOffer("pistacijev-namaz-150g")).toMatchObject({ priceCents: 339, regularPriceCents: null, priceKind: "catalog_price" });
-    expect(getPrimaryOffer("vleceno-testo-zito-400g")).toMatchObject({ priceCents: 143, regularPriceCents: 219, discountPercent: 34 });
+  it("an active loyalty-price offer with a printed discount keeps price, regular price and percent coherent and needs the card", () => {
+    const o = activeProducts()
+      .map((p) => getPrimaryOffer(p.id)!)
+      .find((x) => x.discountPercent != null && x.regularPriceCents != null && x.priceKind === "loyalty_price")!;
+    expect(o).toBeDefined();
+    expect(o.conditions.spPlusRequired).toBe(true);
+    expect(o.priceCents).toBeLessThan(o.regularPriceCents!);
+    expect(offerState(o)).toBe("current");
   });
 
-  it("S-BUDGET items carry no printed discount", () => {
-    for (const id of ["sb-svinjske-kocke-500g", "sb-sampinjoni-500g"]) {
-      expect(getPrimaryOffer(id)).toMatchObject({ regularPriceCents: null, discountPercent: null, priceKind: "catalog_price" });
-      expect(getProduct(id)?.brand).toBe("S-BUDGET");
+  it("unit prices are per kg or l and positive", () => {
+    const withUnit = offers.filter((o) => o.unitPrice);
+    expect(withUnit.length).toBeGreaterThan(0);
+    for (const o of withUnit) {
+      expect(["kg", "l"]).toContain(o.unitPrice!.per);
+      expect(o.unitPrice!.cents, o.id).toBeGreaterThan(0);
     }
   });
 
-  it("food pages without their own date fall back to the general catalog validity, others carry the printed »DO TORKA 13. 10.«", () => {
-    const cover = getPrimaryOffer("nutella-1kg")!;
-    expect(cover.validity).toMatchObject({ status: "catalog_default", from: "2026-10-07", to: "2026-10-13" });
-    const meat = getPrimaryOffer("piscancje-meso-po-italijansko-800g")!;
-    expect(meat.validity).toMatchObject({ status: "explicit", from: "2026-10-07", to: "2026-10-13" });
-    expect(meat.validity.evidence).toContain("DO TORKA 13. 10.");
+  it("S-BUDGET items carry no printed discount", () => {
+    expect(activeProducts().some((p) => p.line === "S-BUDGET")).toBe(true);
+    for (const p of products.filter((x) => x.line === "S-BUDGET")) {
+      expect(getPrimaryOffer(p.id), p.id).toMatchObject({ regularPriceCents: null, discountPercent: null, priceKind: "catalog_price" });
+    }
+  });
+
+  it("offers without a page exception fall back to the general catalog validity; offers with their own date carry the printed evidence", () => {
+    const defaults = offers.filter((o) => o.validity.status === "catalog_default");
+    const explicit = offers.filter((o) => o.validity.status === "explicit");
+    expect(defaults.length).toBeGreaterThan(0);
+    expect(explicit.length).toBeGreaterThan(0);
+    for (const o of defaults) {
+      const c = getCatalog(o.catalogId)!;
+      expect(o.validity, o.id).toMatchObject({ from: c.validFrom, to: c.validTo });
+    }
+    for (const o of explicit) {
+      expect(o.validity.from! <= o.validity.to!, o.id).toBe(true);
+      expect(src.offers[o.id]?.validityEvidence, o.id).toBeTruthy();
+    }
   });
 });
 
 describe("recipes", () => {
-  it("cover a dinner, a lunch and a breakfast, use only existing whole-pack offers, and one dinner uses Perutnina Ptuj", () => {
+  it("cover a dinner, a lunch and a breakfast and use only existing whole-pack offers", () => {
     expect(new Set(recipes.map((r) => r.kind))).toEqual(new Set(["dinner", "lunch", "breakfast"]));
     for (const r of recipes)
       for (const ing of r.ingredients) {
@@ -181,8 +237,12 @@ describe("recipes", () => {
         expect(o, ing.offerId).toBeDefined();
         expect(o!.priceUnit).toBe("pack");
       }
-    const dinner = recipes.find((r) => r.kind === "dinner")!;
-    expect(dinner.ingredients.some((i) => getProduct(getOffer(i.offerId)!.productId)?.brand === "Perutnina Ptuj")).toBe(true);
+  });
+
+  it("recipes are only suggested when every ingredient is on a current offer (activeRecipes)", () => {
+    const ok = activeRecipes();
+    expect(ok.length).toBeGreaterThan(0);
+    for (const r of ok) for (const i of r.ingredients) expect(isOfferCurrent(getOffer(i.offerId)!), i.offerId).toBe(true);
   });
 
   it("totals stay within budget, even at regular prices for card-only lines", () => {
@@ -202,70 +262,74 @@ describe("recipes", () => {
 });
 
 describe("future promos (demo mock)", () => {
-  it("every promo is cheaper than the product's current offer, belongs to the offer's catalog and starts after its validity", () => {
+  it("every promo is cheaper than the product's current offer, belongs to the offer's catalog and starts after the reference date and the offer's validity", () => {
     expect(futurePromos.length).toBeGreaterThanOrEqual(8);
     for (const p of futurePromos) {
       const offer = getPrimaryOffer(p.productId)!;
       expect(offer, p.id).toBeDefined();
       expect(p.priceCents, p.id).toBeLessThan(offer.priceCents);
       expect(p.catalogId).toBe(offer.catalogId);
-      expect(p.validFrom > getCatalog(p.catalogId)!.validTo).toBe(true);
+      expect(p.validFrom > referenceDate(), p.id).toBe(true);
+      expect(p.validFrom > offerWindow(offer)!.to, p.id).toBe(true);
       if (p.regularPriceCents !== null) expect(p.discountPercent).toBe(Math.round(((p.regularPriceCents - p.priceCents) / p.regularPriceCents) * 100));
     }
   });
 
-  it("include at least three Perutnina Ptuj products and both retailers", () => {
-    const ptuj = futurePromos.filter((p) => getProduct(p.productId)?.brand === "Perutnina Ptuj");
-    expect(ptuj.length).toBeGreaterThanOrEqual(3);
-    expect(new Set(futurePromos.map((p) => p.catalogId)).size).toBe(2);
+  it("cover at least three distinct current products of at least three different brands or lines", () => {
+    expect(new Set(futurePromos.map((p) => p.productId)).size).toBeGreaterThanOrEqual(3);
+    for (const p of futurePromos) expect(isProductActive(p.productId), p.productId).toBe(true);
+    const labels = new Set(futurePromos.map((p) => getProduct(p.productId)!.brand ?? getProduct(p.productId)!.line));
+    expect(labels.size).toBeGreaterThanOrEqual(3);
   });
 });
 
-describe("FIX 7: extended leaflet coverage", () => {
-  const KNOWN_SLUGS = new Set([
-    "mlecni-izdelki", "mesni-izdelki", "meso", "osnovna-zivila", "zajtrk", "vecerja", "prilogi", "zamrznjeno", "zelenjava", "sadje",
-    "pekovsko", "kruh", "sir", "ribe", "testenine", "omake", "pijace", "sokovi", "voda", "kava", "sladko", "sladkarije", "zacimbe",
-    "prigrizki", "namazi",
-  ]);
+describe("extended leaflet coverage", () => {
   const onPage = (catalogId: string, page: number) =>
     placements.filter((p) => p.catalogId === catalogId && p.pdfPageNumber === page).map((p) => getOffer(p.offerId)!.productId);
 
-  it("maps many more products than the first 47 curated ones, in both catalogs", () => {
-    expect(products.length).toBeGreaterThan(47);
-    expect(placements.filter((p) => p.catalogId === "spar-4126").length).toBeGreaterThan(33);
-    expect(placements.filter((p) => p.catalogId === "interspar-1426").length).toBeGreaterThan(14);
+  it("maps hundreds of products, every catalog has placements, and placements, offers and products are 1:1", () => {
+    expect(products.length).toBeGreaterThan(300);
+    for (const c of catalogs) expect(placements.filter((p) => p.catalogId === c.id).length, c.id).toBeGreaterThan(0);
     expect(placements).toHaveLength(offers.length);
     expect(offers).toHaveLength(products.length);
   });
 
-  it("SPAR cover (reference page): Svinjska rebra EU and Radler Cola Limeta are interactive next to Nutella, Sitarjev hlebec and belo grozdje", () => {
-    const ids = onPage("spar-4126", 1);
-    for (const id of ["svinjska-rebra-eu-1kg", "radler-cola-limeta-union-0-5l", "nutella-1kg", "sitarjev-hlebec-750g", "belo-grozdje-1kg"]) expect(ids).toContain(id);
-    expect(getPrimaryOffer("svinjska-rebra-eu-1kg")).toMatchObject({ priceCents: 379, priceUnit: "kg", priceKind: "catalog_price", regularPriceCents: null });
+  it("the cover page of the default catalog is interactive: its products have prices and resolve back to that page", () => {
+    const ids = onPage(primaryCatalog.id, 1);
+    expect(ids.length).toBeGreaterThan(0);
+    for (const id of ids) {
+      expect(getPrimaryOffer(id)!.priceCents, id).toBeGreaterThan(0);
+      expect(getPlacementsForProduct(id).some((pl) => pl.pdfPageNumber === 1 && pl.catalogId === primaryCatalog.id)).toBe(true);
+    }
   });
 
-  it("Radler keeps its printed multi-buy condition (0,81 € only when buying 24 cans; 1,16 € for one)", () => {
-    const o = getPrimaryOffer("radler-cola-limeta-union-0-5l")!;
-    expect(o.priceCents).toBe(81);
-    expect(o.regularPriceCents).toBe(116);
-    expect(o.conditions.note).toMatch(/24 kosov/);
-    expect(o.verification.notes).toMatch(/24 kosov/);
+  it("multi-buy offers keep their printed condition in the offer note (the cheap price is not unconditional)", () => {
+    const multi = offers.filter((o) => /ob nakupu|\d\s*\+\s*\d\b|gratis|VEČ JE CENEJE/i.test(src.offers[o.id]?.sourceQuote ?? ""));
+    expect(multi.length).toBeGreaterThan(0);
+    for (const o of multi) expect(o.conditions.note, o.id).toBeTruthy();
   });
 
-  it("new products only use category slugs the app has labels for, have a primary category, an image and a unique editorial rank", () => {
+  it("products use well-formed category slugs, have a primary category, an image and a unique editorial rank", () => {
     for (const p of products) {
       expect(p.categories.length, p.id).toBeGreaterThan(0);
-      for (const c of p.categories) expect(KNOWN_SLUGS.has(c) || p.editorialRank <= 47, `${p.id}: ${c}`).toBe(true);
+      for (const c of p.categories) {
+        expect(c, p.id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+        expect(categoryLabel(c).length, `${p.id}: ${c}`).toBeGreaterThan(0);
+      }
       expect(p.image.src).toBe(`/products/${p.id}.webp`);
     }
     const ranks = products.map((p) => p.editorialRank);
     expect(new Set(ranks).size).toBe(ranks.length);
   });
 
-  it("the original 47 products keep the first 47 editorial ranks (new items are appended)", () => {
-    const original = products.filter((p) => p.editorialRank <= 47);
-    expect(original).toHaveLength(47);
-    expect(getProduct("nutella-1kg")!.editorialRank).toBe(1);
-    expect(Math.min(...products.filter((p) => p.editorialRank > 47).map((p) => p.editorialRank))).toBe(48);
+  it("category labels read as Slovenian words (hyphenated slugs and diacritics are not shown raw)", () => {
+    expect(categoryLabel("alkoholne-pijace")).toBe("alkoholne pijače");
+    expect(categoryLabel("hisni-ljubljencki")).toBe("hišni ljubljenčki");
+    expect(categoryLabel("otroska-hrana")).toBe("otroška hrana");
+  });
+
+  it("editorial ranks are contiguous from 1 in the exported order; historical products never leak into the current list", () => {
+    expect(products.map((p) => p.editorialRank)).toEqual(products.map((_, i) => i + 1));
+    for (const p of products) expect(isHistoricalProduct(p.id), p.id).toBe(false);
   });
 });

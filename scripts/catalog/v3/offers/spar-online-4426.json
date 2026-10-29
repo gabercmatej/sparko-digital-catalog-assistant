@@ -1,0 +1,53 @@
+{
+ "catalogId": "spar-online-4426",
+ "checkedOn": "2026-10-28",
+ "pages": {"1": {"theme": "Online akcija", "offersOnPage": 3, "notes": "Tri izdelki za dom, samo v spletni trgovini SPAR Online; cene brez pogoja SPAR plus."}},
+ "offers": [
+  {
+   "key": "gorenje-mikrovalovna-pecica-mo17e1wh",
+   "page": 1, "anchor": "MIKROVALOVNA",
+   "name": "Mikrovalovna pečica Gorenje MO17E1WH", "brand": "Gorenje", "line": null,
+   "descriptor": "17 l, 700 W, bela", "pack": "1 kos", "qty": [1, "kos"],
+   "categories": ["kuhinja", "dom"],
+   "aliases": ["mikrovalovna", "mikrovalovna pečica", "mikrovalovko", "mikrovalovka", "mikrovalovne pečice", "pečica", "gorenje"],
+   "price": 5450, "priceUnit": "pack", "priceKind": "catalog_price", "regular": 10900, "discount": 50, "pc": null,
+   "spPlus": false, "coupon": false, "conditionNote": "ONLINE AKCIJA, do prodaje akcijskih zalog",
+   "unitPrice": null, "validity": null, "availability": null,
+   "printed": "ONLINE AKCIJA gorenje MIKROVALOVNA PEČICA GORENJE MO17E1WH … prostornina 17 l … zmogljivost mikrovalov: 700 W … barva: bela CENEJE 50% redna cena 109,00 54,50",
+   "box": [0.043, 0.237, 0.957, 0.503],
+   "image": {"crop": [0.38, 0.283, 0.828, 0.433]},
+   "isNew": false, "notes": null
+  },
+  {
+   "key": "emos-detektor-co-gosmart-tcs0101w",
+   "page": 1, "anchor": "OGLJIKOVEGA",
+   "name": "Detektor ogljikovega monoksida GoSmart EMOS TCS0101W", "brand": "EMOS", "line": null,
+   "descriptor": "Wi-Fi, baterije priložene", "pack": "1 kos", "qty": [1, "kos"],
+   "categories": ["dom"],
+   "aliases": ["detektor", "detektor co", "detektor ogljikovega monoksida", "ogljikov monoksid", "co detektor", "javljalnik", "emos", "gosmart"],
+   "price": 1795, "priceUnit": "pack", "priceKind": "catalog_price", "regular": 3590, "discount": 50, "pc": null,
+   "spPlus": false, "coupon": false, "conditionNote": "ONLINE AKCIJA, do prodaje akcijskih zalog",
+   "unitPrice": null, "validity": null, "availability": null,
+   "printed": "ONLINE AKCIJA DETEKTOR OGLJIKOVEGA MONOKSIDA GOSMART EMOS TCS0101W … CENEJE 50% redna cena 35,90 17,95",
+   "box": [0.043, 0.553, 0.5, 0.853],
+   "image": {"crop": [0.275, 0.56, 0.497, 0.77]},
+   "isNew": false, "notes": null
+  },
+  {
+   "key": "emos-detektor-dima-gosmart-ts380c-hw",
+   "page": 1, "anchor": "DIMA GOSMART",
+   "name": "Detektor dima GoSmart EMOS TS380C-HW", "brand": "EMOS", "line": null,
+   "descriptor": "Wi-Fi, baterije priložene", "pack": "1 kos", "qty": [1, "kos"],
+   "categories": ["dom"],
+   "aliases": ["detektor dima", "javljalnik dima", "dimni detektor", "detektor", "emos", "gosmart"],
+   "price": 1356, "priceUnit": "pack", "priceKind": "catalog_price", "regular": 3390, "discount": 60, "pc": null,
+   "spPlus": false, "coupon": false, "conditionNote": "ONLINE AKCIJA, do prodaje akcijskih zalog",
+   "unitPrice": null, "validity": null, "availability": null,
+   "printed": "ONLINE AKCIJA DETEKTOR DIMA GOSMART EMOS TS380C-HW … CENEJE 60% redna cena 33,90 13,56",
+   "box": [0.505, 0.553, 0.957, 0.853],
+   "image": {"crop": [0.705, 0.6, 0.955, 0.77]},
+   "isNew": false, "notes": null
+  }
+ ],
+ "excluded": []
+}

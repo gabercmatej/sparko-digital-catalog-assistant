@@ -48,3 +48,15 @@
   background: currentColor;
   opacity: 0.2;
 }
+
+/* Full-width note under both halves: items whose offer is no longer current are not in the totals. */
+.note {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 4px 12px;
+  background: var(--c-surface-muted);
+  color: var(--c-ink-2);
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  text-align: center;
+}

@@ -14,7 +14,8 @@
  * An explicit limit above 6 (expanded list) raises the category cap to max(2, ceil(limit/6)) and drops
  * duplicate brand+name+pack articles (SPAR vs INTERSPAR twins), keeping the better-ranked one.
  */
-import { getPlacementsForProduct, getPrimaryOffer, getProduct, productForOffer, products, recipeLines, recipes } from "./catalog";
+import { activeProducts, activeRecipes } from "./activeCatalog";
+import { getPlacementsForProduct, getPrimaryOffer, getProduct, productForOffer, recipeLines } from "./catalog";
 import type { Product, Recipe } from "./types";
 
 export type SignalKind = "line" | "brand" | "recipe" | "category" | "theme" | "page";
@@ -110,6 +111,17 @@ const CATEGORY_LABELS: Record<string, string> = {
   gospodinjstvo: "gospodinjstvo",
   higiena: "higiena",
   nega: "nega",
+  vino: "vino",
+  pivo: "pivo",
+  "alkoholne-pijace": "alkoholne pijače",
+  dom: "dom",
+  vrt: "vrt",
+  kuhinja: "kuhinja",
+  tekstil: "tekstil",
+  otroci: "otroci",
+  "otroska-hrana": "otroška hrana",
+  "hisni-ljubljencki": "hišni ljubljenčki",
+  drugo: "drugo",
 };
 
 /** Human Slovenian label for a category slug (fallback: slug with spaces). */
@@ -127,8 +139,8 @@ const MEAL_PHRASE: Record<string, string> = {
 
 // ---------------------------------------------------------------- static indexes
 
-/** Checked recipes only: every ingredient offer exists and is priced per pack. */
-const checkedRecipes: { recipe: Recipe; productIds: Set<string> }[] = recipes
+/** Checked activeRecipes() only: every ingredient offer exists and is priced per pack. */
+const checkedRecipes: { recipe: Recipe; productIds: Set<string> }[] = activeRecipes()
   .filter((r) => recipeLines(r) !== null)
   .map((r) => ({
     recipe: r,
@@ -233,7 +245,7 @@ export function signalReason(signal: Signal): string {
     case "brand":
       return `Tudi znamke ${signal.detail}`;
     case "recipe": {
-      const r = recipes.find((x) => x.id === signal.detail);
+      const r = activeRecipes().find((x) => x.id === signal.detail);
       if (r) return `Za recept: ${lowerFirst(r.title)}`;
       const via = getProduct(signal.viaProductId);
       return via ? `Gre skupaj z izdelkom ${via.name.toLocaleLowerCase("sl")}` : "Za preverjen recept";
@@ -315,7 +327,7 @@ function categoryCap(limit: number): number {
 export function getEditorialPicks(opts: { limit?: number; excludeIds?: string[]; /** internal: category cap override */ maxPerCategory?: number; /** internal: article keys already used */ takenKeys?: Set<string> } = {}): Recommendation[] {
   const limit = Math.max(0, opts.limit ?? DEFAULT_RECOMMENDATION_LIMIT);
   const exclude = new Set(opts.excludeIds ?? []);
-  let pool = [...products]
+  let pool = [...activeProducts()]
     .sort(compareEditorial)
     .filter((p) => !exclude.has(p.id))
     .map((product) => ({ product, offerId: getPrimaryOffer(product.id)?.id }))
@@ -346,7 +358,7 @@ export function getRecommendations(savedProductIds: string[], opts: Recommendati
   if (saved.length === 0) return getEditorialPicks({ limit, excludeIds: [...exclude], maxPerCategory: cap });
 
   const scored: Scored[] = [];
-  for (const product of products) {
+  for (const product of activeProducts()) {
     if (exclude.has(product.id)) continue;
     const offer = getPrimaryOffer(product.id);
     if (!offer) continue;

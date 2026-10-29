@@ -5,6 +5,7 @@ import { DEMO_FORECAST_LABEL } from "@/lib/demoForecast";
 import type { FuturePromo } from "@/lib/types";
 import { ProductActions } from "../product/ProductActions";
 import { ProductCard } from "../product/ProductCard";
+import { offerNotes } from "../product/offerNotes";
 import { PricePill } from "../product/PricePill";
 import { brandLabel } from "../product/ProductSummary";
 import { ProductTile } from "../product/ProductTile";
@@ -126,7 +127,7 @@ export function ProductRow({
           <span className={styles.rowPrices} data-price-strip={future ? "" : undefined}>
             <span className={styles.priceCol}>
               {nowLabel && <span className={styles.priceLabel}>{nowLabel}</span>}
-              <PricePill cents={offer.priceCents} tone="now" size="md" srPrefix={future ? "Zdaj" : undefined} />
+              <PricePill cents={offer.priceCents} tone={offerNotes(offer).current ? "now" : "expired"} size="md" srPrefix={future ? "Zdaj" : undefined} />
             </span>
             {upcoming && (
               <span className={styles.priceCol} data-upcoming-price>

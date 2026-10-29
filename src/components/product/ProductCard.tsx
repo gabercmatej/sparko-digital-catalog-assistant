@@ -3,6 +3,7 @@ import { badgePrice, formatPrice, getOffer, getPrimaryOffer, getProduct, unitLab
 import type { Offer } from "@/lib/types";
 import { ProductActions } from "./ProductActions";
 import { brandLabel, ProductSummary } from "./ProductSummary";
+import { offerNotes } from "./offerNotes";
 import { RetailerBadge } from "./RetailerBadge";
 import { ProductTile } from "./ProductTile";
 import styles from "./ProductCard.module.css";
@@ -46,6 +47,7 @@ export function ProductCard({
           <span className={styles.pack}>{product.packSize}</span>
           <PriceBlock offer={offer} productId={productId} />
         </div>
+        <OfferLines offer={offer} />
         <ProductActions productId={productId} showLeaflet={showLeaflet} toggle />
       </article>
     );
@@ -64,14 +66,26 @@ export function ProductCard({
  * (right-aligned, when `productId` is given) and the "SPAR plus" / unit label above it. Shared by the chat card and the compact chat rows; it occupies the `price` grid area and
  * is meant to sit flush in the bottom-right corner of its white row. Inline markup only (spans).
  */
+function OfferLines({ offer }: { offer: Offer }) {
+  const n = offerNotes(offer);
+  if (!n.status && !n.availability) return null;
+  return (
+    <p className={styles.offerLines} data-offer-lines>
+      {n.status && <span className={styles.status}>{n.status}</span>}
+      {n.availability && <span>{n.availability}</span>}
+    </p>
+  );
+}
+
 export function PriceBlock({ offer, productId, compact = false }: { offer: Offer; productId?: string; compact?: boolean }) {
   const unit = unitLabel(getProduct(offer.productId)?.packSize ?? "", offer.priceUnit);
+  const current = offerNotes(offer).current;
   return (
     <span className={`${styles.priceWrap}${compact ? ` ${styles.compact}` : ""}`} data-price-block>
       {productId && <RetailerBadge productId={productId} size="xs" className={styles.badge} />}
       {offer.conditions.spPlusRequired && <span className={styles.cond}>SPAR plus</span>}
       {unit && <span className={styles.unit}>{unit}</span>}
-      <span className={styles.price} aria-hidden="true" data-price>
+      <span className={`${styles.price}${current ? "" : ` ${styles.expired}`}`} aria-hidden="true" data-price>
         {badgePrice(offer.priceCents)}
       </span>
       <span className="sr-only">

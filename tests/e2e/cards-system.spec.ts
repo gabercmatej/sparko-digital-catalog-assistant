@@ -30,7 +30,7 @@ async function geometry(cards: Locator): Promise<Geo[]> {
       return {
         id: el.getAttribute("data-product-id"),
         card: { x: c.x, y: c.y, width: c.width, height: c.height },
-        badge: r("[data-retailer]"),
+        badge: r("[data-retailer], [data-category]"),
         pack: r("[data-card-pack]"),
         pill: r('[data-price-pill="now"]'),
       };

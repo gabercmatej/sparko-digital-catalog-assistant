@@ -1,9 +1,10 @@
 /**
- * Structured + fuzzy keyword retrieval over the verified demo catalog (no vector DB).
+ * Structured + fuzzy keyword retrieval over the verified catalog offers that are current (activeProducts; no vector DB).
  * Scoring per query token: exact stem (alias/name) > token prefix > small edit distance (typos).
  * Whole alias phrases found in the query get a strong bonus.
  */
-import { getPrimaryOffer, products as allProducts } from "@/lib/catalog";
+import { activeProducts } from "@/lib/activeCatalog";
+import { getPrimaryOffer } from "@/lib/catalog";
 import type { Offer, Product, SpPlusSetting } from "@/lib/types";
 import { containsPhrase, contentTokens, editDistance, fold, stem } from "./normalize";
 
@@ -106,20 +107,25 @@ function tokenScore(q: string, field: Field): number {
 }
 
 /** Folded line keys present in a query, e.g. "sbudget". */
-export function detectLine(query: string, list: readonly Product[] = allProducts): string | undefined {
+export function detectLine(query: string, list: readonly Product[] = activeProducts()): string | undefined {
   const f = fold(query);
-  const keys = new Set(buildIndex(list).flatMap((i) => [i.lineKey, i.brandKey]).filter((k): k is string => !!k));
-  for (const k of keys) if (containsPhrase(f, k)) return k;
-  // Multi-word brands and lines are written with spaces in a query ("Perutnina Ptuj"); keys have none.
+  // The longest match wins: "Natur Premium" (Perutnina Ptuj) must not be read as the shorter "PREMIUM" line.
+  let best: { key: string; len: number } | undefined;
+  const consider = (key: string, phrase: string) => {
+    if (containsPhrase(f, phrase) && (!best || phrase.length > best.len)) best = { key, len: phrase.length };
+  };
   for (const i of buildIndex(list)) {
     for (const [key, label] of [[i.lineKey, i.product.line], [i.brandKey, i.product.brand]] as const) {
-      if (key && label && containsPhrase(f, fold(label))) return key;
+      if (!key) continue;
+      consider(key, key);
+      // Multi-word brands and lines are written with spaces in a query ("Perutnina Ptuj"); keys have none.
+      if (label) consider(key, fold(label));
     }
   }
-  return undefined;
+  return best?.key;
 }
 
-export function detectFilters(query: string, list: readonly Product[] = allProducts): SearchFilters {
+export function detectFilters(query: string, list: readonly Product[] = activeProducts()): SearchFilters {
   const f = fold(query);
   const filters: SearchFilters = {};
   const line = detectLine(query, list);
@@ -155,7 +161,7 @@ export function searchProducts(
   query: string,
   opts: { filters?: SearchFilters; extraStop?: Set<string>; minScore?: number; limit?: number; list?: readonly Product[] } = {},
 ): SearchHit[] {
-  const list = opts.list ?? allProducts;
+  const list = opts.list ?? activeProducts();
   const filters = opts.filters ?? {};
   const f = fold(query);
   const qTokens = contentTokens(query, opts.extraStop)
@@ -194,7 +200,7 @@ export function queryContentTokens(query: string, extraStop?: Set<string>): stri
 }
 
 /** Products of a line, by editorial rank. */
-export function productsInLine(lineKey: string, filters: SearchFilters = {}, list: readonly Product[] = allProducts): SearchHit[] {
+export function productsInLine(lineKey: string, filters: SearchFilters = {}, list: readonly Product[] = activeProducts()): SearchHit[] {
   return buildIndex(list)
     .filter((i) => passesFilters(i.product, i.offer, { ...filters, line: lineKey }))
     .map((i) => ({ product: i.product, offer: i.offer, score: 0, matched: [] }));
@@ -220,7 +226,7 @@ export function comparablePrice(product: Product, offer: Offer, cents: number = 
  * and has a lower comparable price on the same basis/unit.
  */
 export function cheaperAlternatives(productId: string, opts: { limit?: number; list?: readonly Product[]; filters?: SearchFilters; spPlus?: SpPlusSetting } = {}): SearchHit[] {
-  const index = buildIndex(opts.list ?? allProducts);
+  const index = buildIndex(opts.list ?? activeProducts());
   const base = index.find((i) => i.product.id === productId);
   if (!base) return [];
   const bpCents = priceForUser(base.offer, opts.spPlus);

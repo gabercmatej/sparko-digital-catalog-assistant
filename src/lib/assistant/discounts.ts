@@ -46,10 +46,10 @@ export function rankDiscounts(opts: { limit?: number; offers?: readonly Offer[];
  */
 export function discountTemplate(ranked: RankedDiscount[], spPlus: SpPlusSetting): string {
   if (!ranked.length) {
-    return `Med preverjenimi izdelki iz kataloga ({{catalogs}}) ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
+    return `Med preverjenimi izdelki v aktualni ponudbi ni izdelkov z natisnjenim odstotkom popusta. Lahko ti pokažem izdelke S-BUDGET z nizkimi rednimi cenami.`;
   }
   const top = ranked[0];
-  let text = `Med preverjenimi izdelki v aktualnem katalogu ({{catalogs}}) je ta teden najbolj znižan izdelek {{name:${top.product.id}}} ({{discount:${top.offer.id}}} ceneje). Spodaj so najbolj znižani izdelki`;
+  let text = `Med preverjenimi izdelki v aktualni ponudbi je najbolj znižan {{name:${top.product.id}}} ({{discount:${top.offer.id}}} ceneje, {{catalog:${top.offer.id}}}). Spodaj so najbolj znižani izdelki`;
   text += ".";
   const card = ranked.filter((r) => r.offer.conditions.spPlusRequired);
   if (card.length && spPlus === "no") {

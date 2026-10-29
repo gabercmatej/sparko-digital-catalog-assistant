@@ -127,3 +127,22 @@
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
+
+/* Offer status (expired / not yet valid) and store restriction under the chat row. */
+.offerLines {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  color: var(--c-ink-3);
+}
+.status {
+  font-weight: 600;
+  color: var(--c-ink-2);
+}
+.price.expired {
+  background: #e9ecea;
+  color: var(--c-ink-3);
+}

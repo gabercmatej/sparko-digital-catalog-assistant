@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { catalogs, DEMO_LABEL, formatPrice, getOffer, getPrimaryOffer, getProduct, placements, unitLabel, RETAILER_LABEL, retailerOf } from "@/lib/catalog";
+import { catalogs, DEMO_LABEL, formatPrice, getOffer, getPlacementsForProduct, getPrimaryOffer, getProduct, historicalCatalogs, unitLabel, RETAILER_LABEL, retailerOf } from "@/lib/catalog";
+import { currentEquivalent } from "@/lib/activeCatalog";
+import { offerState, offerStatusText } from "@/lib/offerStatus";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { removeProduct, saveProduct, showToast, useStore } from "@/lib/store/store";
 import type { SavedItem } from "@/lib/types";
@@ -10,7 +12,7 @@ import { ProductMiniCard } from "../product/ProductMiniCard";
 import { Icon } from "../ui/Icon";
 import { PageHeader } from "../shell/Header";
 import { leafletQuery, pagesWithProducts } from "../leaflet/pages";
-import { collectionTotals } from "@/lib/savings";
+import { collectionTotals, excludedCount } from "@/lib/savings";
 import { CollectionSummary } from "./CollectionSummary";
 import { ListMenu } from "./ListMenu";
 import { ProductSheet } from "./ProductSheet";
@@ -35,10 +37,11 @@ function sortSaved(items: SavedItem[]): SavedItem[] {
 
 /** Leaflet link at the first page (first catalog that has one) holding a saved product; /letak when none. */
 function firstSavedLeafletHref(productIds: string[]): string {
-  for (const c of catalogs) {
+  // current catalogs first, then the historical ones (saved items of SPAR 41/26 / INTERSPAR 14/26)
+  for (const c of [...catalogs, ...historicalCatalogs]) {
     const pages = pagesWithProducts(
       productIds,
-      placements.filter((pl) => pl.catalogId === c.id),
+      productIds.flatMap((id) => getPlacementsForProduct(id)).filter((pl) => pl.catalogId === c.id),
       (offerId) => getOffer(offerId)?.productId,
     );
     if (pages.length) return `/letak${leafletQuery(pages[0], { catalogId: c.id })}`;
@@ -46,13 +49,17 @@ function firstSavedLeafletHref(productIds: string[]): string {
   return "/letak";
 }
 
-/** Plain-text list for sharing: "Ime, pakiranje – cena (SPAR/INTERSPAR)". */
+/**
+ * Plain-text list for sharing: "Ime, pakiranje – cena (trgovina)" for current offers; an offer that is not current
+ * shows its status instead of a price ("Pretekla ponudba 13. 10. 2026 (SPAR katalog 41/26)"), never as a current price.
+ */
 function shareText(items: SavedItem[]): string {
   const lines = items.flatMap((it) => {
     const p = getProduct(it.productId);
     const o = getPrimaryOffer(it.productId);
     const r = retailerOf(it.productId);
     if (!p || !o) return [];
+    if (offerState(o) !== "current") return [`${p.name}, ${p.packSize} – ${offerStatusText(o) ?? "ponudba ni aktualna"}`];
     const unit = unitLabel(p.packSize, o.priceUnit);
     return [`${p.name}, ${p.packSize} – ${formatPrice(o.priceCents)}${unit ? " " + unit : ""}${r ? ` (${RETAILER_LABEL[r]})` : ""}`];
   });
@@ -83,6 +90,7 @@ export function CollectionView() {
   const allRecs = tab === "priporocila" && frozenRecs ? frozenRecs : freshRecs;
   const recs = tab === "priporocila" ? allRecs : allRecs.slice(0, RAIL_COUNT);
   const totals = useMemo(() => collectionTotals(savedKey ? savedKey.split("|") : []), [savedKey]);
+  const excluded = useMemo(() => excludedCount(savedKey ? savedKey.split("|") : []), [savedKey]);
   const goTab = useCallback(
     (next: Tab) => {
       setFrozenRecs(next === "priporocila" ? freshRecs : null);
@@ -144,6 +152,24 @@ export function CollectionView() {
 
   const addRecommendation = (productId: string) => {
     if (saveProduct(productId) === "saved" && tab === "moji") flash(productId, { scroll: false });
+  };
+
+  // "Posodobi na aktualno ponudbo": swap a saved item for the IDENTICAL article (same identityKey) in a current
+  // catalog, keeping its savedAt (so its position). Undo restores the old item. Never maps by similar names.
+  const updateToCurrent = (it: SavedItem) => {
+    const next = currentEquivalent(it.productId);
+    const nextProduct = next && getProduct(next.id);
+    if (!next || !nextProduct) return;
+    removeProduct(it.productId, { toast: false });
+    const res = saveProduct(next.id, { toast: false, savedAt: it.savedAt });
+    showToast(`${nextProduct.name}: posodobljeno na aktualno ponudbo.`, {
+      label: "Razveljavi",
+      run: () => {
+        if (res === "saved") removeProduct(next.id, { toast: false });
+        saveProduct(it.productId, { toast: false, savedAt: it.savedAt });
+      },
+    });
+    flash(next.id, { scroll: false });
   };
 
   const leafletHref = useMemo(() => firstSavedLeafletHref(savedKey ? savedKey.split("|") : []), [savedKey]);
@@ -274,6 +300,7 @@ export function CollectionView() {
                           editing={editing}
                           onOpen={() => setSheetId(it.productId)}
                           onRemove={() => removeProduct(it.productId)}
+                          onUpdate={currentEquivalent(it.productId) ? () => updateToCurrent(it) : undefined}
                         />
                       ))}
                     </ul>
@@ -332,7 +359,7 @@ export function CollectionView() {
         </div>
       </div>
 
-      <CollectionSummary totals={totals} hydrated={hydrated} />
+      <CollectionSummary totals={totals} hydrated={hydrated} excluded={excluded} />
 
       <ProductSheet open={!!sheetProduct} onClose={closeSheet} label={sheetProduct ? `${sheetProduct.name}, ${sheetProduct.packSize}` : ""}>
         {sheetProduct && (

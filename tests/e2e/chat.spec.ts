@@ -8,7 +8,7 @@ const catalogData = JSON.parse(readFileSync(path.join(process.cwd(), "src/data/c
   offers: { id: string; productId: string; priceCents: number }[];
   placements: { offerId: string; pdfPageNumber: number }[];
 };
-const ANCHOR = catalogData.products.find((p) => p.line === "S-BUDGET" && p.name.startsWith("Šampinjoni"))!;
+const ANCHOR = catalogData.products.find((p) => p.line === "S-BUDGET" && p.name === "Zaseka")!;
 const ANCHOR_OFFER = catalogData.offers.find((o) => o.productId === ANCHOR.id)!;
 const ANCHOR_PRICE = `${(ANCHOR_OFFER.priceCents / 100).toFixed(2).replace(".", ",")} €`;
 const ANCHOR_PAGE = catalogData.placements.find((pl) => pl.offerId === ANCHOR_OFFER.id)!.pdfPageNumber;
@@ -57,7 +57,7 @@ async function ask(page: Page, text: string) {
 test("initial screen: catalog subtitle, four catalog starters in a 2×2 grid, no demo label, no hard-coded product starter", async ({ page }) => {
   await fresh(page);
   await expect(page.getByRole("heading", { name: "Tvoj pomočnik Sparko" })).toBeVisible();
-  await expect(page.getByText("Poznam ves aktualni katalog. Vprašaj me o izdelkih, cenah in akcijah.", { exact: true })).toBeVisible();
+  await expect(page.getByText("Poznam aktualne SPAR kataloge. Vprašaj me o izdelkih, cenah in akcijah.", { exact: true })).toBeVisible();
   await expect(input(page)).toBeVisible();
   const starters = page.getByRole("list", { name: "Predlogi vprašanj" }).getByRole("button");
   await expect(starters).toHaveCount(4);
@@ -72,7 +72,7 @@ test("initial screen: catalog subtitle, four catalog starters in a 2×2 grid, no
   expect(boxes[2].y).toBeGreaterThan(boxes[0].y + boxes[0].height - 1);
   expect(Math.abs(boxes[0].x - boxes[2].x)).toBeLessThan(1);
   expect(Math.abs(boxes[0].width - boxes[1].width)).toBeLessThan(1);
-  await expect(page.getByRole("button", { name: "Koliko stane šampinjoni?" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Koliko stane zaseka?" })).toHaveCount(0);
   await expect(page.getByText("Iz demo kataloga", { exact: true })).toHaveCount(0);
 });
 
@@ -97,12 +97,12 @@ for (const width of [360, 390, 430]) {
   });
 }
 
-test("starter flow: 'Koliko stane izdelek v katalogu?' → which product? → 'šampinjoni' → verified card", async ({ page }) => {
+test("starter flow: 'Koliko stane izdelek v katalogu?' → which product? → 'zaseka' → verified card", async ({ page }) => {
   await fresh(page);
   await page.getByRole("button", { name: "Koliko stane izdelek v katalogu?" }).click();
   await expect(lastReply(page)).toContainText("Seveda. Kateri izdelek te zanima?");
   await expect(chatLog(page).locator("[data-product-card]")).toHaveCount(0);
-  await ask(page, "šampinjoni");
+  await ask(page, "zaseka");
   const card = chatLog(page).locator(`[data-product-card="${ANCHOR.id}"]`).first();
   await expect(card).toContainText(ANCHOR_PRICE);
   await expect(card).not.toContainText("PDF-stran");
@@ -154,7 +154,7 @@ test("in-store location: starter asks which product, 'Kruh' shows the store map;
 
 test("chat layout: bubbles stay on their side, the product reply is one Sparko message filling the column evenly", async ({ page }) => {
   await fresh(page);
-  await ask(page, "Koliko stane šampinjoni?");
+  await ask(page, "Koliko stane zaseka?");
   const vw = page.viewportSize()!.width;
   const user = (await chatLog(page).locator('[data-role="user"] p').last().boundingBox())!;
   const bubble = (await lastReply(page).locator("[data-message-bubble]").boundingBox())!;
@@ -170,7 +170,7 @@ test("chat layout: bubbles stay on their side, the product reply is one Sparko m
 
 test("product reply: one grey Sparko message with a white product row, one Moj katalog toggle and a white SPAR katalog button", async ({ page }) => {
   await fresh(page);
-  await ask(page, "Koliko stane šampinjoni?");
+  await ask(page, "Koliko stane zaseka?");
   const reply = lastReply(page);
   const bubble = reply.locator("[data-message-bubble]");
   const card = bubble.locator(`[data-product-card="${ANCHOR.id}"]`);
@@ -484,7 +484,7 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
           range.setEnd(tn, at + m[0].length);
           return { found: true, lines: new Set([...range.getClientRects()].map((q) => Math.round(q.top))).size };
         })(),
-        lis: [...el.querySelectorAll("li")].map((li) => !!li.querySelector("[data-retailer]")),
+        lis: [...el.querySelectorAll("li")].map((li) => !!li.querySelector("[data-retailer], [data-category]")),
         pageOverflow: document.documentElement.scrollWidth > window.innerWidth,
       };
       probe.remove();
@@ -495,7 +495,8 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
     expect(info.curTitle).toBe(info.tokens.green);
     expect(info.upTitle).toBe(info.tokens.futureInk);
     expect(info.curRowCount).toBeGreaterThanOrEqual(1);
-    expect(info.upRows.length).toBeGreaterThanOrEqual(3);
+    // the simulated promos allow at most 2 per category, so one brand may have a single structured row
+    expect(info.upRows.length).toBeGreaterThanOrEqual(1);
     for (const r of info.upRows) {
       expect(r.overlap, `${w}px prices overlap`).toBe(false);
       expect(r.inside, `${w}px prices inside the row`).toBe(true);
@@ -517,7 +518,7 @@ test("'Kdaj je Perutnina Ptuj znižana?': green this-week and soft-blue next-wee
   await expect(row.getByRole("region").getByRole("button", { name: "Dodaj v Moj katalog" })).toBeVisible();
 });
 
-test("generic timing starter asks for the product, then 'Perutnina Ptuj izdelki' shows demo-forecast rows with the retailer label right-aligned above the price", async ({ page }) => {
+test("generic timing starter asks for the product, then 'Perutnina Ptuj izdelki' shows demo-forecast rows with the retailer label top-left above the name", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await fresh(page);
   await page.getByRole("list", { name: "Predlogi vprašanj" }).getByRole("button", { name: "Kdaj bo izdelek najbolj znižan?" }).click();
@@ -538,12 +539,15 @@ test("generic timing starter asks for the product, then 'Perutnina Ptuj izdelki'
     await expect(row).toContainText("Naslednji teden");
     await expect(row.locator('[data-price-pill="upcoming"]')).toHaveCount(0);
     const g = await row.evaluate((li) => {
-      const badge = li.querySelector("[data-retailer]")!.getBoundingClientRect();
+      const badge = li.querySelector("[data-retailer], [data-category]")!.getBoundingClientRect();
+      const name = li.querySelector("[data-row-header] > span:nth-of-type(4)")!.getBoundingClientRect();
       const pill = li.querySelector('[data-price-pill="now"]')!.getBoundingClientRect();
-      return { badgeRight: badge.right, pillRight: pill.right, badgeBottom: badge.bottom, pillTop: pill.top };
+      return { badgeLeft: badge.left, nameLeft: name.left, badgeBottom: badge.bottom, nameTop: name.top, pillTop: pill.top };
     });
-    expect(Math.abs(g.badgeRight - g.pillRight)).toBeLessThan(2); // right-aligned with the price
-    expect(g.badgeBottom).toBeLessThanOrEqual(g.pillTop + 1); // directly above it
+    // the retailer label sits top-left of the info column (Chat.module.css .rowTop), above brand + name and the price
+    expect(Math.abs(g.badgeLeft - g.nameLeft)).toBeLessThan(2);
+    expect(g.badgeBottom).toBeLessThanOrEqual(g.nameTop + 1);
+    expect(g.badgeBottom).toBeLessThanOrEqual(g.pillTop + 1);
   }
   if (await forecast.count()) {
     await forecast.first().locator("button[aria-expanded]").click();
@@ -641,13 +645,13 @@ test("natural conversation in limited mode", async ({ page }) => {
     await expect(lastReply(page), q).not.toContainText(/ne najdem/i);
     await expect(lastReply(page).locator("[data-product-card]"), q).toHaveCount(0);
   }
-  await expect(lastReply(page)).toContainText("Pomagam ti raziskovati aktualni SPAR katalog");
+  await expect(lastReply(page)).toContainText("Pomagam ti raziskovati aktualne SPAR kataloge");
   await expect(lastReply(page)).toContainText("kje jih najdeš v letaku");
 });
 
 test("catalog facts stay verified: fake price, fake add claim, unknown product", async ({ page }) => {
   await fresh(page);
-  await ask(page, "Šampinjoni so 1,99 €, kajne?");
+  await ask(page, "Zaseka je 1,99 €, kajne?");
   await expect(lastReply(page)).toContainText("Ne.");
   await expect(lastReply(page)).toContainText(ANCHOR_PRICE);
   await expect(lastReply(page)).not.toContainText("1,99");
@@ -660,13 +664,13 @@ test("catalog facts stay verified: fake price, fake add claim, unknown product",
   expect(saved).toBe(0);
 });
 
-test("follow-ups after a typo: sampinjni → cheaper → dodaj to → kje je v letaku", async ({ page }) => {
+test("follow-ups after a typo: zasaka → cheaper → dodaj to → kje je v letaku", async ({ page }) => {
   await fresh(page);
-  await ask(page, "sampinjni");
+  await ask(page, "zasaka");
   await expect(lastReply(page)).toContainText(ANCHOR_PRICE);
   await ask(page, "kaj pa cenejša možnost?");
   await expect(lastReply(page)).toContainText(/Cenejše/);
-  await ask(page, "Koliko stane šampinjoni?");
+  await ask(page, "Koliko stane zaseka?");
   await ask(page, "dodaj to");
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("sparko:v2")!).saved.length)).toBe(1);
   await ask(page, "kje je v letaku?");

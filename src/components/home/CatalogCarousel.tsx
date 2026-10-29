@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { catalogHref, formatPeriod, homeLeaflets, leafletShortTitle } from "@/lib/catalog";
+import { catalogHref, homeLeaflets, leafletShortTitle } from "@/lib/catalog";
+import { catalogValidity } from "@/lib/offerStatus";
 import { CatalogBadge } from "../leaflet/CatalogBadge";
 import { Icon } from "../ui/Icon";
 import styles from "./CatalogCarousel.module.css";
 
 /**
- * Top zone, "Katalogi" mode: every Home leaflet (src/data/leaflets.json, Home order) as a cover card in ONE
+ * Top zone, "Katalogi" mode: every Home leaflet (Home order) as a cover card in ONE
  * horizontal, scroll-snapped row inside the same fixed-height box the two cards used to fill. Phones show
  * about 1.5 cards (the next one visibly cut off), wider boxes about 2.3; a slim progress bar sits below the
  * row and pointer devices get previous / next buttons. Only the small cover images load here, never a PDF.
@@ -59,16 +60,17 @@ export function CatalogCarousel() {
     <div className={styles.carousel} data-testid="catalog-carousel">
       <ul ref={trackRef} className={styles.track} aria-label={`Katalogi (${homeLeaflets.length})`}>
         {homeLeaflets.map((c, i) => {
-          const period = formatPeriod(c.validFrom, c.validTo);
+          const { period, extra, state: validity } = catalogValidity(c);
           const ar = { "--cover-ar": String(c.cover.width / c.cover.height) } as CSSProperties;
           return (
             <li key={c.id} className={styles.slide} style={ar}>
               <Link
                 href={catalogHref(c.id)}
-                className={`${styles.card} ${styles[c.category]}`}
+                className={`${styles.card} ${styles[c.category]}${extra ? ` ${styles.hasExtra}` : ""}`}
+                data-validity={validity}
                 data-catalog-card={c.id}
                 data-category={c.category}
-                aria-label={`Odpri ${c.title}, ${period}`}
+                aria-label={`Odpri ${c.title}, ${period}${extra ? `, ${extra}` : ""}`}
                 draggable={false}
               >
                 <span className={styles.head}>
@@ -93,7 +95,12 @@ export function CatalogCarousel() {
                   />
                 </span>
                 <span className={styles.dates} data-catalog-dates>
-                  {period}
+                  <span className={styles.period}>{period}</span>
+                  {extra && (
+                    <span className={styles.extra} data-catalog-extra>
+                      {extra}
+                    </span>
+                  )}
                 </span>
                 <span className={styles.cta} aria-hidden="true">
                   Odpri katalog

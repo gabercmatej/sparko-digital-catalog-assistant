@@ -87,7 +87,7 @@ test("price badges: chat carousel and product card share the same treatment", as
   await seed(page);
   await page.goto("/");
   const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
-  await input.fill("Nutella");
+  await input.fill("Koliko stane zaseka?");
   await input.press("Enter");
   await expect(page.locator("[data-price-block] [data-price]").first()).toBeVisible({ timeout: 15_000 });
   expectCentred(await badges(page));

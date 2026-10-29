@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 
 type Img = { src: string; width: number; height: number };
-export type CatalogRec = { id: string; title: string; retailer: "spar" | "interspar"; pageCount: number; pages: { pdfPageIndex: number; image: Img }[] };
+export type CatalogRec = { id: string; title: string; retailer: "spar" | "interspar" | "spar-online" | "despar"; pageCount: number; pages: { pdfPageIndex: number; image: Img }[] };
 type Placement = { id: string; offerId: string; pdfPageIndex: number; pdfPageNumber: number; catalogId: string; bbox: { x: number; y: number; width: number; height: number } };
 
 const data = JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as {
@@ -15,7 +15,8 @@ const data = JSON.parse(readFileSync("src/data/catalog.json", "utf8")) as {
 export const catalogs = data.catalogs;
 export const primary = catalogs[0];
 export const secondary = catalogs[1];
-export const retailerLabel = (c: CatalogRec) => (c.retailer === "spar" ? "SPAR" : "INTERSPAR");
+const RETAILER_LABELS = { spar: "SPAR", interspar: "INTERSPAR", "spar-online": "SPAR Online", despar: "DESPAR" } as const;
+export const retailerLabel = (c: CatalogRec) => RETAILER_LABELS[c.retailer];
 
 /** First offer of the product (the primary offer the app uses). */
 export const offerOf = (productId: string) => data.offers.find((o) => o.productId === productId)!.id;

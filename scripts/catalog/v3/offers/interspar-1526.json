@@ -1,0 +1,4233 @@
+{
+ "catalogId": "interspar-1526",
+ "checkedOn": "2026-10-28",
+ "pages": {
+  "1": {
+   "theme": "Naslovnica: Ker mi je mar za več izbire",
+   "offersOnPage": 7,
+   "notes": "6 ponudb + 1 izključena (pripomočki za peko 30 % brez cene)."
+  },
+  "2": {
+   "theme": "Noč čarovnic - prigrizki in pijača",
+   "offersOnPage": 6,
+   "notes": "Naslov: DO TORKA 27. 10."
+  },
+  "3": {
+   "theme": "Noč čarovnic - kostumi in dodatki",
+   "offersOnPage": 8,
+   "notes": "7 ponudb + 1 izključena (nalepke za obraz 25 % brez cene). DO TORKA 3. 11."
+  },
+  "4": {
+   "theme": "Kuhinjski pomočniki",
+   "offersOnPage": 12,
+   "notes": null
+  },
+  "5": {
+   "theme": "Kuhinjski pomočniki - posoda in ponve",
+   "offersOnPage": 14,
+   "notes": "13 ponudb + 1 izključena (pekači SimPex Professional 40 % brez cene)."
+  },
+  "6": {
+   "theme": "Najljubši pomočniki",
+   "offersOnPage": 14,
+   "notes": null
+  },
+  "7": {
+   "theme": "Kuhinjski aparati",
+   "offersOnPage": 9,
+   "notes": null
+  },
+  "8": {
+   "theme": "Sveže pečeno, Vzemi me s seboj, Dober tek",
+   "offersOnPage": 9,
+   "notes": "Naslovi razdelkov: DO TORKA 27. 10. (enako splošni veljavnosti)."
+  }
+ },
+ "offers": [
+  {
+   "key": "papirnata-buca",
+   "page": 1,
+   "anchor": "PAPIRNATA",
+   "name": "Papirnata buča",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "buča",
+    "papirnata buča",
+    "dekoracija",
+    "halloween",
+    "noč čarovnic"
+   ],
+   "price": 149,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "V INTERSPARIH IN HIPERMARKETIH SPAR PAPIRNATA BUČA 1,49",
+   "box": [
+    0.54,
+    0.125,
+    0.82,
+    0.28
+   ],
+   "image": {
+    "crop": [
+     0.55,
+     0.13,
+     0.71,
+     0.245
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "odrasel-kostum-duh",
+   "page": 1,
+   "anchor": "ODRASEL KOSTUM DUH",
+   "name": "Odrasel kostum duh",
+   "brand": null,
+   "line": null,
+   "descriptor": "ogrinjalo, univerzalne velikosti",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "kostum",
+    "kostum duh",
+    "duh",
+    "halloween",
+    "pustni kostum",
+    "noč čarovnic"
+   ],
+   "price": 1849,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2690,
+   "discount": 31,
+   "pc": "PC 26,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "ODRASEL KOSTUM DUH • ogrinjalo, univerzalne velikosti SAMO V INTERSPARIH CENEJE 31% redna cena 26,90 PC 26,90 s SPAR plus kartico 18,49",
+   "box": [
+    0.47,
+    0.27,
+    0.99,
+    0.62
+   ],
+   "image": {
+    "crop": [
+     0.64,
+     0.29,
+     0.985,
+     0.715
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "nogavice-halloween",
+   "page": 1,
+   "anchor": "NOGAVICE",
+   "name": "Nogavice",
+   "brand": null,
+   "line": null,
+   "descriptor": "različne barve in motivi",
+   "pack": "1 par",
+   "qty": null,
+   "categories": [
+    "tekstil",
+    "drugo"
+   ],
+   "aliases": [
+    "nogavice",
+    "nogavice za halloween",
+    "nogavica",
+    "halloween"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "NOGAVICE • različne barve in motivi SAMO V INTERSPARIH 2,99",
+   "box": [
+    0.04,
+    0.335,
+    0.38,
+    0.445
+   ],
+   "image": {
+    "crop": [
+     0.165,
+     0.32,
+     0.38,
+     0.445
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Pack »1 par« ni natisnjen; cena velja za izdelek (nogavice)."
+  },
+  {
+   "key": "mesojeda-rastlina",
+   "page": 1,
+   "anchor": "MESOJEDA",
+   "name": "Mesojeda rastlina",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "vrt",
+    "dom"
+   ],
+   "aliases": [
+    "rastlina",
+    "mesojeda rastlina",
+    "mesojeda",
+    "cvetlica",
+    "halloween"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "MESOJEDA RASTLINA V INTERSPARIH IN HIPERMARKETIH SPAR 4,99",
+   "box": [
+    0.04,
+    0.49,
+    0.2,
+    0.705
+   ],
+   "image": {
+    "crop": [
+     0.04,
+     0.5,
+     0.18,
+     0.6
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "set-dodatkov-za-kostum-hudica",
+   "page": 1,
+   "anchor": "ZA KOSTUM",
+   "name": "Set dodatkov za kostum hudiča",
+   "brand": null,
+   "line": null,
+   "descriptor": "rogovi, rep, metuljček",
+   "pack": "1 set",
+   "qty": null,
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "kostum",
+    "dodatki za kostum",
+    "hudič",
+    "rogovi",
+    "halloween",
+    "set dodatkov"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "SET DODATKOV ZA KOSTUM HUDIČA • rogovi, rep, metuljček SAMO V INTERSPARIH 3,99",
+   "box": [
+    0.43,
+    0.625,
+    0.6,
+    0.705
+   ],
+   "image": {
+    "crop": [
+     0.455,
+     0.395,
+     0.59,
+     0.62
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "tupperware-skleda-za-mesanje",
+   "page": 1,
+   "anchor": "SKLEDA ZA MEŠANJE",
+   "name": "Skleda za mešanje",
+   "brand": "Tupperware",
+   "line": null,
+   "descriptor": "s pokrovom, za shranjevanje in prenašanje",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "skleda",
+    "skleda za mešanje",
+    "tupperware",
+    "posoda",
+    "mešanje"
+   ],
+   "price": 1699,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3590,
+   "discount": 52,
+   "pc": "PC 35,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": {
+    "from": "2026-10-21",
+    "to": "2026-11-03",
+    "evidence": "PDF str. 1: »PONUDBA VELJA OD 21. 10. DO 3. 11. 2026.« (blok Tupperware)"
+   },
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "PONUDBA VELJA OD 21. 10. DO 3. 11. 2026. Tupperware essentials SKLEDA ZA MEŠANJE • s pokrovom, za shranjevanje in prenašanje V INTERSPARIH IN HIPERMARKETIH SPAR CENEJE 52% redna cena 35,90 PC 35,90 s SPAR plus kartico 16,99",
+   "box": [
+    0.0,
+    0.715,
+    0.5,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.1,
+     0.76,
+     0.38,
+     0.885
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Besedilni sloj vsebuje pod blokom skrito besedilo (ENERGIJSKI NAPITEK, 12+12 GRATIS) - ni vidno natisnjeno, ni ponudba."
+  },
+  {
+   "key": "lorenz-slani-prigrizek",
+   "page": 2,
+   "anchor": "SLANI PRIGRIZEK",
+   "name": "Slani prigrizek Lorenz",
+   "brand": "Lorenz",
+   "line": null,
+   "descriptor": "Original ali Black Edition",
+   "pack": "75 g",
+   "qty": [
+    75,
+    "g"
+   ],
+   "categories": [
+    "grickalke",
+    "prigrizki"
+   ],
+   "aliases": [
+    "prigrizek",
+    "slani prigrizek",
+    "čips",
+    "lorenz",
+    "monster munch",
+    "grickalice"
+   ],
+   "price": 119,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 159,
+   "discount": 25,
+   "pc": "PC 1,17",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Ob nakupu dveh izdelkov nogavice gratis (akcija obdarovanja 21.–27. 10.)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SLANI PRIGRIZEK Originial ali Black Edition, Lorenz, 75 g CENEJE 25% redna cena 1,59 PC 1,17 s SPAR plus kartico 1,19 | OB NAKUPU DVEH IZDELKOV NOGAVICE GRATIS",
+   "box": [
+    0.25,
+    0.105,
+    0.66,
+    0.33
+   ],
+   "image": {
+    "crop": [
+     0.25,
+     0.15,
+     0.475,
+     0.315
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pringles-cips",
+   "page": 2,
+   "anchor": "ČIPS PRINGLES",
+   "name": "Čips Pringles",
+   "brand": "Pringles",
+   "line": null,
+   "descriptor": "Hot & Spicy ali BBQ okus, v tulcu",
+   "pack": "170 g",
+   "qty": [
+    170,
+    "g"
+   ],
+   "categories": [
+    "grickalke",
+    "prigrizki"
+   ],
+   "aliases": [
+    "čips",
+    "pringles",
+    "čips pringles",
+    "prigrizek",
+    "tulec",
+    "hot spicy",
+    "bbq"
+   ],
+   "price": 249,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 339,
+   "discount": 26,
+   "pc": "PC 3,39",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Ob nakupu dveh izdelkov Pringles nogavice gratis (akcija obdarovanja 21.–27. 10.)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ČIPS PRINGLES Hot & Spicy ali BBQ okus, v tulcu, 170 g CENEJE 26% redna cena 3,39 PC 3,39 s SPAR plus kartico 2,49 | OB NAKUPU DVEH PRINGLES NOGAVICE GRATIS",
+   "box": [
+    0.76,
+    0.1,
+    0.97,
+    0.42
+   ],
+   "image": {
+    "crop": [
+     0.758,
+     0.195,
+     0.96,
+     0.415
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "slane-kokice-snacks-life",
+   "page": 2,
+   "anchor": "SLANE KOKICE",
+   "name": "Slane kokice",
+   "brand": "Snacks Life",
+   "line": null,
+   "descriptor": "v vedru",
+   "pack": "240 g",
+   "qty": [
+    240,
+    "g"
+   ],
+   "categories": [
+    "grickalke",
+    "prigrizki"
+   ],
+   "aliases": [
+    "kokice",
+    "slane kokice",
+    "popcorn",
+    "snacks life",
+    "prigrizek"
+   ],
+   "price": 239,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 329,
+   "discount": 27,
+   "pc": "PC 3,29",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SLANE KOKICE v vedru, Snacks Life, 240 g CENEJE 27% redna cena 3,29 PC 3,29 s SPAR plus kartico 2,39",
+   "box": [
+    0.37,
+    0.29,
+    0.66,
+    0.6
+   ],
+   "image": {
+    "crop": [
+     0.375,
+     0.435,
+     0.65,
+     0.595
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "slano-pecivo-snacks-life",
+   "page": 2,
+   "anchor": "SLANO PECIVO",
+   "name": "Slano pecivo",
+   "brand": "Snacks Life",
+   "line": null,
+   "descriptor": "v vedru",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "grickalke",
+    "prigrizki"
+   ],
+   "aliases": [
+    "slano pecivo",
+    "pecivo",
+    "party mix",
+    "snacks life",
+    "prigrizek",
+    "pretzel"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 399,
+   "discount": 25,
+   "pc": "PC 3,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SLANO PECIVO v vedru, Snacks Life, 500 g CENEJE 25% redna cena 3,99 PC 3,99 s SPAR plus kartico 2,99",
+   "box": [
+    0.05,
+    0.34,
+    0.37,
+    0.62
+   ],
+   "image": {
+    "crop": [
+     0.135,
+     0.46,
+     0.36,
+     0.61
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "napitek-yippy",
+   "page": 2,
+   "anchor": "NAPITEK YIPPY",
+   "name": "Napitek Yippy",
+   "brand": "Rauch",
+   "line": null,
+   "descriptor": "češnja ali multivitamin, Halloween edicija",
+   "pack": "0,33 l",
+   "qty": [
+    0.33,
+    "l"
+   ],
+   "categories": [
+    "pijace",
+    "sokovi"
+   ],
+   "aliases": [
+    "yippy",
+    "napitek",
+    "rauch",
+    "sok",
+    "sadni napitek",
+    "multivitamin",
+    "češnja"
+   ],
+   "price": 109,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 139,
+   "discount": 21,
+   "pc": "PC 1,09",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NAPITEK YIPPY Rauch, češnja ali multivitamin, Halloween edicija, 0,33 l CENEJE 21% redna cena 1,39 PC 1,09 s SPAR plus kartico 1,09",
+   "box": [
+    0.09,
+    0.64,
+    0.4,
+    0.98
+   ],
+   "image": {
+    "crop": [
+     0.18,
+     0.65,
+     0.36,
+     0.9
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kandirana-buca-hudo-dobro",
+   "page": 2,
+   "anchor": "KANDIRANA",
+   "name": "Kandirana buča",
+   "brand": "Hudo Dobro",
+   "line": null,
+   "descriptor": null,
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "sladkarije",
+    "prigrizki"
+   ],
+   "aliases": [
+    "kandirana buča",
+    "buča",
+    "bučne palčke",
+    "hudo dobro",
+    "sladkarija"
+   ],
+   "price": 319,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 399,
+   "discount": 20,
+   "pc": "PC 3,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KANDIRANA BUČA Hudo Dobro, 80 g CENEJE 20% redna cena 3,99 PC 3,99 s SPAR plus kartico 3,19",
+   "box": [
+    0.59,
+    0.62,
+    0.97,
+    0.95
+   ],
+   "image": {
+    "crop": [
+     0.6,
+     0.63,
+     0.745,
+     0.8
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "balon-za-noc-carovnic",
+   "page": 3,
+   "anchor": "BALON",
+   "name": "Balon za noč čarovnic",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "balon",
+    "baloni",
+    "balon za halloween",
+    "noč čarovnic",
+    "dekoracija"
+   ],
+   "price": 100,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "BALON ZA NOČ ČAROVNIC V INTERSPARIH IN HIPERMARKETIH SPAR 1,-",
+   "box": [
+    0.49,
+    0.11,
+    0.84,
+    0.3
+   ],
+   "image": {
+    "crop": [
+     0.58,
+     0.12,
+     0.84,
+     0.29
+    ]
+   },
+   "isNew": false,
+   "notes": "Cena natisnjena kot »1,-« (1,00 €); besedilna kontrola izključena, ker »1,-« ni primerljivo z zapisom 1,00."
+  },
+  {
+   "key": "zenski-kostum-carovnica",
+   "page": 3,
+   "anchor": "ŽENSKI KOSTUM",
+   "name": "Ženski kostum čarovnica",
+   "brand": null,
+   "line": null,
+   "descriptor": "obleka z detajli in pas, univerzalna velikost",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "kostum",
+    "kostum čarovnica",
+    "čarovnica",
+    "ženski kostum",
+    "halloween",
+    "pustni kostum"
+   ],
+   "price": 1399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 30,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "ŽENSKI KOSTUM ČAROVNICA • obleka z detajli in pas • univerzalna velikost V INTERSPARIH IN HIPERMARKETIH SPAR CENEJE 30% redna cena 19,99 PC 19,99 s SPAR plus kartico 13,99",
+   "box": [
+    0.19,
+    0.13,
+    0.55,
+    0.53
+   ],
+   "image": {
+    "crop": [
+     0.358,
+     0.14,
+     0.495,
+     0.53
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kri-v-spreju-za-noc-carovnic",
+   "page": 3,
+   "anchor": "KRI V SPREJU",
+   "name": "Kri v spreju za noč čarovnic",
+   "brand": null,
+   "line": null,
+   "descriptor": "v rdeči barvi",
+   "pack": "60 ml",
+   "qty": [
+    60,
+    "ml"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "kri",
+    "kri v spreju",
+    "umetna kri",
+    "halloween",
+    "šminka",
+    "noč čarovnic"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "KRI V SPREJU ZA NOČ ČAROVNIC • v rdeči barvi, 60 ml V INTERSPARIH IN HIPERMARKETIH SPAR 1,99",
+   "box": [
+    0.6,
+    0.32,
+    0.89,
+    0.52
+   ],
+   "image": {
+    "crop": [
+     0.61,
+     0.33,
+     0.74,
+     0.48
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "strasljiva-obrazna-maska",
+   "page": 3,
+   "anchor": "STRAŠLJIVA",
+   "name": "Strašljiva obrazna maska",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "maska",
+    "obrazna maska",
+    "strašljiva maska",
+    "halloween",
+    "pustna maska"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "STRAŠLJIVA OBRAZNA MASKA V INTERSPARIH IN HIPERMARKETIH SPAR 1,99",
+   "box": [
+    0.31,
+    0.55,
+    0.6,
+    0.78
+   ],
+   "image": {
+    "crop": [
+     0.32,
+     0.555,
+     0.5,
+     0.72
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "barve-za-obraz",
+   "page": 3,
+   "anchor": "BARVE",
+   "name": "Barve za obraz",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": null,
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "barve za obraz",
+    "šminka",
+    "make-up",
+    "halloween",
+    "pustna šminka"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 2,99« (različni izdelki)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "BARVE ZA OBRAZ V INTERSPARIH IN HIPERMARKETIH SPAR od 2,99",
+   "box": [
+    0.63,
+    0.53,
+    0.95,
+    0.78
+   ],
+   "image": {
+    "crop": [
+     0.63,
+     0.54,
+     0.84,
+     0.76
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "obrazna-krinka",
+   "page": 3,
+   "anchor": "OBRAZNA",
+   "name": "Obrazna krinka",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "krinka",
+    "obrazna krinka",
+    "maska",
+    "halloween",
+    "pustna krinka"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "OBRAZNA KRINKA V INTERSPARIH IN HIPERMARKETIH SPAR 1,99",
+   "box": [
+    0.05,
+    0.77,
+    0.34,
+    0.93
+   ],
+   "image": {
+    "crop": [
+     0.055,
+     0.79,
+     0.25,
+     0.92
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "carovniski-klobuk",
+   "page": 3,
+   "anchor": "ČAROVNIŠKI",
+   "name": "Čarovniški klobuk",
+   "brand": null,
+   "line": null,
+   "descriptor": "z vijoličnimi, oranžnimi ali belimi lasmi",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "drugo"
+   ],
+   "aliases": [
+    "klobuk",
+    "čarovniški klobuk",
+    "čarovnica",
+    "halloween",
+    "pustni klobuk"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "ČAROVNIŠKI KLOBUK • z vijoličnimi, oranžnimi ali belimi lasmi V INTERSPARIH IN HIPERMARKETIH SPAR 4,99",
+   "box": [
+    0.45,
+    0.76,
+    0.95,
+    0.975
+   ],
+   "image": {
+    "crop": [
+     0.56,
+     0.78,
+     0.95,
+     0.97
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pekac-za-peko-kruha-3v1",
+   "page": 4,
+   "anchor": "PEKAČ ZA PEKO",
+   "name": "Pekač za peko kruha 3v1",
+   "brand": null,
+   "line": null,
+   "descriptor": "premer cca 26 cm, iz litega železa, s premazom iz rastlinskega olja",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač",
+    "pekač za kruh",
+    "peka kruha",
+    "litoželezni",
+    "lonec za kruh"
+   ],
+   "price": 2690,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 5990,
+   "discount": 55,
+   "pc": "PC 59,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Pekač za peko kruha 3v1 CENEJE 55% redna cena 59,90 PC 59,90 s SPAR plus kartico 26,90",
+   "box": [
+    0.08,
+    0.125,
+    0.45,
+    0.385
+   ],
+   "image": {
+    "crop": [
+     0.19,
+     0.27,
+     0.45,
+     0.385
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "set-za-fermentiranje-15-1",
+   "page": 4,
+   "anchor": "FERMENTIRANJE",
+   "name": "Set za fermentiranje 15/1",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 set",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "fermentiranje",
+    "set za fermentiranje",
+    "kisanje",
+    "kozarci za fermentiranje"
+   ],
+   "price": 1899,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3999,
+   "discount": 52,
+   "pc": "PC 39,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Set za fermentiranje 15/1 CENEJE 52% redna cena 39,99 PC 39,99 s SPAR plus kartico 18,99",
+   "box": [
+    0.36,
+    0.12,
+    0.69,
+    0.37
+   ],
+   "image": {
+    "crop": [
+     0.395,
+     0.225,
+     0.665,
+     0.37
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "komplet-za-pripravo-kislega-testa-7-1",
+   "page": 4,
+   "anchor": "KISLEGA TESTA",
+   "name": "Komplet za pripravo kislega testa 7/1",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 komplet",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kislo testo",
+    "kvas",
+    "komplet za kislo testo",
+    "starter set",
+    "kruh"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1599,
+   "discount": 50,
+   "pc": "PC 15,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Komplet za pripravo kislega testa 7/1 CENEJE 50% redna cena 15,99 PC 15,99 s SPAR plus kartico 7,99",
+   "box": [
+    0.69,
+    0.13,
+    0.95,
+    0.36
+   ],
+   "image": {
+    "crop": [
+     0.72,
+     0.245,
+     0.9,
+     0.355
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kamen-za-peko-kruha",
+   "page": 4,
+   "anchor": "KAMEN ZA PEKO",
+   "name": "Kamen za peko kruha",
+   "brand": null,
+   "line": null,
+   "descriptor": "mere cca 38 x 30 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kamen za peko",
+    "pekač",
+    "peka kruha",
+    "kamen za kruh",
+    "pizza kamen"
+   ],
+   "price": 1199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 40,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Kamen za peko kruha CENEJE 40% redna cena 19,99 PC 19,99 s SPAR plus kartico 11,99",
+   "box": [
+    0.09,
+    0.38,
+    0.61,
+    0.5
+   ],
+   "image": {
+    "crop": [
+     0.25,
+     0.4,
+     0.6,
+     0.49
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kosara-za-vzhajanje",
+   "page": 4,
+   "anchor": "KOŠARA ZA VZHAJANJE",
+   "name": "Košara za vzhajanje",
+   "brand": null,
+   "line": null,
+   "descriptor": "ovalna: 28 x 13 x 8 cm ali okrogla: 20 x 8 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "košara za vzhajanje",
+    "vzhajanje",
+    "košara",
+    "kruh",
+    "testo"
+   ],
+   "price": 599,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 5,99«",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "KOŠARA ZA VZHAJANJE • ovalna: mera 28 x 13 x 8 cm ali • okrogla: mera 20 x 8 cm V INTERSPARIH IN HIPERMARKETIH SPAR od 5,99",
+   "box": [
+    0.6,
+    0.34,
+    0.98,
+    0.52
+   ],
+   "image": {
+    "crop": [
+     0.6,
+     0.335,
+     0.93,
+     0.428
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pekac-za-bagete",
+   "page": 4,
+   "anchor": "PEKAČ ZA BAGETE",
+   "name": "Pekač za bagete",
+   "brand": "zenker",
+   "line": null,
+   "descriptor": "mere cca 38,5 x 25 x 3 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač za bagete",
+    "pekač",
+    "bageta",
+    "zenker",
+    "model za bagete"
+   ],
+   "price": 1299,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 35,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Pekač za bagete CENEJE 35% redna cena 19,99 PC 19,99 s SPAR plus kartico 12,99",
+   "box": [
+    0.09,
+    0.49,
+    0.45,
+    0.66
+   ],
+   "image": {
+    "crop": [
+     0.2,
+     0.475,
+     0.315,
+     0.545
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "vrecka-za-kruh",
+   "page": 4,
+   "anchor": "VREČKA",
+   "name": "Vrečka za kruh",
+   "brand": null,
+   "line": null,
+   "descriptor": "mere cca 37 x 26 cm, za ohranjanje svežine, z vrvico",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "vrečka za kruh",
+    "kruh",
+    "vrečka",
+    "shranjevanje kruha"
+   ],
+   "price": 349,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "VREČKA ZA KRUH • mere cca 37 x 26 cm • za ohranjanje svežine, z vrvico V INTERSPARIH IN HIPERMARKETIH SPAR 3,49",
+   "box": [
+    0.46,
+    0.5,
+    0.76,
+    0.66
+   ],
+   "image": {
+    "crop": [
+     0.59,
+     0.47,
+     0.72,
+     0.585
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "univerzalni-mlincek-smart",
+   "page": 4,
+   "anchor": "MLINČEK",
+   "name": "Univerzalni mlinček Smart",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "za mletje različnih sestavin, enostavna uporaba",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "mlinček",
+    "univerzalni mlinček",
+    "mlin",
+    "cheffino",
+    "mletje",
+    "mesoreznica"
+   ],
+   "price": 1699,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2999,
+   "discount": 43,
+   "pc": "PC 29,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Univerzalni mlinček Smart CENEJE 43% redna cena 29,99 PC 29,99 s SPAR plus kartico 16,99",
+   "box": [
+    0.6,
+    0.58,
+    0.98,
+    0.77
+   ],
+   "image": {
+    "crop": [
+     0.61,
+     0.585,
+     0.795,
+     0.765
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pekac-za-sarkelj-28-cm",
+   "page": 4,
+   "anchor": "PEKAČ ZA ŠARKELJ",
+   "name": "Pekač za šarkelj",
+   "brand": null,
+   "line": null,
+   "descriptor": "premer cca 28 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač za šarkelj",
+    "šarkelj",
+    "pekač",
+    "model za šarkelj",
+    "kuglof"
+   ],
+   "price": 2990,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": 5990,
+   "discount": null,
+   "pc": "PC 59,90",
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PEKAČ ZA ŠARKELJ • premer cca 28 cm 29,90 redna cena 59,90 | PC 59,90",
+   "box": [
+    0.23,
+    0.66,
+    0.52,
+    0.77
+   ],
+   "image": {
+    "crop": [
+     0.305,
+     0.72,
+     0.49,
+     0.775
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Brez natisnjenega odstotka popusta in brez oznake SPAR plus kartice; pekač 28 cm je verjetno zgornji na fotografiji (ni povsem gotovo)."
+  },
+  {
+   "key": "pekac-za-sarkelj-25-cm",
+   "page": 4,
+   "anchor": "ŠARKELJ",
+   "name": "Pekač za šarkelj",
+   "brand": null,
+   "line": null,
+   "descriptor": "premer cca 25 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač za šarkelj",
+    "šarkelj",
+    "pekač",
+    "model za šarkelj",
+    "kuglof"
+   ],
+   "price": 1999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3999,
+   "discount": 50,
+   "pc": "PC 39,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Pekač za šarkelj CENEJE 50% redna cena 39,99 PC 39,99 s SPAR plus kartico 19,99",
+   "box": [
+    0.34,
+    0.77,
+    0.6,
+    0.95
+   ],
+   "image": {
+    "crop": [
+     0.42,
+     0.775,
+     0.6,
+     0.855
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "rezilo-za-testo",
+   "page": 4,
+   "anchor": "REZILO ZA TESTO",
+   "name": "Rezilo za testo",
+   "brand": null,
+   "line": null,
+   "descriptor": "mere cca 15 x 10 cm, rezilo iz nerjavečega jekla, enostavno čiščenje",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "rezilo za testo",
+    "rezilo",
+    "strgalo za testo",
+    "testo",
+    "peka"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "REZILO ZA TESTO • mere cca 15 x 10 cm • rezilo iz nerjavečega jekla • enostavno čiščenje V INTERSPARIH IN HIPERMARKETIH SPAR 4,99",
+   "box": [
+    0.05,
+    0.74,
+    0.32,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.07,
+     0.74,
+     0.3,
+     0.88
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kuhinjska-tehtnica-simpex",
+   "page": 4,
+   "anchor": "KUHINJSKA TEHTNICA",
+   "name": "Kuhinjska tehtnica",
+   "brand": "SimPex",
+   "line": null,
+   "descriptor": "mere cca 26,5 x 20 x 2,2 cm, obremenitev do 15 kg, velik osvetljen zaslon",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "tehtnica",
+    "kuhinjska tehtnica",
+    "simpex",
+    "tehtanje"
+   ],
+   "price": 999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 50,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Kuhinjska tehtnica CENEJE 50% redna cena 19,99 PC 19,99 s SPAR plus kartico 9,99",
+   "box": [
+    0.56,
+    0.8,
+    0.98,
+    0.985
+   ],
+   "image": {
+    "crop": [
+     0.575,
+     0.805,
+     0.8,
+     0.965
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "lonec-za-prazenje-z-mrezo",
+   "page": 5,
+   "anchor": "LONEC ZA",
+   "name": "Lonec za praženje z mrežo",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "3,8 l, iz ogljikovega jekla, z inox mrežo",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "lonec",
+    "lonec za praženje",
+    "cvrtje",
+    "cheffino",
+    "mreža za praženje",
+    "friteza"
+   ],
+   "price": 999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2499,
+   "discount": 60,
+   "pc": "PC 24,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Lonec za praženje z mrežo CENEJE 60% redna cena 24,99 PC 24,99 s SPAR plus kartico 9,99",
+   "box": [
+    0.03,
+    0.095,
+    0.32,
+    0.31
+   ],
+   "image": {
+    "crop": [
+     0.12,
+     0.135,
+     0.45,
+     0.225
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "termo-posoda-avanza",
+   "page": 5,
+   "anchor": "POSODA AVANZA",
+   "name": "Termo posoda Avanza",
+   "brand": null,
+   "line": null,
+   "descriptor": "za shranjevanje že pripravljene hrane, vložek iz nerjavečega jekla",
+   "pack": "0,6 l ali 1,5 l ali 3,5 l",
+   "qty": null,
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "termo posoda",
+    "posoda za hrano",
+    "termos",
+    "avanza",
+    "posoda"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 4,99« (velikosti 0,6 l ali 1,5 l ali 3,5 l)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "TERMO POSODA AVANZA • za shranjevanje že pripravljene hrane • vložek iz nerjavečega jekla • 0,6 l ali 1,5 ali 3,5 l V INTERSPARIH IN HIPERMARKETIH SPAR od 4,99",
+   "box": [
+    0.03,
+    0.32,
+    0.3,
+    0.54
+   ],
+   "image": {
+    "crop": [
+     0.035,
+     0.325,
+     0.3,
+     0.44
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pekac-za-purana-ali-gosko",
+   "page": 5,
+   "anchor": "PURANA ALI GOSKO",
+   "name": "Pekač za purana ali gosko",
+   "brand": null,
+   "line": null,
+   "descriptor": "mere cca 42,5 x 27 x 11,5 cm, s premazom proti prijemanju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač",
+    "pekač za purana",
+    "pekač za gosko",
+    "pekač za pečenko",
+    "pečenje"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2999,
+   "discount": 50,
+   "pc": "PC 29,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Pekač za purana ali gosko CENEJE 50% redna cena 29,99 PC 29,99 s SPAR plus kartico 14,99",
+   "box": [
+    0.3,
+    0.26,
+    0.53,
+    0.53
+   ],
+   "image": {
+    "crop": [
+     0.325,
+     0.25,
+     0.64,
+     0.395
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "set-posod-za-sol-in-poper",
+   "page": 5,
+   "anchor": "ZA SOL IN",
+   "name": "Set posod za sol in poper 2/1",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 set",
+   "qty": [
+    2,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "sol in poper",
+    "solnica",
+    "poprnica",
+    "set posod za sol in poper",
+    "mlinček za sol"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "SET POSOD ZA SOL IN POPER 2/1 V INTERSPARIH IN HIPERMARKETIH SPAR 2,99",
+   "box": [
+    0.51,
+    0.37,
+    0.725,
+    0.55
+   ],
+   "image": {
+    "crop": [
+     0.605,
+     0.37,
+     0.74,
+     0.485
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "set-za-olje-in-kis",
+   "page": 5,
+   "anchor": "OLJE IN",
+   "name": "Set za olje in kis 2/1",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 set",
+   "qty": [
+    2,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "olje in kis",
+    "steklenička za olje",
+    "set za olje in kis",
+    "dozator olja",
+    "kis"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "SET ZA OLJE IN KIS 2/1 V INTERSPARIH IN HIPERMARKETIH SPAR 4,99",
+   "box": [
+    0.73,
+    0.355,
+    0.95,
+    0.58
+   ],
+   "image": {
+    "crop": [
+     0.82,
+     0.355,
+     0.935,
+     0.575
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "set-nozev-livenza-7-1",
+   "page": 5,
+   "anchor": "SET NOŽEV",
+   "name": "Set nožev Livenza 7/1",
+   "brand": null,
+   "line": null,
+   "descriptor": "iz nerjavečega jekla, s premazom proti prijemanju",
+   "pack": "1 set",
+   "qty": [
+    7,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "noži",
+    "set nožev",
+    "nož",
+    "kuhinjski noži",
+    "livenza"
+   ],
+   "price": 1399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3999,
+   "discount": 65,
+   "pc": "PC 39,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Set nožev Livenza 7/1 CENEJE 65% redna cena 39,99 PC 39,99 s SPAR plus kartico 13,99",
+   "box": [
+    0.03,
+    0.53,
+    0.3,
+    0.77
+   ],
+   "image": {
+    "crop": [
+     0.14,
+     0.535,
+     0.265,
+     0.685
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "4-delna-menazna-posoda",
+   "page": 5,
+   "anchor": "MENAŽNA",
+   "name": "4-delna menažna posoda",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "z dvojno steno za ohranjanje toplote, za shranjevanje že pripravljene hrane, vložek iz nerjavečega jekla",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "menažka",
+    "menažna posoda",
+    "posoda za hrano",
+    "cheffino",
+    "termo posoda"
+   ],
+   "price": 1999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3999,
+   "discount": 50,
+   "pc": "PC 39,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "4-delna menažna posoda CENEJE 50% redna cena 39,99 PC 39,99 s SPAR plus kartico 19,99",
+   "box": [
+    0.29,
+    0.53,
+    0.58,
+    0.79
+   ],
+   "image": {
+    "crop": [
+     0.295,
+     0.53,
+     0.425,
+     0.735
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "izolirni-vrc-1-9-l",
+   "page": 5,
+   "anchor": "IZOLIRNI VRČ",
+   "name": "Izolirni vrč",
+   "brand": null,
+   "line": null,
+   "descriptor": "iz nerjavečega jekla, primerno za čaj, kavo in ostale tople napitke",
+   "pack": "1,9 l",
+   "qty": [
+    1.9,
+    "l"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "termos",
+    "izolirni vrč",
+    "termovka",
+    "vrč za kavo",
+    "vrč za čaj"
+   ],
+   "price": 999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 50,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Izolirni vrč CENEJE 50% redna cena 19,99 PC 19,99 s SPAR plus kartico 9,99",
+   "box": [
+    0.58,
+    0.53,
+    0.89,
+    0.76
+   ],
+   "image": {
+    "crop": [
+     0.585,
+     0.535,
+     0.712,
+     0.68
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "ponev-granito-20-cm",
+   "page": 5,
+   "anchor": "PONEV 20 CM",
+   "name": "Ponev Granito 20 cm",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz aluminija, ergonomski ročaji, z notranjim premazom proti prijemanju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "ponev",
+    "ponve granito",
+    "granito",
+    "cheffino",
+    "ponev 20 cm"
+   ],
+   "price": 1199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2399,
+   "discount": null,
+   "pc": "PC 23,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "PONVE GRANITO 50% CENEJE s SPAR plus kartico | PONEV 20 CM 11,99 redna cena 23,99 | PC 23,99",
+   "box": [
+    0.725,
+    0.812,
+    0.98,
+    0.849
+   ],
+   "image": {
+    "crop": [
+     0.49,
+     0.81,
+     0.6,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek ni zapisan (pri ponudbi ni natisnjen); 50 % je natisnjen le na skupni oznaki »PONVE GRANITO 50 % CENEJE s SPAR plus kartico« za vse ponve v bloku; rez fotografije je približen (ponve se prekrivajo)."
+  },
+  {
+   "key": "ponev-granito-24-cm",
+   "page": 5,
+   "anchor": "PONEV 24 CM",
+   "name": "Ponev Granito 24 cm",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz aluminija, ergonomski ročaji, z notranjim premazom proti prijemanju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "ponev",
+    "ponve granito",
+    "granito",
+    "cheffino",
+    "ponev 24 cm"
+   ],
+   "price": 1399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2799,
+   "discount": null,
+   "pc": "PC 27,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "PONVE GRANITO 50% CENEJE s SPAR plus kartico | PONEV 24 CM 13,99 redna cena 27,99 | PC 27,99",
+   "box": [
+    0.725,
+    0.845,
+    0.98,
+    0.88
+   ],
+   "image": {
+    "crop": [
+     0.48,
+     0.855,
+     0.6,
+     0.895
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek ni zapisan (pri ponudbi ni natisnjen); 50 % je natisnjen le na skupni oznaki »PONVE GRANITO 50 % CENEJE s SPAR plus kartico« za vse ponve v bloku; rez fotografije je približen (ponve se prekrivajo)."
+  },
+  {
+   "key": "ponev-granito-28-cm",
+   "page": 5,
+   "anchor": "PONEV 28 CM",
+   "name": "Ponev Granito 28 cm",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz aluminija, ergonomski ročaji, z notranjim premazom proti prijemanju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "ponev",
+    "ponve granito",
+    "granito",
+    "cheffino",
+    "ponev 28 cm"
+   ],
+   "price": 1599,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3199,
+   "discount": null,
+   "pc": "PC 31,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "PONVE GRANITO 50% CENEJE s SPAR plus kartico | PONEV 28 CM 15,99 redna cena 31,99 | PC 31,99",
+   "box": [
+    0.725,
+    0.875,
+    0.98,
+    0.912
+   ],
+   "image": {
+    "crop": [
+     0.19,
+     0.865,
+     0.4,
+     0.97
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek ni zapisan (pri ponudbi ni natisnjen); 50 % je natisnjen le na skupni oznaki »PONVE GRANITO 50 % CENEJE s SPAR plus kartico« za vse ponve v bloku; rez fotografije je približen (ponve se prekrivajo)."
+  },
+  {
+   "key": "ponev-granito-za-palacinke-24-cm",
+   "page": 5,
+   "anchor": "PONEV ZA PALAČINKE",
+   "name": "Ponev Granito za palačinke 24 cm",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz aluminija, ergonomski ročaji, z notranjim premazom proti prijemanju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "ponev",
+    "ponve granito",
+    "granito",
+    "cheffino",
+    "ponev za palačinke"
+   ],
+   "price": 1299,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2599,
+   "discount": null,
+   "pc": "PC 25,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "PONVE GRANITO 50% CENEJE s SPAR plus kartico | PONEV ZA PALAČINKE 12,99 redna cena 25,99 | PC 25,99",
+   "box": [
+    0.725,
+    0.905,
+    0.98,
+    0.94
+   ],
+   "image": {
+    "crop": [
+     0.435,
+     0.9,
+     0.615,
+     0.97
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek ni zapisan (pri ponudbi ni natisnjen); 50 % je natisnjen le na skupni oznaki »PONVE GRANITO 50 % CENEJE s SPAR plus kartico« za vse ponve v bloku; rez fotografije je približen (ponve se prekrivajo)."
+  },
+  {
+   "key": "servirna-kozica-z-rocaji-24-cm",
+   "page": 5,
+   "anchor": "SERVIRNA KOZICA",
+   "name": "Servirna kozica z ročaji",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "24 cm, iz serije Ponve Granito",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kozica",
+    "servirna kozica",
+    "ponve granito",
+    "granito",
+    "cheffino"
+   ],
+   "price": 2990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 5990,
+   "discount": null,
+   "pc": "PC 59,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "PONVE GRANITO 50% CENEJE s SPAR plus kartico | SERVIRNA KOZICA Z ROČAJI 24 CM 29,90 redna cena 59,90 | PC 59,90",
+   "box": [
+    0.725,
+    0.934,
+    0.98,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.29,
+     0.79,
+     0.5,
+     0.88
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek ni zapisan (pri ponudbi ni natisnjen); 50 % je natisnjen le na skupni oznaki bloka; rez fotografije približen."
+  },
+  {
+   "key": "posoda-za-serviranje",
+   "page": 6,
+   "anchor": "SERVIRANJE",
+   "name": "Posoda za serviranje",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "posoda za serviranje",
+    "posoda",
+    "serviranje",
+    "posoda za torto",
+    "prenosna posoda"
+   ],
+   "price": 899,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 55,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "MEGA CENA",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Posoda za serviranje CENEJE 55% redna cena 19,99 PC 19,99 s SPAR plus kartico 8,99",
+   "box": [
+    0.08,
+    0.11,
+    0.53,
+    0.33
+   ],
+   "image": {
+    "crop": [
+     0.08,
+     0.11,
+     0.356,
+     0.275
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "set-posod-za-mesanje-3-1",
+   "page": 6,
+   "anchor": "ZA MEŠANJE 3/1",
+   "name": "Set posod za mešanje 3/1",
+   "brand": "SimPex",
+   "line": null,
+   "descriptor": "SimPex Color",
+   "pack": "1 set",
+   "qty": [
+    3,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "skleda",
+    "set posod za mešanje",
+    "posode za mešanje",
+    "simpex",
+    "mešanje"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1599,
+   "discount": 50,
+   "pc": "PC 15,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Set posod za mešanje 3/1 CENEJE 50% redna cena 15,99 PC 15,99 s SPAR plus kartico 7,99",
+   "box": [
+    0.555,
+    0.1,
+    0.96,
+    0.31
+   ],
+   "image": {
+    "crop": [
+     0.715,
+     0.1,
+     0.96,
+     0.322
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "posoda-za-shranjevanje",
+   "page": 6,
+   "anchor": "SHRANJEVANJE",
+   "name": "Posoda za shranjevanje",
+   "brand": null,
+   "line": null,
+   "descriptor": "750 ml ali 1650 ml",
+   "pack": "750 ml ali 1650 ml",
+   "qty": null,
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "posoda za shranjevanje",
+    "posoda",
+    "shranjevanje hrane",
+    "dozator",
+    "škatla"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 2,99«",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "POSODA ZA SHRANJEVANJE • 750 ml ali 1650 ml V INTERSPARIH IN HIPERMARKETIH SPAR od 2,99",
+   "box": [
+    0.69,
+    0.31,
+    0.98,
+    0.44
+   ],
+   "image": {
+    "crop": [
+     0.695,
+     0.305,
+     0.85,
+     0.425
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "lesena-deska-za-valjanje",
+   "page": 6,
+   "anchor": "LESENA DESKA",
+   "name": "Lesena deska za valjanje",
+   "brand": null,
+   "line": null,
+   "descriptor": "mere cca 60 x 40 x 8 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "deska za valjanje",
+    "lesena deska",
+    "valjanje",
+    "deska",
+    "testo"
+   ],
+   "price": 1899,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2999,
+   "discount": 36,
+   "pc": "PC 29,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Lesena deska za valjanje CENEJE 36% redna cena 29,99 PC 29,99 s SPAR plus kartico 18,99",
+   "box": [
+    0.05,
+    0.31,
+    0.38,
+    0.52
+   ],
+   "image": {
+    "crop": [
+     0.06,
+     0.31,
+     0.36,
+     0.435
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pekac-za-piskote",
+   "page": 6,
+   "anchor": "PEKAČ ZA PIŠKOTE",
+   "name": "Pekač za piškote",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "mere cca 42 x 32 x 1 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač za piškote",
+    "pekač",
+    "piškoti",
+    "vanilijevi rogljički",
+    "pekač za peko"
+   ],
+   "price": 899,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1799,
+   "discount": null,
+   "pc": "PC 17,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Pekač za piškote CENEJE 40% redna cena 17,99 PC 17,99 s SPAR plus kartico 8,99",
+   "box": [
+    0.4,
+    0.35,
+    0.73,
+    0.585
+   ],
+   "image": {
+    "crop": [
+     0.415,
+     0.35,
+     0.675,
+     0.49
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Natisnjeno »CENEJE 40%«, redna cena 17,99 in cena 8,99 (to bi bilo 50 %): neskladje v katalogu, zato odstotek ni zapisan."
+  },
+  {
+   "key": "vrc-za-mesanje-1-5-l",
+   "page": 6,
+   "anchor": "VRČ ZA MEŠANJE",
+   "name": "Vrč za mešanje",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1,5 l",
+   "qty": [
+    1.5,
+    "l"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "vrč za mešanje",
+    "vrč",
+    "merilni vrč",
+    "mešanje",
+    "posoda"
+   ],
+   "price": 899,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "VRČ ZA MEŠANJE 1,5 L 8,99",
+   "box": [
+    0.06,
+    0.525,
+    0.21,
+    0.66
+   ],
+   "image": {
+    "crop": [
+     0.085,
+     0.55,
+     0.2,
+     0.64
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "merilna-posoda-1-5-l",
+   "page": 6,
+   "anchor": "MERILNA POSODA",
+   "name": "Merilna posoda",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1,5 l",
+   "qty": [
+    1.5,
+    "l"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "merilna posoda",
+    "merilni vrč",
+    "posoda",
+    "ožemalnik",
+    "vrč"
+   ],
+   "price": 1199,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MERILNA POSODA 1,5 L 11,99",
+   "box": [
+    0.23,
+    0.52,
+    0.42,
+    0.64
+   ],
+   "image": {
+    "crop": [
+     0.25,
+     0.545,
+     0.4,
+     0.65
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "merilni-vrci",
+   "page": 6,
+   "anchor": "MERILNI VRČI",
+   "name": "Merilni vrči",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "2/1, 0,5 l, 1 l",
+   "qty": null,
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "merilni vrč",
+    "merilni vrči",
+    "vrč",
+    "merjenje",
+    "kuhinjski pripomoček"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "MERILNI VRČI • 2/1 • 0,5 l • 1 l V INTERSPARIH IN HIPERMARKETIH SPAR 2,99",
+   "box": [
+    0.06,
+    0.64,
+    0.35,
+    0.78
+   ],
+   "image": {
+    "crop": [
+     0.165,
+     0.645,
+     0.34,
+     0.76
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Natisnjeno »• 2/1 • 0,5 l • 1 l«; pomen »2/1« ni gotov (2 kosa ali 2 l), zato pack dobesedno kot natisnjeno, brez qty."
+  },
+  {
+   "key": "skleda-za-stepanje-3-6-l",
+   "page": 6,
+   "anchor": "STEPANJE",
+   "name": "Skleda za stepanje",
+   "brand": null,
+   "line": null,
+   "descriptor": "premer cca 24 cm, za lažjo uporabo protizdrsna podlaga",
+   "pack": "3,6 l",
+   "qty": [
+    3.6,
+    "l"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "skleda za stepanje",
+    "skleda",
+    "stepanje",
+    "nerjaveča skleda",
+    "mešanje"
+   ],
+   "price": 699,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1399,
+   "discount": 50,
+   "pc": "PC 13,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Skleda za stepanje CENEJE 50% redna cena 13,99 PC 13,99 s SPAR plus kartico 6,99",
+   "box": [
+    0.4,
+    0.615,
+    0.76,
+    0.82
+   ],
+   "image": {
+    "crop": [
+     0.505,
+     0.61,
+     0.74,
+     0.705
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "vrecka-za-dekoriranje",
+   "page": 6,
+   "anchor": "VREČKA ZA DEKORIRANJE",
+   "name": "Vrečka za dekoriranje",
+   "brand": null,
+   "line": null,
+   "descriptor": "za večkratno uporabo",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "vrečka za dekoriranje",
+    "dekoriranje",
+    "slaščičarska vrečka",
+    "peka",
+    "krema"
+   ],
+   "price": 239,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": 399,
+   "discount": null,
+   "pc": "PC 3,99",
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "VREČKA ZA DEKORIRANJE • za večkratno uporabo 2,39 redna cena 3,99 | PC 3,99",
+   "box": [
+    0.75,
+    0.46,
+    0.98,
+    0.625
+   ],
+   "image": {
+    "crop": [
+     0.75,
+     0.51,
+     0.93,
+     0.62
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Brez natisnjenega odstotka; fotografiji (dve vrečki) sta skupni z vrečkami 20/1 spodaj - rez približen."
+  },
+  {
+   "key": "vrecke-za-dekoriranje-20-1",
+   "page": 6,
+   "anchor": "DEKORIRANJE",
+   "name": "Vrečke za dekoriranje 20/1",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": null,
+   "pack": "20 kos",
+   "qty": [
+    20,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "vrečke za dekoriranje",
+    "dekoriranje",
+    "slaščičarske vrečke",
+    "peka",
+    "krema"
+   ],
+   "price": 119,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 199,
+   "discount": 40,
+   "pc": "PC 1,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Vrečke za dekoriranje 20/1 CENEJE 40% redna cena 1,99 PC 1,99 s SPAR plus kartico 1,19",
+   "box": [
+    0.75,
+    0.625,
+    0.98,
+    0.76
+   ],
+   "image": {
+    "crop": [
+     0.75,
+     0.51,
+     0.93,
+     0.62
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Fotografiji sta skupni z vrečko za dekoriranje zgoraj - rez približen."
+  },
+  {
+   "key": "set-za-peko-otroski-bozicni",
+   "page": 6,
+   "anchor": "SET ZA PEKO",
+   "name": "Set za peko",
+   "brand": null,
+   "line": null,
+   "descriptor": "otroški 7/1 ali božični 5/1",
+   "pack": "1 set",
+   "qty": null,
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "set za peko",
+    "peka",
+    "modelčki",
+    "model za piškote",
+    "otroški set za peko",
+    "božični set"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 7,99«",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "SET ZA PEKO • otroški 7/1 • božični 5/1 V INTERSPARIH IN HIPERMARKETIH SPAR od 7,99",
+   "box": [
+    0.06,
+    0.78,
+    0.42,
+    0.95
+   ],
+   "image": {
+    "crop": [
+     0.07,
+     0.79,
+     0.31,
+     0.935
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "lijak-za-doziranje-testa",
+   "page": 6,
+   "anchor": "LIJAK ZA",
+   "name": "Lijak za doziranje testa",
+   "brand": null,
+   "line": null,
+   "descriptor": "velikost cca 900 ml",
+   "pack": "900 ml",
+   "qty": [
+    900,
+    "ml"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "lijak za doziranje",
+    "lijak za testo",
+    "doziranje testa",
+    "palačinke",
+    "peka"
+   ],
+   "price": 449,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "LIJAK ZA DOZIRANJE TESTA • velikost cca 900 ml V INTERSPARIH IN HIPERMARKETIH SPAR 4,49",
+   "box": [
+    0.43,
+    0.78,
+    0.69,
+    0.955
+   ],
+   "image": {
+    "crop": [
+     0.44,
+     0.795,
+     0.58,
+     0.945
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "izbrani-pripomocki-za-peko",
+   "page": 6,
+   "anchor": "IZBRANI",
+   "name": "Izbrani pripomočki za peko",
+   "brand": null,
+   "line": null,
+   "descriptor": "za peko piškotov",
+   "pack": "1 kos",
+   "qty": null,
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pripomočki za peko",
+    "kuhinjski pripomočki",
+    "lopatka",
+    "metlica",
+    "peka"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 2,99«",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "IZBRANI PRIPOMOČKI ZA PEKO • za peko piškotov V INTERSPARIH IN HIPERMARKETIH SPAR od 2,99",
+   "box": [
+    0.7,
+    0.75,
+    0.98,
+    0.975
+   ],
+   "image": {
+    "crop": [
+     0.7,
+     0.75,
+     0.96,
+     0.895
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "vorner-kuhinjski-robot-vmp-0573",
+   "page": 7,
+   "anchor": "KUHINJSKI ROBOT",
+   "name": "Kuhinjski robot Vorner VMP-0573",
+   "brand": "Vorner",
+   "line": null,
+   "descriptor": "moč 1300 W, prostornina posode 6,5 l, pokrov proti škropljenju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kuhinjski robot",
+    "robot",
+    "mešalnik",
+    "vorner",
+    "testo"
+   ],
+   "price": 6990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 13990,
+   "discount": 50,
+   "pc": "PC 139,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Kuhinjski robot Vorner VMP-0573 CENEJE 50% redna cena 139,90 PC 139,90 s SPAR plus kartico 69,90",
+   "box": [
+    0.52,
+    0.14,
+    0.96,
+    0.4
+   ],
+   "image": {
+    "crop": [
+     0.69,
+     0.16,
+     0.955,
+     0.41
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "tognana-zracni-cvrtnik-d2dfa12ircha",
+   "page": 7,
+   "anchor": "D2DFA12IRCHA",
+   "name": "Zračni cvrtnik Tognana D2DFA12IRCHA",
+   "brand": "Tognana",
+   "line": null,
+   "descriptor": "moč 1700 W, prostornina 6 l, 60-minutni časovnik",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zračni cvrtnik",
+    "cvrtnik",
+    "friteza",
+    "air fryer",
+    "tognana"
+   ],
+   "price": 5990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 11500,
+   "discount": 47,
+   "pc": "PC 115,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Zračni cvrtnik Tognana D2DFA12IRCHA CENEJE 47% redna cena 115,00 PC 115,- s SPAR plus kartico 59,90",
+   "box": [
+    0.03,
+    0.15,
+    0.4,
+    0.38
+   ],
+   "image": {
+    "crop": [
+     0.17,
+     0.165,
+     0.39,
+     0.33
+    ]
+   },
+   "isNew": false,
+   "notes": "Redna cena natisnjena kot »115,-« (115,00 €); besedilna kontrola izključena."
+  },
+  {
+   "key": "profi-cook-kuhalnik-riza-pc-rk1285",
+   "page": 7,
+   "anchor": "KUHALNIK RIŽA",
+   "name": "Kuhalnik riža Profi Cook PC-RK1285",
+   "brand": "Profi Cook",
+   "line": null,
+   "descriptor": "moč 700 W, kuhanje riža, kuhanje na pari, do 1,3 kg surovega riža",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kuhalnik riža",
+    "riž",
+    "kuhalnik",
+    "profi cook",
+    "kuhanje na pari"
+   ],
+   "price": 3490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 7990,
+   "discount": 56,
+   "pc": "PC 79,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Kuhalnik riža Profi Cook PC-RK1285 CENEJE 56% redna cena 79,90 PC 79,90 s SPAR plus kartico 34,90",
+   "box": [
+    0.03,
+    0.385,
+    0.41,
+    0.55
+   ],
+   "image": {
+    "crop": [
+     0.05,
+     0.41,
+     0.235,
+     0.545
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "linea-zracni-cvrtnik-lafdt-0697",
+   "page": 7,
+   "anchor": "LINEA LAFDT",
+   "name": "Zračni cvrtnik Linea LAFDT-0697",
+   "brand": "Linea",
+   "line": null,
+   "descriptor": "XXL pokončni zračni cvrtnik z dvema posodama in grelcema, prostornina 11,6 l, moč 3000 W",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zračni cvrtnik",
+    "cvrtnik",
+    "friteza",
+    "air fryer",
+    "linea"
+   ],
+   "price": 8900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 14900,
+   "discount": 40,
+   "pc": "PC 149,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Zračni cvrtnik Linea LAFDT-0697 CENEJE 40% redna cena 149,00 PC 149,- s SPAR plus kartico 89,00",
+   "box": [
+    0.42,
+    0.4,
+    0.97,
+    0.56
+   ],
+   "image": {
+    "crop": [
+     0.42,
+     0.31,
+     0.625,
+     0.53
+    ]
+   },
+   "isNew": false,
+   "notes": "Cena »89,-« in redna »149,-« natisnjeni z vezajem; besedilna kontrola izključena. Fotografija sega nad okvir bloka (okvir omejen zaradi prekrivanja s sosednjim blokom)."
+  },
+  {
+   "key": "tognana-grelnik-vode-d2dbe17ircha",
+   "page": 7,
+   "anchor": "GRELNIK VODE",
+   "name": "Grelnik vode Tognana D2DBE17IRCHA",
+   "brand": "Tognana",
+   "line": null,
+   "descriptor": "moč 1850–2200 W, prostornina 1,7 l",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "grelnik vode",
+    "kuhalnik vode",
+    "električni kuhalnik",
+    "čajnik",
+    "tognana"
+   ],
+   "price": 2490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 4990,
+   "discount": 50,
+   "pc": "PC 49,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Grelnik vode Tognana D2DBE17IRCHA CENEJE 50% redna cena 49,90 PC 49,90 s SPAR plus kartico 24,90",
+   "box": [
+    0.03,
+    0.57,
+    0.38,
+    0.77
+   ],
+   "image": {
+    "crop": [
+     0.205,
+     0.58,
+     0.36,
+     0.7
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "gorenje-rocni-mesalnik-m500dc",
+   "page": 7,
+   "anchor": "ROČNI MEŠALNIK",
+   "name": "Ročni mešalnik Gorenje M500DC",
+   "brand": "Gorenje",
+   "line": null,
+   "descriptor": "moč motorja 500 W",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "ročni mešalnik",
+    "mešalnik",
+    "mikser",
+    "gorenje",
+    "testo"
+   ],
+   "price": 2290,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3990,
+   "discount": 42,
+   "pc": "PC 39,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Ročni mešalnik Gorenje M500DC CENEJE 42% redna cena 39,90 PC 39,90 s SPAR plus kartico 22,90",
+   "box": [
+    0.35,
+    0.56,
+    0.66,
+    0.8
+   ],
+   "image": {
+    "crop": [
+     0.385,
+     0.605,
+     0.605,
+     0.725
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "simpex-palicni-mesalnik",
+   "page": 7,
+   "anchor": "PALIČNI",
+   "name": "Palični mešalnik SimPex",
+   "brand": "SimPex",
+   "line": null,
+   "descriptor": "moč do 500 W, nerjaveče jeklo s plastiko, 3 leta garancije",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "palični mešalnik",
+    "paličnik",
+    "blender",
+    "mešalnik",
+    "simpex"
+   ],
+   "price": 1399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 30,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Palični mešalnik SimPex CENEJE 30% redna cena 19,99 PC 19,99 s SPAR plus kartico 13,99",
+   "box": [
+    0.6,
+    0.55,
+    0.97,
+    0.76
+   ],
+   "image": {
+    "crop": [
+     0.63,
+     0.6,
+     0.84,
+     0.66
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "braun-elektricni-zar-cg7020",
+   "page": 7,
+   "anchor": "ELEKTRIČNI ŽAR",
+   "name": "Električni žar Braun CG7020",
+   "brand": "Braun",
+   "line": null,
+   "descriptor": "moč 2000 W, vsestranska uporaba 3 v 1",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "električni žar",
+    "žar",
+    "kontaktni žar",
+    "braun",
+    "žar 3v1"
+   ],
+   "price": 7900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 13900,
+   "discount": 43,
+   "pc": "PC 139,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Električni žar Braun CG7020 CENEJE 43% redna cena 139,00 PC 139,- s SPAR plus kartico 79,00",
+   "box": [
+    0.03,
+    0.795,
+    0.53,
+    0.975
+   ],
+   "image": {
+    "crop": [
+     0.21,
+     0.805,
+     0.515,
+     0.945
+    ]
+   },
+   "isNew": false,
+   "notes": "Cena »79,-« in redna »139,-« natisnjeni z vezajem; besedilna kontrola izključena."
+  },
+  {
+   "key": "gorenje-aparat-za-vaflje-wm1000b",
+   "page": 7,
+   "anchor": "APARAT ZA VAFLJE",
+   "name": "Aparat za vaflje Gorenje WM1000B",
+   "brand": "Gorenje",
+   "line": null,
+   "descriptor": "moč grelca 1000 W, nastavljiva temperatura - 5 stopenj za različne okuse",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "aparat za vaflje",
+    "vaflji",
+    "vaflji aparat",
+    "gorenje",
+    "pečica za vaflje"
+   ],
+   "price": 2990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 5990,
+   "discount": 50,
+   "pc": "PC 59,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Aparat za vaflje Gorenje WM1000B CENEJE 50% redna cena 59,90 PC 59,90 s SPAR plus kartico 29,90",
+   "box": [
+    0.58,
+    0.755,
+    0.97,
+    0.975
+   ],
+   "image": {
+    "crop": [
+     0.645,
+     0.755,
+     0.8,
+     0.965
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "ajdov-rogljic",
+   "page": 8,
+   "anchor": "AJDOV ROGLJIČ",
+   "name": "Ajdov rogljič",
+   "brand": "Pekarna Pečjak",
+   "line": null,
+   "descriptor": "z orehi",
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "zajtrk"
+   ],
+   "aliases": [
+    "rogljič",
+    "ajdov rogljič",
+    "ajdov",
+    "pekarna pečjak",
+    "sveže pečeno",
+    "pecivo"
+   ],
+   "price": 94,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 109,
+   "discount": 13,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SVEŽE PEČENO V TRGOVINI Ajdov rogljič CENEJE 13% redna cena 1,09 s SPAR plus kartico 0,94",
+   "box": [
+    0.04,
+    0.25,
+    0.35,
+    0.42
+   ],
+   "image": {
+    "crop": [
+     0.065,
+     0.255,
+     0.33,
+     0.345
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kosarica-z-jagodo-in-vanilijo",
+   "page": 8,
+   "anchor": "KOŠARICA",
+   "name": "Košarica",
+   "brand": "Pekarna Pečjak",
+   "line": null,
+   "descriptor": "z jagodo in vanilijo",
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "sladko"
+   ],
+   "aliases": [
+    "košarica",
+    "pecivo",
+    "jagoda",
+    "vanilija",
+    "pekarna pečjak",
+    "sveže pečeno"
+   ],
+   "price": 119,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 159,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SVEŽE PEČENO V TRGOVINI Košarica CENEJE 25% redna cena 1,59 s SPAR plus kartico 1,19",
+   "box": [
+    0.35,
+    0.24,
+    0.66,
+    0.42
+   ],
+   "image": {
+    "crop": [
+     0.4,
+     0.25,
+     0.61,
+     0.345
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "podloga-pinsa-happins",
+   "page": 8,
+   "anchor": "PODLOGA PINSA",
+   "name": "Podloga pinsa",
+   "brand": "Happins",
+   "line": null,
+   "descriptor": "original ali polnozrnata",
+   "pack": "230 g",
+   "qty": [
+    230,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "pinsa",
+    "podloga za pico",
+    "podloga pinsa",
+    "happins",
+    "pica",
+    "testo za pico"
+   ],
+   "price": 249,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 349,
+   "discount": 28,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SVEŽE PEČENO V TRGOVINI Podloga pinsa CENEJE 28% redna cena 3,49 s SPAR plus kartico 2,49",
+   "box": [
+    0.65,
+    0.195,
+    0.96,
+    0.425
+   ],
+   "image": {
+    "crop": [
+     0.65,
+     0.2,
+     0.92,
+     0.355
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "halloween-cheesecake-oreo",
+   "page": 8,
+   "anchor": "HALLOWEEN",
+   "name": "Halloween cheesecake Oreo",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "različni motivi",
+   "pack": "200 g",
+   "qty": [
+    200,
+    "g"
+   ],
+   "categories": [
+    "sladkarije",
+    "slascice"
+   ],
+   "aliases": [
+    "cheesecake",
+    "sirova torta",
+    "oreo",
+    "halloween",
+    "sladica",
+    "to go"
+   ],
+   "price": 299,
+   "priceUnit": "kos",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "SAMO KRATEK ČAS",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SAMO KRATEK ČAS to Go HALLOWEEN CHEESECAKE OREO različni motivi, 200 g 2,99 kos",
+   "box": [
+    0.0,
+    0.47,
+    0.345,
+    0.705
+   ],
+   "image": {
+    "crop": [
+     0.115,
+     0.495,
+     0.27,
+     0.61
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kaneloni-sunka-sir",
+   "page": 8,
+   "anchor": "KANELONI",
+   "name": "Kaneloni šunka sir",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "testenine",
+    "kosilo"
+   ],
+   "aliases": [
+    "kaneloni",
+    "kaneloni šunka sir",
+    "testenine",
+    "to go",
+    "šunka",
+    "sir"
+   ],
+   "price": 1599,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "to Go KANELONI ŠUNKA SIR 1 kg 15,99 kg",
+   "box": [
+    0.355,
+    0.48,
+    0.66,
+    0.705
+   ],
+   "image": {
+    "crop": [
+     0.39,
+     0.51,
+     0.625,
+     0.6
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "solata-s-piscancjimi-fingersi",
+   "page": 8,
+   "anchor": "SOLATA S",
+   "name": "Solata s piščančjimi fingersi",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "piščančji fingersi, solata, rdeči radič, korenje",
+   "pack": "cca 230 g",
+   "qty": [
+    230,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "malica"
+   ],
+   "aliases": [
+    "solata",
+    "piščanec",
+    "fingersi",
+    "piščančji fingersi",
+    "to go",
+    "solata s piščancem"
+   ],
+   "price": 230,
+   "priceUnit": "kos",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Cena »od 2,30« na kos; pakirano cca 230 g",
+   "unitPrice": {
+    "cents": 999,
+    "per": "kg"
+   },
+   "validity": null,
+   "availability": null,
+   "printed": "to Go SOLATA S PIŠČANČJIMI FINGERSI Sestavine: piščančji fingersi, solata, rdeči radič, korenje. pakirano cca 230 g, cena za kg 9,99 od 2,30 kos",
+   "box": [
+    0.665,
+    0.48,
+    0.96,
+    0.705
+   ],
+   "image": {
+    "crop": [
+     0.74,
+     0.5,
+     0.955,
+     0.585
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pecenica-kisla-repa-krompirjev-pire",
+   "page": 8,
+   "anchor": "PEČENICA",
+   "name": "Pečenica, kisla repa, krompirjev pire",
+   "brand": "INTERSPAR Restavracija",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 porcija",
+   "qty": null,
+   "categories": [
+    "mesni-izdelki",
+    "kosilo"
+   ],
+   "aliases": [
+    "pečenica",
+    "kisla repa",
+    "krompirjev pire",
+    "restavracija",
+    "kosilo",
+    "malica"
+   ],
+   "price": 760,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "DOBER TEK, do torka 27. 10.",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "DOBER TEK Restavracija Pečenica, kisla repa, krompirjev pire 7,60",
+   "box": [
+    0.04,
+    0.75,
+    0.35,
+    0.955
+   ],
+   "image": {
+    "crop": [
+     0.12,
+     0.775,
+     0.315,
+     0.91
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "svinjski-hrbet-z-zara-z-jajcem",
+   "page": 8,
+   "anchor": "SVINJSKI HRBET",
+   "name": "Svinjski hrbet z žara z jajcem",
+   "brand": "INTERSPAR Restavracija",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 porcija",
+   "qty": null,
+   "categories": [
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "svinjski hrbet",
+    "hrbet z žara",
+    "jajce",
+    "restavracija",
+    "kosilo",
+    "malica"
+   ],
+   "price": 530,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "DOBER TEK, do torka 27. 10.",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "DOBER TEK Restavracija Svinjski hrbet z žara z jajcem 5,30",
+   "box": [
+    0.36,
+    0.76,
+    0.66,
+    0.955
+   ],
+   "image": {
+    "crop": [
+     0.38,
+     0.77,
+     0.6,
+     0.895
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "zrezek-po-dunajsko-pomfri-zelenjava-z-zara",
+   "page": 8,
+   "anchor": "ZREZEK PO DUNAJSKO",
+   "name": "Zrezek po dunajsko, pomfri, zelenjava z žara",
+   "brand": "INTERSPAR Restavracija",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 porcija",
+   "qty": null,
+   "categories": [
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "zrezek po dunajsko",
+    "dunajski zrezek",
+    "pomfri",
+    "zelenjava z žara",
+    "restavracija",
+    "kosilo"
+   ],
+   "price": 890,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "DOBER TEK, do torka 27. 10.",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "DOBER TEK Restavracija Zrezek po dunajsko, pomfri, zelenjava z žara 8,90",
+   "box": [
+    0.67,
+    0.76,
+    0.96,
+    0.955
+   ],
+   "image": {
+    "crop": [
+     0.68,
+     0.765,
+     0.87,
+     0.905
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  }
+ ],
+ "excluded": [
+  {
+   "page": 1,
+   "text": "PRIPOMOČKI ZA PEKO – 30 % CENEJE s SPAR plus kartico (brez cene izdelka)",
+   "reason": "Skupni popust brez natisnjene cene izdelka."
+  },
+  {
+   "page": 3,
+   "text": "NALEPKE ZA OBRAZ – 25 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 5,
+   "text": "PEKAČI SIMPEX PROFESSIONAL – 40 % CENEJE s SPAR plus kartico",
+   "reason": "Skupni popust za več izdelkov brez natisnjene cene."
+  }
+ ]
+}

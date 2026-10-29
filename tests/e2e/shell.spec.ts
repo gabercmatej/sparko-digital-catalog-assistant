@@ -67,7 +67,7 @@ test("long conversation scrolls only inside the message area", async ({ page }) 
   await page.setViewportSize({ width: 390, height: 844 });
   await fresh(page);
   const input = page.getByPlaceholder("Vprašaj Sparka o katalogu …");
-  for (const q of ["Koliko stane skuta?", "Kaj je najbolj znižano?", "Predlagaj hiter zajtrk", "Večerja za dva do 10 €"]) {
+  for (const q of ["Koliko stane zaseka?", "Kaj je najbolj znižano?", "Predlagaj hiter zajtrk", "Večerja za dva do 10 €"]) {
     await input.fill(q);
     await input.press("Enter");
     await expect(chatLog(page).locator('[data-role="assistant"]').last()).not.toContainText("Sparko piše", { timeout: 15_000 });

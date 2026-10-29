@@ -15,7 +15,6 @@ import {
   newId,
   removeProduct,
   saveProduct,
-  setActiveConversation,
   updateMessage,
   useStore,
 } from "../store/store";
@@ -129,6 +128,16 @@ async function request(conversationId: string, placeholderId: string, userMessag
   }
 }
 
+/** Append the user message + pending answer to a conversation and start its single request. */
+function sendInto(conversationId: string, text: string) {
+  const now = Date.now();
+  const user: Message = { id: newId("m"), role: "user", createdAt: now, text, status: "ok" };
+  const placeholder: Message = { id: newId("m"), role: "assistant", createdAt: now + 1, text: "", status: "pending", retryOf: user.id };
+  appendMessage(conversationId, user);
+  appendMessage(conversationId, placeholder);
+  void request(conversationId, placeholder.id, user.id);
+}
+
 /** Send a new user message. Returns false when ignored (empty, too long or a request is pending). */
 export function sendMessage(rawText: string): boolean {
   const text = rawText.trim().slice(0, MAX_INPUT_CHARS);
@@ -137,26 +146,22 @@ export function sendMessage(rawText: string): boolean {
   if (active && !isDemoId(active) && inFlight.has(active)) return false;
   const conversationId = ensureWritableConversation();
   if (inFlight.has(conversationId)) return false;
-  const now = Date.now();
-  const user: Message = { id: newId("m"), role: "user", createdAt: now, text, status: "ok" };
-  const placeholder: Message = { id: newId("m"), role: "assistant", createdAt: now + 1, text: "", status: "pending", retryOf: user.id };
-  appendMessage(conversationId, user);
-  appendMessage(conversationId, placeholder);
-  void request(conversationId, placeholder.id, user.id);
+  sendInto(conversationId, text);
   return true;
 }
 
 /**
- * Home chat input: the same send as the Chat composer, done BEFORE navigating to the Chat tab, so the question
- * and its pending answer are already in the store when Chat renders (one request, no timers). It continues the
- * active conversation (its history stays); a demo example or no active chat starts a new one instead of
- * forking the example. Returns false when ignored (empty, not hydrated yet or a request is pending).
+ * Home chat input: ALWAYS starts a new conversation (new id, the question as its first message) and becomes the
+ * active one, BEFORE navigating to the Chat tab, so Chat renders only the new question and its pending answer
+ * (one request, no timers). Earlier conversations stay untouched in History. Returns the new conversation id, or
+ * null when ignored (empty or not hydrated yet).
  */
-export function sendFromHome(rawText: string): boolean {
-  const s = getState();
-  if (!s.hydrated || !rawText.trim()) return false;
-  if (s.activeConversationId && isDemoId(s.activeConversationId)) setActiveConversation(null);
-  return sendMessage(rawText);
+export function sendFromHome(rawText: string): string | null {
+  const text = rawText.trim().slice(0, MAX_INPUT_CHARS);
+  if (!getState().hydrated || !text) return null;
+  const conversationId = createConversation();
+  sendInto(conversationId, text);
+  return conversationId;
 }
 
 /** Retry an errored assistant message in place (the user message is not duplicated). */

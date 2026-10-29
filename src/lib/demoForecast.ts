@@ -8,7 +8,8 @@
  *  - every other product shows NO future price and NO percent - only the period and its (verified) current price.
  * Replace this module (same exports) with a real feed to go live.
  */
-import { getPrimaryOffer, products } from "./catalog";
+import { activeProducts } from "./activeCatalog";
+import { getPrimaryOffer } from "./catalog";
 import { futurePromosForProduct } from "./futurePromos";
 import { isPromoUpcoming, upcomingWindow } from "./promoCalendar";
 import type { FuturePromo } from "./types";
@@ -36,5 +37,5 @@ export function forecastFor(productId: string, now: Date = new Date()): Forecast
 
 /** Forecast of every verified product (editorial order). */
 export function allForecasts(now: Date = new Date()): ForecastEntry[] {
-  return products.map((p) => forecastFor(p.id, now)).filter((x): x is ForecastEntry => !!x);
+  return activeProducts(now).map((p) => forecastFor(p.id, now)).filter((x): x is ForecastEntry => !!x);
 }

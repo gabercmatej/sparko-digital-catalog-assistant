@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { products } from "@/lib/catalog";
+import { activeProducts } from "@/lib/activeCatalog";
 import { ProductMiniCard } from "../product/ProductMiniCard";
 import { Icon } from "../ui/Icon";
 import styles from "./ProductCarousel.module.css";
@@ -32,7 +32,7 @@ export function ProductCarousel({ onSelect }: { onSelect: (productId: string) =>
     <section className={styles.wrap} aria-label="Izdelki iz kataloga">
       <div className={styles.trackWrap} data-at-end={atEnd || undefined}>
         <div ref={trackRef} className={styles.track} onScroll={update} role="list" aria-label="Izdelki iz kataloga">
-          {products.map((p) => (
+          {activeProducts().map((p) => (
             <div role="listitem" key={p.id} className={styles.item}>
               <ProductMiniCard productId={p.id} rail onSelect={() => onSelect(p.id)} ariaLabelPrefix="Pokaži" />
             </div>

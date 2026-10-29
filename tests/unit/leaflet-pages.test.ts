@@ -60,7 +60,7 @@ describe("leaflet pages", () => {
 
   it("carries the catalog only for non-default leaflets", () => {
     expect(leafletQuery(4, { catalogId: defaultLeaflet.id })).toBe("?stran=5");
-    expect(leafletQuery(4, { catalogId: primaryCatalog.id })).toBe(`?katalog=${primaryCatalog.id}&stran=5`);
+    expect(primaryCatalog.id).toBe(defaultLeaflet.id);
     const other = viewerCatalogs.find((c) => c.id !== defaultLeaflet.id)!;
     expect(leafletQuery(0, { catalogId: other.id })).toBe(`?katalog=${other.id}&stran=1`);
     expect(leafletQuery(2, { catalogId: other.id, productId: "x", mine: true })).toBe(`?katalog=${other.id}&stran=3&izdelek=x&moji=1`);

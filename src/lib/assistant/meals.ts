@@ -4,7 +4,8 @@
  * the user (with card, or without card when spPlus === "no") is known and <= budget.
  * Never invents a price to meet a budget: when nothing fits we say so and show the closest real total.
  */
-import { products as allProducts, recipes as allRecipes, getPrimaryOffer, recipeLines, recipeTotals } from "@/lib/catalog";
+import { activeProducts, activeRecipes } from "@/lib/activeCatalog";
+import { getPrimaryOffer, recipeLines, recipeTotals } from "@/lib/catalog";
 import type { Product, Recipe, SpPlusSetting } from "@/lib/types";
 
 export type MealRequest = {
@@ -41,7 +42,7 @@ export type MealSuggestion = {
   considered: number;
 };
 
-export function suggestMeal(req: MealRequest, recipes: readonly Recipe[] = allRecipes): MealSuggestion {
+export function suggestMeal(req: MealRequest, recipes: readonly Recipe[] = activeRecipes()): MealSuggestion {
   const pool = recipes.filter((r) => (req.kind === "breakfast" ? r.kind === "breakfast" : r.kind !== "breakfast"));
   const evals = pool.map((r) => evaluateRecipe(r, req)).filter((e) => e.totals != null);
   if (!evals.length) return { choice: null, withinBudget: false, considered: 0 };
@@ -70,12 +71,12 @@ export function mealTemplate(s: MealSuggestion, req: MealRequest): string {
     req.budgetCents != null && c.fitsBudget
       ? `Če gledava aktualno ponudbo v katalogu, lahko v okviru {{budget}} pripraviš: ${dish}.`
       : req.kind === "breakfast"
-        ? `Iz aktualnega kataloga ti za zajtrk predlagam: ${dish}.`
+        ? `Iz aktualne ponudbe ti za zajtrk predlagam: ${dish}.`
         : req.kind === "dinner"
-          ? `Seveda – pogledal sem aktualni katalog. Za večerjo ti predlagam: ${dish}.`
+          ? `Seveda – pogledal sem aktualno ponudbo. Za večerjo ti predlagam: ${dish}.`
           : req.kind === "lunch"
-            ? `Seveda – pogledal sem aktualni katalog. Za kosilo ti predlagam: ${dish}.`
-            : `Iz aktualnega kataloga ti predlagam: ${dish}.`;
+            ? `Seveda – pogledal sem aktualno ponudbo. Za kosilo ti predlagam: ${dish}.`
+            : `Iz aktualne ponudbe ti predlagam: ${dish}.`;
   const parts: string[] = [lead];
   const cardNote = c.totals.needsCard && req.spPlus !== "no" ? " s kartico SPAR plus" : "";
   if (c.effectiveCents != null) {
@@ -98,6 +99,6 @@ export function recipeProductIds(recipe: Recipe): string[] {
 }
 
 /** Verified breakfast products when there is no breakfast recipe. */
-export function breakfastProducts(limit = 4, list: readonly Product[] = allProducts): Product[] {
+export function breakfastProducts(limit = 4, list: readonly Product[] = activeProducts()): Product[] {
   return list.filter((p) => p.categories.includes("zajtrk") && !!getPrimaryOffer(p.id)).slice(0, limit);
 }

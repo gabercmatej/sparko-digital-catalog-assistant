@@ -71,3 +71,6 @@
   font-weight: 600;
   color: var(--c-green);
 }
+.extra {
+  color: var(--c-ink-2);
+}

@@ -42,8 +42,8 @@ export function SettingsPanel({ onBack }: { onBack: () => void }) {
         <section className={styles.infoBlock}>
           <h3 className={styles.sectionTitle}>O demo katalogih</h3>
           <p className={styles.help}>
-            {catalogs.map((c) => `${c.title} (${formatPeriod(c.validFrom, c.validTo)})`).join(" in ")}. Cene in datumi so iz teh katalogov, ne aktualne
-            cene v trgovini. Akcije »naslednji teden« so demo podatki.
+            {catalogs.map((c) => `${c.title} (${formatPeriod(c.validFrom, c.validTo)})`).join(", ")}. Cene in datumi so iz teh katalogov (vsaka ponudba
+            ima svoj rok), ne aktualne cene v trgovini. Akcije »naslednji teden« so simulirani demo podatki.
           </p>
         </section>
 

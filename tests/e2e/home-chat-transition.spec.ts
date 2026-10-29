@@ -39,11 +39,11 @@ test("Home composer hands the question to the Chat tab, which shows it and the a
   expect(await storedConversations(page)).toBe(1);
 });
 
-test("an earlier chat is continued from Home (history stays, one conversation)", async ({ page }) => {
+test("a Home question always starts a NEW conversation; the earlier one stays in History and reopens intact", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => localStorage.clear());
   await page.goto("/");
-  await chatInput(page).fill("šampinjoni");
+  await chatInput(page).fill("zaseka");
   await chatInput(page).press("Enter");
   await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
   const before = await msgs(page).count();
@@ -55,24 +55,48 @@ test("an earlier chat is continued from Home (history stays, one conversation)",
   await nav(page).getByRole("link", { name: "Sparko" }).click();
   await expect(msgs(page)).toHaveCount(before);
 
-  // A Home question is appended to that same conversation.
+  // A Home question opens a fresh conversation with only that question and its answer.
   await nav(page).getByRole("link", { name: "Domov" }).click();
   await expectDefaultHome(page);
-  await homeInput(page).fill("Nutella");
+  await homeInput(page).fill("Koliko stane mleko?");
   await homeInput(page).press("Enter");
   await expect(page).toHaveURL(/\/$/);
-  await expect(msgs(page)).toHaveCount(before + 2);
+  await expect(msgs(page)).toHaveCount(2);
+  await expect(log(page).locator('[data-role="user"]')).toHaveText(/Koliko stane mleko\?/);
+  await expect(log(page)).not.toContainText("zaseka");
   await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
-  expect(await storedConversations(page)).toBe(1);
-  await expect(log(page).locator('[data-role="user"]').first()).toContainText("šampinjoni");
+  expect(await storedConversations(page)).toBe(2);
 
+  // A follow-up typed in Chat continues the NEW conversation.
+  await chatInput(page).fill("In jogurt?");
+  await chatInput(page).press("Enter");
+  await expect(msgs(page)).toHaveCount(4);
+  await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
+  expect(await storedConversations(page)).toBe(2);
+
+  // History (sidebar) lists both; the earlier one reopens with its own messages, also after a reload.
+  await page.reload();
+  await page.getByRole("button", { name: "Odpri meni" }).first().click();
+  const history = page.getByRole("region", { name: "Tvoji pogovori" });
+  await expect(history.getByRole("button")).toHaveCount(2);
+  await history.getByRole("button", { name: /zaseka/ }).click();
+  await expect(msgs(page)).toHaveCount(before);
+  await expect(log(page)).toContainText("zaseka");
+  await expect(log(page)).not.toContainText("Koliko stane mleko?");
+
+  // Another Home question = a third conversation.
   await nav(page).getByRole("link", { name: "Domov" }).click();
   await expectDefaultHome(page);
+  await homeInput(page).fill("zaseka");
+  await homeInput(page).press("Enter");
+  await expect(msgs(page)).toHaveCount(2);
+  await expect(lastReply(page)).not.toContainText("Sparko piše", { timeout: 15_000 });
+  expect(await storedConversations(page)).toBe(3);
 });
 
 test("browser back from the chat returns to a normal Home with an empty composer", async ({ page }) => {
   await freshHome(page);
-  await homeInput(page).fill("Nutella");
+  await homeInput(page).fill("zaseka");
   await homeInput(page).press("Enter");
   await expect(page).toHaveURL(/\/$/);
   await expect(chatInput(page)).toBeVisible();
@@ -89,7 +113,7 @@ test("rapid repeated Enter / taps send once, create one conversation and raise n
     if (r.method() === "POST" && new URL(r.url()).pathname === "/api/chat") requests++;
   });
   await freshHome(page);
-  await homeInput(page).fill("Nutella");
+  await homeInput(page).fill("zaseka");
   await page.keyboard.press("Enter");
   await page.keyboard.press("Enter");
   await page.locator("[data-home-composer] button").click({ force: true, noWaitAfter: true, timeout: 500 }).catch(() => {});
@@ -117,9 +141,9 @@ test("reduced motion hands off without errors", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await freshHome(page);
-  await homeInput(page).fill("Nutella");
+  await homeInput(page).fill("zaseka");
   await homeInput(page).press("Enter");
   await expect(chatInput(page)).toBeVisible();
-  await expect(log(page).locator('[data-role="user"]')).toContainText("Nutella");
+  await expect(log(page).locator('[data-role="user"]')).toContainText("zaseka");
   expect(errors).toEqual([]);
 });

@@ -1,0 +1,8129 @@
+{
+ "catalogId": "spar-4426",
+ "checkedOn": "2026-10-28",
+ "pages": {
+  "1": {
+   "theme": "Naslovnica: nagrobni aranžmaji, sveže, torte",
+   "offersOnPage": 11,
+   "notes": "Naslovnica s 5 ponudbami zgoraj in 6 spodaj."
+  },
+  "2": {
+   "theme": "Martinovanje (do torka 3. 11.)",
+   "offersOnPage": 8,
+   "notes": "Glava strani: DO TORKA 3. 11. = splošna veljavnost."
+  },
+  "3": {
+   "theme": "Naravnost od pridelovalca",
+   "offersOnPage": 6,
+   "notes": "Pri mesu natisnjeno samo »od 10,99 kg« brez SPAR plus pogoja."
+  },
+  "4": {
+   "theme": "Recept: azijski cmočki (Master Minuta)",
+   "offersOnPage": 3,
+   "notes": "Recept s sestavinami ni ponudba; 3 izdelki spodaj. Natisnjena veljavnost na strani 28. 10.–3. 11. 2026 = splošna."
+  },
+  "5": {
+   "theme": "Recept: postopek priprave (brez cen)",
+   "offersOnPage": 0,
+   "notes": "Postopek recepta in video, brez cen."
+  },
+  "6": {
+   "theme": "Slaščice SPAR: nove torte",
+   "offersOnPage": 1,
+   "notes": "Reklamna stran z eno ceno (jagodna torta)."
+  },
+  "7": {
+   "theme": "Slaščice SPAR: nove torte",
+   "offersOnPage": 4,
+   "notes": "Štiri torte, vsaka s ceno brez popusta."
+  },
+  "8": {
+   "theme": "Ribarnica (do torka 3. 11.)",
+   "offersOnPage": 11,
+   "notes": "Glava strani: DO TORKA 3. 11. = splošna veljavnost. Spodaj olja."
+  },
+  "9": {
+   "theme": "Za dobro meso in mesnine",
+   "offersOnPage": 14,
+   "notes": "Noga strani: cene veljajo do 3. 11. razen strani 22–27 (splošna opomba, brez razlik za to stran)."
+  },
+  "10": {
+   "theme": "Mesnine in narezki (do torka 3. 11.)",
+   "offersOnPage": 14,
+   "notes": "Glava strani: DO TORKA 3. 11. 3 odstotni popusti brez cene so v excluded."
+  },
+  "11": {
+   "theme": "Pripravljena hrana (do torka 3. 11.)",
+   "offersOnPage": 6,
+   "notes": "Zgornja polovica je uvodno besedilo (jedilnik 80/20) brez cen."
+  },
+  "12": {
+   "theme": "Izbrana kakovost Slovenija (brez cen)",
+   "offersOnPage": 0,
+   "notes": "Stran brez besedilnega sloja, pregledana vizualno: samo promocijsko sporočilo »Izbiram lokalno«, brez cen."
+  },
+  "13": {
+   "theme": "Izbrana kakovost Slovenija: sir in meso",
+   "offersOnPage": 4,
+   "notes": "Glava: PONUDBA VELJA OD SREDE 28. 10. DO TORKA 3. 11. 2026 = splošna veljavnost."
+  },
+  "14": {
+   "theme": "S-BUDGET diskontne S-cene",
+   "offersOnPage": 6,
+   "notes": "Zgoraj promocijsko besedilo; šest izdelkov S-BUDGET z NOVO značko, brez regularne cene."
+  },
+  "15": {
+   "theme": "S-BUDGET piščanec",
+   "offersOnPage": 8,
+   "notes": "Osem izdelkov S-BUDGET z NOVO značko, brez regularne cene."
+  },
+  "16": {
+   "theme": "Sveža izbira; Suho sadje in oreščki",
+   "offersOnPage": 12,
+   "notes": "Glava: DO TORKA 3. 11. = splošna veljavnost."
+  },
+  "17": {
+   "theme": "Joker Out: smoothiji in shoti",
+   "offersOnPage": 2,
+   "notes": "Reklamna stran z dvema cenama brez popusta."
+  },
+  "18": {
+   "theme": "Sveže iz pekarne; Za dober obrok",
+   "offersOnPage": 10,
+   "notes": "Glava: DO TORKA 3. 11. = splošna veljavnost."
+  },
+  "19": {
+   "theme": "Za dober kruh (kruh z vlakninami)",
+   "offersOnPage": 4,
+   "notes": "Glava: DO TORKA 3.11. = splošna veljavnost. Zgoraj pojasnilo o oznaki »Z VLAKNINAMI«."
+  },
+  "20": {
+   "theme": "Za poln hladilnik dobrot (mlečni izdelki)",
+   "offersOnPage": 13,
+   "notes": "Spodnja vrsta: skupina Pomurske mlekarne."
+  },
+  "21": {
+   "theme": "Sir, mlečni izdelki in zamrznjeno",
+   "offersOnPage": 12,
+   "notes": "Glava: DO TORKA 3. 11. = splošna veljavnost."
+  },
+  "22": {
+   "theme": "Izdelek meseca: Mu Cuisine",
+   "offersOnPage": 6,
+   "notes": "Natisnjeno »PONUDBA VELJA OD SREDE 28. 10. DO TORKA 3. 11. 2026.« = splošna veljavnost. Nagradna igra (35x paket smetan) brez cene."
+  }
+ },
+ "offers": [
+  {
+   "key": "sopek-nageljnov",
+   "page": 1,
+   "anchor": "NAGELJNOV",
+   "name": "Šopek nageljnov",
+   "brand": null,
+   "line": null,
+   "descriptor": "različne barve",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "vrt"
+   ],
+   "aliases": [
+    "šopek",
+    "šopek nageljnov",
+    "nageljni",
+    "nageljnov",
+    "rože",
+    "cvetje",
+    "šopek rož"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V INTERSPARIH IN HIPERMARKETIH SPAR",
+   "printed": "V INTERSPARIH IN HIPERMARKETIH SPAR 3,99 ŠOPEK NAGELJNOV • različne barve",
+   "box": [
+    0.54,
+    0.065,
+    0.8,
+    0.15
+   ],
+   "image": {
+    "crop": [
+     0.34,
+     0.15,
+     0.6,
+     0.31
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "vino-refosk-vinakoper",
+   "page": 1,
+   "anchor": "REFOŠK",
+   "name": "Vino Refošk",
+   "brand": "Vinakoper",
+   "line": null,
+   "descriptor": "suho",
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "vino",
+    "alkoholne-pijace"
+   ],
+   "aliases": [
+    "vino",
+    "refošk",
+    "rdeče vino",
+    "vinakoper",
+    "vina"
+   ],
+   "price": 359,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 459,
+   "discount": 21,
+   "pc": "PC 3,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "VINO REFOŠK suho, Vinakoper, 1 l Temperatura serviranja: 14–16 °C CENEJE 21% redna cena 4,59 PC 3,79 s SPAR plus kartico 3,59",
+   "box": [
+    0.8,
+    0.06,
+    0.985,
+    0.16
+   ],
+   "image": {
+    "crop": [
+     0.805,
+     0.16,
+     0.89,
+     0.36
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "nagrobni-aranzma",
+   "page": 1,
+   "anchor": "NAGROBNI ARANŽMA",
+   "name": "Nagrobni aranžma",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "vrt"
+   ],
+   "aliases": [
+    "nagrobni aranžma",
+    "aranžma",
+    "nagrobni",
+    "cvetje",
+    "venec",
+    "aranžmaji"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1199,
+   "discount": 33,
+   "pc": "PC 11,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V INTERSPARIH IN HIPERMARKETIH SPAR",
+   "printed": "V INTERSPARIH IN HIPERMARKETIH SPAR NAGROBNI ARANŽMA CENEJE 33% redna cena 11,99 PC 11,99 s SPAR plus kartico 7,99",
+   "box": [
+    0.63,
+    0.125,
+    0.8,
+    0.22
+   ],
+   "image": {
+    "crop": [
+     0.56,
+     0.22,
+     0.74,
+     0.37
+    ]
+   },
+   "isNew": false,
+   "notes": "PC je natisnjen enak redni ceni (PC 11,99), prepisano kot natisnjeno."
+  },
+  {
+   "key": "keksi-domacica-original-temna-multigrain",
+   "page": 1,
+   "anchor": "KEKSI DOMAČICA",
+   "name": "Keksi Domačica",
+   "brand": null,
+   "line": null,
+   "descriptor": "original, s temno čokolado ali multigrain",
+   "pack": "od 275 do 300 g",
+   "qty": null,
+   "categories": [
+    "sladko",
+    "slascice",
+    "prigrizki"
+   ],
+   "aliases": [
+    "keksi",
+    "keks",
+    "domačica",
+    "kekse",
+    "čokolada",
+    "multigrain"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 349,
+   "discount": 42,
+   "pc": "PC 2,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KEKSI DOMAČICA original, s temno čokolado ali multigrain, od 275 do 300 g CENEJE 42% redna cena 3,49 PC 2,59 s SPAR plus kartico 1,99",
+   "box": [
+    0.65,
+    0.455,
+    0.98,
+    0.52
+   ],
+   "image": {
+    "crop": [
+     0.705,
+     0.345,
+     0.975,
+     0.458
+    ]
+   },
+   "isNew": false,
+   "notes": "NOVO značka je natisnjena na naslovnici ob eni od embalaž, ne ob ponudbi; isNew ni nastavljen."
+  },
+  {
+   "key": "piscancji-file-eu-postrezno",
+   "page": 1,
+   "anchor": "PIŠČANČJI",
+   "name": "Piščančji file EU",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "piščanec",
+    "piščančji file",
+    "piščančje meso",
+    "file",
+    "perutnina",
+    "piščančji"
+   ],
+   "price": 599,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1179,
+   "discount": 49,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PIŠČANČJI FILE EU postrežno, 1 kg CENEJE 49% redna cena 11,79 s SPAR plus kartico 5,99",
+   "box": [
+    0.0,
+    0.516,
+    0.342,
+    0.655
+   ],
+   "image": {
+    "xrefs": [
+     6336
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "prsut-lokev-kosi",
+   "page": 1,
+   "anchor": "PRŠUT LOKEV",
+   "name": "Pršut Lokev kosi",
+   "brand": "Pršutarna Lokev",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "pršut",
+    "pršuta",
+    "lokev",
+    "pršut lokev",
+    "kosi",
+    "pršutarna"
+   ],
+   "price": 1499,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2499,
+   "discount": 40,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PRŠUT LOKEV KOSI pakirano, Pršutarna Lokev, 1 kg CENEJE 40% redna cena 24,99 s SPAR plus kartico 14,99",
+   "box": [
+    0.35,
+    0.516,
+    0.66,
+    0.655
+   ],
+   "image": {
+    "xrefs": [
+     6335
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "kostanj-1kg",
+   "page": 1,
+   "anchor": "KOSTANJ",
+   "name": "Kostanj",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sadje",
+    "prigrizki"
+   ],
+   "aliases": [
+    "kostanj",
+    "kostanja",
+    "kostanji",
+    "pečen kostanj",
+    "kostanju"
+   ],
+   "price": 449,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 699,
+   "discount": 35,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KOSTANJ 1 kg CENEJE 35% redna cena 6,99 s SPAR plus kartico 4,49",
+   "box": [
+    0.667,
+    0.516,
+    1.0,
+    0.655
+   ],
+   "image": {
+    "xrefs": [
+     6333
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "jamnica-mineralna-gazirana-4x1-5l",
+   "page": 1,
+   "anchor": "MINERALNA GAZIRANA",
+   "name": "Mineralna gazirana voda",
+   "brand": "Jamnica",
+   "line": null,
+   "descriptor": null,
+   "pack": "4 × 1,5 l",
+   "qty": [
+    6,
+    "l"
+   ],
+   "categories": [
+    "voda",
+    "pijace"
+   ],
+   "aliases": [
+    "voda",
+    "mineralna voda",
+    "gazirana voda",
+    "jamnica",
+    "mineralna",
+    "vode"
+   ],
+   "price": 235,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 267,
+   "discount": 11,
+   "pc": "PC 2,39",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "na embalaži: 3+1 GRATIS",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MINERALNA GAZIRANA VODA Jamnica, 4 x 1,5 l CENEJE 11% redna cena 2,67 PC 2,39 s SPAR plus kartico 2,35 (na embalaži 3+1 GRATIS)",
+   "box": [
+    0.0,
+    0.66,
+    0.242,
+    0.944
+   ],
+   "image": {
+    "xrefs": [
+     6334
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "union-radler-isotonic-limona-0-5l",
+   "page": 1,
+   "anchor": "RADLER",
+   "name": "Radler Isotonic limona 0 % alkohola",
+   "brand": "Union",
+   "line": null,
+   "descriptor": "limona, pločevinka, 0 % alkohola",
+   "pack": "0,5 l",
+   "qty": [
+    0.5,
+    "l"
+   ],
+   "categories": [
+    "pivo",
+    "pijace"
+   ],
+   "aliases": [
+    "radler",
+    "isotonic",
+    "union",
+    "brezalkoholno pivo",
+    "pivo",
+    "limona",
+    "pločevinka"
+   ],
+   "price": 87,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 125,
+   "discount": 30,
+   "pc": "PC 1,25",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "VEČ JE CENEJE: ob nakupu 3 kosov = 1 kos",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "0 % alkohola RADLER ISOTONIC limona, pločevinka, Union, 0,5 l VEČ JE CENEJE OB NAKUPU 3 KOSOV = 1 KOS CENEJE 30% redna cena 1,25 PC 1,25 s SPAR plus kartico 0,87",
+   "box": [
+    0.249,
+    0.66,
+    0.49,
+    0.944
+   ],
+   "image": {
+    "xrefs": [
+     6337
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "torte-slascice-spar-od",
+   "page": 1,
+   "anchor": "TORTE",
+   "name": "Torte Slaščice SPAR",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": "več vrst",
+   "pack": "več vrst",
+   "qty": null,
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "torta",
+    "torte",
+    "slaščice",
+    "tort",
+    "sladica",
+    "spar slaščice"
+   ],
+   "price": 1299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "cena velja od 12,99 (več vrst)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO Spoznajte 5 novih tort slaščice SPAR TORTE več vrst od 12,99",
+   "box": [
+    0.497,
+    0.66,
+    1.0,
+    0.944
+   ],
+   "image": {
+    "crop": [
+     0.52,
+     0.67,
+     0.96,
+     0.81
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "vino-berce-belo",
+   "page": 2,
+   "anchor": "VINO BERCE",
+   "name": "Vino Berce belo",
+   "brand": null,
+   "line": null,
+   "descriptor": "belo, suho",
+   "pack": "0,75 l",
+   "qty": [
+    0.75,
+    "l"
+   ],
+   "categories": [
+    "vino",
+    "alkoholne-pijace"
+   ],
+   "aliases": [
+    "vino",
+    "belo vino",
+    "berce",
+    "vina",
+    "belo"
+   ],
+   "price": 559,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 659,
+   "discount": 15,
+   "pc": "PC 6,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "VINO BERCE belo, suho, 0,75 Temperatura serviranja: 8–10 °C CENEJE 15% redna cena 6,59 PC 6,59 s SPAR plus kartico 5,59",
+   "box": [
+    0.02,
+    0.098,
+    0.19,
+    0.195
+   ],
+   "image": {
+    "crop": [
+     0.08,
+     0.208,
+     0.185,
+     0.495
+    ]
+   },
+   "isNew": false,
+   "notes": "Pri imenu je natisnjeno »0,75« brez enote l."
+  },
+  {
+   "key": "vino-sauvignon-jeruzalem-ormoz",
+   "page": 2,
+   "anchor": "VINO SAUVIGNON",
+   "name": "Vino Sauvignon",
+   "brand": "Jeruzalem Ormož",
+   "line": null,
+   "descriptor": "suho",
+   "pack": "0,75 l",
+   "qty": [
+    0.75,
+    "l"
+   ],
+   "categories": [
+    "vino",
+    "alkoholne-pijace"
+   ],
+   "aliases": [
+    "vino",
+    "sauvignon",
+    "belo vino",
+    "jeruzalem",
+    "ormož",
+    "vina"
+   ],
+   "price": 629,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 788,
+   "discount": 20,
+   "pc": "PC 7,88",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "VINO SAUVIGNON suho, Jeruzalem Ormož, 0,75 l Temperatura serviranja: 10–12 °C CENEJE 20% redna cena 7,88 PC 7,88 s SPAR plus kartico 6,29",
+   "box": [
+    0.2,
+    0.098,
+    0.375,
+    0.195
+   ],
+   "image": {
+    "crop": [
+     0.182,
+     0.22,
+     0.275,
+     0.5
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscanec-natur-premium-ik",
+   "page": 2,
+   "anchor": "PIŠČANEC",
+   "name": "Piščanec Natur Premium IK",
+   "brand": "Perutnina Ptuj",
+   "line": "Natur Premium",
+   "descriptor": "z drobovino, pakirano",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "piščanec",
+    "piščanca",
+    "cel piščanec",
+    "natur premium",
+    "perutnina ptuj",
+    "perutnina"
+   ],
+   "price": 479,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 639,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PIŠČANEC NATUR PREMIUM IK z drobovino, pakirano, Perutnina Ptuj, 1 kg CENEJE 25% redna cena 6,39 s SPAR plus kartico 4,79",
+   "box": [
+    0.4,
+    0.155,
+    0.56,
+    0.262
+   ],
+   "image": {
+    "crop": [
+     0.27,
+     0.295,
+     0.525,
+     0.54
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "mlada-raca-zamrznjena-2-1kg",
+   "page": 2,
+   "anchor": "MLADA RACA",
+   "name": "Mlada raca zamrznjena",
+   "brand": null,
+   "line": null,
+   "descriptor": "zamrznjeno",
+   "pack": "2,1 kg",
+   "qty": [
+    2.1,
+    "kg"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "zamrznjeno",
+    "kosilo"
+   ],
+   "aliases": [
+    "raca",
+    "mlada raca",
+    "race",
+    "zamrznjena raca",
+    "perutnina"
+   ],
+   "price": 399,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "cena za kos 8,39",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MLADA RACA zamrznjeno, 2,1 kg 3,99 na kg cena za kos 8,39",
+   "box": [
+    0.685,
+    0.153,
+    0.79,
+    0.23
+   ],
+   "image": {
+    "crop": [
+     0.52,
+     0.27,
+     0.745,
+     0.53
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "zito-mlinci-z-jajci-250g",
+   "page": 2,
+   "anchor": "MLINCI Z JAJCI",
+   "name": "Mlinci z jajci",
+   "brand": "Žito",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "250 g",
+   "qty": [
+    250,
+    "g"
+   ],
+   "categories": [
+    "testenine",
+    "osnovna-zivila",
+    "prilogi",
+    "kosilo"
+   ],
+   "aliases": [
+    "mlinci",
+    "mlinci z jajci",
+    "mlincev",
+    "žito",
+    "testenine"
+   ],
+   "price": 219,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 265,
+   "discount": 17,
+   "pc": "PC 2,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MLINCI Z JAJCI Žito pakirano, 250 g CENEJE 17% redna cena 2,65 PC 2,79 s SPAR plus kartico 2,19",
+   "box": [
+    0.805,
+    0.195,
+    0.98,
+    0.295
+   ],
+   "image": {
+    "crop": [
+     0.715,
+     0.29,
+     0.885,
+     0.575
+    ]
+   },
+   "isNew": false,
+   "notes": "PC 2,79 je višji od redne cene 2,65, kot natisnjeno."
+  },
+  {
+   "key": "pletena-pogaca-pan-pek-400g",
+   "page": 2,
+   "anchor": "PLETENA POGAČA",
+   "name": "Pletena pogača",
+   "brand": "Pan Pek",
+   "line": null,
+   "descriptor": null,
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh"
+   ],
+   "aliases": [
+    "pogača",
+    "pletena pogača",
+    "pogače",
+    "pan pek",
+    "kruh",
+    "pekovsko"
+   ],
+   "price": 189,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PLETENA POGAČA Pan Pek, 400 g 1,89",
+   "box": [
+    0.015,
+    0.5,
+    0.15,
+    0.63
+   ],
+   "image": {
+    "crop": [
+     0.15,
+     0.505,
+     0.36,
+     0.63
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "kranjska-klobasa-arvaj-postrezno",
+   "page": 2,
+   "anchor": "KRANJSKA KLOBASA",
+   "name": "Kranjska klobasa",
+   "brand": "Arvaj",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "klobasa",
+    "kranjska klobasa",
+    "klobase",
+    "arvaj",
+    "kranjska"
+   ],
+   "price": 1299,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 35,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KRANJSKA KLOBASA postrežno, Arvaj, 1 kg CENEJE 35% redna cena 19,99 s SPAR plus kartico 12,99",
+   "box": [
+    0.02,
+    0.79,
+    0.19,
+    0.885
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.64,
+     0.42,
+     0.79
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "moj-vrt-stajerski-hren-90g",
+   "page": 2,
+   "anchor": "ŠTAJERSKI HREN",
+   "name": "Štajerski hren sveže ribani",
+   "brand": "Moj vrt",
+   "line": null,
+   "descriptor": "sveže ribani",
+   "pack": "90 g",
+   "qty": [
+    90,
+    "g"
+   ],
+   "categories": [
+    "zacimbe",
+    "omake",
+    "prilogi"
+   ],
+   "aliases": [
+    "hren",
+    "štajerski hren",
+    "ribani hren",
+    "moj vrt",
+    "hrena"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 269,
+   "discount": 26,
+   "pc": "PC 2,69",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "MEGA CENA",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO ŠTAJERSKI HREN sveže ribani, Moj vrt, 90 g MEGA CENA CENEJE 26% redna cena 2,69 PC 2,69 s SPAR plus kartico 1,99",
+   "box": [
+    0.79,
+    0.68,
+    0.985,
+    0.93
+   ],
+   "image": {
+    "crop": [
+     0.855,
+     0.62,
+     0.995,
+     0.77
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "slovenske-suhe-hruske-90g",
+   "page": 3,
+   "anchor": "SLOVENSKE",
+   "name": "Slovenske suhe hruške",
+   "brand": "Iz Kamr'ce",
+   "line": null,
+   "descriptor": null,
+   "pack": "90 g",
+   "qty": [
+    90,
+    "g"
+   ],
+   "categories": [
+    "sadje",
+    "prigrizki"
+   ],
+   "aliases": [
+    "suhe hruške",
+    "hruške",
+    "hruškovi krhlji",
+    "krhlji",
+    "iz kamr'ce",
+    "suho sadje"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 499,
+   "discount": 20,
+   "pc": "PC 4,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Naravnost od pridelovalca",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "IZ KAMR'CE SLOVENSKE SUHE HRUŠKE 90 g redna cena 4,99 PC 4,99 s SPAR plus kartico 20 % CENEJE 3,99",
+   "box": [
+    0.028,
+    0.425,
+    0.348,
+    0.69
+   ],
+   "image": {
+    "xrefs": [
+     121
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "fizol-cesnjevec-strnad-1kg",
+   "page": 3,
+   "anchor": "FIŽOL",
+   "name": "Fižol češnjevec",
+   "brand": "Kmetija Strnad",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "osnovna-zivila",
+    "prilogi"
+   ],
+   "aliases": [
+    "fižol",
+    "češnjevec",
+    "fižola",
+    "strnad",
+    "stročnice"
+   ],
+   "price": 495,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 619,
+   "discount": 20,
+   "pc": "PC 6,19",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Naravnost od pridelovalca",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KMETIJA STRNAD FIŽOL ČEŠNJEVEC 1 kg redna cena 6,19 PC 6,19 s SPAR plus kartico 20 % CENEJE 4,95",
+   "box": [
+    0.355,
+    0.425,
+    0.66,
+    0.69
+   ],
+   "image": {
+    "xrefs": [
+     122
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bio-skuta-kocjancic-500g",
+   "page": 3,
+   "anchor": "BIO SKUTA",
+   "name": "Bio skuta nepasirana",
+   "brand": "Kmetija Kocjančič",
+   "line": null,
+   "descriptor": "nepasirana",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "sir"
+   ],
+   "aliases": [
+    "skuta",
+    "bio skuta",
+    "skute",
+    "kocjančič",
+    "nepasirana skuta",
+    "mlečni izdelki"
+   ],
+   "price": 359,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 439,
+   "discount": 18,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Naravnost od pridelovalca",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KMETIJA KOCJANČIČ IZBERI BIO BIO SKUTA nepasirana, 500 g redna cena 4,39 s SPAR plus kartico 18 % CENEJE 3,59",
+   "box": [
+    0.67,
+    0.425,
+    0.985,
+    0.69
+   ],
+   "image": {
+    "xrefs": [
+     127
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bio-jabolcni-sok-evrosad-1l",
+   "page": 3,
+   "anchor": "JABOLČNI",
+   "name": "100 % bio jabolčni sok",
+   "brand": "Skupina Evrosad",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "sokovi",
+    "pijace"
+   ],
+   "aliases": [
+    "jabolčni sok",
+    "sok",
+    "bio sok",
+    "jabolčni",
+    "evrosad",
+    "soki"
+   ],
+   "price": 239,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 299,
+   "discount": 20,
+   "pc": "PC 2,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Naravnost od pridelovalca",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SKUPINA EVROSAD IZBERI BIO 100 % BIO JABOLČNI SOK 1 l redna cena 2,99 PC 2,99 s SPAR plus kartico 20 % CENEJE 2,39",
+   "box": [
+    0.028,
+    0.7,
+    0.348,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     136
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "cvicek-ptp-colnar-1l",
+   "page": 3,
+   "anchor": "CVIČEK PTP",
+   "name": "Cviček PTP",
+   "brand": "Vinska klet Colnar",
+   "line": null,
+   "descriptor": "suho",
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "vino",
+    "alkoholne-pijace"
+   ],
+   "aliases": [
+    "cviček",
+    "vino",
+    "rdeče vino",
+    "colnar",
+    "vina",
+    "ptp"
+   ],
+   "price": 519,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 699,
+   "discount": 25,
+   "pc": "PC 5,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Naravnost od pridelovalca",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "VINSKA KLET COLNAR CVIČEK PTP suho, 1 l Temperatura serviranja: 10–12 °C redna cena 6,99 PC 5,99 s SPAR plus kartico 25 % CENEJE 5,19",
+   "box": [
+    0.355,
+    0.7,
+    0.66,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     123
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bio-mlado-goveje-meso-ik-kogovsek",
+   "page": 3,
+   "anchor": "GOVEJE MESO",
+   "name": "Bio mlado goveje meso IK",
+   "brand": "Kmetija Kogovšek",
+   "line": null,
+   "descriptor": "stegno brez kosti ali pleče, brez kosti ali rebra ali pljučna, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "goveje meso",
+    "govedina",
+    "goveji",
+    "bio govedina",
+    "stegno",
+    "pleče",
+    "kogovšek",
+    "meso"
+   ],
+   "price": 1099,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "cena od 10,99 €/kg; Naravnost od pridelovalca",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KMETIJA KOGOVŠEK IN OSTALI REJCI BIO GOVEDINE BIO MLADO GOVEJE MESO IK stegno brez kosti ali pleče brez kosti ali rebra ali pljučna, postrežno, 1 kg od 10,99 kg",
+   "box": [
+    0.67,
+    0.7,
+    0.985,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     142
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "gobe-sitake-house-of-asia-30g",
+   "page": 4,
+   "anchor": "GOBE ŠITAKE",
+   "name": "Gobe šitake",
+   "brand": "House of Asia",
+   "line": null,
+   "descriptor": null,
+   "pack": "30 g",
+   "qty": [
+    30,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "zacimbe",
+    "kosilo"
+   ],
+   "aliases": [
+    "gobe",
+    "šitake",
+    "gobe šitake",
+    "sušene gobe",
+    "house of asia",
+    "azijske sestavine"
+   ],
+   "price": 239,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 329,
+   "discount": 27,
+   "pc": "PC 3,29",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "GOBE ŠITAKE House of Asia, 30 g CENEJE 27% redna cena 3,29 PC 3,29 s SPAR plus kartico 2,39",
+   "box": [
+    0.03,
+    0.755,
+    0.345,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     6825
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sojina-omaka-svetla-pearl-river-bridge-150ml",
+   "page": 4,
+   "anchor": "SOJINA OMAKA",
+   "name": "Sojina omaka svetla",
+   "brand": "Pearl River Bridge",
+   "line": null,
+   "descriptor": "svetla",
+   "pack": "150 ml",
+   "qty": [
+    150,
+    "ml"
+   ],
+   "categories": [
+    "omake",
+    "zacimbe",
+    "kosilo"
+   ],
+   "aliases": [
+    "sojina omaka",
+    "soja omaka",
+    "sojina",
+    "omaka",
+    "pearl river bridge",
+    "azijske sestavine"
+   ],
+   "price": 115,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 165,
+   "discount": 30,
+   "pc": "PC 1,65",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SOJINA OMAKA svetla, Pearl River Bridge, 150 ml CENEJE 30% redna cena 1,65 PC 1,65 s SPAR plus kartico 1,15",
+   "box": [
+    0.35,
+    0.755,
+    0.665,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     6824
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "ostrigina-omaka-shan-shi-200ml",
+   "page": 4,
+   "anchor": "OSTRIGINA OMAKA",
+   "name": "Ostrigina omaka",
+   "brand": "Shan'Shi",
+   "line": null,
+   "descriptor": null,
+   "pack": "200 ml",
+   "qty": [
+    200,
+    "ml"
+   ],
+   "categories": [
+    "omake",
+    "zacimbe",
+    "kosilo"
+   ],
+   "aliases": [
+    "ostrigina omaka",
+    "omaka",
+    "ostrige",
+    "shan'shi",
+    "azijske sestavine"
+   ],
+   "price": 259,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 379,
+   "discount": 31,
+   "pc": "PC 3,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "OSTRIGINA OMAKA Shan'Shi, 200 ml CENEJE 31% redna cena 3,79 PC 3,79 s SPAR plus kartico 2,59",
+   "box": [
+    0.675,
+    0.755,
+    0.985,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     6816
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "jagodna-torta-slascice-spar-1000g",
+   "page": 6,
+   "anchor": "JAGODNA TORTA",
+   "name": "Jagodna torta",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": "ročno izdelano, nova torta",
+   "pack": "1000 g",
+   "qty": [
+    1000,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "torta",
+    "jagodna torta",
+    "torte",
+    "slaščice",
+    "jagoda",
+    "sladica"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "slaščice SPAR JAGODNA TORTA 1000 g 14,99",
+   "box": [
+    0.81,
+    0.73,
+    0.98,
+    0.95
+   ],
+   "image": {
+    "crop": [
+     0.2,
+     0.4,
+     0.86,
+     0.77
+    ]
+   },
+   "isNew": false,
+   "notes": "Opis levo spodaj (JAGODNA TORTA je slastna kombinacija ...) je isti izdelek. NOVE TORTE znak je v naslovu strani, ne ob ceni; isNew ni nastavljen."
+  },
+  {
+   "key": "cokoladna-torta-slascice-spar-900g",
+   "page": 7,
+   "anchor": "ČOKOLADNA TORTA",
+   "name": "Čokoladna torta",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": "ročno izdelano",
+   "pack": "900 g",
+   "qty": [
+    900,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "torta",
+    "torte",
+    "slaščice",
+    "sladica",
+    "čokoladna torta",
+    "čokolada"
+   ],
+   "price": 1299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "slaščice SPAR ČOKOLADNA TORTA 900 g 12,99",
+   "box": [
+    0.8,
+    0.165,
+    0.96,
+    0.265
+   ],
+   "image": {
+    "crop": [
+     0.43,
+     0.06,
+     0.795,
+     0.23
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "visnjeva-torta-slascice-spar-1000g",
+   "page": 7,
+   "anchor": "VIŠNJEVA TORTA",
+   "name": "Višnjeva torta",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": "ročno izdelano",
+   "pack": "1000 g",
+   "qty": [
+    1000,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "torta",
+    "torte",
+    "slaščice",
+    "sladica",
+    "višnjeva torta",
+    "višnja",
+    "višnje"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "slaščice SPAR VIŠNJEVA TORTA 1000 g 14,99",
+   "box": [
+    0.05,
+    0.385,
+    0.16,
+    0.475
+   ],
+   "image": {
+    "crop": [
+     0.18,
+     0.305,
+     0.56,
+     0.475
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "karamelna-torta-slascice-spar-800g",
+   "page": 7,
+   "anchor": "KARAMELNA TORTA",
+   "name": "Karamelna torta",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": "ročno izdelano",
+   "pack": "800 g",
+   "qty": [
+    800,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "torta",
+    "torte",
+    "slaščice",
+    "sladica",
+    "karamelna torta",
+    "karamela"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "slaščice SPAR KARAMELNA TORTA 800 g 14,99",
+   "box": [
+    0.81,
+    0.63,
+    0.96,
+    0.72
+   ],
+   "image": {
+    "crop": [
+     0.445,
+     0.53,
+     0.795,
+     0.685
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "coko-banana-torta-slascice-spar-940g",
+   "page": 7,
+   "anchor": "ČOKO-BANANA",
+   "name": "Čoko-banana torta",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": "ročno izdelano",
+   "pack": "940 g",
+   "qty": [
+    940,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "torta",
+    "torte",
+    "slaščice",
+    "sladica",
+    "čoko-banana torta",
+    "banana",
+    "čokolada"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "slaščice SPAR ČOKO-BANANA TORTA 940 g 14,99",
+   "box": [
+    0.05,
+    0.85,
+    0.16,
+    0.95
+   ],
+   "image": {
+    "crop": [
+     0.19,
+     0.755,
+     0.55,
+     0.905
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "atlantski-losos-file-sveze-postrezno",
+   "page": 8,
+   "anchor": "ATLANTSKI LOSOS",
+   "name": "Atlantski losos file",
+   "brand": null,
+   "line": null,
+   "descriptor": "sveže, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "losos",
+    "lososov file",
+    "atlantski losos",
+    "file",
+    "riba",
+    "ribe",
+    "sveža riba"
+   ],
+   "price": 1599,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2499,
+   "discount": 36,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba svežih postrežnih rib velja v trgovinah z ribarnico",
+   "printed": "ATLANTSKI LOSOS FILE sveže, postrežno, 1 kg CENEJE 36% redna cena 24,99 s SPAR plus kartico 15,99",
+   "box": [
+    0.03,
+    0.095,
+    0.505,
+    0.265
+   ],
+   "image": {
+    "xrefs": [
+     229
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "ocisceina-orada-sveza-postrezno",
+   "page": 8,
+   "anchor": "OČIŠČENA ORADA",
+   "name": "Očiščena orada",
+   "brand": null,
+   "line": null,
+   "descriptor": "velikost od 300 g do 500 g, sveže, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "orada",
+    "orade",
+    "očiščena orada",
+    "riba",
+    "ribe",
+    "sveža riba"
+   ],
+   "price": 1299,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1599,
+   "discount": 18,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba svežih postrežnih rib velja v trgovinah z ribarnico",
+   "printed": "OČIŠČENA ORADA velikost od 300 g do 500 g, sveže, postrežno, 1 kg CENEJE 18% redna cena 15,99 s SPAR plus kartico 12,99",
+   "box": [
+    0.503,
+    0.084,
+    0.985,
+    0.27
+   ],
+   "image": {
+    "xrefs": [
+     252
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "ocisceina-sarenka-sveza-postrezno",
+   "page": 8,
+   "anchor": "OČIŠČENA ŠARENKA",
+   "name": "Očiščena šarenka",
+   "brand": null,
+   "line": null,
+   "descriptor": "sveže, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "šarenka",
+    "šarenke",
+    "postrv",
+    "očiščena šarenka",
+    "riba",
+    "ribe",
+    "sveža riba"
+   ],
+   "price": 799,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1099,
+   "discount": 27,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba svežih postrežnih rib velja v trgovinah z ribarnico",
+   "printed": "OČIŠČENA ŠARENKA sveže, postrežno, 1 kg CENEJE 27% redna cena 10,99 s SPAR plus kartico 7,99",
+   "box": [
+    0.03,
+    0.243,
+    0.52,
+    0.425
+   ],
+   "image": {
+    "xrefs": [
+     228
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "vitki-som-file-coolhouse-1kg",
+   "page": 8,
+   "anchor": "VITKI SOM FILE",
+   "name": "Vitki som file",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "zamrznjeno, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "som",
+    "vitki som",
+    "somov file",
+    "file",
+    "pangasius",
+    "riba",
+    "zamrznjena riba",
+    "coolhouse"
+   ],
+   "price": 559,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 699,
+   "discount": 20,
+   "pc": "PC 5,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "ZNIŽANI FAVORITI",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba postrežnih zamrznjenih rib velja v izbranih trgovinah (seznam na www.spar.si)",
+   "printed": "VITKI SOM FILE zamrznjeno, postrežno, Coolhouse, 1 kg ZNIŽANI FAVORITI 20% redna cena 6,99 PC 5,59 s SPAR plus kartico 5,59",
+   "box": [
+    0.52,
+    0.257,
+    0.985,
+    0.433
+   ],
+   "image": {
+    "xrefs": [
+     263
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "lovke-orjaskega-lignja-coolhouse-1kg",
+   "page": 8,
+   "anchor": "LOVKE ORJAŠKEGA",
+   "name": "Lovke orjaškega lignja",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "kuhane, rezane, zamrznjeno, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno",
+    "kosilo"
+   ],
+   "aliases": [
+    "lignji",
+    "lovke",
+    "lignj",
+    "orjaški lignj",
+    "lovke lignja",
+    "zamrznjeno",
+    "coolhouse"
+   ],
+   "price": 1359,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1599,
+   "discount": 15,
+   "pc": "PC 13,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba postrežnih zamrznjenih rib velja v izbranih trgovinah (seznam na www.spar.si)",
+   "printed": "LOVKE ORJAŠKEGA LIGNJA kuhane, rezane, zamrznjeno, postrežno, Coolhouse, 1 kg CENEJE 15% redna cena 15,99 PC 13,59 s SPAR plus kartico 13,59",
+   "box": [
+    0.03,
+    0.4,
+    0.455,
+    0.597
+   ],
+   "image": {
+    "xrefs": [
+     261
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "tun-file-zrezek-coolhouse-200g",
+   "page": 8,
+   "anchor": "TUN FILE ZREZEK",
+   "name": "Tun file zrezek",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "zamrznjeno, postrežno",
+   "pack": "200 g",
+   "qty": [
+    200,
+    "g"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "tun",
+    "tuna",
+    "tunin file",
+    "zrezek",
+    "file",
+    "riba",
+    "coolhouse"
+   ],
+   "price": 479,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 599,
+   "discount": 20,
+   "pc": "PC 4,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba postrežnih zamrznjenih rib velja v izbranih trgovinah (seznam na www.spar.si)",
+   "printed": "TUN FILE ZREZEK zamrznjeno, postrežno, Coolhouse, 200 g CENEJE 20% redna cena 5,99 PC 4,79 s SPAR plus kartico 4,79",
+   "box": [
+    0.43,
+    0.398,
+    0.96,
+    0.634
+   ],
+   "image": {
+    "xrefs": [
+     260
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "lignji-patagonika-coolhouse-1kg",
+   "page": 8,
+   "anchor": "LIGNJI PATAGONIKA",
+   "name": "Lignji patagonika",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "zamrznjeno, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno",
+    "kosilo"
+   ],
+   "aliases": [
+    "lignji",
+    "lignj",
+    "patagonika",
+    "zamrznjeni lignji",
+    "riba",
+    "coolhouse"
+   ],
+   "price": 1859,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2329,
+   "discount": 20,
+   "pc": "PC 18,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Ponudba postrežnih zamrznjenih rib velja v izbranih trgovinah (seznam na www.spar.si)",
+   "printed": "LIGNJI PATAGONIKA zamrznjeno, postrežno, Coolhouse, 1 kg CENEJE 20% redna cena 23,29 PC 18,59 s SPAR plus kartico 18,59",
+   "box": [
+    0.03,
+    0.545,
+    0.45,
+    0.725
+   ],
+   "image": {
+    "xrefs": [
+     262
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "dimljen-losos-s-budget-200g",
+   "page": 8,
+   "anchor": "DIMLJEN",
+   "name": "Dimljen losos",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "200 g",
+   "qty": [
+    200,
+    "g"
+   ],
+   "categories": [
+    "ribe",
+    "malica",
+    "zajtrk"
+   ],
+   "aliases": [
+    "losos",
+    "dimljen losos",
+    "dimljenega lososa",
+    "riba",
+    "s-budget"
+   ],
+   "price": 478,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "S-BUDGET DIMLJEN LOSOS 200 g 4,78",
+   "box": [
+    0.675,
+    0.57,
+    0.955,
+    0.74
+   ],
+   "image": {
+    "xrefs": [
+     253
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "rastlinsko-olje-spar-pet-1l",
+   "page": 8,
+   "anchor": "RASTLINSKO OLJE",
+   "name": "Rastlinsko olje",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "PET",
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "olje",
+    "rastlinsko olje",
+    "sončnično olje",
+    "olja",
+    "spar",
+    "kuhinjsko olje"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 269,
+   "discount": 26,
+   "pc": "PC 2,69",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR RASTLINSKO OLJE PET, 1 l CENEJE 26% redna cena 2,69 PC 2,69 s SPAR plus kartico 1,99",
+   "box": [
+    0.065,
+    0.75,
+    0.345,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     249
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "ekstra-devisko-oljcno-olje-avantgarde-gea-1l",
+   "page": 8,
+   "anchor": "EKSTRA DEVIŠKO",
+   "name": "Ekstra deviško oljčno olje Avantgarde",
+   "brand": "Tovarna olja Gea",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "oljčno olje",
+    "olivno olje",
+    "ekstra deviško",
+    "olje",
+    "avantgarde",
+    "gea",
+    "olja"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1899,
+   "discount": 21,
+   "pc": "PC 14,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "ZNIŽANI FAVORITI",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "EKSTRA DEVIŠKO OLJČNO OLJE AVANTGARDE Tovarna olja Gea, 1 l ZNIŽANI FAVORITI 21% redna cena 18,99 PC 14,99 s SPAR plus kartico 14,99",
+   "box": [
+    0.4,
+    0.75,
+    0.665,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     251
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bio-kokosovo-olje-spar-natur-pur-400ml",
+   "page": 8,
+   "anchor": "KOKOSOVO OLJE",
+   "name": "Bio kokosovo olje",
+   "brand": "SPAR Natur pur",
+   "line": null,
+   "descriptor": null,
+   "pack": "400 ml",
+   "qty": [
+    400,
+    "ml"
+   ],
+   "categories": [
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "kokosovo olje",
+    "kokos",
+    "bio olje",
+    "olje",
+    "natur pur",
+    "kokosovega olja"
+   ],
+   "price": 429,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 598,
+   "discount": 28,
+   "pc": "PC 5,98",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "IZBERI BIO SPAR Natur pur BIO KOKOSOVO OLJE 400 ml CENEJE 28% redna cena 5,98 PC 5,98 s SPAR plus kartico 4,29",
+   "box": [
+    0.695,
+    0.81,
+    0.985,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     250
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bio-racji-file-spar-natur-pur-240g",
+   "page": 9,
+   "anchor": "BIO RAČJI FILE",
+   "name": "Bio račji file",
+   "brand": "SPAR Natur pur",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "240 g",
+   "qty": [
+    240,
+    "g"
+   ],
+   "categories": [
+    "meso",
+    "perutnina",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "račji file",
+    "raca",
+    "račje meso",
+    "bio meso",
+    "file",
+    "natur pur",
+    "bio račji"
+   ],
+   "price": 899,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 999,
+   "discount": 10,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "IZBERI BIO SPAR Natur pur BIO RAČJI FILE pakirano, 240 g CENEJE 10% redna cena 9,99 s SPAR plus kartico 8,99",
+   "box": [
+    0.0,
+    0.0,
+    0.332,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     446
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "svinjsko-stegno-eu-brez-kosti-postrezno",
+   "page": 9,
+   "anchor": "SVINJSKO STEGNO EU",
+   "name": "Svinjsko stegno EU",
+   "brand": null,
+   "line": null,
+   "descriptor": "brez kosti, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "svinjsko stegno",
+    "svinjina",
+    "svinjsko meso",
+    "stegno",
+    "svinjski"
+   ],
+   "price": 319,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "super cena; ni možno uveljavljati kuponov, dodatnih popustov in ugodnosti",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "super cena SVINJSKO STEGNO EU brez kosti, postrežno, 1 kg 3,19 Na postrežno svinjino z oznako porekla EU ni možno uveljavljati kuponov, dodatnih popustov in ugodnosti",
+   "box": [
+    0.341,
+    0.0,
+    0.649,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     451
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "slovensko-mlado-goveje-stegno-ik-brez-kosti",
+   "page": 9,
+   "anchor": "GOVEJE STEGNO IK",
+   "name": "Slovensko mlado goveje stegno IK",
+   "brand": null,
+   "line": null,
+   "descriptor": "brez kosti, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "goveje stegno",
+    "govedina",
+    "goveje meso",
+    "stegno",
+    "goveji",
+    "slovensko meso"
+   ],
+   "price": 1499,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1899,
+   "discount": 21,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SLOVENSKO MLADO GOVEJE STEGNO IK brez kosti, postrežno, 1 kg CENEJE 21% redna cena 18,99 s SPAR plus kartico 14,99",
+   "box": [
+    0.659,
+    0.0,
+    1.0,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     449
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "mleto-mesano-meso-postrezno-1kg",
+   "page": 9,
+   "anchor": "MEŠANO MESO",
+   "name": "Mleto mešano meso",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno, 50 % goveje stegno in 50 % svinjsko stegno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "mleto meso",
+    "mleto",
+    "mešano meso",
+    "mesna masa",
+    "meso za burgerje",
+    "mleta"
+   ],
+   "price": 909,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1419,
+   "discount": 35,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MLETO MEŠANO MESO postrežno, 1 kg, 50 % goveje stegno in 50 % svinjsko stegno CENEJE 35% redna cena 14,19 s SPAR plus kartico 9,09",
+   "box": [
+    0.0,
+    0.286,
+    0.332,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     450
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "meso-odojka-eu-postrezno-1kg",
+   "page": 9,
+   "anchor": "MESO ODOJKA EU",
+   "name": "Meso odojka EU",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "odojek",
+    "meso odojka",
+    "odojka",
+    "svinjina",
+    "svinjsko meso",
+    "prašiček"
+   ],
+   "price": 699,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1029,
+   "discount": 32,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MESO ODOJKA EU postrežno, 1 kg CENEJE 32% redna cena 10,29 s SPAR plus kartico 6,99",
+   "box": [
+    0.341,
+    0.286,
+    0.649,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     448
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "svinjski-file-ribica-s-budget-1kg",
+   "page": 9,
+   "anchor": "FILE - RIBICA",
+   "name": "Svinjski file - ribica",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "pakirano",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "svinjski file",
+    "ribica",
+    "svinjina",
+    "svinjsko meso",
+    "file",
+    "s-budget"
+   ],
+   "price": 799,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "S-BUDGET SVINJSKI FILE - RIBICA pakirano, 1 kg 7,99",
+   "box": [
+    0.659,
+    0.286,
+    1.0,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     453
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "stefani-pecenka-meso-kamnik-600g",
+   "page": 9,
+   "anchor": "ŠTEFANI PEČENKA",
+   "name": "Štefani pečenka",
+   "brand": "Meso Kamnik",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "600 g",
+   "qty": [
+    600,
+    "g"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "štefani pečenka",
+    "pečenka",
+    "mleto meso",
+    "meso kamnik",
+    "svinjina",
+    "mesna pečenka"
+   ],
+   "price": 599,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 779,
+   "discount": 23,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ŠTEFANI PEČENKA pakirano, Meso Kamnik, 600 g CENEJE 23% redna cena 7,79 s SPAR plus kartico 5,99",
+   "box": [
+    0.0,
+    0.516,
+    0.332,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     445
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "puranji-file-zrezki-perutnina-ptuj-400g",
+   "page": 9,
+   "anchor": "PURANJI FILE",
+   "name": "Puranji file zrezki",
+   "brand": "Perutnina Ptuj",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "puran",
+    "puranji file",
+    "puranji zrezki",
+    "purana",
+    "zrezki",
+    "perutnina ptuj",
+    "natur"
+   ],
+   "price": 559,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 799,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PURANJI FILE ZREZKI pakirano, Perutnina Ptuj, 400 g CENEJE 30% redna cena 7,99 s SPAR plus kartico 5,59",
+   "box": [
+    0.341,
+    0.516,
+    0.649,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     447
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "stajerska-kolina-ave-450g",
+   "page": 9,
+   "anchor": "ŠTAJERSKA KOLINA",
+   "name": "Štajerska kolina",
+   "brand": "Ave",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "450 g",
+   "qty": [
+    450,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "kolina",
+    "štajerska kolina",
+    "klobase",
+    "svinjske klobase",
+    "ave",
+    "chef"
+   ],
+   "price": 419,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 599,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ŠTAJERSKA KOLINA pakirano, Ave, 450 g CENEJE 30% redna cena 5,99 s SPAR plus kartico 4,19",
+   "box": [
+    0.659,
+    0.516,
+    1.0,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     444
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancje-pecene-prsi-pivka-1kg",
+   "page": 9,
+   "anchor": "PEČENE PRSI",
+   "name": "Piščančje pečene prsi",
+   "brand": "Pivka",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "perutnina",
+    "malica",
+    "kosilo"
+   ],
+   "aliases": [
+    "piščančje prsi",
+    "pečene prsi",
+    "piščanec",
+    "pivka",
+    "narezek",
+    "piščančja šunka"
+   ],
+   "price": 1289,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1849,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pivka PIŠČANČJE PEČENE PRSI postrežno, 1 kg CENEJE 30% redna cena 18,49 s SPAR plus kartico 12,89",
+   "box": [
+    0.01,
+    0.755,
+    0.205,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     455
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancje-hrenovke-ik-pivka-1kg",
+   "page": 9,
+   "anchor": "HRENOVKE IK",
+   "name": "Piščančje hrenovke IK",
+   "brand": "Pivka",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "perutnina",
+    "malica",
+    "kosilo"
+   ],
+   "aliases": [
+    "hrenovke",
+    "piščančje hrenovke",
+    "hrenovka",
+    "pivka",
+    "piščanec",
+    "klobase"
+   ],
+   "price": 499,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 679,
+   "discount": 26,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pivka PIŠČANČJE HRENOVKE IK pakirano, 1 kg CENEJE 26% redna cena 6,79 s SPAR plus kartico 4,99",
+   "box": [
+    0.208,
+    0.76,
+    0.395,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     452
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancja-suha-salama-ali-kulen-pivka-100g",
+   "page": 9,
+   "anchor": "SALAMA ALI KULEN",
+   "name": "Piščančja suha salama ali kulen",
+   "brand": "Pivka",
+   "line": null,
+   "descriptor": "salama ali kulen, narezek",
+   "pack": "100 g",
+   "qty": [
+    100,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "perutnina",
+    "malica"
+   ],
+   "aliases": [
+    "salama",
+    "kulen",
+    "suha salama",
+    "piščančja salama",
+    "narezek",
+    "pivka"
+   ],
+   "price": 229,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 289,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pivka PIŠČANČJA SUHA SALAMA ALI KULEN narezek, 100 g CENEJE 20% redna cena 2,89 s SPAR plus kartico 2,29",
+   "box": [
+    0.4,
+    0.745,
+    0.575,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     443,
+     426
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancje-krace-ik-pivka-500g",
+   "page": 9,
+   "anchor": "KRAČE IK",
+   "name": "Piščančje krače IK",
+   "brand": "Pivka",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "krače",
+    "piščančje krače",
+    "piščanec",
+    "pivka",
+    "perutnina"
+   ],
+   "price": 379,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 479,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pivka PIŠČANČJE KRAČE IK pakirano, 500 g CENEJE 20% redna cena 4,79 s SPAR plus kartico 3,79",
+   "box": [
+    0.58,
+    0.765,
+    0.765,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     425
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancja-nabodala-ik-pivka-400g",
+   "page": 9,
+   "anchor": "NABODALA IK",
+   "name": "Piščančja nabodala IK",
+   "brand": "Pivka",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "nabodala",
+    "piščančja nabodala",
+    "ražnjiči",
+    "piščanec",
+    "pivka",
+    "žar"
+   ],
+   "price": 429,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 579,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pivka PIŠČANČJA NABODALA IK pakirano, 400 g CENEJE 25% redna cena 5,79 s SPAR plus kartico 4,29",
+   "box": [
+    0.77,
+    0.765,
+    0.96,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     456
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "aljazeva-klobasa-kras-postrezno",
+   "page": 10,
+   "anchor": "ALJAŽEVA KLOBASA",
+   "name": "Aljaževa klobasa",
+   "brand": "Kras",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "aljaževa klobasa",
+    "klobasa",
+    "salama",
+    "kras",
+    "narezek",
+    "mesnine"
+   ],
+   "price": 1369,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1959,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ALJAŽEVA KLOBASA postrežno, Kras, 1 kg CENEJE 30% redna cena 19,59 s SPAR plus kartico 13,69",
+   "box": [
+    0.0,
+    0.0,
+    0.341,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     622
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "savinjski-zelodec-zdezele-postrezno",
+   "page": 10,
+   "anchor": "SAVINJSKI ŽELODEC",
+   "name": "Savinjski želodec",
+   "brand": "Z´dežele",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "savinjski želodec",
+    "želodec",
+    "salama",
+    "z´dežele",
+    "narezek",
+    "mesnine"
+   ],
+   "price": 2299,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2929,
+   "discount": 21,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SAVINJSKI ŽELODEC postrežno, Z´dežele, 1 kg CENEJE 21% redna cena 29,29 s SPAR plus kartico 22,99",
+   "box": [
+    0.351,
+    0.0,
+    0.659,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     597
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "salama-dobro-cajna-zimska-kulen-80g",
+   "page": 10,
+   "anchor": "SALAMA",
+   "name": "Salama čajna, zimska ali kulen",
+   "brand": "Dobro",
+   "line": null,
+   "descriptor": "čajna, zimska ali kulen, narezek",
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "salama",
+    "čajna salama",
+    "zimska salama",
+    "kulen",
+    "narezek",
+    "dobro",
+    "žito"
+   ],
+   "price": 179,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 239,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SALAMA čajna, zimska ali kulen, narezek, Dobro, 80 g CENEJE 25% redna cena 2,39 s SPAR plus kartico 1,79",
+   "box": [
+    0.668,
+    0.0,
+    1.0,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     619,
+     643,
+     625
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "frankfurter-xxl-ave-postrezno",
+   "page": 10,
+   "anchor": "FRANKFURTER XXL",
+   "name": "Frankfurter XXL",
+   "brand": "Ave",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "hrenovke",
+    "frankfurter",
+    "hrenovka",
+    "frankfurterice",
+    "ave",
+    "klobase"
+   ],
+   "price": 999,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1579,
+   "discount": 36,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "FRANKFURTER XXL postrežno, Ave, 1 kg CENEJE 36% redna cena 15,79 s SPAR plus kartico 9,99",
+   "box": [
+    0.0,
+    0.516,
+    0.341,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     634
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "prekajena-rebra-mesnine-zerak-1kg",
+   "page": 10,
+   "anchor": "PREKAJENA REBRA",
+   "name": "Prekajena rebra",
+   "brand": "Mesnine Žerak",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "prekajena rebra",
+    "rebra",
+    "svinjska rebra",
+    "prekajeno meso",
+    "mesnine žerak"
+   ],
+   "price": 999,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1299,
+   "discount": 23,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PREKAJENA REBRA pakirano, Mesnine Žerak, 1 kg CENEJE 23% redna cena 12,99 s SPAR plus kartico 9,99",
+   "box": [
+    0.351,
+    0.516,
+    0.659,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     637
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "kraska-panceta-dimljena-kras-1kg",
+   "page": 10,
+   "anchor": "KRAŠKA PANCETA",
+   "name": "Kraška panceta",
+   "brand": "Kras",
+   "line": null,
+   "descriptor": "dimljena, pakirano",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "panceta",
+    "kraška panceta",
+    "slanina",
+    "dimljena panceta",
+    "kras",
+    "pancete"
+   ],
+   "price": 1999,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2699,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KRAŠKA PANCETA dimljena, pakirano, Kras, 1 kg CENEJE 25% redna cena 26,99 s SPAR plus kartico 19,99",
+   "box": [
+    0.668,
+    0.516,
+    1.0,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     620
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "pecen-prsut-meso-kamnik-postrezno",
+   "page": 10,
+   "anchor": "PEČEN PRŠUT",
+   "name": "Pečen pršut",
+   "brand": "Meso Kamnik",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "pečen pršut",
+    "pršut",
+    "šunka",
+    "meso kamnik",
+    "narezek",
+    "mesnine"
+   ],
+   "price": 1399,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2149,
+   "discount": 34,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PEČEN PRŠUT postrežno, Meso Kamnik, 1 kg CENEJE 34% redna cena 21,49 s SPAR plus kartico 13,99",
+   "box": [
+    0.025,
+    0.755,
+    0.215,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     639
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "mortadela-z-olivami-meso-kamnik-postrezno",
+   "page": 10,
+   "anchor": "MORTADELA",
+   "name": "Mortadela z olivami",
+   "brand": "Meso Kamnik",
+   "line": null,
+   "descriptor": "z olivami, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "mortadela",
+    "oljke",
+    "z olivami",
+    "narezek",
+    "meso kamnik",
+    "mesnine"
+   ],
+   "price": 1299,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1899,
+   "discount": 31,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MORTADELA z olivami, postrežno, Meso Kamnik, 1 kg CENEJE 31% redna cena 18,99 s SPAR plus kartico 12,99",
+   "box": [
+    0.216,
+    0.755,
+    0.41,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     621
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "presana-sunka-meso-kamnik-postrezno",
+   "page": 10,
+   "anchor": "PREŠANA ŠUNKA",
+   "name": "Prešana šunka",
+   "brand": "Meso Kamnik",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "šunka",
+    "prešana šunka",
+    "narezek",
+    "meso kamnik",
+    "mesnine",
+    "šunke"
+   ],
+   "price": 1263,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1579,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "ZNIŽANI FAVORITI",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PREŠANA ŠUNKA postrežno, Meso Kamnik, 1 kg ZNIŽANI FAVORITI 20% redna cena 15,79 s SPAR plus kartico 12,63",
+   "box": [
+    0.405,
+    0.745,
+    0.595,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     645
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "kamniska-klobasa-pakirano-360g",
+   "page": 10,
+   "anchor": "KAMNIŠKA KLOBASA",
+   "name": "Kamniška klobasa",
+   "brand": null,
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "360 g",
+   "qty": [
+    360,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "kamniška klobasa",
+    "klobasa",
+    "klobase",
+    "kamniška",
+    "mesnine"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 499,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KAMNIŠKA KLOBASA pakirano, 360 g CENEJE 20% redna cena 4,99 s SPAR plus kartico 3,99",
+   "box": [
+    0.595,
+    0.76,
+    0.775,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     644
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "hrenovke-meso-kamnik-840g",
+   "page": 10,
+   "anchor": "HRENOVKE",
+   "name": "Hrenovke",
+   "brand": "Meso Kamnik",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "840 g",
+   "qty": [
+    840,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "hrenovke",
+    "hrenovka",
+    "klobase",
+    "meso kamnik",
+    "anton"
+   ],
+   "price": 879,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1099,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "HRENOVKE pakirano, Meso Kamnik, 840 g CENEJE 20% redna cena 10,99 s SPAR plus kartico 8,79",
+   "box": [
+    0.775,
+    0.745,
+    0.985,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     638,
+     624
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "americke-palacinke-s-pistacijo-to-go",
+   "page": 11,
+   "anchor": "AMERIŠKE",
+   "name": "Ameriške palačinke s pistacijo",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "ameriške palačinke, pistacija namaz, sladka smetana, jagodičevje",
+   "pack": "1 kos",
+   "qty": null,
+   "categories": [
+    "slascice",
+    "sladko",
+    "zajtrk"
+   ],
+   "aliases": [
+    "palačinke",
+    "ameriške palačinke",
+    "pistacija",
+    "palačinka",
+    "to go",
+    "pripravljena hrana",
+    "hitroteka"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go AMERIŠKE PALAČINKE S PISTACIJO Sestavine: ameriške palačinke, pistacija namaz, sladka smetana, liofilizirano mešano jagodičevje in sesekljana pistacija 3,99",
+   "box": [
+    0.0,
+    0.498,
+    0.335,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     6968
+    ]
+   },
+   "isNew": false,
+   "notes": "Pakiranje ni natisnjeno; pack »1 kos« je privzeta enota ponudbe."
+  },
+  {
+   "key": "rizev-narastek-to-go",
+   "page": 11,
+   "anchor": "RIŽEV NARASTEK",
+   "name": "Rižev narastek",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "kosilo"
+   ],
+   "aliases": [
+    "rižev narastek",
+    "narastek",
+    "sladica",
+    "to go",
+    "pripravljena hrana",
+    "hitroteka"
+   ],
+   "price": 359,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go RIŽEV NARASTEK 1 kos 3,59",
+   "box": [
+    0.344,
+    0.498,
+    0.656,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     6967
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "solata-fitnes-to-go-od",
+   "page": 11,
+   "anchor": "SOLATA FITNES",
+   "name": "Solata fitnes",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "zelena solata, radič, zelje, piščančji file, lanena semena; pakirano",
+   "pack": "cca 320 g",
+   "qty": [
+    320,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "malica",
+    "kosilo"
+   ],
+   "aliases": [
+    "solata",
+    "fitnes solata",
+    "piščančji file",
+    "to go",
+    "pripravljena hrana",
+    "hitroteka"
+   ],
+   "price": 320,
+   "priceUnit": "kos",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "cena od 3,20 € / kos; cena za kg 9,99",
+   "unitPrice": {
+    "cents": 999,
+    "per": "kg"
+   },
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go SOLATA FITNES Sestavine: zelena solata, radič, zelje, piščančji file in lanena semena; pakirano cca 320 g, cena za kg 9,99. od 3,20 kos",
+   "box": [
+    0.665,
+    0.498,
+    1.0,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     6966
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancja-prsa-pecena-to-go-1kg",
+   "page": 11,
+   "anchor": "PIŠČANČJA PRSA",
+   "name": "Piščančja prsa pečena",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "pečena",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "piščančja prsa",
+    "piščanec",
+    "pečena prsa",
+    "pečen piščanec",
+    "to go",
+    "pripravljena hrana",
+    "hitroteka"
+   ],
+   "price": 1199,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1399,
+   "discount": 14,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go PIŠČANČJA PRSA pečena, 1 kg CENEJE 14% redna cena 13,99 s SPAR plus kartico 11,99",
+   "box": [
+    0.0,
+    0.737,
+    0.335,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     6953
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "krompir-marinirani-pecen-to-go-1kg",
+   "page": 11,
+   "anchor": "KROMPIR",
+   "name": "Krompir mariniran in pečen",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "mariniran in pečen",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi",
+    "kosilo"
+   ],
+   "aliases": [
+    "krompir",
+    "pečen krompir",
+    "mariniran krompir",
+    "to go",
+    "pripravljena hrana",
+    "hitroteka"
+   ],
+   "price": 699,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go KROMPIR mariniran in pečen, 1 kg 6,99",
+   "box": [
+    0.344,
+    0.737,
+    0.656,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     6955
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "rezan-ananas-to-go-od",
+   "page": 11,
+   "anchor": "REZAN ANANAS",
+   "name": "Rezan ananas",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "cca 300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "sadje",
+    "malica"
+   ],
+   "aliases": [
+    "ananas",
+    "rezan ananas",
+    "sadje",
+    "to go",
+    "pripravljena hrana",
+    "hitroteka"
+   ],
+   "price": 285,
+   "priceUnit": "kos",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "cena od 2,85 € / kos; cena za kg 9,49",
+   "unitPrice": {
+    "cents": 949,
+    "per": "kg"
+   },
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go REZAN ANANAS pakirano cca 300 g, cena za kg 9,49. od 2,85 kos",
+   "box": [
+    0.665,
+    0.737,
+    1.0,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     6954
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sir-ljutomerski-ementalec-pomurske-mlekarne-100g",
+   "page": 13,
+   "anchor": "LJUTOMERSKI",
+   "name": "Sir ljutomerski ementalec",
+   "brand": "Pomurske mlekarne",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "100 g",
+   "qty": [
+    100,
+    "g"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "ementalec",
+    "ljutomerski ementalec",
+    "ljutomerski sir",
+    "pomurske mlekarne",
+    "sira"
+   ],
+   "price": 150,
+   "priceUnit": "100g",
+   "priceKind": "loyalty_price",
+   "regular": null,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "ZNIŽANI FAVORITI; redna cena za kg 19,99; cena za kg 14,99",
+   "unitPrice": {
+    "cents": 1499,
+    "per": "kg"
+   },
+   "validity": null,
+   "availability": null,
+   "printed": "SIR LJUTOMERSKI EMENTALEC Pomurske mlekarne, postrežno, 1 kg ZNIŽANI FAVORITI 25% s SPAR plus kartico 100 g 1,50 redna cena za kg 19,99 cena za kg 14,99",
+   "box": [
+    0.31,
+    0.025,
+    0.88,
+    0.22
+   ],
+   "image": {
+    "xrefs": [
+     7092
+    ]
+   },
+   "isNew": false,
+   "notes": "Cena 1,50 velja za 100 g; natisnjena redna cena je na kg (19,99), zato regular ni vpisan."
+  },
+  {
+   "key": "argentinski-steak-ik-zdezele-300g",
+   "page": 13,
+   "anchor": "ARGENTINSKI",
+   "name": "Argentinski steak IK",
+   "brand": "Z'dežele",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "steak",
+    "argentinski steak",
+    "ramstek",
+    "goveje meso",
+    "govedina",
+    "z'dežele"
+   ],
+   "price": 899,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1159,
+   "discount": 22,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ARGENTINSKI STEAK IK pakirano, Z'dežele, 300 g CENEJE 22% redna cena 11,59 s SPAR plus kartico 8,99",
+   "box": [
+    0.06,
+    0.205,
+    0.52,
+    0.485
+   ],
+   "image": {
+    "xrefs": [
+     7102
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancje-peruti-ik-natur-premium-500g",
+   "page": 13,
+   "anchor": "PERUTI IK",
+   "name": "Piščančje peruti IK",
+   "brand": "Perutnina Ptuj",
+   "line": "Natur Premium",
+   "descriptor": "pakirano",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "peruti",
+    "piščančje peruti",
+    "perutke",
+    "perutničke",
+    "natur premium",
+    "perutnina ptuj",
+    "piščanec"
+   ],
+   "price": 339,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 449,
+   "discount": 24,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PIŠČANČJE PERUTI IK Natur Premium, pakirano, Perutnina Ptuj, 500 g CENEJE 24% redna cena 4,49 s SPAR plus kartico 3,39",
+   "box": [
+    0.59,
+    0.4,
+    0.975,
+    0.71
+   ],
+   "image": {
+    "xrefs": [
+     7101
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancji-cevapcici-ali-pleskavice-ik-pivka-400g",
+   "page": 13,
+   "anchor": "ČEVAPČIČI IK",
+   "name": "Piščančji čevapčiči IK ali pleskavice IK",
+   "brand": "Pivka",
+   "line": null,
+   "descriptor": "čevapčiči ali pleskavice, pakirano",
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "meso",
+    "perutnina",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "čevapčiči",
+    "pleskavice",
+    "piščančji čevapčiči",
+    "piščančje pleskavice",
+    "pivka",
+    "žar",
+    "piščanec"
+   ],
+   "price": 379,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 479,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PIŠČANČJI ČEVAPČIČI IK ALI PLESKAVICE IK pakirano, Pivka, 400 g CENEJE 20% redna cena 4,79 s SPAR plus kartico 3,79",
+   "box": [
+    0.02,
+    0.69,
+    0.64,
+    0.97
+   ],
+   "image": {
+    "xrefs": [
+     7090,
+     7091
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancje-kocke-400g",
+   "page": 14,
+   "anchor": "PIŠČANČJE KOCKE",
+   "name": "Piščančje kocke",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "piščančje kocke",
+    "piščanec",
+    "kocke",
+    "piščančje meso",
+    "s-budget",
+    "spar"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJE KOCKE 400 g 4,99",
+   "box": [
+    0.0,
+    0.498,
+    0.335,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     7127
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancji-zrezki-500g",
+   "page": 14,
+   "anchor": "PIŠČANČJI ZREZKI",
+   "name": "Piščančji zrezki",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "piščančji zrezki",
+    "piščanec",
+    "zrezki",
+    "piščančje meso",
+    "s-budget",
+    "spar"
+   ],
+   "price": 439,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJI ZREZKI 500 g 4,39",
+   "box": [
+    0.344,
+    0.498,
+    0.656,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     7128
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancji-trakci-wok-350g",
+   "page": 14,
+   "anchor": "PIŠČANČJI TRAKCI",
+   "name": "Piščančji trakci za wok",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "za wok, začinjeno",
+   "pack": "350 g",
+   "qty": [
+    350,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "piščančji trakci",
+    "trakci",
+    "wok",
+    "piščanec",
+    "začinjeni trakci",
+    "s-budget",
+    "spar"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJI TRAKCI za wok, začinjeno, 350 g 3,99",
+   "box": [
+    0.665,
+    0.498,
+    1.0,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     7129
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-zaseka-300g",
+   "page": 14,
+   "anchor": "ZASEKA",
+   "name": "Zaseka",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "pakirano",
+   "pack": "300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "namazi",
+    "malica"
+   ],
+   "aliases": [
+    "zaseka",
+    "mastni namaz",
+    "namaz",
+    "svinjska mast",
+    "s-budget",
+    "spar"
+   ],
+   "price": 318,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET ZASEKA pakirano, 300 g 3,18",
+   "box": [
+    0.0,
+    0.737,
+    0.335,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     7117
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-suha-salama-500g",
+   "page": 14,
+   "anchor": "SUHA SALAMA",
+   "name": "Suha salama",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "pakirano",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso",
+    "malica"
+   ],
+   "aliases": [
+    "salama",
+    "suha salama",
+    "salame",
+    "klobasa",
+    "s-budget",
+    "spar"
+   ],
+   "price": 699,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET SUHA SALAMA pakirano, 500 g 6,99",
+   "box": [
+    0.344,
+    0.737,
+    0.656,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     7116
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancje-krace-600g",
+   "page": 14,
+   "anchor": "PIŠČANČJE KRAČE",
+   "name": "Piščančje krače",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "600 g",
+   "qty": [
+    600,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "krače",
+    "piščančje krače",
+    "piščanec",
+    "perutnina",
+    "s-budget",
+    "spar"
+   ],
+   "price": 275,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJE KRAČE 600 g 2,75",
+   "box": [
+    0.665,
+    0.735,
+    1.0,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     7115
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancji-prsni-file-500g",
+   "page": 15,
+   "anchor": "PRSNI FILE",
+   "name": "Piščančji prsni file",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "prsni file",
+    "piščančji file",
+    "file",
+    "piščanec",
+    "prsi",
+    "s-budget",
+    "spar"
+   ],
+   "price": 479,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJI PRSNI FILE 500 g 4,79",
+   "box": [
+    0.08,
+    0.065,
+    0.58,
+    0.475
+   ],
+   "image": {
+    "xrefs": [
+     7158
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancje-peruti-500g",
+   "page": 15,
+   "anchor": "PIŠČANČJE PERUTI",
+   "name": "Piščančje peruti",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "peruti",
+    "piščančje peruti",
+    "perutke",
+    "piščanec",
+    "s-budget",
+    "spar"
+   ],
+   "price": 245,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJE PERUTI 500 g 2,45",
+   "box": [
+    0.47,
+    0.1,
+    0.955,
+    0.45
+   ],
+   "image": {
+    "xrefs": [
+     7157
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancja-stegna-600g",
+   "page": 15,
+   "anchor": "PIŠČANČJA STEGNA",
+   "name": "Piščančja stegna",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "600 g",
+   "qty": [
+    600,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "stegna",
+    "piščančja stegna",
+    "piščanec",
+    "perutnina",
+    "s-budget",
+    "spar"
+   ],
+   "price": 269,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJA STEGNA 600 g 2,69",
+   "box": [
+    0.0,
+    0.498,
+    0.335,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     7156
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancja-bedra-500g",
+   "page": 15,
+   "anchor": "PIŠČANČJA BEDRA",
+   "name": "Piščančja bedra",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "bedra",
+    "piščančja bedra",
+    "piščanec",
+    "perutnina",
+    "s-budget",
+    "spar"
+   ],
+   "price": 241,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJA BEDRA 500 g 2,41",
+   "box": [
+    0.344,
+    0.498,
+    0.656,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     7142
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancja-stegna-brez-kosti-in-koze-500g",
+   "page": 15,
+   "anchor": "BREZ KOSTI IN KOŽE",
+   "name": "Piščančja stegna brez kosti in kože",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "brez kosti in kože",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "stegna",
+    "piščančja stegna",
+    "brez kosti",
+    "piščanec",
+    "perutnina",
+    "s-budget",
+    "spar"
+   ],
+   "price": 379,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJA STEGNA BREZ KOSTI IN KOŽE 500 g 3,79",
+   "box": [
+    0.665,
+    0.498,
+    1.0,
+    0.73
+   ],
+   "image": {
+    "xrefs": [
+     7145
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-mleto-meso-iz-piscancjih-beder-400g",
+   "page": 15,
+   "anchor": "MLETO MESO",
+   "name": "Mleto meso iz piščančjih beder",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "iz piščančjih beder",
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "mleto meso",
+    "mleto piščančje meso",
+    "mleto",
+    "piščanec",
+    "bedra",
+    "s-budget",
+    "spar"
+   ],
+   "price": 349,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET MLETO MESO iz piščančjih beder, 400 g 3,49",
+   "box": [
+    0.0,
+    0.737,
+    0.335,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     7144
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancji-mini-file-500g",
+   "page": 15,
+   "anchor": "MINI FILE",
+   "name": "Piščančji mini file",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "mini file",
+    "piščančji file",
+    "file",
+    "piščanec",
+    "s-budget",
+    "spar"
+   ],
+   "price": 429,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJI MINI FILE 500 g 4,29",
+   "box": [
+    0.344,
+    0.737,
+    0.656,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     7159
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "s-budget-piscancja-drobovina-500g",
+   "page": 15,
+   "anchor": "DROBOVINA",
+   "name": "Piščančja drobovina",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": null,
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "perutnina",
+    "meso",
+    "kosilo"
+   ],
+   "aliases": [
+    "drobovina",
+    "piščančja drobovina",
+    "jetra",
+    "piščanec",
+    "s-budget",
+    "spar"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST S-BUDGET PIŠČANČJA DROBOVINA 500 g 1,99",
+   "box": [
+    0.665,
+    0.737,
+    1.0,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     7143
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "maline-125g",
+   "page": 16,
+   "anchor": "MALINE",
+   "name": "Maline",
+   "brand": null,
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "125 g",
+   "qty": [
+    125,
+    "g"
+   ],
+   "categories": [
+    "sadje",
+    "prigrizki"
+   ],
+   "aliases": [
+    "maline",
+    "malin",
+    "malinam",
+    "sveže sadje",
+    "jagodičevje"
+   ],
+   "price": 179,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 269,
+   "discount": 33,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MALINE pakirano, 125 g CENEJE 33% redna cena 2,69 s SPAR plus kartico 1,79",
+   "box": [
+    0.0,
+    0.065,
+    0.331,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     853
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "mandarine-iz-doline-reke-neretve-1kg",
+   "page": 16,
+   "anchor": "MANDARINE",
+   "name": "Mandarine iz doline reke Neretve",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sadje"
+   ],
+   "aliases": [
+    "mandarine",
+    "mandarina",
+    "mandarin",
+    "neretva",
+    "citrusi",
+    "sveže sadje"
+   ],
+   "price": 129,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 179,
+   "discount": 27,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MANDARINE IZ DOLINE REKE NERETVE 1 kg CENEJE 27% redna cena 1,79 s SPAR plus kartico 1,29",
+   "box": [
+    0.341,
+    0.065,
+    0.649,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     858
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "slovenska-jabolka-bonita-1kg",
+   "page": 16,
+   "anchor": "JABOLKA BONITA",
+   "name": "Slovenska jabolka Bonita",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sadje"
+   ],
+   "aliases": [
+    "jabolka",
+    "jabolko",
+    "bonita",
+    "slovenska jabolka",
+    "sveže sadje"
+   ],
+   "price": 149,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 199,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SLOVENSKA JABOLKA BONITA 1 kg CENEJE 25% redna cena 1,99 s SPAR plus kartico 1,49",
+   "box": [
+    0.658,
+    0.065,
+    1.0,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     862
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "slovenske-hruske-abate-1kg",
+   "page": 16,
+   "anchor": "HRUŠKE ABATE",
+   "name": "Slovenske hruške Abate",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sadje"
+   ],
+   "aliases": [
+    "hruške",
+    "hruška",
+    "abate",
+    "slovenske hruške",
+    "sveže sadje"
+   ],
+   "price": 199,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 269,
+   "discount": 26,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SLOVENSKE HRUŠKE ABATE 1 kg CENEJE 26% redna cena 2,69 s SPAR plus kartico 1,99",
+   "box": [
+    0.0,
+    0.286,
+    0.331,
+    0.508
+   ],
+   "image": {
+    "xrefs": [
+     852
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "gobe-bukov-ostrigar-250g",
+   "page": 16,
+   "anchor": "BUKOV OSTRIGAR",
+   "name": "Gobe bukov ostrigar",
+   "brand": null,
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "250 g",
+   "qty": [
+    250,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "gobe",
+    "bukov ostrigar",
+    "ostrigar",
+    "jurčki",
+    "sveže gobe"
+   ],
+   "price": 169,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 219,
+   "discount": 22,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "GOBE BUKOV OSTRIGAR pakirano, 250 g CENEJE 22% redna cena 2,19 s SPAR plus kartico 1,69",
+   "box": [
+    0.341,
+    0.286,
+    0.649,
+    0.508
+   ],
+   "image": {
+    "xrefs": [
+     863
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bio-motovilec-spar-natur-pur-100g",
+   "page": 16,
+   "anchor": "BIO MOTOVILEC",
+   "name": "Bio motovilec",
+   "brand": "SPAR Natur pur",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "100 g",
+   "qty": [
+    100,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi"
+   ],
+   "aliases": [
+    "motovilec",
+    "bio motovilec",
+    "solata",
+    "bio solata",
+    "natur pur"
+   ],
+   "price": 99,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 139,
+   "discount": 28,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "IZBERI BIO SPAR Natur pur BIO MOTOVILEC pakirano, 100 g CENEJE 28% redna cena 1,39 s SPAR plus kartico 0,99",
+   "box": [
+    0.658,
+    0.286,
+    1.0,
+    0.508
+   ],
+   "image": {
+    "xrefs": [
+     854
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "slovensko-kislo-zelje-spar-500g",
+   "page": 16,
+   "anchor": "KISLO ZELJE",
+   "name": "Slovensko kislo zelje",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi",
+    "kosilo"
+   ],
+   "aliases": [
+    "kislo zelje",
+    "zelje",
+    "kislega zelja",
+    "slovensko zelje",
+    "spar"
+   ],
+   "price": 119,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 149,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR SLOVENSKO KISLO ZELJE pakirano, 500 g CENEJE 20% redna cena 1,49 s SPAR plus kartico 1,19",
+   "box": [
+    0.0,
+    0.516,
+    0.331,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     831
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "solata-ledenka-spar-1kos",
+   "page": 16,
+   "anchor": "SOLATA LEDENKA",
+   "name": "Solata ledenka",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi"
+   ],
+   "aliases": [
+    "solata",
+    "ledenka",
+    "ledena solata",
+    "zelena solata",
+    "spar"
+   ],
+   "price": 119,
+   "priceUnit": "kos",
+   "priceKind": "loyalty_price",
+   "regular": 169,
+   "discount": 29,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR SOLATA LEDENKA 1 kos CENEJE 29% redna cena 1,69 s SPAR plus kartico 1,19",
+   "box": [
+    0.341,
+    0.516,
+    0.649,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     864
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "cvetaca-1kg",
+   "page": 16,
+   "anchor": "CVETAČA",
+   "name": "Cvetača",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi"
+   ],
+   "aliases": [
+    "cvetača",
+    "cvetače",
+    "cvetačo",
+    "zelenjava"
+   ],
+   "price": 179,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 249,
+   "discount": 28,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "CVETAČA 1 kg CENEJE 28% redna cena 2,49 s SPAR plus kartico 1,79",
+   "box": [
+    0.658,
+    0.516,
+    1.0,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     832
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "orehova-jedrca-spar-300g",
+   "page": 16,
+   "anchor": "OREHOVA JEDRCA",
+   "name": "Orehova jedrca",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": null,
+   "pack": "300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "prigrizki",
+    "sadje",
+    "zajtrk"
+   ],
+   "aliases": [
+    "orehi",
+    "orehova jedrca",
+    "jedrca",
+    "oreščki",
+    "orehov",
+    "suho sadje in oreščki",
+    "spar"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 379,
+   "discount": 21,
+   "pc": "PC 2,65",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR OREHOVA JEDRCA 300 g CENEJE 21% redna cena 3,79 PC 2,65 s SPAR plus kartico 2,99",
+   "box": [
+    0.0,
+    0.746,
+    0.331,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     861
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "praseni-arasidi-nesoljeni-spar-200g",
+   "page": 16,
+   "anchor": "PRAŽENI ARAŠIDI",
+   "name": "Praženi arašidi nesoljeni",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "nesoljeni",
+   "pack": "200 g",
+   "qty": [
+    200,
+    "g"
+   ],
+   "categories": [
+    "prigrizki",
+    "grickalke"
+   ],
+   "aliases": [
+    "arašidi",
+    "pečen arašid",
+    "pražen arašid",
+    "nesoljeni arašidi",
+    "oreščki",
+    "spar"
+   ],
+   "price": 89,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 99,
+   "discount": 10,
+   "pc": "PC 0,89",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR PRAŽENI ARAŠIDI nesoljeni, 200 g CENEJE 10% redna cena 0,99 PC 0,89 s SPAR plus kartico 0,89",
+   "box": [
+    0.341,
+    0.746,
+    0.649,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     860
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "suhe-slive-brez-koscic-spar-200g",
+   "page": 16,
+   "anchor": "SUHE SLIVE",
+   "name": "Suhe slive brez koščic",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "brez konzervansov",
+   "pack": "200 g",
+   "qty": [
+    200,
+    "g"
+   ],
+   "categories": [
+    "sadje",
+    "prigrizki"
+   ],
+   "aliases": [
+    "slive",
+    "suhe slive",
+    "suho sadje",
+    "brez koščic",
+    "suhih sliv",
+    "spar"
+   ],
+   "price": 179,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 239,
+   "discount": 25,
+   "pc": "PC 2,39",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR SUHE SLIVE BREZ KOŠČIC brez konzervansov, 200 g CENEJE 25% redna cena 2,39 PC 2,39 s SPAR plus kartico 1,79",
+   "box": [
+    0.658,
+    0.746,
+    1.0,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     859
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "joker-out-shot-60ml",
+   "page": 17,
+   "anchor": "SHOT",
+   "name": "Shot energy, vitamin C ali imuno",
+   "brand": "Joker Out × SPAR",
+   "line": null,
+   "descriptor": "energy, vitamin C ali imuno",
+   "pack": "60 ml",
+   "qty": [
+    60,
+    "ml"
+   ],
+   "categories": [
+    "pijace",
+    "sokovi"
+   ],
+   "aliases": [
+    "shot",
+    "shoti",
+    "joker out",
+    "energy shot",
+    "vitamin c",
+    "imuno",
+    "imuno shot",
+    "smoothie shot"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Ekskluzivno v SPAR; izdelek v hladilniku",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "JOKER OUT x SPAR SHOT energy, vitamin C ali imuno, 60 ml 1,99 PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST",
+   "box": [
+    0.04,
+    0.52,
+    0.38,
+    0.71
+   ],
+   "image": {
+    "crop": [
+     0.27,
+     0.525,
+     0.545,
+     0.7
+    ]
+   },
+   "isNew": false,
+   "notes": "Slika je skupna fotografija shotov in smoothijev (crop)."
+  },
+  {
+   "key": "joker-out-smoothie-025l",
+   "page": 17,
+   "anchor": "SMOOTHIE",
+   "name": "Smoothie protein, fresh ali chia",
+   "brand": "Joker Out × SPAR",
+   "line": null,
+   "descriptor": "protein, fresh ali chia",
+   "pack": "0,25 l",
+   "qty": [
+    0.25,
+    "l"
+   ],
+   "categories": [
+    "pijace",
+    "sokovi"
+   ],
+   "aliases": [
+    "smoothie",
+    "smoothi",
+    "smoothiji",
+    "joker out",
+    "protein",
+    "fresh",
+    "chia",
+    "napitek"
+   ],
+   "price": 249,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Ekskluzivno v SPAR; izdelek v hladilniku",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "JOKER OUT x SPAR SMOOTHIE protein, fresh ali chia, 0,25 l 2,49 PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST",
+   "box": [
+    0.72,
+    0.54,
+    0.95,
+    0.71
+   ],
+   "image": {
+    "crop": [
+     0.26,
+     0.39,
+     0.79,
+     0.68
+    ]
+   },
+   "isNew": false,
+   "notes": "Slika je skupna fotografija smoothijev in shotov (crop)."
+  },
+  {
+   "key": "matjazev-hlebec-pekarna-spar-1kg",
+   "page": 18,
+   "anchor": "MATJAŽEV",
+   "name": "Matjažev hlebec",
+   "brand": "Pekarna SPAR",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg; cena na kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "kruh",
+    "pekovsko"
+   ],
+   "aliases": [
+    "kruh",
+    "hleb",
+    "hlebec",
+    "matjažev hlebec",
+    "matjaž",
+    "pekarna spar",
+    "pekovsko"
+   ],
+   "price": 299,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 399,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "pekarna SPAR MATJAŽEV HLEBEC 1 kg; cena na kg CENEJE 25% redna cena 3,99 s SPAR plus kartico 2,99",
+   "box": [
+    0.57,
+    0.115,
+    0.985,
+    0.33
+   ],
+   "image": {
+    "xrefs": [
+     1058
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "strucka-sendvic-pekarna-spar-150g",
+   "page": 18,
+   "anchor": "ŠTRUČKA SENDVIČ",
+   "name": "Štručka sendvič",
+   "brand": "Pekarna SPAR",
+   "line": null,
+   "descriptor": null,
+   "pack": "150 g",
+   "qty": [
+    150,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "štručka",
+    "sendvič štručka",
+    "štručka sendvič",
+    "žemlja",
+    "pecivo",
+    "pekarna spar"
+   ],
+   "price": 43,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 54,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "pekarna SPAR ŠTRUČKA SENDVIČ 150 g CENEJE 20% redna cena 0,54 s SPAR plus kartico 0,43",
+   "box": [
+    0.025,
+    0.33,
+    0.4,
+    0.51
+   ],
+   "image": {
+    "xrefs": [
+     1074
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "pecivo-z-ajdo-80g",
+   "page": 18,
+   "anchor": "Z AJDO",
+   "name": "Pecivo z ajdo",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "pecivo",
+    "ajda",
+    "ajdovo pecivo",
+    "pecivo z ajdo",
+    "žemlja",
+    "pekarna"
+   ],
+   "price": 39,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 49,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PECIVO Z AJDO 80 g CENEJE 20% redna cena 0,49 s SPAR plus kartico 0,39",
+   "box": [
+    0.39,
+    0.255,
+    0.7,
+    0.48
+   ],
+   "image": {
+    "xrefs": [
+     1038
+    ]
+   },
+   "isNew": false,
+   "notes": "Natisnjeno »PECIVO Z AJDO« (zapis v besedilnem sloju: Z AJDO)."
+  },
+  {
+   "key": "zito-proteinsko-pecivo-80g",
+   "page": 18,
+   "anchor": "PROTEINSKO",
+   "name": "Proteinsko pecivo",
+   "brand": "Žito",
+   "line": null,
+   "descriptor": null,
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "pecivo",
+    "proteinsko pecivo",
+    "protein",
+    "žito",
+    "žemlja"
+   ],
+   "price": 39,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 49,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "žito PROTEINSKO PECIVO 80 g CENEJE 20% redna cena 0,49 s SPAR plus kartico 0,39",
+   "box": [
+    0.67,
+    0.335,
+    0.985,
+    0.5
+   ],
+   "image": {
+    "xrefs": [
+     1073
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "krof-z-malino-don-don-240g",
+   "page": 18,
+   "anchor": "KROF Z MALINO",
+   "name": "Krof z malino",
+   "brand": "Don Don",
+   "line": null,
+   "descriptor": null,
+   "pack": "240 g",
+   "qty": [
+    240,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko",
+    "pekovsko"
+   ],
+   "aliases": [
+    "krof",
+    "krofi",
+    "malina",
+    "krof z malino",
+    "don don",
+    "slaščice"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "Ekskluzivno v SPAR-u",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NOVO KROF Z MALINO Don Don, 240 g Ekskluzivno v SPAR-u. 2,99",
+   "box": [
+    0.45,
+    0.475,
+    0.985,
+    0.715
+   ],
+   "image": {
+    "xrefs": [
+     1059,
+     1037
+    ]
+   },
+   "isNew": true,
+   "notes": null
+  },
+  {
+   "key": "crno-bela-rezina-slascice-spar-165g",
+   "page": 18,
+   "anchor": "ČRNO BELA REZINA",
+   "name": "Črno bela rezina",
+   "brand": "Slaščice SPAR",
+   "line": null,
+   "descriptor": null,
+   "pack": "165 g",
+   "qty": [
+    165,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "sladko"
+   ],
+   "aliases": [
+    "rezina",
+    "črno bela rezina",
+    "torta",
+    "slaščice",
+    "sladica",
+    "slaščica"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 259,
+   "discount": 23,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "slaščice SPAR ČRNO BELA REZINA 165 g CENEJE 23% redna cena 2,59 s SPAR plus kartico 1,99 PREVERJENO NA BIOTEHNIŠKI FAKULTETI ODLIČNA KAKOVOST",
+   "box": [
+    0.03,
+    0.51,
+    0.48,
+    0.69
+   ],
+   "image": {
+    "xrefs": [
+     1060
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "mavricna-solata-to-go-340g",
+   "page": 18,
+   "anchor": "MAVRIČNA SOLATA",
+   "name": "Mavrična solata",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "zelena solata, zelje, radič, koruza, rdeči fižol, korenje",
+   "pack": "cca 340 g",
+   "qty": [
+    340,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "malica",
+    "kosilo"
+   ],
+   "aliases": [
+    "solata",
+    "mavrična solata",
+    "mešana solata",
+    "to go",
+    "pripravljena hrana",
+    "zelenjava"
+   ],
+   "price": 238,
+   "priceUnit": "kos",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": "cena od 2,38 € / kos; cena za kg 6,99",
+   "unitPrice": {
+    "cents": 699,
+    "per": "kg"
+   },
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go MAVRIČNA SOLATA Sestavine: zelena solata, zelje, radič, koruza, rdeči fižol, korenje. Pakirano cca 340 g, cena za kg 6,99 EUR. od 2,38 kos",
+   "box": [
+    0.0,
+    0.746,
+    0.341,
+    0.969
+   ],
+   "image": {
+    "xrefs": [
+     1068
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "prazen-krompir-to-go-1kg",
+   "page": 18,
+   "anchor": "PRAŽEN KROMPIR",
+   "name": "Pražen krompir",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi",
+    "kosilo"
+   ],
+   "aliases": [
+    "krompir",
+    "pražen krompir",
+    "pražen",
+    "to go",
+    "pripravljena hrana",
+    "priloga"
+   ],
+   "price": 699,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go PRAŽEN KROMPIR 1 kg 6,99",
+   "box": [
+    0.351,
+    0.746,
+    0.658,
+    0.969
+   ],
+   "image": {
+    "xrefs": [
+     1070
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "pecena-svinjska-rebra-to-go-1kg",
+   "page": 18,
+   "anchor": "SVINJSKA REBRA",
+   "name": "Pečena svinjska rebra",
+   "brand": "SPAR to Go",
+   "line": null,
+   "descriptor": "pečena",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "meso",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "rebra",
+    "svinjska rebra",
+    "pečena rebra",
+    "to go",
+    "pripravljena hrana",
+    "svinjina"
+   ],
+   "price": 1279,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1599,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR to Go PEČENA SVINJSKA REBRA 1 kg CENEJE 20% redna cena 15,99 s SPAR plus kartico 12,79",
+   "box": [
+    0.668,
+    0.746,
+    1.0,
+    0.969
+   ],
+   "image": {
+    "xrefs": [
+     1069
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "pecivo-z-ajdo-80g-p19",
+   "page": 19,
+   "anchor": "PECIVO Z AJDO",
+   "name": "Pecivo z ajdo",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "pecivo",
+    "ajda",
+    "ajdovo pecivo",
+    "pecivo z ajdo",
+    "žemlja",
+    "pekarna"
+   ],
+   "price": 39,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 49,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PECIVO Z AJDO 80 g CENEJE 20% redna cena 0,49 s SPAR plus kartico 0,39",
+   "box": [
+    0.0,
+    0.3,
+    0.5,
+    0.595
+   ],
+   "image": {
+    "crop": [
+     0.0,
+     0.31,
+     0.5,
+     0.495
+    ]
+   },
+   "isNew": false,
+   "notes": "Isti izdelek je natisnjen tudi na str. 18 (key pecivo-z-ajdo-80g)."
+  },
+  {
+   "key": "chia-zemljica-spar-vital-90g",
+   "page": 19,
+   "anchor": "CHIA ŽEMLJICA",
+   "name": "Chia žemljica",
+   "brand": "SPAR Vital",
+   "line": null,
+   "descriptor": null,
+   "pack": "90 g",
+   "qty": [
+    90,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "žemljica",
+    "chia",
+    "chia žemljica",
+    "pecivo",
+    "vital",
+    "spar vital"
+   ],
+   "price": 89,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR Vital CHIA ŽEMLJICA 90 g 0,89",
+   "box": [
+    0.5,
+    0.29,
+    0.985,
+    0.575
+   ],
+   "image": {
+    "crop": [
+     0.5,
+     0.295,
+     0.87,
+     0.575
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "pecivo-z-bucnimi-semeni-don-don-80g",
+   "page": 19,
+   "anchor": "PECIVO",
+   "name": "Pecivo z bučnimi semeni",
+   "brand": "Don Don",
+   "line": null,
+   "descriptor": "z bučnimi semeni",
+   "pack": "80 g",
+   "qty": [
+    80,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "pecivo",
+    "bučna semena",
+    "pecivo z bučnimi semeni",
+    "žemlja",
+    "don don"
+   ],
+   "price": 49,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PECIVO z bučnimi semeni, Don Don, 80 g 0,49",
+   "box": [
+    0.03,
+    0.565,
+    0.62,
+    0.835
+   ],
+   "image": {
+    "crop": [
+     0.14,
+     0.6,
+     0.43,
+     0.82
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "polnozrnata-strucka-z-otrobi-70g",
+   "page": 19,
+   "anchor": "POLNOZRNATA",
+   "name": "Polnozrnata štručka z otrobi",
+   "brand": null,
+   "line": null,
+   "descriptor": "z otrobi",
+   "pack": "70 g",
+   "qty": [
+    70,
+    "g"
+   ],
+   "categories": [
+    "pekovsko",
+    "kruh",
+    "malica"
+   ],
+   "aliases": [
+    "štručka",
+    "polnozrnata štručka",
+    "otrobi",
+    "pecivo",
+    "polnozrnato",
+    "žemlja"
+   ],
+   "price": 29,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "POLNOZRNATA ŠTRUČKA z otrobi, 70 g 0,29",
+   "box": [
+    0.58,
+    0.59,
+    0.985,
+    0.945
+   ],
+   "image": {
+    "crop": [
+     0.64,
+     0.59,
+     0.97,
+     0.84
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "napitek-actimel-danone-6x100g",
+   "page": 20,
+   "anchor": "NAPITEK ACTIMEL",
+   "name": "Napitek Actimel",
+   "brand": "Danone",
+   "line": null,
+   "descriptor": "več okusov",
+   "pack": "6 × 100 g",
+   "qty": [
+    600,
+    "g"
+   ],
+   "categories": [
+    "jogurti",
+    "mlecni-izdelki",
+    "pijace"
+   ],
+   "aliases": [
+    "actimel",
+    "napitek actimel",
+    "probiotični napitek",
+    "danone",
+    "jogurtov napitek",
+    "mlečni napitek"
+   ],
+   "price": 239,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 329,
+   "discount": 27,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "MEGA CENA",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NAPITEK ACTIMEL več okusov, Danone, 6 x 100 g MEGA CENA CENEJE 27% redna cena 3,29 s SPAR plus kartico 2,39",
+   "box": [
+    0.0,
+    0.065,
+    0.649,
+    0.289
+   ],
+   "image": {
+    "xrefs": [
+     1294,
+     1295,
+     1296
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sladka-smetana-ljubljanske-mlekarne-250ml",
+   "page": 20,
+   "anchor": "SLADKA SMETANA",
+   "name": "Sladka smetana",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "Ljubljanske mlekarne",
+   "pack": "250 ml",
+   "qty": [
+    250,
+    "ml"
+   ],
+   "categories": [
+    "mlecni-izdelki"
+   ],
+   "aliases": [
+    "smetana",
+    "sladka smetana",
+    "smetano",
+    "ljubljanske mlekarne",
+    "mlečni izdelki",
+    "spar"
+   ],
+   "price": 149,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 209,
+   "discount": 28,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR SLADKA SMETANA Ljubljanske mlekarne, 250 ml CENEJE 28% redna cena 2,09 s SPAR plus kartico 1,49",
+   "box": [
+    0.659,
+    0.07,
+    1.0,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     1293
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sveze-mleko-spar-3-5-pet-1l",
+   "page": 20,
+   "anchor": "SVEŽE MLEKO",
+   "name": "Sveže mleko 3,5 % m. m.",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "3,5 % m. m., PET",
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "zajtrk"
+   ],
+   "aliases": [
+    "mleko",
+    "sveže mleko",
+    "mleka",
+    "mlekom",
+    "mlečni izdelki",
+    "spar",
+    "pet"
+   ],
+   "price": 119,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 155,
+   "discount": 23,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR SVEŽE MLEKO 3,5 % m. m., PET, 1 l CENEJE 23% redna cena 1,55 s SPAR plus kartico 1,19",
+   "box": [
+    0.0,
+    0.286,
+    0.332,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     1291
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "jogurt-oki-doki-zelene-doline-150g",
+   "page": 20,
+   "anchor": "JOGURT OKI DOKI",
+   "name": "Jogurt Oki Doki",
+   "brand": "Zelene Doline",
+   "line": null,
+   "descriptor": "več okusov",
+   "pack": "150 g",
+   "qty": [
+    150,
+    "g"
+   ],
+   "categories": [
+    "jogurti",
+    "mlecni-izdelki",
+    "zajtrk"
+   ],
+   "aliases": [
+    "jogurt",
+    "jogurti",
+    "oki doki",
+    "zelene doline",
+    "jogurta",
+    "mlečni izdelki"
+   ],
+   "price": 115,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 159,
+   "discount": 27,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "JOGURT OKI DOKI več okusov, Zelene Doline, 150 g CENEJE 27% redna cena 1,59 s SPAR plus kartico 1,15",
+   "box": [
+    0.341,
+    0.286,
+    0.649,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     1286,
+     1260,
+     1282
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "puding-vindija-125g",
+   "page": 20,
+   "anchor": "PUDING VINDIJA",
+   "name": "Puding Vindija",
+   "brand": "Vindija",
+   "line": null,
+   "descriptor": "več okusov",
+   "pack": "125 g",
+   "qty": [
+    125,
+    "g"
+   ],
+   "categories": [
+    "slascice",
+    "mlecni-izdelki",
+    "sladko"
+   ],
+   "aliases": [
+    "puding",
+    "vindija",
+    "vanilija",
+    "čokolada",
+    "pudingi",
+    "mlečni izdelki"
+   ],
+   "price": 34,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 49,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PUDING VINDIJA več okusov, 125 g CENEJE 30% redna cena 0,49 s SPAR plus kartico 0,34",
+   "box": [
+    0.659,
+    0.286,
+    1.0,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     1300,
+     1299
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "kislo-mleko-zelene-doline-3-2-180g",
+   "page": 20,
+   "anchor": "KISLO MLEKO",
+   "name": "Kislo mleko 3,2 % m. m.",
+   "brand": "Zelene Doline",
+   "line": null,
+   "descriptor": "3,2 % m. m.",
+   "pack": "180 g",
+   "qty": [
+    180,
+    "g"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "jogurti"
+   ],
+   "aliases": [
+    "kislo mleko",
+    "mleko",
+    "zelene doline",
+    "mlečni izdelki",
+    "kislega mleka"
+   ],
+   "price": 55,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 69,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "ZNIŽANI FAVORITI",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KISLO MLEKO 3,2 % m. m., Zelene Doline, 180 g ZNIŽANI FAVORITI 20% redna cena 0,69 s SPAR plus kartico 0,55",
+   "box": [
+    0.0,
+    0.516,
+    0.332,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     1292
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "kava-starbucks-220ml",
+   "page": 20,
+   "anchor": "KAVA STARBUCKS",
+   "name": "Kava Starbucks",
+   "brand": "Starbucks",
+   "line": null,
+   "descriptor": "več okusov",
+   "pack": "220 ml",
+   "qty": [
+    220,
+    "ml"
+   ],
+   "categories": [
+    "kava",
+    "pijace"
+   ],
+   "aliases": [
+    "kava",
+    "starbucks",
+    "ledena kava",
+    "latte",
+    "cappuccino",
+    "macchiato",
+    "kavni napitek"
+   ],
+   "price": 159,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 229,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "KAVA STARBUCKS več okusov, 220 ml CENEJE 30% redna cena 2,29 s SPAR plus kartico 1,59",
+   "box": [
+    0.341,
+    0.516,
+    0.649,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     1302,
+     1285,
+     1301
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "proteinski-napitek-zbregov-0-5l",
+   "page": 20,
+   "anchor": "PROTEINSKI NAPITEK",
+   "name": "Proteinski napitek",
+   "brand": "Z´bregov",
+   "line": null,
+   "descriptor": "več okusov",
+   "pack": "0,5 l",
+   "qty": [
+    0.5,
+    "l"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "pijace"
+   ],
+   "aliases": [
+    "proteinski napitek",
+    "protein",
+    "protein 50",
+    "z´bregov",
+    "mlečni napitek",
+    "napitek"
+   ],
+   "price": 179,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 249,
+   "discount": 28,
+   "pc": "PC 1,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PROTEINSKI NAPITEK več okusov, Z´bregov, 0,5 l CENEJE 28% redna cena 2,49 PC 1,59 s SPAR plus kartico 1,79",
+   "box": [
+    0.659,
+    0.516,
+    1.0,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     1280,
+     1259,
+     1258
+    ]
+   },
+   "isNew": false,
+   "notes": "PC 1,59 je nižji od akcijske cene 1,79, kot natisnjeno."
+  },
+  {
+   "key": "slovensko-cajno-maslo-pomurske-mlekarne-250g",
+   "page": 20,
+   "anchor": "ČAJNO MASLO",
+   "name": "Slovensko čajno maslo",
+   "brand": "Pomurske mlekarne",
+   "line": null,
+   "descriptor": null,
+   "pack": "250 g",
+   "qty": [
+    250,
+    "g"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "namazi",
+    "zajtrk"
+   ],
+   "aliases": [
+    "maslo",
+    "čajno maslo",
+    "slovensko maslo",
+    "masla",
+    "pomurske mlekarne",
+    "mlečni izdelki"
+   ],
+   "price": 299,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 439,
+   "discount": 31,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "POMURSKE MLEKARNE SLOVENSKO ČAJNO MASLO 250 g CENEJE 31% redna cena 4,39 s SPAR plus kartico 2,99",
+   "box": [
+    0.02,
+    0.745,
+    0.205,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     1298
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "prekmurska-domaca-skuta-1kg",
+   "page": 20,
+   "anchor": "DOMAČA SKUTA",
+   "name": "Prekmurska domača skuta",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "sir"
+   ],
+   "aliases": [
+    "skuta",
+    "domača skuta",
+    "prekmurska skuta",
+    "skute",
+    "mlečni izdelki"
+   ],
+   "price": 569,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 849,
+   "discount": 32,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "PREKMURSKA DOMAČA SKUTA 1 kg CENEJE 32% redna cena 8,49 s SPAR plus kartico 5,69",
+   "box": [
+    0.205,
+    0.745,
+    0.395,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     1284
+    ]
+   },
+   "isNew": false,
+   "notes": "Znamka ni natisnjena v bloku izdelka (logotip Pomurske mlekarne je samo v bloku masla, logotip na embalaži ni berljiv) - brand ni vpisan."
+  },
+  {
+   "key": "sir-livada-navadna-pakirano-300g",
+   "page": 20,
+   "anchor": "SIR LIVADA",
+   "name": "Sir Livada navadna",
+   "brand": null,
+   "line": null,
+   "descriptor": "navadna, pakirano",
+   "pack": "300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "livada",
+    "sir livada",
+    "navadna livada",
+    "sira"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 629,
+   "discount": 36,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SIR LIVADA navadna, pakirano, 300 g CENEJE 36% redna cena 6,29 s SPAR plus kartico 3,99",
+   "box": [
+    0.395,
+    0.745,
+    0.58,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     1283
+    ]
+   },
+   "isNew": false,
+   "notes": "Znamka ni natisnjena v bloku izdelka (logotip Pomurske mlekarne je samo v bloku masla, logotip na embalaži ni berljiv) - brand ni vpisan."
+  },
+  {
+   "key": "sir-livada-postrezno-1kg",
+   "page": 20,
+   "anchor": "SIR LIVADA",
+   "name": "Sir Livada",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "livada",
+    "sir livada",
+    "sira",
+    "postrežni sir"
+   ],
+   "price": 979,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1579,
+   "discount": 37,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SIR LIVADA postrežno, 1 kg CENEJE 37% redna cena 15,79 s SPAR plus kartico 9,79",
+   "box": [
+    0.575,
+    0.745,
+    0.775,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     1281
+    ]
+   },
+   "isNew": false,
+   "notes": "Znamka ni natisnjena v bloku izdelka (logotip Pomurske mlekarne je samo v bloku masla, logotip na embalaži ni berljiv) - brand ni vpisan."
+  },
+  {
+   "key": "trajno-pomursko-mleko-3-5-1l",
+   "page": 20,
+   "anchor": "POMURSKO",
+   "name": "Trajno Pomursko mleko 3,5 % m. m.",
+   "brand": "Pomurske mlekarne",
+   "line": null,
+   "descriptor": "trajno, 3,5 % m. m.",
+   "pack": "1 l",
+   "qty": [
+    1,
+    "l"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "zajtrk"
+   ],
+   "aliases": [
+    "mleko",
+    "trajno mleko",
+    "pomursko mleko",
+    "mleka",
+    "pomurske mlekarne",
+    "mlečni izdelki"
+   ],
+   "price": 99,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 165,
+   "discount": 40,
+   "pc": "PC 1,65",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "TRAJNO POMURSKO MLEKO 3,5 % m. m., 1 l CENEJE 40% redna cena 1,65 PC 1,65 s SPAR plus kartico 0,99",
+   "box": [
+    0.77,
+    0.745,
+    0.985,
+    0.975
+   ],
+   "image": {
+    "xrefs": [
+     1297
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sir-edamec-spar-postrezno-1kg",
+   "page": 21,
+   "anchor": "SIR EDAMEC",
+   "name": "Sir edamec",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "edamec",
+    "edamca",
+    "sira",
+    "spar",
+    "postrežni sir"
+   ],
+   "price": 539,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 959,
+   "discount": 43,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SPAR SIR EDAMEC postrežno, 1 kg CENEJE 43% redna cena 9,59 s SPAR plus kartico 5,39",
+   "box": [
+    0.0,
+    0.07,
+    0.341,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     1503
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "burek-s-svezim-sirom-spar-940g",
+   "page": 21,
+   "anchor": "BUREK",
+   "name": "Burek s svežim sirom",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "s svežim sirom, zamrznjeno",
+   "pack": "940 g",
+   "qty": [
+    940,
+    "g"
+   ],
+   "categories": [
+    "zamrznjeno",
+    "pekovsko",
+    "kosilo"
+   ],
+   "aliases": [
+    "burek",
+    "burek s sirom",
+    "zamrznjen burek",
+    "sirov burek",
+    "spar",
+    "testo"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 679,
+   "discount": 26,
+   "pc": "PC 6,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ZAMRZNJENO SPAR BUREK S SVEŽIM SIROM 940 g CENEJE 26% redna cena 6,79 PC 6,79 s SPAR plus kartico 4,99",
+   "box": [
+    0.668,
+    0.07,
+    1.0,
+    0.279
+   ],
+   "image": {
+    "xrefs": [
+     1501
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sir-maasdam-frico-postrezno-1kg",
+   "page": 21,
+   "anchor": "MAASDAM FRICO",
+   "name": "Sir Maasdam Frico",
+   "brand": "Frico",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "maasdam",
+    "frico",
+    "sira",
+    "postrežni sir"
+   ],
+   "price": 849,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1043,
+   "discount": 18,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SIR MAASDAM FRICO postrežno, 1 kg CENEJE 18% redna cena 10,43 s SPAR plus kartico 8,49",
+   "box": [
+    0.0,
+    0.286,
+    0.341,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     1477
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sir-brie-president-postrezno-1kg",
+   "page": 21,
+   "anchor": "SIR BRIE",
+   "name": "Sir Brie",
+   "brand": "President",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "brie",
+    "president",
+    "sira",
+    "postrežni sir",
+    "plesnivi sir"
+   ],
+   "price": 1399,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1899,
+   "discount": 26,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SIR BRIE President, postrežno, 1 kg CENEJE 26% redna cena 18,99 s SPAR plus kartico 13,99",
+   "box": [
+    0.351,
+    0.286,
+    0.659,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     1502
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "domaci-skutni-struklji-zlato-polje-1kg",
+   "page": 21,
+   "anchor": "SKUTNI ŠTRUKLJI",
+   "name": "Domači skutni štruklji",
+   "brand": "Zlato Polje",
+   "line": null,
+   "descriptor": "zamrznjeno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "zamrznjeno",
+    "slascice",
+    "kosilo",
+    "prilogi"
+   ],
+   "aliases": [
+    "štruklji",
+    "skutni štruklji",
+    "domači štruklji",
+    "zamrznjeni štruklji",
+    "zlato polje"
+   ],
+   "price": 639,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1069,
+   "discount": 40,
+   "pc": "PC 6,39",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ZAMRZNJENO DOMAČI SKUTNI ŠTRUKLJI Zlato Polje, 1 kg CENEJE 40% redna cena 10,69 PC 6,39 s SPAR plus kartico 6,39",
+   "box": [
+    0.668,
+    0.286,
+    1.0,
+    0.509
+   ],
+   "image": {
+    "xrefs": [
+     1500
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sir-dorblu-postrezno-1kg",
+   "page": 21,
+   "anchor": "SIR DORBLU",
+   "name": "Sir Dorblu",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica"
+   ],
+   "aliases": [
+    "sir",
+    "dorblu",
+    "plesnivi sir",
+    "modri sir",
+    "sira",
+    "postrežni sir"
+   ],
+   "price": 1299,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1699,
+   "discount": 23,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SIR DORBLU postrežno, 1 kg CENEJE 23% redna cena 16,99 s SPAR plus kartico 12,99",
+   "box": [
+    0.0,
+    0.516,
+    0.341,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     1476
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "margarina-rama-400g",
+   "page": 21,
+   "anchor": "MARGARINA RAMA",
+   "name": "Margarina Rama",
+   "brand": "Rama",
+   "line": null,
+   "descriptor": "več vrst",
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "namazi",
+    "zajtrk"
+   ],
+   "aliases": [
+    "margarina",
+    "rama",
+    "maslo",
+    "namaz",
+    "margarine"
+   ],
+   "price": 179,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 239,
+   "discount": 25,
+   "pc": "PC 1,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MARGARINA RAMA več vrst, 400 g CENEJE 25% redna cena 2,39 PC 1,79 s SPAR plus kartico 1,79",
+   "box": [
+    0.351,
+    0.516,
+    0.659,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     1497,
+     1496
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "piscancji-fingersi-perutnina-ptuj-750g",
+   "page": 21,
+   "anchor": "FINGERSI",
+   "name": "Piščančji fingersi",
+   "brand": "Perutnina Ptuj",
+   "line": null,
+   "descriptor": "zamrznjeno",
+   "pack": "750 g",
+   "qty": [
+    750,
+    "g"
+   ],
+   "categories": [
+    "zamrznjeno",
+    "perutnina",
+    "kosilo",
+    "vecerja"
+   ],
+   "aliases": [
+    "fingersi",
+    "piščančji fingersi",
+    "piščančje palčke",
+    "zamrznjeno",
+    "perutnina ptuj",
+    "piščanec"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1159,
+   "discount": 31,
+   "pc": "PC 7,59",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ZAMRZNJENO PIŠČANČJI FINGERSI Perutnina Ptuj, 750 g CENEJE 31% redna cena 11,59 PC 7,59 s SPAR plus kartico 7,99",
+   "box": [
+    0.668,
+    0.516,
+    1.0,
+    0.739
+   ],
+   "image": {
+    "xrefs": [
+     1499
+    ]
+   },
+   "isNew": false,
+   "notes": "PC 7,59 je nižji od akcijske cene 7,99, kot natisnjeno."
+  },
+  {
+   "key": "majoneza-thomy-165g",
+   "page": 21,
+   "anchor": "MAJONEZA",
+   "name": "Majoneza",
+   "brand": "Thomy",
+   "line": null,
+   "descriptor": null,
+   "pack": "165 g",
+   "qty": [
+    165,
+    "g"
+   ],
+   "categories": [
+    "omake",
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "majoneza",
+    "majonezo",
+    "thomy",
+    "omaka",
+    "majoneze"
+   ],
+   "price": 219,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 295,
+   "discount": 25,
+   "pc": "PC 1,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MAJONEZA Thomy, 165 g CENEJE 25% redna cena 2,95 PC 1,99 s SPAR plus kartico 2,19",
+   "box": [
+    0.0,
+    0.746,
+    0.341,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     1495
+    ]
+   },
+   "isNew": false,
+   "notes": "PC 1,99 je nižji od akcijske cene 2,19, kot natisnjeno."
+  },
+  {
+   "key": "jajca-izpod-kamniskih-planin-jata-emona-18",
+   "page": 21,
+   "anchor": "KAMNIŠKIH PLANIN",
+   "name": "Jajca izpod Kamniških planin",
+   "brand": "Jata Emona",
+   "line": null,
+   "descriptor": "hlevska reja",
+   "pack": "18/1",
+   "qty": [
+    18,
+    "kos"
+   ],
+   "categories": [
+    "osnovna-zivila",
+    "zajtrk"
+   ],
+   "aliases": [
+    "jajca",
+    "jajce",
+    "jata emona",
+    "kamniške planine",
+    "hlevska reja",
+    "18 jajc"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 699,
+   "discount": 28,
+   "pc": "PC 6,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "JAJCA IZPOD KAMNIŠKIH PLANIN hlevska reja, Jata Emona, 18/1 CENEJE 28% redna cena 6,99 PC 6,99 s SPAR plus kartico 4,99",
+   "box": [
+    0.351,
+    0.746,
+    0.659,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     1509
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "s-budget-sacher-torta-500g",
+   "page": 21,
+   "anchor": "SACHER TORTA",
+   "name": "Sacher torta",
+   "brand": "SPAR",
+   "line": "S-BUDGET",
+   "descriptor": "zamrznjeno",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "zamrznjeno",
+    "slascice",
+    "sladko"
+   ],
+   "aliases": [
+    "sacher torta",
+    "torta",
+    "sacher",
+    "zamrznjena torta",
+    "s-budget",
+    "sladica"
+   ],
+   "price": 699,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "ZAMRZNJENO S-BUDGET SACHER TORTA 500 g 6,99",
+   "box": [
+    0.668,
+    0.746,
+    1.0,
+    0.968
+   ],
+   "image": {
+    "xrefs": [
+     1498
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "smetana-za-kuhanje-mu-cuisine-500ml",
+   "page": 22,
+   "anchor": "SMETANA",
+   "name": "Smetana za kuhanje Mu Cuisine",
+   "brand": "Mu",
+   "line": "Cuisine",
+   "descriptor": null,
+   "pack": "500 ml",
+   "qty": [
+    500,
+    "ml"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "omake",
+    "kosilo"
+   ],
+   "aliases": [
+    "smetana",
+    "smetana za kuhanje",
+    "kuhanje",
+    "mu",
+    "mu cuisine",
+    "ljubljanske mlekarne",
+    "mlečni izdelki"
+   ],
+   "price": 259,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 349,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Izdelek meseca (partnerska zvezda meseca)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SMETANA ZA KUHANJE MU CUISINE 500 ml CENEJE 25% redna cena 3,49 s SPAR plus kartico 2,59",
+   "box": [
+    0.49,
+    0.29,
+    0.78,
+    0.53
+   ],
+   "image": {
+    "crop": [
+     0.535,
+     0.38,
+     0.69,
+     0.52
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sir-jost-rezine-150g",
+   "page": 22,
+   "anchor": "SIR JOŠT",
+   "name": "Sir Jošt rezine",
+   "brand": "Jošt",
+   "line": null,
+   "descriptor": "rezine, več vrst",
+   "pack": "150 g",
+   "qty": [
+    150,
+    "g"
+   ],
+   "categories": [
+    "sir",
+    "mlecni-izdelki",
+    "malica",
+    "zajtrk"
+   ],
+   "aliases": [
+    "sir",
+    "jošt",
+    "sir jošt",
+    "sirove rezine",
+    "rezine",
+    "sira",
+    "president"
+   ],
+   "price": 219,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 299,
+   "discount": 26,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SIR JOŠT rezine, več vrst, 150 g CENEJE 26% redna cena 2,99 s SPAR plus kartico 2,19",
+   "box": [
+    0.035,
+    0.705,
+    0.225,
+    0.94
+   ],
+   "image": {
+    "crop": [
+     0.045,
+     0.725,
+     0.21,
+     0.805
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "sadni-jogurt-mu-tekoci-pet-1kg",
+   "page": 22,
+   "anchor": "SADNI JOGURT MU",
+   "name": "Sadni jogurt Mu tekoči",
+   "brand": "Mu",
+   "line": null,
+   "descriptor": "tekoči, več okusov, PET",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "jogurti",
+    "mlecni-izdelki",
+    "zajtrk"
+   ],
+   "aliases": [
+    "jogurt",
+    "sadni jogurt",
+    "tekoči jogurt",
+    "mu",
+    "jogurta",
+    "mlečni izdelki"
+   ],
+   "price": 174,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 249,
+   "discount": 30,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "SADNI JOGURT MU tekoči, več okusov, PET, 1 kg CENEJE 30% redna cena 2,49 s SPAR plus kartico 1,74",
+   "box": [
+    0.225,
+    0.705,
+    0.415,
+    0.94
+   ],
+   "image": {
+    "xrefs": [
+     1676,
+     1675,
+     1674,
+     1653
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "navadni-jogurt-mu-pet-1kg",
+   "page": 22,
+   "anchor": "NAVADNI JOGURT MU",
+   "name": "Navadni jogurt Mu",
+   "brand": "Mu",
+   "line": null,
+   "descriptor": "3,2 % m. m. ali 1,3 % m. m., PET",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "jogurti",
+    "mlecni-izdelki",
+    "zajtrk"
+   ],
+   "aliases": [
+    "jogurt",
+    "navadni jogurt",
+    "mu",
+    "jogurta",
+    "mlečni izdelki"
+   ],
+   "price": 149,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 195,
+   "discount": 23,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "NAVADNI JOGURT MU 3,2 % m. m., ali 1,3 % m. m., PET, 1 kg CENEJE 23% redna cena 1,95 s SPAR plus kartico 1,49",
+   "box": [
+    0.415,
+    0.705,
+    0.6,
+    0.94
+   ],
+   "image": {
+    "xrefs": [
+     1652,
+     1695
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "jogurt-mu-athentikos-vedro-1kg",
+   "page": 22,
+   "anchor": "ATHENTIKOS",
+   "name": "Jogurt Mu Athentikos",
+   "brand": "Mu",
+   "line": null,
+   "descriptor": "v vedru",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "jogurti",
+    "mlecni-izdelki",
+    "zajtrk"
+   ],
+   "aliases": [
+    "jogurt",
+    "grški jogurt",
+    "athentikos",
+    "mu",
+    "jogurta",
+    "mlečni izdelki"
+   ],
+   "price": 279,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 398,
+   "discount": 29,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "JOGURT MU ATHENTIKOS v vedru, 1 kg CENEJE 29% redna cena 3,98 s SPAR plus kartico 2,79",
+   "box": [
+    0.6,
+    0.68,
+    0.785,
+    0.945
+   ],
+   "image": {
+    "crop": [
+     0.63,
+     0.715,
+     0.75,
+     0.815
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "mileram-mu-cuisine-400g",
+   "page": 22,
+   "anchor": "MILERAM",
+   "name": "Mileram",
+   "brand": "Mu",
+   "line": "Cuisine",
+   "descriptor": null,
+   "pack": "400 g",
+   "qty": [
+    400,
+    "g"
+   ],
+   "categories": [
+    "mlecni-izdelki",
+    "omake"
+   ],
+   "aliases": [
+    "mileram",
+    "mu cuisine",
+    "mu",
+    "kisla smetana",
+    "mlečni izdelki"
+   ],
+   "price": 149,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 199,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "MILERAM MU CUISINE 400 g CENEJE 25% redna cena 1,99 s SPAR plus kartico 1,49",
+   "box": [
+    0.79,
+    0.705,
+    0.965,
+    0.945
+   ],
+   "image": {
+    "xrefs": [
+     1693
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  }
+ ],
+ "excluded": [
+  {
+   "page": 1,
+   "text": "NAGROBNE SVEČE solarne in elektronske, 30 % CENEJE s SPAR plus kartico (ne velja za S-Budget)",
+   "reason": "odstotni popust na skupino izdelkov brez natisnjene cene izdelka"
+  },
+  {
+   "page": 10,
+   "text": "VSE HRENOVKE GOLICA 25 % CENEJE s SPAR plus kartico",
+   "reason": "odstotni popust na skupino izdelkov (vse hrenovke Golica) brez natisnjene cene izdelka"
+  },
+  {
+   "page": 10,
+   "text": "PRŠUT SERRANO ALI SALAMA CHORIZO narezek, Cerezo, 80 g ali 100 g, 20 % CENEJE s SPAR plus kartico",
+   "reason": "odstotni popust na dva izdelka brez natisnjene cene"
+  },
+  {
+   "page": 10,
+   "text": "VSI NAREZKI POLI 25 % CENEJE s SPAR plus kartico",
+   "reason": "odstotni popust na skupino izdelkov brez natisnjene cene"
+  },
+  {
+   "page": 18,
+   "text": "KRUH DROŽNIK Žito, koruzni, s semeni ali navadni, 400 g, 15 % CENEJE s SPAR plus kartico",
+   "reason": "natisnjen samo odstotni popust, cena izdelka ni natisnjena"
+  },
+  {
+   "page": 21,
+   "text": "VSI SIRI MLEKARNE PLANIKA 25 % CENEJE s SPAR plus kartico",
+   "reason": "odstotni popust na skupino izdelkov brez natisnjene cene izdelka"
+  }
+ ]
+}

@@ -10,17 +10,17 @@ import styles from "./HomeComposer.module.css";
 
 /**
  * Home's entry to the Sparko chat: the Chat composer's field (same pill, type, icons and placeholder) on one
- * line. Enter / Send puts the question into the conversation through the normal chat send (see sendFromHome)
+ * line. Enter / Send starts a NEW conversation with the question (see sendFromHome; earlier chats stay in History)
  * and then opens the Chat tab, where the answer appears. Home itself never shows a conversation.
  */
 export function HomeComposer() {
   const router = useRouter();
-  const { hydrated, pending } = useChat();
+  const { hydrated } = useChat();
   const [value, setValue] = useState("");
-  // Guards the hand-off against a double Enter / tap before the route changes.
+  // Guards the hand-off against a double Enter / tap before the route changes (one submit = one conversation).
   const sending = useRef(false);
   const action = composerAction(value);
-  const canSend = action === "send" && hydrated && !pending;
+  const canSend = action === "send" && hydrated;
 
   useEffect(() => {
     router.prefetch("/");
@@ -33,6 +33,7 @@ export function HomeComposer() {
       sending.current = false;
       return;
     }
+    setValue("");
     armChatEntryReveal();
     router.push("/");
   };
@@ -69,7 +70,7 @@ export function HomeComposer() {
           data-action={action}
           disabled={action === "send" ? !canSend : undefined}
           aria-disabled={action === "mic" ? "true" : undefined}
-          aria-label={action === "mic" ? "Glasovni vnos bo na voljo kmalu" : pending ? "Sparko odgovarja …" : "Pošlji"}
+          aria-label={action === "mic" ? "Glasovni vnos bo na voljo kmalu" : "Pošlji"}
           title={action === "mic" ? "Glasovni vnos bo na voljo kmalu" : undefined}
           onClick={action === "mic" ? (e) => e.preventDefault() : undefined}
         >

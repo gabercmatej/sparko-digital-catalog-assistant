@@ -3,11 +3,13 @@
  * placeholders resolved in ./placeholders. Works without any language model and is the fallback.
  * Never claims that something was saved — the client appends the real store result.
  */
-import { getPlacementsForProduct, getPrimaryOffer, getProduct, getRecipe, products as allProducts } from "@/lib/catalog";
+import { activeProducts } from "@/lib/activeCatalog";
+import { getPlacementsForProduct, getPrimaryOffer, getProduct, getRecipe } from "@/lib/catalog";
 import { getRecommendations } from "@/lib/recommendations";
 import { findStoreSection, storeLocationText } from "@/lib/demo/storeMap";
 import { NEAREST_STORE_TEXT } from "@/lib/demo/stores";
 import type { ChatAction, ChatRequest, MessageBlock, Offer, Product } from "@/lib/types";
+import { catalogAnswer, detectCatalog, isGeneralCatalogQuestion, newInCatalog } from "./catalogQuery";
 import { discountTemplate, rankDiscounts } from "./discounts";
 import { COMMAND_STOP, detectIntent, type DetectedIntent, type Intent } from "./intents";
 import { breakfastProducts, mealTemplate, recipeProductIds, suggestMeal, type MealRequest } from "./meals";
@@ -17,7 +19,7 @@ import { cheaperAlternatives, comparablePrice, productsInLine, queryContentToken
 import { currentDiscountsOf, forecastOnlyIds, forecastTemplate, MAX_UPCOMING, rankUpcoming, TIMING_STOP, generalTimingTemplate } from "./timing";
 
 /** Unambiguous example product for the help text: the first catalog product (editorial order). */
-const HELP_EXAMPLE_PRODUCT = allProducts[0]?.name ?? "izdelek";
+const HELP_EXAMPLE_PRODUCT = activeProducts()[0]?.name ?? "izdelek";
 
 export const MAX_PRODUCTS_SHOWN = 4;
 
@@ -62,7 +64,8 @@ function cardSuffix(o: Offer): string {
 
 function listLine(p: Product, o: Offer): string {
   const disc = o.discountPercent != null ? ` ({{discount:${o.id}}} ceneje)` : "";
-  return `• {{name:${p.id}}}, {{pack:${p.id}}}: {{price:${o.id}}}${cardSuffix(o)}${disc}`;
+  // The source catalog on every line: several catalogs with different dates are current at once.
+  return `• {{name:${p.id}}}, {{pack:${p.id}}}: {{price:${o.id}}}${cardSuffix(o)}${disc} · {{catalog:${o.id}}}`;
 }
 
 function shortLabel(p: Product): string {
@@ -83,11 +86,16 @@ function hitsOf(ids: string[]): SearchHit[] {
     .filter((x): x is SearchHit => !!x);
 }
 
-/** Single product price sentence, honest about card conditions. */
+/** Store restriction sentence for offers that are not valid in every SPAR store (DESPAR Koper, SPAR Online, MEGA SPAR types). */
+function availabilitySuffix(o: Offer): string {
+  return o.availability?.restricted && o.availability.note ? ` Ponudba velja {{availability:${o.id}}}.` : "";
+}
+
+/** Single product price sentence: source catalog, the offer's own validity, card conditions and store restriction. */
 function priceTemplate(p: Product, o: Offer, spPlus: ChatRequest["spPlus"]): string {
-  let t = `V aktualnem katalogu je {{name:${p.id}}}, {{pack:${p.id}}}, po {{price:${o.id}}}${cardSuffix(o)}`;
+  let t = `V katalogu {{catalog:${o.id}}} je {{name:${p.id}}}, {{pack:${p.id}}}, po {{price:${o.id}}}${cardSuffix(o)}`;
   if (o.discountPercent != null) t += ` ({{discount:${o.id}}} ceneje)`;
-  t += ".";
+  t += `. {{validity:${o.id}}}.${availabilitySuffix(o)}`;
   if (o.conditions.spPlusRequired && spPlus === "no") {
     t += o.regularPriceCents != null ? ` Brez kartice je redna cena {{regularPrice:${o.id}}}.` : " Cena brez kartice v katalogu ni navedena.";
   }
@@ -206,11 +214,11 @@ function handleLookup(d: DetectedIntent, req: ChatRequest): Draft {
     if (!content.length && (d.filters.line || d.filters.maxPriceCents != null)) {
       const listed = d.filters.line
         ? productsInLine(d.filters.line, d.filters)
-        : allProducts
+        : activeProducts()
             .map((p) => ({ product: p, offer: getPrimaryOffer(p.id) }))
             .filter((x): x is { product: Product; offer: Offer } => !!x.offer && x.offer.priceCents <= (d.filters.maxPriceCents ?? Infinity))
             .map((x) => ({ ...x, score: 0, matched: [] }));
-      if (listed.length) return listDraft("Iz aktualnega kataloga ti lahko pokažem:", listed);
+      if (listed.length) return listDraft("Iz aktualne ponudbe ti lahko pokažem:", listed);
     }
     if (!content.length) {
       // "Koliko stane izdelek?" – ask back; the next short reply is resolved as a price lookup (see detectIntent).
@@ -256,7 +264,7 @@ function handleLine(d: DetectedIntent, req: ChatRequest): Draft {
   const listed = productsInLine(line, d.filters);
   if (!listed.length) return unknownDraft(d);
   const label = listed[0].product.line ?? listed[0].product.brand ?? "";
-  return listDraft(`Izdelki ${label} v aktualnem katalogu:`, listed);
+  return listDraft(`Izdelki ${label} v aktualni ponudbi:`, listed);
 }
 
 function handleCheaper(d: DetectedIntent, req: ChatRequest): Draft {
@@ -264,12 +272,12 @@ function handleCheaper(d: DetectedIntent, req: ChatRequest): Draft {
   if (t.unknownMention) return unknownDraft(d);
   if (!t.hits.length) {
     // "Kaj je najcenejše?" without context: lowest pack prices in the verified selection.
-    const cheapest = allProducts
+    const cheapest = activeProducts()
       .map((p) => ({ product: p, offer: getPrimaryOffer(p.id) }))
       .filter((x): x is { product: Product; offer: Offer } => !!x.offer && x.offer.priceUnit === "pack")
       .sort((a, b) => a.offer.priceCents - b.offer.priceCents || a.product.editorialRank - b.product.editorialRank)
       .map((x) => ({ ...x, score: 0, matched: [] }));
-    return listDraft("Najnižje cene pakiranj v aktualnem katalogu:", cheapest);
+    return listDraft("Najnižje cene pakiranj v aktualni ponudbi:", cheapest);
   }
   if (t.hits.length > 1) {
     return ambiguousDraft(t.hits, "Za kateri izdelek iščeš cenejšo možnost?", (p) => `Kaj je ceneje kot ${displayName(p)}?`);
@@ -539,7 +547,7 @@ function handleMeal(mealReq: MealRequest): Draft {
   if (mealReq.kind === "breakfast") {
     const prods = breakfastProducts(MAX_PRODUCTS_SHOWN);
     if (prods.length) {
-      return listDraft("Za hiter zajtrk ti iz aktualnega kataloga predlagam:", hitsOf(prods.map((p) => p.id)));
+      return listDraft("Za hiter zajtrk ti iz aktualne ponudbe predlagam:", hitsOf(prods.map((p) => p.id)));
     }
   }
   return {
@@ -569,7 +577,7 @@ function handleRecommend(d: DetectedIntent, req: ChatRequest, deps: ResponderDep
   // A named category or product ("od mesa", "za žar") narrows the suggestions to matching verified catalog products.
   if (!/\bpodobn/.test(d.folded) && queryContentTokens(d.text, RECOMMEND_STOP).length) {
     const hits = searchProducts(d.text, { extraStop: RECOMMEND_STOP, filters: d.filters });
-    if (hits.length) return listDraft("Med izdelki v aktualnem katalogu ti priporočam:", hits);
+    if (hits.length) return listDraft("Med izdelki v aktualni ponudbi ti priporočam:", hits);
   }
   let recs: { productId: string; reason: string }[] = [];
   try {
@@ -579,7 +587,7 @@ function handleRecommend(d: DetectedIntent, req: ChatRequest, deps: ResponderDep
   }
   if (!recs.length) {
     // Local fallback: editorial order, not yet saved.
-    recs = allProducts.filter((p) => !saved.includes(p.id)).slice(0, MAX_PRODUCTS_SHOWN).map((p) => ({ productId: p.id, reason: "Iz izbora demo kataloga" }));
+    recs = activeProducts().filter((p) => !saved.includes(p.id)).slice(0, MAX_PRODUCTS_SHOWN).map((p) => ({ productId: p.id, reason: "Iz izbora demo kataloga" }));
   }
   const hits = hitsOf(recs.map((r) => r.productId).filter((id) => !saved.includes(id)));
   if (!hits.length) {
@@ -598,7 +606,7 @@ function handleRecommend(d: DetectedIntent, req: ChatRequest, deps: ResponderDep
     const o = getPrimaryOffer(r.productId);
     if (o && r.reason) reasons[o.id] = r.reason;
   }
-  const intro = saved.length ? "Glede na tvoj Moj katalog ti iz aktualnega kataloga predlagam:" : "Med izdelki v aktualnem katalogu ti priporočam:";
+  const intro = saved.length ? "Glede na tvoj Moj katalog ti iz aktualne ponudbe predlagam:" : "Med izdelki v aktualni ponudbi ti priporočam:";
   return listDraft(intro, hits, { reasons });
 }
 
@@ -649,6 +657,26 @@ function simpleDraft(template: string, choices = SUGGESTION_CHOICES, allowModel 
   };
 }
 
+/**
+ * Questions about one named catalog ("Pokaži izdelke iz INTERSPAR kataloga") or about what is new: answered from the
+ * current offers with the catalog's real dates (catalogQuery.ts). Exact wording, no model.
+ */
+function catalogScopedDraft(d: DetectedIntent): Draft | null {
+  if (["save", "remove", "nearest_store", "store_location", "where_in_leaflet", "discount_timing"].includes(d.intent)) return null;
+  const content = queryContentTokens(d.text);
+  const named = detectCatalog(d.folded);
+  if (named && isGeneralCatalogQuestion(d.folded, content)) {
+    const a = catalogAnswer(named);
+    if (a.productIds.length) return { ...listDraft(a.text, hitsOf(a.productIds)), allowModel: false };
+    return simpleDraft(a.text, SUGGESTION_CHOICES, false);
+  }
+  if (/\b(kaj je novega|novosti|novi izdelki|nove izdelke|novih izdelk\w*|kaj je novo)\b/.test(d.folded)) {
+    const n = newInCatalog();
+    if (n.products.length) return { ...listDraft(n.text, hitsOf(n.products.map((p) => p.id))), allowModel: false };
+  }
+  return null;
+}
+
 // ------------------------------------------------------------------ entry point
 
 export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = {}): DeterministicReply {
@@ -656,13 +684,15 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
   let intent: Intent = d.intent;
   let draft: Draft;
   const ctx: PlaceholderContext = { spPlus: req.spPlus, budgetCents: null, servings: null };
-  switch (d.intent) {
+  const special = catalogScopedDraft(d);
+  if (special) draft = special;
+  else switch (d.intent) {
     // Small talk: no numbers, no products, no dates – a live model may rephrase these within the guardrails.
     case "greeting":
-      draft = simpleDraft("Živjo! 👋 Kaj bi rad preveril v aktualnem SPAR katalogu?");
+      draft = simpleDraft("Živjo! 👋 Kaj bi rad preveril v aktualnih SPAR katalogih?");
       break;
     case "how_are_you":
-      draft = simpleDraft("Super, hvala 😊 Pripravljen sem ti pomagati z izdelki, cenami, akcijami ali idejami iz aktualnega kataloga.");
+      draft = simpleDraft("Super, hvala 😊 Pripravljen sem ti pomagati z izdelki, cenami, akcijami ali idejami iz aktualne ponudbe.");
       break;
     case "thanks":
       draft = simpleDraft(
@@ -674,7 +704,7 @@ export function buildDeterministicReply(req: ChatRequest, deps: ResponderDeps = 
       // Kept exact (no model) so the capability list is always accurate.
       const examples = /\bvprasa/.test(d.folded) ? `\nNa primer: »Koliko stane ${HELP_EXAMPLE_PRODUCT}?«, »Kaj je najbolj znižano?« ali »Kaj lahko skuham za večerjo?«` : "";
       draft = simpleDraft(
-        "Pomagam ti raziskovati aktualni SPAR katalog – preverim cene in akcije, poiščem izdelke, predlagam jedi in izdelke glede na tvoj proračun, dodajam izdelke v Moj katalog in ti pokažem, kje jih najdeš v letaku. Pomagam ti lahko tudi poiskati najbližji SPAR ali izdelek v trgovini." +
+        "Pomagam ti raziskovati aktualne SPAR kataloge – preverim cene in akcije, poiščem izdelke, predlagam jedi in izdelke glede na tvoj proračun, dodajam izdelke v Moj katalog in ti pokažem, kje jih najdeš v letaku. Pomagam ti lahko tudi poiskati najbližji SPAR ali izdelek v trgovini." +
           examples,
         SUGGESTION_CHOICES,
         false,

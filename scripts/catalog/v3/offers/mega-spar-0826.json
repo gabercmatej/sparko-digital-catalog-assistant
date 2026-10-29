@@ -1,0 +1,3060 @@
+{
+ "catalogId": "mega-spar-0826",
+ "checkedOn": "2026-10-28",
+ "pages": {
+  "1": {
+   "theme": "Naslovnica: Mega prihranki - top popusti za dom in gospodinjstvo",
+   "offersOnPage": 4,
+   "notes": "3 ponudbe + 1 izključena (Somat 50 % brez cene). Legenda tipa trgovin: spodnji trak »PONUDBA IZDELKOV IZ KATALOGA VELJA V TIPU TRGOVIN, OZNAČENEM PRI POSAMIČNEM IZDELKU«; oznake pri izdelku so »V INTERSPARIH IN HIPERMARKETIH SPAR« oz. »SAMO V INTERSPARIH«."
+  },
+  "2": {
+   "theme": "Posoda, noži, pribor in sušenje perila",
+   "offersOnPage": 10,
+   "notes": "9 ponudb + 1 izključena (SimPex Basic porcelan 30 % brez cene)."
+  },
+  "3": {
+   "theme": "Tekstil, dom in praktični pripomočki",
+   "offersOnPage": 13,
+   "notes": "Zaboj za shranjevanje: tri velikosti z lastno ceno = 3 ponudbe."
+  },
+  "4": {
+   "theme": "Veliki gospodinjski aparati in elektronika",
+   "offersOnPage": 10,
+   "notes": null
+  },
+  "5": {
+   "theme": "Kavni aparati, sesalniki, TV in aparati za dom",
+   "offersOnPage": 9,
+   "notes": null
+  },
+  "6": {
+   "theme": "Osebna nega in higiena",
+   "offersOnPage": 8,
+   "notes": "5 ponudb + 3 izključene (brez cene). Pri izdelkih ni natisnjene oznake tipa trgovine."
+  },
+  "7": {
+   "theme": "Pranje perila, higiena in papirni izdelki",
+   "offersOnPage": 8,
+   "notes": "5 ponudb + 3 izključene (brez cene). Pri izdelkih ni natisnjene oznake tipa trgovine."
+  },
+  "8": {
+   "theme": "Izjemni popusti za vaš dom in udobje (razredni popusti)",
+   "offersOnPage": 4,
+   "notes": "Štirje bloki razrednih popustov (30 %, 30 %, 25 %, 40 %) brez cen izdelkov; vsi tiskajo »PONUDBA VELJA OD 28. 10. DO 3. 11. 2026.« in »V INTERSPARIH IN HIPERMARKETIH SPAR«. Ker so vsi izključeni, ni veljavnostnih prepisov pri ponudbah."
+  }
+ },
+ "offers": [
+  {
+   "key": "tefal-ingenio-5-delni-set-posode",
+   "page": 1,
+   "anchor": "5-DELNI SET",
+   "name": "5-delni set posode Ingenio",
+   "brand": "Tefal",
+   "line": null,
+   "descriptor": "nerjaveče jeklo CromArgan 18/10, odstranljiv ročaj",
+   "pack": "5 kosov",
+   "qty": [
+    5,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "set posode",
+    "posoda",
+    "lonci",
+    "ponev",
+    "ingenio",
+    "tefal",
+    "nerjaveče jeklo"
+   ],
+   "price": 4990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 9990,
+   "discount": 50,
+   "pc": "PC 99,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "MEGA CENA",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Tefal 5-DELNI SET POSODE INGENIO • nerjaveče jeklo CromArgan 18/10 • odstranljiv ročaj MEGA CENA V INTERSPARIH IN HIPERMARKETIH SPAR 50% CENEJE redna cena 99,90 | PC 99,90 s SPAR plus kartico 49,90",
+   "box": [
+    0.02,
+    0.435,
+    0.52,
+    0.77
+   ],
+   "image": {
+    "crop": [
+     0.21,
+     0.44,
+     0.515,
+     0.61
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "rowenta-sesalnik-rh2048wo",
+   "page": 1,
+   "anchor": "RH2048WO",
+   "name": "Sesalnik Rowenta RH2048WO",
+   "brand": "Rowenta",
+   "line": null,
+   "descriptor": "izjemno lahek (1,1 kg), do 45 minut delovanja, sesalna glava Deep Power",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "sesalnik",
+    "sesalniki",
+    "brezžični sesalnik",
+    "rowenta",
+    "sesanje"
+   ],
+   "price": 15900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 26900,
+   "discount": 40,
+   "pc": "PC 269,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Rowenta SESALNIK ROWENTA RH2048WO • izjemno lahek (1,1 kg) • do 45 minut delovanja • sesalna glava Deep Power SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 40% CENEJE redna cena 269,- | PC 269,- s SPAR plus kartico 159,-",
+   "box": [
+    0.55,
+    0.35,
+    0.98,
+    0.77
+   ],
+   "image": {
+    "crop": [
+     0.575,
+     0.36,
+     0.79,
+     0.6
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "tefal-zracni-cvrtnik-ey752ae0",
+   "page": 1,
+   "anchor": "TEFAL EY752AE0",
+   "name": "Zračni cvrtnik Tefal EY752AE0",
+   "brand": "Tefal",
+   "line": null,
+   "descriptor": "kuhanje v dveh ločenih predalih, 6 načinov priprave, EvenFry tehnologija",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zračni cvrtnik",
+    "cvrtnik",
+    "friteza",
+    "air fryer",
+    "tefal",
+    "cvrtje"
+   ],
+   "price": 9900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 19900,
+   "discount": 50,
+   "pc": "PC 199,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Tefal ZRAČNI CVRTNIK TEFAL EY752AE0 • kuhanje v dveh ločenih predalih • 6 načinov priprave • EvenFry tehnologija redna cena 199,- | PC 199,- s SPAR plus kartico 99,- SAMO V INTERSPARIH 50% CENEJE",
+   "box": [
+    0.02,
+    0.735,
+    0.49,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.15,
+     0.76,
+     0.34,
+     0.965
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "tognana-8-delni-set-posode",
+   "page": 2,
+   "anchor": "8-DELNI",
+   "name": "8-delni set posode",
+   "brand": "Tognana",
+   "line": null,
+   "descriptor": "iz kovanega aluminija, 4-slojni notranji premaz",
+   "pack": "8 kosov",
+   "qty": [
+    8,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "set posode",
+    "posoda",
+    "lonci",
+    "ponev",
+    "tognana",
+    "kovani aluminij"
+   ],
+   "price": 6990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 13990,
+   "discount": 50,
+   "pc": "PC 139,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "8-delni set posode iz kovanega aluminija, 4-slojni notranji premaz CENEJE 50% redna cena 139,90 PC 139,90 s SPAR plus kartico 69,90",
+   "box": [
+    0.0,
+    0.0,
+    0.333,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.02,
+     0.02,
+     0.2,
+     0.165
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "jamie-oliver-kuhinjski-noz-za-lupljenje",
+   "page": 2,
+   "anchor": "JAMIE OLIVER",
+   "name": "Kuhinjski nož Jamie Oliver za lupljenje",
+   "brand": "Jamie Oliver (Tefal)",
+   "line": null,
+   "descriptor": "nož za lupljenje 9 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "nož",
+    "kuhinjski nož",
+    "nož za lupljenje",
+    "jamie oliver",
+    "tefal",
+    "noži"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2999,
+   "discount": null,
+   "pc": "PC 29,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Tefal JAMIE OLIVER KUHINJSKI NOŽI JAMIE OLIVER SAMO V INTERSPARIH 80% CENEJE • nož za lupljenje 9 cm 4,99 redna cena 29,99 | PC 29,99 s SPAR plus kartico",
+   "box": [
+    0.343,
+    0.0,
+    0.657,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.36,
+     0.155,
+     0.495,
+     0.208
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "80 % CENEJE je natisnjeno za blok kuhinjskih nožev; cena 4,99 (redna 29,99) je natisnjena le za nož za lupljenje 9 cm (izračun 83 %). Skupinska značka »80 %« ni skladna s cenama (4,99 / 29,99 = 83 %), zato odstotek ni prikazan."
+  },
+  {
+   "key": "cheffino-30-delni-jedilni-pribor-giulia",
+   "page": 2,
+   "anchor": "JEDILNI PRIBOR",
+   "name": "30-delni jedilni pribor Giulia",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz nerjavečega jekla",
+   "pack": "30 kosov",
+   "qty": [
+    30,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "jedilni pribor",
+    "pribor",
+    "žlice",
+    "vilice",
+    "noži",
+    "giulia",
+    "cheffino"
+   ],
+   "price": 1999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3999,
+   "discount": 50,
+   "pc": "PC 39,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "30-delni jedilni pribor Giulia iz nerjavečega jekla CENEJE 50% redna cena 39,99 PC 39,99 s SPAR plus kartico 19,99",
+   "box": [
+    0.667,
+    0.0,
+    1.0,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.68,
+     0.02,
+     0.84,
+     0.15
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "cheffino-2-delni-set-ponev-shadow",
+   "page": 2,
+   "anchor": "PONEV SHADOW",
+   "name": "2-delni set ponev Shadow",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz kvalitetnega aluminija, premer cca 24 cm in 28 cm",
+   "pack": "2 kosa",
+   "qty": [
+    2,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "set ponev",
+    "ponev",
+    "ponve",
+    "shadow",
+    "cheffino",
+    "aluminij"
+   ],
+   "price": 1799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 4999,
+   "discount": 64,
+   "pc": "PC 49,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "2-delni set ponev Shadow iz kvalitetnega aluminija, premer cca 24 cm in 28 cm CENEJE 64% redna cena 49,99 PC 49,99 s SPAR plus kartico 17,99",
+   "box": [
+    0.0,
+    0.255,
+    0.333,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.035,
+     0.3,
+     0.245,
+     0.36
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "cheffino-6-delni-set-posode-loreto",
+   "page": 2,
+   "anchor": "LORETO",
+   "name": "6-delni set posode Loreto",
+   "brand": "Cheffino",
+   "line": null,
+   "descriptor": "iz nerjavečega jekla, priložene steklene pokrovke; kozice velikosti cca 16 cm, 20 cm in 24 cm",
+   "pack": "6 kosov",
+   "qty": [
+    6,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "set posode",
+    "posoda",
+    "lonci",
+    "kozice",
+    "loreto",
+    "cheffino"
+   ],
+   "price": 3490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 9990,
+   "discount": 65,
+   "pc": "PC 99,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "6-delni set posode Loreto iz nerjavečega jekla, priložene steklene pokrovke; kozice velikosti cca 16 cm, 20 cm in 24 cm CENEJE 65% redna cena 99,90 PC 99,90 s SPAR plus kartico 34,90",
+   "box": [
+    0.0,
+    0.495,
+    0.333,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.01,
+     0.505,
+     0.22,
+     0.62
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "fackelmann-pekac-z-aroma-pokrovko",
+   "page": 2,
+   "anchor": "POKROVKO",
+   "name": "Pekač z aroma pokrovko",
+   "brand": "Fackelmann",
+   "line": null,
+   "descriptor": "premer cca 28 cm, s keramičnim premazom proti prijemanju",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pekač",
+    "pekač s pokrovko",
+    "aroma pokrovka",
+    "fackelmann",
+    "lonec"
+   ],
+   "price": 2490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 4990,
+   "discount": 50,
+   "pc": "PC 49,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Pekač z aroma pokrovko premer cca 28 cm, s keramičnim premazom proti prijemanju CENEJE 50% redna cena 49,90 PC 49,90 s SPAR plus kartico 24,90",
+   "box": [
+    0.343,
+    0.495,
+    0.657,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.37,
+     0.535,
+     0.565,
+     0.61
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "alpeks-3-delni-set-emajliranih-kozic",
+   "page": 2,
+   "anchor": "EMAJLIRANIH",
+   "name": "3-delni set emajliranih kozic",
+   "brand": "Alpeks Home",
+   "line": null,
+   "descriptor": null,
+   "pack": "3 kosi",
+   "qty": [
+    3,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kozice",
+    "emajlirane kozice",
+    "set kozic",
+    "posoda",
+    "alpeks home",
+    "emajl"
+   ],
+   "price": 3290,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 6990,
+   "discount": 52,
+   "pc": "PC 69,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "3-delni set emajliranih kozic CENEJE 52% redna cena 69,90 PC 69,90 s SPAR plus kartico 32,90",
+   "box": [
+    0.0,
+    0.735,
+    0.333,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.025,
+     0.755,
+     0.19,
+     0.915
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "stojalo-za-susenje-perila-18-m",
+   "page": 2,
+   "anchor": "SUŠENJE PERILA",
+   "name": "Stojalo za sušenje perila",
+   "brand": null,
+   "line": null,
+   "descriptor": "18 m sušilne površine",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "sušilnik perila",
+    "stojalo za perilo",
+    "sušenje perila",
+    "sušilnik",
+    "stojalo"
+   ],
+   "price": 999,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 50,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Stojalo za sušenje perila 18 m sušilne površine CENEJE 50% redna cena 19,99 PC 19,99 s SPAR plus kartico 9,99",
+   "box": [
+    0.343,
+    0.735,
+    0.657,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.355,
+     0.77,
+     0.665,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "stojalo-za-susenje-perila-stirje-nivoji",
+   "page": 2,
+   "anchor": "ŠTIRJE NIVOJI",
+   "name": "Stojalo za sušenje perila",
+   "brand": null,
+   "line": null,
+   "descriptor": "štirje nivoji, 40 m sušilne površine",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "sušilnik perila",
+    "stojalo za perilo",
+    "sušenje perila",
+    "sušilnik",
+    "stojalo"
+   ],
+   "price": 2490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 4990,
+   "discount": 50,
+   "pc": "PC 49,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Stojalo za sušenje perila štirje nivoji, 40 m sušilne površine CENEJE 50% redna cena 49,90 PC 49,90 s SPAR plus kartico 24,90",
+   "box": [
+    0.667,
+    0.58,
+    1.0,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.72,
+     0.595,
+     0.89,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "frotir-pizama",
+   "page": 3,
+   "anchor": "FROTIR PIŽAMA",
+   "name": "Frotir pižama",
+   "brand": null,
+   "line": null,
+   "descriptor": "bombaž; velikost: ženska 36–38, 48–50, moška 48–58",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "tekstil",
+    "dom"
+   ],
+   "aliases": [
+    "pižama",
+    "frotir pižama",
+    "frotirna pižama",
+    "domača obleka",
+    "bombaž"
+   ],
+   "price": 2090,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2990,
+   "discount": 30,
+   "pc": "PC 29,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Frotir pižama bombaž; velikost: ženska 36–38, 48–50, moška 48–58 CENEJE 30% redna cena 29,90 PC 29,90 s SPAR plus kartico 20,90",
+   "box": [
+    0.0,
+    0.0,
+    0.333,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.01,
+     0.17,
+     0.195
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "srajca-ali-jopa",
+   "page": 3,
+   "anchor": "SRAJCA",
+   "name": "Srajca ali jopa",
+   "brand": null,
+   "line": null,
+   "descriptor": "ženska ali moška, različne barve in velikosti",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "tekstil"
+   ],
+   "aliases": [
+    "srajca",
+    "jopa",
+    "flis jopa",
+    "moška srajca",
+    "ženska jopa",
+    "oblačila"
+   ],
+   "price": 1199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 40,
+   "pc": "PC 19,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Srajca ali jopa ženska ali moška, različne barve in velikosti CENEJE 40% redna cena 19,99 PC 19,99 s SPAR plus kartico 11,99",
+   "box": [
+    0.343,
+    0.0,
+    0.657,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.35,
+     0.01,
+     0.57,
+     0.175
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "kappa-moske-spodnje-hlace-boxer-2-kosa",
+   "page": 3,
+   "anchor": "BOXER 2 KOSA",
+   "name": "Moške spodnje hlače boxer 2 kosa",
+   "brand": "Kappa",
+   "line": null,
+   "descriptor": "velikost S–XXL, bombaž z elastanom",
+   "pack": "2 kosa",
+   "qty": [
+    2,
+    "kos"
+   ],
+   "categories": [
+    "tekstil"
+   ],
+   "aliases": [
+    "boksarice",
+    "spodnje hlače",
+    "boxer",
+    "moško perilo",
+    "kappa",
+    "spodnjice"
+   ],
+   "price": 699,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1299,
+   "discount": 46,
+   "pc": "PC 12,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Moške spodnje hlače boxer 2 kosa velikost S–XXL, bombaž z elastanom CENEJE 46% redna cena 12,99 PC 12,99 s SPAR plus kartico 6,99",
+   "box": [
+    0.667,
+    0.0,
+    1.0,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.685,
+     0.015,
+     0.85,
+     0.165
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "zimski-skornji",
+   "page": 3,
+   "anchor": "ZIMSKI ŠKORNJI",
+   "name": "Zimski škornji",
+   "brand": null,
+   "line": null,
+   "descriptor": "velikost 36–41",
+   "pack": "1 par",
+   "qty": null,
+   "categories": [
+    "tekstil"
+   ],
+   "aliases": [
+    "škornji",
+    "zimski škornji",
+    "čevlji",
+    "obutev",
+    "zimska obutev"
+   ],
+   "price": 1199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2699,
+   "discount": 55,
+   "pc": "PC 26,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Zimski škornji velikost 36–41 CENEJE 55% redna cena 26,99 PC 26,99 s SPAR plus kartico 11,99",
+   "box": [
+    0.343,
+    0.255,
+    0.657,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.37,
+     0.28,
+     0.62,
+     0.385
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "vileda-likalna-deska-diamond",
+   "page": 3,
+   "anchor": "LIKALNA DESKA",
+   "name": "Likalna deska Diamond",
+   "brand": "Vileda",
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "likalna deska",
+    "likalnik",
+    "likanje",
+    "vileda",
+    "deska"
+   ],
+   "price": 4990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 11499,
+   "discount": 56,
+   "pc": "PC 114,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Likalna deska Diamond CENEJE 56% redna cena 114,99 PC 114,99 s SPAR plus kartico 49,90",
+   "box": [
+    0.667,
+    0.255,
+    1.0,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.7,
+     0.285,
+     0.82,
+     0.455
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "simpex-osebna-digitalna-tehtnica",
+   "page": 3,
+   "anchor": "DIGITALNA TEHTNICA",
+   "name": "Osebna digitalna tehtnica",
+   "brand": "SimPex",
+   "line": null,
+   "descriptor": "priložene baterije",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "higiena",
+    "nega"
+   ],
+   "aliases": [
+    "tehtnica",
+    "osebna tehtnica",
+    "digitalna tehtnica",
+    "simpex",
+    "tehtanje"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1999,
+   "discount": 60,
+   "pc": "PC 13,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Osebna digitalna tehtnica priložene baterije CENEJE 60% redna cena 19,99 PC 13,99 s SPAR plus kartico 7,99",
+   "box": [
+    0.0,
+    0.575,
+    0.333,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.08,
+     0.63,
+     0.19,
+     0.675
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "prevleka-za-stole",
+   "page": 3,
+   "anchor": "PREVLEKA",
+   "name": "Prevleka za stole",
+   "brand": null,
+   "line": null,
+   "descriptor": "za stole v višini do 57 cm, različne barve",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "prevleka",
+    "prevleka za stol",
+    "prevleke za stole",
+    "stol",
+    "tekstil za dom"
+   ],
+   "price": 449,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 899,
+   "discount": 50,
+   "pc": "PC 8,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Prevleka za stole za stole v višini do 57 cm, različne barve CENEJE 50% redna cena 8,99 PC 8,99 s SPAR plus kartico 4,49",
+   "box": [
+    0.343,
+    0.495,
+    0.657,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.37,
+     0.51,
+     0.515,
+     0.675
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "freeon-avtosedez-modus",
+   "page": 3,
+   "anchor": "AVTOSEDEŽ",
+   "name": "Avtosedež Modus",
+   "brand": "FreeON",
+   "line": null,
+   "descriptor": "za otroke od 76 do 150 cm, testiran po standardu i-Size ECE R129, 5-točkovni sistem zapenjanja",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "otroci"
+   ],
+   "aliases": [
+    "avtosedež",
+    "otroški sedež",
+    "avto sedež",
+    "freeon",
+    "i-size",
+    "otroški avtosedež"
+   ],
+   "price": 8900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 12800,
+   "discount": 30,
+   "pc": "PC 128,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "FreeON AVTOSEDEŽ FREEON MODUS • za otroke od 76 do 150 cm • testiran po standardu i-Size ECE R129 redna cena 128,- | PC 128,- s SPAR plus kartico 89,- SAMO V INTERSPARIH 30% CENEJE",
+   "box": [
+    0.667,
+    0.495,
+    1.0,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.68,
+     0.525,
+     0.79,
+     0.65
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "lestev-2-stopnici",
+   "page": 3,
+   "anchor": "LESTEV",
+   "name": "Lestev",
+   "brand": null,
+   "line": null,
+   "descriptor": "2 stopnici, črna",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "lestev",
+    "lestev 2 stopnici",
+    "stopničasta lestev",
+    "gospodinjska lestev",
+    "stopnice"
+   ],
+   "price": 1199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2999,
+   "discount": null,
+   "pc": "PC 20,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Lestev 2 stopnici, črna redna cena 29,99 PC 20,99 s SPAR plus kartico 11,99",
+   "box": [
+    0.0,
+    0.735,
+    0.333,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.055,
+     0.75,
+     0.19,
+     0.895
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Natisnjeno »50 % CENEJE«, redna cena 29,99, PC 20,99 in cena 11,99 (to bi bilo 60 %): neskladje v katalogu, zato odstotek ni zapisan."
+  },
+  {
+   "key": "zaboj-za-shranjevanje-30-l",
+   "page": 3,
+   "anchor": "30 L",
+   "name": "Zaboj za shranjevanje 30 l",
+   "brand": null,
+   "line": null,
+   "descriptor": "30 l, za shranjevanje",
+   "pack": "30 l",
+   "qty": [
+    30,
+    "l"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zaboj",
+    "škatla za shranjevanje",
+    "zaboj za shranjevanje",
+    "plastični zaboj",
+    "shranjevanje"
+   ],
+   "price": 499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 999,
+   "discount": null,
+   "pc": "PC 9,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "ZABOJ • za shranjevanje • 30 l 4,99 redna cena 9,99 | PC 9,99",
+   "box": [
+    0.345,
+    0.887,
+    0.53,
+    0.917
+   ],
+   "image": {
+    "crop": [
+     0.36,
+     0.76,
+     0.62,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek 50 % je natisnjen na skupni oznaki bloka »ZABOJ« (izven okvirja te vrstice), zato ni zapisan; fotografija je skupna za vse tri velikosti."
+  },
+  {
+   "key": "zaboj-za-shranjevanje-48-l",
+   "page": 3,
+   "anchor": "48 L",
+   "name": "Zaboj za shranjevanje 48 l",
+   "brand": null,
+   "line": null,
+   "descriptor": "48 l, za shranjevanje",
+   "pack": "48 l",
+   "qty": [
+    48,
+    "l"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zaboj",
+    "škatla za shranjevanje",
+    "zaboj za shranjevanje",
+    "plastični zaboj",
+    "shranjevanje"
+   ],
+   "price": 599,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1199,
+   "discount": null,
+   "pc": "PC 11,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "ZABOJ • za shranjevanje • 48 l 5,99 redna cena 11,99 | PC 11,99",
+   "box": [
+    0.345,
+    0.912,
+    0.53,
+    0.9420000000000001
+   ],
+   "image": {
+    "crop": [
+     0.36,
+     0.76,
+     0.62,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek 50 % je natisnjen na skupni oznaki bloka »ZABOJ« (izven okvirja te vrstice), zato ni zapisan; fotografija je skupna za vse tri velikosti."
+  },
+  {
+   "key": "zaboj-za-shranjevanje-60-l",
+   "page": 3,
+   "anchor": "60 L",
+   "name": "Zaboj za shranjevanje 60 l",
+   "brand": null,
+   "line": null,
+   "descriptor": "60 l, za shranjevanje",
+   "pack": "60 l",
+   "qty": [
+    60,
+    "l"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zaboj",
+    "škatla za shranjevanje",
+    "zaboj za shranjevanje",
+    "plastični zaboj",
+    "shranjevanje"
+   ],
+   "price": 799,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 1599,
+   "discount": null,
+   "pc": "PC 15,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "ZABOJ • za shranjevanje • 60 l 7,99 redna cena 15,99 | PC 15,99",
+   "box": [
+    0.345,
+    0.937,
+    0.53,
+    0.9670000000000001
+   ],
+   "image": {
+    "crop": [
+     0.36,
+     0.76,
+     0.62,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Odstotek 50 % je natisnjen na skupni oznaki bloka »ZABOJ« (izven okvirja te vrstice), zato ni zapisan; fotografija je skupna za vse tri velikosti."
+  },
+  {
+   "key": "splendid-set-za-ciscenje-tal-z-odcejevalnikom",
+   "page": 3,
+   "anchor": "ODCEJEVALNIKOM",
+   "name": "Set za čiščenje tal z odcejevalnikom",
+   "brand": "Splendid (Quality by SPAR)",
+   "line": null,
+   "descriptor": "roza ali modra barva",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "cistila",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "set za čiščenje tal",
+    "krpa za tla",
+    "mop",
+    "vedro",
+    "odcejevalnik",
+    "splendid",
+    "brisalec"
+   ],
+   "price": 1499,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2999,
+   "discount": 50,
+   "pc": "PC 20,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Set za čiščenje tal z odcejevalnikom roza ali modra barva CENEJE 50% redna cena 29,99 PC 20,99 s SPAR plus kartico 14,99",
+   "box": [
+    0.667,
+    0.735,
+    1.0,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.675,
+     0.76,
+     0.93,
+     0.84
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "candy-pralni-stroj-ey28sb8-s",
+   "page": 4,
+   "anchor": "PRALNI STROJ",
+   "name": "Pralni stroj Candy EY28SB8-S",
+   "brand": "Candy",
+   "line": null,
+   "descriptor": "zmogljivost pranja 8 kg, 1200 obr/min, Inverter motor, mere (V/Š/G): 850 x 600 x 530 mm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pralni stroj",
+    "pralnik",
+    "pranje",
+    "candy",
+    "pralni stroji"
+   ],
+   "price": 26900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 43900,
+   "discount": 38,
+   "pc": "PC 439,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "CANDY PRALNI STROJ CANDY EY28SB8-S • zmogljivost pranja 8 kg • 1200 obr/min • Inverter motor SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 38% CENEJE redna cena 439,- | PC 439,- s SPAR plus kartico 269,-",
+   "box": [
+    0.0,
+    0.0,
+    0.333,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.06,
+     0.058,
+     0.28,
+     0.245
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bosch-kuhinjski-robot-mum58l00",
+   "page": 4,
+   "anchor": "MUM58L00",
+   "name": "Kuhinjski robot Bosch MUM58L00",
+   "brand": "Bosch",
+   "line": null,
+   "descriptor": "moč 1000 W, prostornina 3,9 l, 7 stopenjski, 3D Planetarij Mixing",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kuhinjski robot",
+    "robot",
+    "mešalnik",
+    "bosch",
+    "testo"
+   ],
+   "price": 14900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 23900,
+   "discount": 37,
+   "pc": "PC 239,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "BOSCH KUHINJSKI ROBOT BOSCH MUM58L00 • moč 1000 W • prostornina 3,9 l • 7 stopenjski • 3D Planetarij Mixing redna cena 239,- | PC 239,- s SPAR plus kartico 149,- SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 37% CENEJE",
+   "box": [
+    0.343,
+    0.0,
+    0.657,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.375,
+     0.04,
+     0.51,
+     0.145
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "krups-kavni-aparat-ea402he0",
+   "page": 4,
+   "anchor": "KRUPS EA402HE0",
+   "name": "Kavni aparat Krups EA402HE0",
+   "brand": "Krups",
+   "line": null,
+   "descriptor": "moč 1450 W, tlak črpalke 15 barov, ponuja 5 vrst kave in tekočih napitkov",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kavni aparat",
+    "aparat za kavo",
+    "espresso",
+    "kava",
+    "krups",
+    "avtomatski kavni aparat"
+   ],
+   "price": 32900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 49900,
+   "discount": 34,
+   "pc": "PC 499,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "KRUPS KAVNI APARAT KRUPS EA402HE0 • moč 1450 W • tlak črpalke 15 barov • ponuja 5 vrst kave in tekočih napitkov SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 34% CENEJE redna cena 499,- | PC 499,- s SPAR plus kartico 329,-",
+   "box": [
+    0.667,
+    0.0,
+    1.0,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.7,
+     0.045,
+     0.84,
+     0.165
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "bosch-aparat-za-mletje-mesa-mfw2500w",
+   "page": 4,
+   "anchor": "MFW2500W",
+   "name": "Aparat za mletje mesa Bosch MFW2500W",
+   "brand": "Bosch",
+   "line": null,
+   "descriptor": "moč 350 W, blokada motorja pri obremenitvi 1500 W",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "mlin za meso",
+    "aparat za mletje",
+    "mesoreznica",
+    "mletje mesa",
+    "bosch"
+   ],
+   "price": 6900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 11900,
+   "discount": 42,
+   "pc": "PC 119,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "BOSCH APARAT ZA MLETJE MESA BOSCH MFW2500W • moč 350 W • blokada motorja pri obremenitvi 1500 W SAMO V INTERSPARIH 42% CENEJE redna cena 119,- | PC 119,- s SPAR plus kartico 69,-",
+   "box": [
+    0.343,
+    0.255,
+    0.657,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.41,
+     0.285,
+     0.51,
+     0.39
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "cozze-plinska-pecica-za-pico",
+   "page": 4,
+   "anchor": "PICO COZZE",
+   "name": "Plinska pečica za pico Cozze",
+   "brand": "Cozze",
+   "line": null,
+   "descriptor": "premer 34 cm, Corderite pizza kamen",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pečica za pico",
+    "plinska pečica",
+    "pica",
+    "pizza",
+    "cozze",
+    "pizza peč"
+   ],
+   "price": 17900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 29900,
+   "discount": 40,
+   "pc": "PC 299,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "COZZE PLINSKA PEČICA ZA PICO COZZE • premer 34 cm • Corderite pizza kamen SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 40% CENEJE redna cena 299,- | PC 299,- s SPAR plus kartico 179,-",
+   "box": [
+    0.0,
+    0.495,
+    0.333,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.04,
+     0.53,
+     0.245,
+     0.64
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "tefal-zracni-cvrtnik-ey245h10",
+   "page": 4,
+   "anchor": "EY245H10",
+   "name": "Zračni cvrtnik Tefal EY245H10",
+   "brand": "Tefal",
+   "line": null,
+   "descriptor": "prostornina 5 l, 10 samodejnih programov, za pripravo do 6 porcij",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zračni cvrtnik",
+    "cvrtnik",
+    "friteza",
+    "air fryer",
+    "tefal"
+   ],
+   "price": 5990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 9990,
+   "discount": 40,
+   "pc": "PC 99,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Zračni cvrtnik Tefal EY245H10 prostornina 5 l, 10 samodejnih programov, za pripravo do 6 porcij CENEJE 40% redna cena 99,90 PC 99,90 s SPAR plus kartico 59,90",
+   "box": [
+    0.343,
+    0.495,
+    0.657,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.365,
+     0.53,
+     0.5,
+     0.635
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "spar-fotokopirni-papir-a4",
+   "page": 4,
+   "anchor": "FOTOKOPIRNI",
+   "name": "Fotokopirni papir A4",
+   "brand": "SPAR office (Quality by SPAR)",
+   "line": null,
+   "descriptor": "500 listov",
+   "pack": "500 listov",
+   "qty": null,
+   "categories": [
+    "drugo"
+   ],
+   "aliases": [
+    "papir",
+    "fotokopirni papir",
+    "papir a4",
+    "tiskalnik",
+    "pisarna",
+    "spar office"
+   ],
+   "price": 419,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 599,
+   "discount": 30,
+   "pc": "PC 4,19",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Fotokopirni papir A4 500 listov CENEJE 30% redna cena 5,99 PC 4,19 s SPAR plus kartico 4,19",
+   "box": [
+    0.667,
+    0.58,
+    1.0,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.74,
+     0.59,
+     0.84,
+     0.655
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "jocca-zracni-cvrtnik-digital-air-fryer",
+   "page": 4,
+   "anchor": "JOCCA",
+   "name": "Zračni cvrtnik Jocca Digital Air Fryer",
+   "brand": "Jocca",
+   "line": null,
+   "descriptor": "moč 1500 W, 4 prednastavljeni programi, 1,5 l + 4 l steklena posoda za cvrtje",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "zračni cvrtnik",
+    "cvrtnik",
+    "friteza",
+    "air fryer",
+    "jocca"
+   ],
+   "price": 6990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 11900,
+   "discount": 41,
+   "pc": "PC 119,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "JOCCA ZRAČNI CVRTNIK JOCCA DIGITAL AIR FRYER • moč 1500 W • 4 prednastavljeni programi • 1,5 l + 4 l steklena posoda za cvrtje redna cena 119,- | PC 119,- s SPAR plus kartico 69,90 SAMO V INTERSPARIH 41% CENEJE",
+   "box": [
+    0.0,
+    0.735,
+    0.333,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.76,
+     0.2,
+     0.89
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "gorenje-mikrovalovna-pecica-mo20a3x",
+   "page": 4,
+   "anchor": "MO20A3X",
+   "name": "Mikrovalovna pečica Gorenje MO20A3X",
+   "brand": "Gorenje",
+   "line": null,
+   "descriptor": "moč 800 W, prostornina pečice 20 l",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "mikrovalovna",
+    "mikrovalovna pečica",
+    "mikrovalovka",
+    "pečica",
+    "gorenje"
+   ],
+   "price": 8900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 15900,
+   "discount": 44,
+   "pc": "PC 159,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "GORENJE MIKROVALOVNA PEČICA GORENJE MO20A3X • moč 800 W • prostornina pečice 20 l redna cena 159,- | PC 159,- s SPAR plus kartico 89,- 44% CENEJE",
+   "box": [
+    0.343,
+    0.735,
+    0.657,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.37,
+     0.76,
+     0.56,
+     0.84
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "pecica-za-pico-2100-w",
+   "page": 4,
+   "anchor": "ZA PICO",
+   "name": "Pečica za pico",
+   "brand": null,
+   "line": null,
+   "descriptor": "moč 2100 W, prostornina 15 l, temperaturno območje 100–400 °C, za pripravo pic do premera 30 cm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "pečica za pico",
+    "pica",
+    "pizza",
+    "električna pečica za pico",
+    "pizza peč"
+   ],
+   "price": 9900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 15900,
+   "discount": 37,
+   "pc": "PC 159,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "PEČICA ZA PICO • moč 2100 W • prostornina 15 l • temperaturno območje 100–400 °C • za pripravo pic do premera 30 cm redna cena 159,- | PC 159,- s SPAR plus kartico 99,- SAMO V INTERSPARIH 37% CENEJE",
+   "box": [
+    0.667,
+    0.735,
+    1.0,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.68,
+     0.76,
+     0.89,
+     0.855
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "dolce-gusto-kavni-aparat-kp1a3af0",
+   "page": 5,
+   "anchor": "KP1A3AF0",
+   "name": "Kavni aparat Dolce Gusto KP1A3AF0",
+   "brand": "Nescafé Dolce Gusto",
+   "line": null,
+   "descriptor": "tlak 15 barov, do 30 kavnih kreacij",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "kavni aparat",
+    "aparat za kavo",
+    "dolce gusto",
+    "kapsule",
+    "kava",
+    "nescafé"
+   ],
+   "price": 4990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 8900,
+   "discount": 43,
+   "pc": "PC 89,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "NESCAFÉ Dolce Gusto KAVNI APARAT DOLCE GUSTO KP1A3AF0 • tlak 15 barov • do 30 kavnih kreacij redna cena 89,- | PC 89,- s SPAR plus kartico 49,90 V INTERSPARIH IN HIPERMARKETIH SPAR 43% CENEJE",
+   "box": [
+    0.0,
+    0.0,
+    0.333,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.057,
+     0.035,
+     0.225,
+     0.175
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "jocca-aparat-za-pitno-vodo",
+   "page": 5,
+   "anchor": "PITNO VODO",
+   "name": "Aparat za pitno vodo Jocca",
+   "brand": "Jocca",
+   "line": null,
+   "descriptor": "hladi vodo na 10–15 °C, prostornina 7 l, ohlajeni prostor za 0,7 l",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "kuhinja",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "aparat za vodo",
+    "dispenzer za vodo",
+    "pitna voda",
+    "hladilnik vode",
+    "jocca"
+   ],
+   "price": 3900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 7900,
+   "discount": 50,
+   "pc": "PC 79,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "JOCCA APARAT ZA PITNO VODO JOCCA • hladi vodo na 10–15 °C • prostornina 7 l • ohlajeni prostor za 0,7 l redna cena 79,- | PC 79,- s SPAR plus kartico 39,- SAMO V INTERSPARIH 50% CENEJE",
+   "box": [
+    0.343,
+    0.0,
+    0.657,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.38,
+     0.04,
+     0.495,
+     0.16
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "rowenta-robotski-sesalnik-rr8865e0",
+   "page": 5,
+   "anchor": "RR8865E0",
+   "name": "Robotski sesalnik Rowenta RR8865E0",
+   "brand": "Rowenta",
+   "line": null,
+   "descriptor": "sesalna moč do 8000 Pa, laserska navigacija LiDAR 360 °C, avtonomija do 120 minut, upravljanje preko aplikacije, 2v1 sesanje in mokro brisanje",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "robotski sesalnik",
+    "sesalnik",
+    "robot sesalnik",
+    "rowenta",
+    "brisanje",
+    "sesanje"
+   ],
+   "price": 15900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 31900,
+   "discount": 50,
+   "pc": "PC 319,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "ROWENTA ROBOTSKI SESALNIK ROWENTA RR8865E0 • sesalna moč do 8000 Pa • laserska navigacija LiDAR 360 °C • avtonomija do 120 minut • upravljanje preko aplikacije redna cena 319,- | PC 319,- s SPAR plus kartico 159,- SAMO V INTERSPARIH 50% CENEJE",
+   "box": [
+    0.667,
+    0.0,
+    1.0,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.7,
+     0.13,
+     0.94,
+     0.325
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "lenovo-prenosni-racunalnik",
+   "page": 5,
+   "anchor": "LENOVO",
+   "name": "Prenosni računalnik Lenovo",
+   "brand": "Lenovo",
+   "line": null,
+   "descriptor": "free DOS, garancija 2 leti (baterija 1 leto), AMD Ryzen 3, 16 GB, 512 GB SSD, 39,6 cm (15,6\")",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "drugo"
+   ],
+   "aliases": [
+    "prenosni računalnik",
+    "računalnik",
+    "laptop",
+    "prenosnik",
+    "lenovo"
+   ],
+   "price": 32900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 59900,
+   "discount": 45,
+   "pc": "PC 599,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Lenovo PRENOSNI RAČUNALNIK LENOVO • free DOS • garancija 2 leti (baterija 1 leto) SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 45% CENEJE redna cena 599,- | PC 599,- s SPAR plus kartico 329,-",
+   "box": [
+    0.343,
+    0.255,
+    0.657,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.44,
+     0.265,
+     0.55,
+     0.35
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "masazna-blazina",
+   "page": 5,
+   "anchor": "MASAŽNA BLAZINA",
+   "name": "Masažna blazina",
+   "brand": null,
+   "line": null,
+   "descriptor": "za vrat in ramena",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "nega"
+   ],
+   "aliases": [
+    "masažna blazina",
+    "masažer",
+    "masaža",
+    "blazina za vrat",
+    "masažer za vrat"
+   ],
+   "price": 2990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 4590,
+   "discount": 34,
+   "pc": "PC 45,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Masažna blazina za vrat in ramena CENEJE 34% redna cena 45,90 PC 45,90 s SPAR plus kartico 29,90",
+   "box": [
+    0.0,
+    0.58,
+    0.333,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.595,
+     0.165,
+     0.7
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "hisense-tv-uhd-50a69s",
+   "page": 5,
+   "anchor": "UHD 50A69S",
+   "name": "TV Hisense UHD 50A69S",
+   "brand": "Hisense",
+   "line": null,
+   "descriptor": "UHD 4K, 127 cm (50\"), Smart TV, Dolby Vision, DTS Virtual, Game Mode Plus",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "drugo"
+   ],
+   "aliases": [
+    "televizor",
+    "tv",
+    "televizija",
+    "hisense",
+    "4k",
+    "smart tv"
+   ],
+   "price": 24900,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 56900,
+   "discount": 56,
+   "pc": "PC 569,-",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "Možnost plačila na obroke (ne velja ob nakupu v spletni trgovini)",
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Hisense TV HISENSE UHD 50A69S • Dolby Vision • DTS Virtual • Game Mode Plus redna cena 569,- | PC 569,- s SPAR plus kartico 249,- SAMO V INTERSPARIH MOŽNOST PLAČILA NA OBROKE 56% CENEJE",
+   "box": [
+    0.343,
+    0.495,
+    1.0,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.51,
+     0.565,
+     0.81,
+     0.69
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "komplet-utezi-10-kg",
+   "page": 5,
+   "anchor": "KOMPLET UTEŽI",
+   "name": "Komplet uteži 10 kg",
+   "brand": null,
+   "line": null,
+   "descriptor": "10 kg, v kovčku",
+   "pack": "10 kg",
+   "qty": [
+    10,
+    "kg"
+   ],
+   "categories": [
+    "drugo"
+   ],
+   "aliases": [
+    "uteži",
+    "komplet uteži",
+    "ročke",
+    "fitnes",
+    "vadba",
+    "utež"
+   ],
+   "price": 3490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 4990,
+   "discount": 30,
+   "pc": "PC 49,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "Samo v trgovinah INTERSPAR",
+   "printed": "Komplet uteži 10 kg 10 kg, v kovčku CENEJE 30% redna cena 49,90 PC 49,90 s SPAR plus kartico 34,90",
+   "box": [
+    0.0,
+    0.735,
+    0.333,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.755,
+     0.265,
+     0.89
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "linea-grelni-panel-lir9-0581",
+   "page": 5,
+   "anchor": "LIR9-0581",
+   "name": "Grelni panel Linea LIR9-0581",
+   "brand": "Linea",
+   "line": null,
+   "descriptor": "pametni digitalni časovnik s temperaturnim senzorjem, moč 550 W, mere 600 x 800 x 11 mm",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "dom",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "grelni panel",
+    "grelec",
+    "ogrevanje",
+    "električni grelec",
+    "linea",
+    "panel"
+   ],
+   "price": 6990,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 11900,
+   "discount": 41,
+   "pc": "PC 69,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Linea GRELNI PANEL LINEA LIR9-0581 • pametni digitalni časovnik s temperaturnim senzorjem • moč: 550 W • mere: 600 x 800 x 11 mm redna cena 119,- | PC 69,90 s SPAR plus kartico 69,90 41% CENEJE",
+   "box": [
+    0.343,
+    0.735,
+    0.657,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.365,
+     0.755,
+     0.53,
+     0.875
+    ]
+   },
+   "isNew": false,
+   "notes": null
+  },
+  {
+   "key": "philips-brivnik-oneblade-qp1930-22",
+   "page": 5,
+   "anchor": "QP1930/22",
+   "name": "Brivnik OneBlade Philips QP1930/22",
+   "brand": "Philips",
+   "line": null,
+   "descriptor": "vodoodporen, zaščita za občutljive predele, za dlake vseh dolžin",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "nega",
+    "higiena"
+   ],
+   "aliases": [
+    "brivnik",
+    "aparat za britje",
+    "oneblade",
+    "philips",
+    "britje",
+    "brada"
+   ],
+   "price": 2490,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3590,
+   "discount": 30,
+   "pc": "PC 35,90",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": "V trgovinah INTERSPAR in hipermarketih SPAR",
+   "printed": "Brivnik OneBlade Philips QP1930/22 vodoodporen, zaščita za občutljive predele, za dlake vseh dolžin CENEJE 30% redna cena 35,90 PC 35,90 s SPAR plus kartico 24,90",
+   "box": [
+    0.667,
+    0.735,
+    1.0,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.67,
+     0.765,
+     0.81,
+     0.895
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "listerine-ustna-voda",
+   "page": 6,
+   "anchor": "LISTERINE",
+   "name": "Ustna voda Listerine",
+   "brand": "Listerine",
+   "line": null,
+   "descriptor": "Fresh Burst, Teeth & Gum Defence, Fresh ali Soft Mint",
+   "pack": "500 ml",
+   "qty": [
+    500,
+    "ml"
+   ],
+   "categories": [
+    "higiena",
+    "nega"
+   ],
+   "aliases": [
+    "ustna voda",
+    "listerine",
+    "ustna higiena",
+    "tekočina za ustno",
+    "fresh burst"
+   ],
+   "price": 389,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 719,
+   "discount": 45,
+   "pc": "PC 7,19",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Ustna voda Listerine Fresh Burst, Teeth & Gum Defence, Fresh ali Soft Mint CENEJE 45% redna cena 7,19 PC 7,19 s SPAR plus kartico 3,89",
+   "box": [
+    0.0,
+    0.255,
+    0.333,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.043,
+     0.263,
+     0.21,
+     0.425
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "corega-tablete-in-krema",
+   "page": 6,
+   "anchor": "COREGA",
+   "name": "Corega tablete ali pričvrstilna krema",
+   "brand": "Corega",
+   "line": null,
+   "descriptor": "tablete Bio formula 30/1 ali pričvrstilna krema extra močno, mint ali nevtral, 40 g",
+   "pack": "30 tablet ali 40 g",
+   "qty": null,
+   "categories": [
+    "higiena",
+    "nega"
+   ],
+   "aliases": [
+    "corega",
+    "zobna proteza",
+    "tablete za protezo",
+    "pričvrstilna krema",
+    "proteza"
+   ],
+   "price": 489,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 699,
+   "discount": 30,
+   "pc": "PC 6,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Corega tablete ali pričvrstilna krema tablete Bio formula 30/1 ali pričvrstilna krema extra močno, mint ali nevtral, 40 g CENEJE 30% redna cena 6,99 PC 6,99 s SPAR plus kartico 4,89",
+   "box": [
+    0.343,
+    0.255,
+    0.657,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.35,
+     0.27,
+     0.53,
+     0.42
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "gliss-sampon-ali-balzam",
+   "page": 6,
+   "anchor": "ZA LASE GLISS",
+   "name": "Šampon ali balzam za lase Gliss",
+   "brand": "Schwarzkopf Gliss",
+   "line": null,
+   "descriptor": "več vrst, 250 ml ali 200 ml",
+   "pack": "250 ml ali 200 ml",
+   "qty": null,
+   "categories": [
+    "nega",
+    "higiena"
+   ],
+   "aliases": [
+    "šampon",
+    "balzam",
+    "balzam za lase",
+    "gliss",
+    "schwarzkopf",
+    "lasje"
+   ],
+   "price": 275,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 459,
+   "discount": 40,
+   "pc": "PC 2,75",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Šampon ali balzam za lase Gliss več vrst, 250 ml ali 200 ml CENEJE 40% redna cena 4,59 PC 2,75 s SPAR plus kartico 2,75",
+   "box": [
+    0.0,
+    0.495,
+    0.333,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.505,
+     0.21,
+     0.68
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "brillance-barva-za-lase",
+   "page": 6,
+   "anchor": "BRILLANCE",
+   "name": "Barva za lase Brillance",
+   "brand": "Schwarzkopf",
+   "line": null,
+   "descriptor": "več odtenkov",
+   "pack": "1 kos",
+   "qty": [
+    1,
+    "kos"
+   ],
+   "categories": [
+    "nega"
+   ],
+   "aliases": [
+    "barva za lase",
+    "barvanje las",
+    "brillance",
+    "schwarzkopf",
+    "lasna barva"
+   ],
+   "price": 595,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 899,
+   "discount": 33,
+   "pc": "PC 5,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Barva za lase Brillance več odtenkov CENEJE 33% redna cena 8,99 PC 5,99 s SPAR plus kartico 5,95",
+   "box": [
+    0.343,
+    0.495,
+    0.657,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.36,
+     0.51,
+     0.54,
+     0.65
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "fa-gel-za-prhanje",
+   "page": 6,
+   "anchor": "PRHANJE FA",
+   "name": "Gel za prhanje Fa",
+   "brand": "Fa",
+   "line": null,
+   "descriptor": "več vrst",
+   "pack": "400 ml",
+   "qty": [
+    400,
+    "ml"
+   ],
+   "categories": [
+    "nega",
+    "higiena"
+   ],
+   "aliases": [
+    "gel za prhanje",
+    "prhanje",
+    "fa",
+    "gel",
+    "tuš gel",
+    "kopanje"
+   ],
+   "price": 229,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 419,
+   "discount": 45,
+   "pc": "PC 2,29",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Gel za prhanje Fa več vrst CENEJE 45% redna cena 4,19 PC 2,29 s SPAR plus kartico 2,29",
+   "box": [
+    0.0,
+    0.735,
+    0.657,
+    0.97
+   ],
+   "image": {
+    "crop": [
+     0.14,
+     0.757,
+     0.41,
+     0.94
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "dash-pranje-perila",
+   "page": 7,
+   "anchor": "DASH ZA",
+   "name": "Dash za pranje perila",
+   "brand": "Dash",
+   "line": null,
+   "descriptor": "kapsule dve vrsti 44/1 ali gel lavanda 2,7 l, 60 pranj ali prašek regular 3,3 kg, 60 pranj",
+   "pack": "več velikosti",
+   "qty": null,
+   "categories": [
+    "cistila",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "dash",
+    "pranje perila",
+    "detergent",
+    "prašek za pranje",
+    "kapsule za pranje",
+    "gel za pranje"
+   ],
+   "price": 1829,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3049,
+   "discount": 40,
+   "pc": "PC 18,29",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Dash za pranje perila kapsule dve vrsti 44/1 ali gel lavanda 2,7 l, 60 pranj ali prašek regular 3,3 kg, 60 pranj CENEJE 40% redna cena 30,49 PC 18,29 s SPAR plus kartico 18,29",
+   "box": [
+    0.0,
+    0.0,
+    0.333,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.02,
+     0.19,
+     0.165
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "ariel-pranje-perila",
+   "page": 7,
+   "anchor": "ARIEL ZA",
+   "name": "Ariel za pranje perila",
+   "brand": "Ariel",
+   "line": null,
+   "descriptor": "gel več vrst 2,7 l (60 pranj) ali 2,25 l (50 pranj); prašek dve vrsti 3,465 kg (63 pranj); kapsule več vrst 38/1 ali 44/1",
+   "pack": "več velikosti",
+   "qty": null,
+   "categories": [
+    "cistila",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "ariel",
+    "pranje perila",
+    "detergent",
+    "prašek za pranje",
+    "kapsule za pranje",
+    "gel za pranje"
+   ],
+   "price": 1569,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 3139,
+   "discount": 50,
+   "pc": "PC 18,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": "MEGA CENA",
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Ariel za pranje perila gel več vrst 2,7 l (60 pranj) ali 2,25 l (50 pranj); prašek dve vrsti 3,465 kg (63 pranj); kapsule več vrst 38/1 ali 44/1 CENEJE 50% redna cena 31,39 PC 18,79 s SPAR plus kartico 15,69",
+   "box": [
+    0.343,
+    0.0,
+    1.0,
+    0.247
+   ],
+   "image": {
+    "crop": [
+     0.505,
+     0.03,
+     0.78,
+     0.24
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "violeta-mehcalec",
+   "page": 7,
+   "anchor": "MEHČALEC VIOLETA",
+   "name": "Mehčalec Violeta",
+   "brand": "Violeta",
+   "line": null,
+   "descriptor": "več vrst, 1,55 l, 51 ali 62 pranj ali 1,710 l, 57 pranj",
+   "pack": "več velikosti",
+   "qty": null,
+   "categories": [
+    "cistila",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "mehčalec",
+    "mehčalec za perilo",
+    "violeta",
+    "perilo",
+    "pranje"
+   ],
+   "price": 389,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 649,
+   "discount": 40,
+   "pc": "PC 6,49",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Mehčalec Violeta več vrst, 1,55 l, 51 ali 62 pranj ali 1,710 l, 57 pranj CENEJE 40% redna cena 6,49 PC 6,49 s SPAR plus kartico 3,89",
+   "box": [
+    0.343,
+    0.255,
+    0.657,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.37,
+     0.27,
+     0.535,
+     0.43
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "violeta-toaletni-papir-strong-soft",
+   "page": 7,
+   "anchor": "PAPIR VIOLETA",
+   "name": "Toaletni papir Violeta strong & soft",
+   "brand": "Violeta",
+   "line": null,
+   "descriptor": "peach, 3 slojni, 110 lističev",
+   "pack": "20 rol",
+   "qty": [
+    20,
+    "kos"
+   ],
+   "categories": [
+    "higiena",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "toaletni papir",
+    "wc papir",
+    "violeta",
+    "papir",
+    "higiena"
+   ],
+   "price": 539,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 999,
+   "discount": 46,
+   "pc": "PC 9,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Toaletni papir Violeta strong & soft peach, 3 slojni, 110 lističev CENEJE 46% redna cena 9,99 PC 9,99 s SPAR plus kartico 5,39",
+   "box": [
+    0.667,
+    0.255,
+    1.0,
+    0.49
+   ],
+   "image": {
+    "crop": [
+     0.685,
+     0.265,
+     0.97,
+     0.365
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "lovely-papirnati-robcki-box",
+   "page": 7,
+   "anchor": "PAPIRNATI ROBČKI",
+   "name": "Papirnati robčki Lovely",
+   "brand": "Lovely (Quality by SPAR)",
+   "line": null,
+   "descriptor": "4 slojni, Box, 100/1",
+   "pack": "100 kos",
+   "qty": [
+    100,
+    "kos"
+   ],
+   "categories": [
+    "higiena",
+    "gospodinjstvo"
+   ],
+   "aliases": [
+    "papirnati robčki",
+    "robčki",
+    "žepni robčki",
+    "lovely",
+    "papirnati robčki box"
+   ],
+   "price": 118,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Quality by SPAR Lovely PAPIRNATI ROBČKI 4 slojni, Box, 100/1 1,18",
+   "box": [
+    0.343,
+    0.495,
+    0.657,
+    0.73
+   ],
+   "image": {
+    "crop": [
+     0.365,
+     0.53,
+     0.635,
+     0.685
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  }
+ ],
+ "excluded": [
+  {
+   "page": 1,
+   "text": "IZDELKI SOMAT ZA STROJNO POMIVANJE POSODE – 50 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 2,
+   "text": "SIMPEX BASIC – krožniki, sklede, lončki in skodelice (porcelan), 30 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 6,
+   "text": "ZOBNA PASTA AQUAFRESH več vrst, 100 ml ali 75 ml – 30 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 6,
+   "text": "TOALETNO MILO PALMOLIVE več vrst, 90 g – 1+1 GRATIS s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 6,
+   "text": "KREMA, MLEKO ALI LOSJON NIVEA za telo, več vrst – 25 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 7,
+   "text": "IZDELKI WC NET – 40 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 7,
+   "text": "KUHINJSKE BRISAČE IN PAPIRNATI ROBČKI PALOMA – 40 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 7,
+   "text": "PLENICE IN HLAČNE PLENICE PRETTY BABY – 15 % CENEJE s SPAR plus kartico (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 8,
+   "text": "BATERIJE IN SIJALKE (Emos, SimPex, Philips, Varta, Duracell) – 30 % CENEJE, V INTERSPARIH IN HIPERMARKETIH SPAR; PONUDBA VELJA OD 28. 10. DO 3. 11. 2026 (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 8,
+   "text": "OSEBNA IN ZOBNA NEGA (Braun, Oral-B, SimPex Basic, Curaprox, Remington, Philips) – 30 % CENEJE, V INTERSPARIH IN HIPERMARKETIH SPAR; PONUDBA VELJA OD 28. 10. DO 3. 11. 2026 (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 8,
+   "text": "VREČKE ZA SMETI IN SHRANJEVANJE, ALU FOLIJE, PEKI PAPIR – 25 % CENEJE, V INTERSPARIH IN HIPERMARKETIH SPAR; PONUDBA VELJA OD 28. 10. DO 3. 11. 2026 (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  },
+  {
+   "page": 8,
+   "text": "TEKSTIL ZA DOM (brisače, vzglavniki, odeje, posteljne garniture) – 40 % CENEJE, V INTERSPARIH IN HIPERMARKETIH SPAR; PONUDBA VELJA OD 28. 10. DO 3. 11. 2026 (brez cene)",
+   "reason": "Natisnjen samo odstotek popusta, cena izdelka ni natisnjena."
+  }
+ ]
+}

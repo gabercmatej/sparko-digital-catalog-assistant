@@ -2,6 +2,7 @@
 import { getPrimaryOffer, getProduct, unitLabel } from "@/lib/catalog";
 import { isSaved, useStore } from "@/lib/store/store";
 import { Icon } from "../ui/Icon";
+import { offerNotes } from "./offerNotes";
 import { PricePill } from "./PricePill";
 import { RetailerBadge } from "./RetailerBadge";
 import styles from "./ProductMiniCard.module.css";
@@ -34,9 +35,10 @@ export function ProductMiniCard({
   const product = getProduct(productId);
   const offer = getPrimaryOffer(productId);
   if (!product || !offer) return null;
+  const notes = offerNotes(offer);
   const saved = isSaved(productId, store);
   const unit = unitLabel(product.packSize, offer.priceUnit);
-  const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}${saved ? ", v Mojem katalogu" : ""}`;
+  const label = `${ariaLabelPrefix ? ariaLabelPrefix + ": " : ""}${product.brand ? product.brand + " " : ""}${product.name}, ${product.packSize}${notes.status ? ", " + notes.status : ""}${saved ? ", v Mojem katalogu" : ""}`;
 
   const body = (
     <>
@@ -53,7 +55,7 @@ export function ProductMiniCard({
           {product.packSize}
           {unit && <span className={styles.unit}>{unit}</span>}
         </span>
-        <PricePill cents={offer.priceCents} size="sm" className={styles.price} />
+        <PricePill cents={offer.priceCents} size="sm" tone={notes.current ? "now" : "expired"} className={styles.price} />
       </span>
     </>
   );

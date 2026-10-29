@@ -1,0 +1,62 @@
+[
+ {
+  "id": "vecerja-puranji-zrezki-rezanci-spinaca",
+  "title": "Puranji zrezki s špinačnimi rezanci v smetanovi omaki",
+  "kind": "dinner", "servings": 4, "budgetCents": 1500, "minutes": 30,
+  "ingredients": [
+   {"offerId": "offer-puranji-file-zrezki-perutnina-ptuj-400g-4426", "requiredQuantity": "400 g", "packsNeeded": 1,
+    "conversionNote": "Porabiš celoten 400 g paket puranjih zrezkov."},
+   {"offerId": "offer-barilla-rezanci-gnezda-spinaca-500g-4426", "requiredQuantity": "približno 320 g", "packsNeeded": 1,
+    "conversionNote": "Kupiti je treba cel 500 g paket; približno 180 g rezancev ostane v shrambi."},
+   {"offerId": "offer-smetana-za-kuhanje-mu-cuisine-500ml-4426", "requiredQuantity": "250 ml", "packsNeeded": 1,
+    "conversionNote": "Kupiti je treba celo 500 ml embalažo; polovica ostane za drugo jed."}
+  ],
+  "pantryAssumptions": ["olje, sol in poper imaš doma", "česen in parmezan sta neobvezna"],
+  "steps": [
+   "Puranje zrezke nareži na trakove, jih solí in popopraj.",
+   "Meso na žlici olja 5–6 minut praži, da porjavi in se prepeče.",
+   "Rezance skuhaj v osoljeni vodi po navodilih na embalaži.",
+   "Mesu prilij smetano za kuhanje in 2–3 minute kuhaj, da se omaka zgosti.",
+   "Odcejene rezance premešaj z omako in takoj postrezi."
+  ]
+ },
+ {
+  "id": "kosilo-svedri-gobe-smetana",
+  "title": "Polnozrnati svedri z gobami bukov ostrigar",
+  "kind": "lunch", "servings": 4, "budgetCents": 1000, "minutes": 25,
+  "ingredients": [
+   {"offerId": "offer-barilla-polnozrnati-svedri-500g-4426", "requiredQuantity": "500 g", "packsNeeded": 1,
+    "conversionNote": "En 500 g paket zadošča za štiri porcije."},
+   {"offerId": "offer-gobe-bukov-ostrigar-250g-4426", "requiredQuantity": "500 g", "packsNeeded": 2,
+    "conversionNote": "Potrebuješ dva 250 g paketa gob."},
+   {"offerId": "offer-smetana-za-kuhanje-mu-cuisine-500ml-4426", "requiredQuantity": "250 ml", "packsNeeded": 1,
+    "conversionNote": "Kupiti je treba celo 500 ml embalažo; polovica ostane za drugo jed."}
+  ],
+  "pantryAssumptions": ["olje, sol in poper imaš doma", "peteršilj in česen sta neobvezna"],
+  "steps": [
+   "Testenine skuhaj v osoljeni vodi po navodilih na embalaži.",
+   "Gobe natrgaj na trakove in jih 6–8 minut praži na žlici olja, da porjavijo.",
+   "Gobam prilij smetano, solí in popopraj ter kuhaj 2–3 minute.",
+   "Odcejene svedre premešaj z omako in postrezi."
+  ]
+ },
+ {
+  "id": "zajtrk-jogurt-maline-musli",
+  "title": "Zajtrk: jogurt z malinami in muslijem",
+  "kind": "breakfast", "servings": 2, "budgetCents": 1000, "minutes": 5,
+  "ingredients": [
+   {"offerId": "offer-navadni-jogurt-mu-pet-1kg-4426", "requiredQuantity": "približno 400 g", "packsNeeded": 1,
+    "conversionNote": "Kupiti je treba cel 1 kg lonček; ostanek porabiš za naslednje zajtrke."},
+   {"offerId": "offer-maline-125g-4426", "requiredQuantity": "125 g", "packsNeeded": 1,
+    "conversionNote": "Porabiš cel 125 g paket malin."},
+   {"offerId": "offer-dr-oetker-musli-high-protein-4426", "requiredQuantity": "približno 100 g", "packsNeeded": 1,
+    "conversionNote": "Kupiti je treba cel 400 g paket; ostanek ostane v shrambi."}
+  ],
+  "pantryAssumptions": ["med po okusu imaš doma (neobvezno)"],
+  "steps": [
+   "Jogurt razdeli v dve skodelici.",
+   "Maline operi in jih razporedi po jogurtu.",
+   "Potresi z muslijem in po želji pokapaj z medom."
+  ]
+ }
+]

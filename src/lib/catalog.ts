@@ -1,43 +1,57 @@
 /**
- * Single source of truth accessors for the verified demo catalogs (SPAR 41/26 + INTERSPAR 14/26).
+ * Single source of truth accessors for the catalog data:
+ *  - src/data/catalog.json: the six current catalogs (Home order), their verified products, offers, placement boxes
+ *    and recipes (V3.1 indexing, scripts/catalog/v3);
+ *  - src/data/historical.json: the earlier SPAR 41/26 / INTERSPAR 14/26 data, ONLY so saved products and old chats
+ *    still resolve. Historical records are never listed, searched or recommended, and are never current.
+ * Whether an offer is current is decided by its own dates (src/lib/promoCalendar.ts), never here.
  * Isomorphic: safe in server routes, client components and tests.
  */
 import raw from "@/data/catalog.json";
-import leafletRaw from "@/data/leaflets.json";
-import type { Catalog, CatalogData, CatalogPage, LeafletCategory, LeafletData, Offer, Placement, Product, Recipe, Retailer, ViewerCatalog } from "./types";
+import historicalRaw from "@/data/historical.json";
+import type { Catalog, CatalogData, CatalogPage, HistoricalData, LeafletCategory, Offer, Placement, Product, Recipe, Retailer, ViewerCatalog } from "./types";
 
 export const data = raw as unknown as CatalogData;
-/** All catalogs, SPAR (primary) first. */
+export const historical = historicalRaw as unknown as HistoricalData;
+/** The six current catalogs, Home order (SPAR 44/26 first). */
 export const catalogs: Catalog[] = data.catalogs;
-/** The primary (SPAR) catalog. Pages/placements default to it when no catalog id is given. */
+/** The first Home catalog (SPAR 44/26). Pages/placements default to it when no catalog id is given. */
 export const primaryCatalog: Catalog = catalogs[0];
 /** Alias of `primaryCatalog`, kept for single-catalog call sites ({{issue}} etc.). */
 export const catalog = primaryCatalog;
+/** Earlier catalogs (historical.json), reachable from saved products and the leaflet switcher only. */
+export const historicalCatalogs: Catalog[] = historical.catalogs;
 
-const catalogById = new Map<string, Catalog>(catalogs.map((c) => [c.id, c]));
+const catalogById = new Map<string, Catalog>([...catalogs, ...historicalCatalogs].map((c) => [c.id, c]));
 
-const productById = new Map<string, Product>(data.products.map((p) => [p.id, p]));
-const offerById = new Map<string, Offer>(data.offers.map((o) => [o.id, o]));
+const productById = new Map<string, Product>([...data.products, ...historical.products].map((p) => [p.id, p]));
+const historicalProductIds = new Set(historical.products.map((p) => p.id));
+const offerById = new Map<string, Offer>([...data.offers, ...historical.offers].map((o) => [o.id, o]));
 const offersByProduct = new Map<string, Offer[]>();
-for (const o of data.offers) {
+for (const o of [...data.offers, ...historical.offers]) {
   const list = offersByProduct.get(o.productId) ?? [];
   list.push(o);
   offersByProduct.set(o.productId, list);
 }
+const allPlacements = [...data.placements, ...historical.placements];
 const placementsByOffer = new Map<string, Placement[]>();
-for (const pl of data.placements) {
+for (const pl of allPlacements) {
   const list = placementsByOffer.get(pl.offerId) ?? [];
   list.push(pl);
   placementsByOffer.set(pl.offerId, list);
 }
 const pageKey = (catalogId: string, pdfPageIndex: number) => `${catalogId}#${pdfPageIndex}`;
-const pageByKey = new Map<string, CatalogPage>(catalogs.flatMap((c) => c.pages.map((p) => [pageKey(c.id, p.pdfPageIndex), p] as const)));
+const pageByKey = new Map<string, CatalogPage>(
+  [...catalogs, ...historicalCatalogs].flatMap((c) => c.pages.map((p) => [pageKey(c.id, p.pdfPageIndex), p] as const)),
+);
 
-/** Products sorted by editorial rank (carousel order). */
+/** Products of the six current catalogs (current AND expired offers), editorial order (Home order, page, position). */
 export const products: Product[] = [...data.products].sort((a, b) => a.editorialRank - b.editorialRank || a.id.localeCompare(b.id));
 export const offers: Offer[] = data.offers;
 export const placements: Placement[] = data.placements;
 export const recipes: Recipe[] = data.recipes;
+/** Every product id a saved item may legitimately reference (current dataset + historical). */
+export const knownProductIds: ReadonlySet<string> = new Set(productById.keys());
 
 export function getProduct(id: string): Product | undefined {
   return productById.get(id);
@@ -62,7 +76,15 @@ export function getPage(pdfPageIndex: number, catalogId: string = primaryCatalog
   return pageByKey.get(pageKey(catalogId, pdfPageIndex));
 }
 export function getPlacementsOnPage(pdfPageIndex: number, catalogId: string = primaryCatalog.id): Placement[] {
-  return data.placements.filter((p) => p.catalogId === catalogId && p.pdfPageIndex === pdfPageIndex);
+  return allPlacements.filter((p) => p.catalogId === catalogId && p.pdfPageIndex === pdfPageIndex);
+}
+/** True for products of the earlier (historical) catalogs: shown only as saved items, never as current offers. */
+export function isHistoricalProduct(productId: string): boolean {
+  return historicalProductIds.has(productId);
+}
+/** Current-dataset products with the same identity (same product and pack in another catalog), editorial order. */
+export function productsWithIdentity(identityKey: string): Product[] {
+  return products.filter((p) => p.identityKey === identityKey);
 }
 
 // ---------------------------------------------------------------- catalogs & retailers
@@ -75,11 +97,11 @@ export function catalogForProduct(productId: string): Catalog | undefined {
   const o = getPrimaryOffer(productId);
   return o ? getCatalog(o.catalogId) : undefined;
 }
-/** SPAR / INTERSPAR source of a product (from its primary offer's catalog). */
+/** SPAR / INTERSPAR / SPAR Online / DESPAR source of a product (from its primary offer's catalog). */
 export function retailerOf(productId: string): Retailer | undefined {
   return catalogForProduct(productId)?.retailer;
 }
-export const RETAILER_LABEL: Record<Retailer, string> = { spar: "SPAR", interspar: "INTERSPAR" };
+export const RETAILER_LABEL: Record<Retailer, string> = { spar: "SPAR", interspar: "INTERSPAR", "spar-online": "SPAR Online", despar: "DESPAR" };
 /** Products of one catalog, editorial order. */
 export function productsInCatalog(catalogId: string): Product[] {
   return products.filter((p) => getPrimaryOffer(p.id)?.catalogId === catalogId);
@@ -175,59 +197,41 @@ export function validityText(o: Offer): string {
 
 export const DEMO_LABEL = `Demo katalog · ${formatDate(primaryCatalog.publishedDate)}`;
 
+/** Printed store / channel restriction of an offer ("Samo v trgovini DESPAR Koper."), or null. */
+export function availabilityText(o: Offer): string | null {
+  return o.availability?.restricted ? o.availability.note : null;
+}
+
 // ---------------------------------------------------------------- viewer leaflets (Home carousel + /letak)
 
-/**
- * Every leaflet the viewer can open. First the browse-only leaflets of src/data/leaflets.json in Home order,
- * then the product-data catalogs above (interactive, reached through product links and the leaflet switcher).
- * `catalogs` (the AI / offer data) is deliberately NOT extended: the demo date model and every price stay
- * tied to the verified catalogs only.
- */
-export const homeLeaflets: ViewerCatalog[] = (leafletRaw as unknown as LeafletData).leaflets
-  .map(
-    (l): ViewerCatalog => ({
-      id: l.id,
-      category: l.category,
-      title: l.title,
-      issueLabel: l.issueLabel,
-      validFrom: l.validFrom,
-      validTo: l.validTo,
-      validityNote: l.validityNote ?? null,
-      pdfUrl: l.pdfUrl,
-      pageCount: l.pageCount,
-      cover: l.cover,
-      pages: l.pages,
-      interactive: false,
-      homeOrder: l.homeOrder,
-    }),
-  )
-  .sort((a, b) => (a.homeOrder ?? 0) - (b.homeOrder ?? 0));
+const toViewer = (c: Catalog, isHistorical: boolean): ViewerCatalog => ({
+  id: c.id,
+  category: c.retailer,
+  title: c.title,
+  issueLabel: c.issueLabel,
+  validFrom: c.validFrom,
+  validTo: c.validTo,
+  validityNote: c.validityNote,
+  pageRules: c.pageRules,
+  availability: c.availability,
+  pdfUrl: c.pdfUrl,
+  pageCount: c.pageCount,
+  cover: c.cover,
+  pages: c.pages,
+  interactive: allPlacements.some((p) => p.catalogId === c.id),
+  homeOrder: isHistorical ? null : c.homeOrder,
+  historical: isHistorical,
+});
 
-export const viewerCatalogs: ViewerCatalog[] = [
-  ...homeLeaflets,
-  ...catalogs.map(
-    (c): ViewerCatalog => ({
-      id: c.id,
-      category: c.retailer,
-      title: c.title,
-      issueLabel: c.issueLabel,
-      validFrom: c.validFrom,
-      validTo: c.validTo,
-      validityNote: null,
-      pdfUrl: c.pdfUrl,
-      pageCount: c.pageCount,
-      cover: c.cover,
-      pages: c.pages,
-      interactive: true,
-      homeOrder: null,
-    }),
-  ),
-];
+/** The six current catalogs as Home cards, Home order. */
+export const homeLeaflets: ViewerCatalog[] = catalogs.map((c) => toViewer(c, false)).sort((a, b) => (a.homeOrder ?? 0) - (b.homeOrder ?? 0));
+/** Every leaflet the viewer can open: the six current ones, then the historical ones (saved products, old chats). */
+export const viewerCatalogs: ViewerCatalog[] = [...homeLeaflets, ...historicalCatalogs.map((c) => toViewer(c, true))];
 /** What /letak opens without a `katalog` parameter: the first Home leaflet. */
 export const defaultLeaflet: ViewerCatalog = viewerCatalogs[0];
 
 const viewerById = new Map<string, ViewerCatalog>(viewerCatalogs.map((c) => [c.id, c]));
-const viewerPageByKey = new Map<string, CatalogPage>(viewerCatalogs.flatMap((c) => c.pages.map((p) => [pageKey(c.id, p.pdfPageIndex), p] as const)));
+const viewerPageByKey = pageByKey;
 
 export function getViewerCatalog(id: string): ViewerCatalog | undefined {
   return viewerById.get(id);

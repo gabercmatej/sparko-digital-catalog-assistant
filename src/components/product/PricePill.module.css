@@ -35,3 +35,9 @@
   color: var(--c-future-ink);
   box-shadow: inset 0 0 0 1px var(--c-future-border);
 }
+/* Expired / historical offer: muted neutral, never the promotion red. */
+.expired {
+  background: #e9ecea;
+  color: var(--c-ink-3);
+  box-shadow: inset 0 0 0 1px var(--c-border);
+}

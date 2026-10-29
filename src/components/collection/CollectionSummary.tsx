@@ -5,9 +5,16 @@ import styles from "./CollectionSummary.module.css";
 
 /**
  * Compact totals bar at the bottom of Moj katalog (a flex sibling of the scroll area, directly above the
- * bottom nav). Numbers come from collectionTotals(); skeletons are shown until the store is hydrated.
+ * bottom nav). Numbers come from collectionTotals() (current offers only; `excluded` items get a one-line note); skeletons are shown until the store is hydrated.
  */
-export function CollectionSummary({ totals, hydrated }: { totals: CollectionTotals; hydrated: boolean }) {
+/** Slovene number agreement: "1 izdelek ... ni vštet", "2 izdelka ... nista všteta", "3 izdelki / 5 izdelkov ... niso všteti". */
+function excludedNote(n: number): string {
+  const noun = n === 1 ? "izdelek" : n === 2 ? "izdelka" : n <= 4 ? "izdelki" : "izdelkov";
+  const verb = n === 1 ? "ni vštet" : n === 2 ? "nista všteta" : "niso všteti";
+  return `${n} ${noun} s preteklo ponudbo ${verb}.`;
+}
+
+export function CollectionSummary({ totals, hydrated, excluded = 0 }: { totals: CollectionTotals; hydrated: boolean; excluded?: number }) {
   const total = formatPrice(totals.totalCents);
   const savings = formatPrice(totals.savingsCents);
 
@@ -33,6 +40,11 @@ export function CollectionSummary({ totals, hydrated }: { totals: CollectionTota
           <span className={styles.skeleton} aria-hidden="true" />
         )}
       </div>
+      {hydrated && excluded > 0 && (
+        <p className={styles.note} data-excluded-note>
+          {excludedNote(excluded)}
+        </p>
+      )}
     </div>
   );
 }

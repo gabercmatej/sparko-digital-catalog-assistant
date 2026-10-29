@@ -1,8 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { offerOf, primary, productsByPage, secondary, pagesWithProducts } from "./catalog-data";
+import { catalogs, offerOf, primary, productsByPage, pagesWithProducts } from "./catalog-data";
 
-// Three SPAR products and one INTERSPAR product, derived from the data.
+// INTERSPAR 15/26 is expired on the reference date (it would be listed as "Ponudba je potekla"), so the second retailer is the current DESPAR catalog.
+const secondary = catalogs.find((c) => c.retailer === "despar")!;
+
+// Three SPAR products and one DESPAR product, derived from the data.
 const SPAR_IDS = pagesWithProducts(primary.id)
   .flatMap((i) => productsByPage(primary.id).get(i)!)
   .slice(0, 3);
@@ -53,12 +56,12 @@ test("tabs, action buttons and the old subtitle / dock are gone", async ({ page 
   expect(under).not.toBe("rgba(0, 0, 0, 0)");
 });
 
-test("rows: grey list area, white rows with SPAR / INTERSPAR label, red price pill, no visible remove controls", async ({ page }) => {
+test("rows: grey list area, white rows with SPAR / DESPAR label, red price pill, no visible remove controls", async ({ page }) => {
   await seed(page, SAVED);
   await expect(rows(page)).toHaveCount(SAVED.length);
   for (const id of SAVED) {
     const row = page.locator(`#izdelek-${id}`);
-    await expect(row.locator("[data-retailer]")).toHaveCount(1);
+    await expect(row.locator("[data-retailer], [data-category]")).toHaveCount(1);
     await expect(row.locator('[data-price-pill="now"]')).toBeVisible();
     expect(await row.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(255, 255, 255)");
     const bg = await row.locator('[data-price-pill="now"]').evaluate((el) => getComputedStyle(el).backgroundColor);
@@ -70,7 +73,7 @@ test("rows: grey list area, white rows with SPAR / INTERSPAR label, red price pi
     expect(h).toBeGreaterThanOrEqual(76);
     expect(h).toBeLessThanOrEqual(110);
   }
-  await expect(page.locator(`#izdelek-${IS_ID} [data-retailer="interspar"]`)).toBeVisible();
+  await expect(page.locator(`#izdelek-${IS_ID} [data-category="despar"]`)).toBeVisible();
   await expect(page.locator(`#izdelek-${SPAR_IDS[0]} [data-retailer="spar"]`)).toBeVisible();
   // No remove / X controls in the normal state.
   await expect(rows(page).getByRole("button", { name: /Odstrani/ })).toHaveCount(0);
@@ -120,11 +123,11 @@ test("kebab menu: 'Izprazni seznam' empties the list with an undo toast", async 
   await expect(rows(page)).toHaveCount(SAVED.length);
 });
 
-test("'Pokaži na letaku' opens the leaflet at the first saved page; INTERSPAR-only lists open INTERSPAR", async ({ page }) => {
+test("'Pokaži na letaku' opens the leaflet at the first saved page; DESPAR-only lists open DESPAR", async ({ page }) => {
   await seed(page, SAVED);
   const firstPage = pagesWithProducts(primary.id).find((i) => productsByPage(primary.id).get(i)!.some((id) => SPAR_IDS.includes(id)))!;
   await page.getByRole("link", { name: "Pokaži na letaku" }).click();
-  await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${primary.id}&stran=${firstPage + 1}$`));
+  await expect(page).toHaveURL(new RegExp(`/letak\\?(?:katalog=${primary.id}&)?stran=${firstPage + 1}$`));
   await seed(page, [IS_ID]);
   await page.getByRole("link", { name: "Pokaži na letaku" }).click();
   await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${secondary.id}&stran=${pagesWithProducts(secondary.id)[0] + 1}$`));
@@ -145,7 +148,7 @@ test("'Deli seznam' shares a plain-text list (navigator.share) and falls back to
   const shared = (await page.evaluate(() => (window as unknown as { __shared: { text: string } }).__shared)) as { text: string };
   expect(shared.text).toMatch(/ – \d+,\d{2} €/);
   expect(shared.text).toContain("(SPAR)");
-  expect(shared.text).toContain("(INTERSPAR)");
+  expect(shared.text).toContain("(DESPAR)");
   expect(shared.text.split("\n").length).toBe(SAVED.length + 1);
   // 2) no share API → clipboard + toast.
   await page.evaluate(() => {
@@ -155,7 +158,7 @@ test("'Deli seznam' shares a plain-text list (navigator.share) and falls back to
   });
   await page.getByRole("button", { name: "Deli seznam" }).click();
   await expect(page.getByText("Seznam je kopiran v odložišče.")).toBeVisible();
-  expect(await page.evaluate(() => (window as unknown as { __clip: string }).__clip)).toContain("(INTERSPAR)");
+  expect(await page.evaluate(() => (window as unknown as { __clip: string }).__clip)).toContain("(DESPAR)");
 });
 
 test("green recommendation band: premium green, heading, 'Poglej vse', '+' adds and flashes the new row", async ({ page }) => {

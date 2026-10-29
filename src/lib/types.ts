@@ -22,19 +22,38 @@ export type CatalogPage = {
   theme: string | null;
 };
 
-/** Which store format a catalog (and so every offer in it) belongs to. Drives the SPAR / INTERSPAR source label. */
-export type Retailer = "spar" | "interspar";
+/** Store-format category of a leaflet: drives the colour and the label of its Home card, the leaflet switcher and the product source badge. */
+export type LeafletCategory = "spar" | "interspar" | "spar-online" | "despar";
+/** Which store format a catalog (and so every offer in it) belongs to. Drives the SPAR / INTERSPAR / SPAR Online / DESPAR source label. */
+export type Retailer = LeafletCategory;
+
+/** Printed exception to a catalog's general validity for some pages (e.g. »strani 22–27 do 10. 11.«). */
+export type PageRule = {
+  /** 1-based PDF page numbers the rule covers. */
+  pdfPages: number[];
+  /** The page numbers as printed on those pages (the footnote names printed numbers), null when none is printed. */
+  printedLabels: (string | null)[];
+  from: string;
+  to: string;
+};
 
 export type Catalog = {
-  id: string; // "spar-4126" | "interspar-1426"
+  id: string; // "spar-4426"
   retailer: Retailer;
-  title: string; // "SPAR katalog 41/26"
-  issueLabel: string; // "41/26"
-  /** ISO date the catalog was published / starts, "2026-10-07". */
+  title: string; // "SPAR katalog 44/26"
+  issueLabel: string; // "44/26"
+  /** ISO date the catalog was published / starts, "2026-10-28". */
   publishedDate: string;
-  /** General catalog validity as printed (individual offers may differ, see Offer.validity). */
-  validFrom: string; // "2026-10-07"
-  validTo: string; // "2026-10-13"
+  /** General catalog validity as printed (pages and individual offers may differ, see pageRules / Offer.validity). */
+  validFrom: string; // "2026-10-28"
+  validTo: string; // "2026-11-03"
+  /** Short printed exception / restriction, e.g. "Izdelki na straneh 22–27 do 10. 11. 2026.", or null. */
+  validityNote: string | null;
+  pageRules: PageRule[];
+  /** Catalog-wide store restriction ("Samo v trgovini DESPAR Koper."), or null. */
+  availability: string | null;
+  /** Position on Home (1 = first); null for historical catalogs. */
+  homeOrder: number | null;
   sourceFile: string; // original file name
   /** Public URL of the original PDF. */
   pdfUrl: string;
@@ -44,13 +63,9 @@ export type Catalog = {
   pages: CatalogPage[];
 };
 
-/** Store-format category of a leaflet: drives the colour and the label of its Home card and the leaflet switcher. */
-export type LeafletCategory = "spar" | "interspar" | "spar-online" | "despar";
-
 /**
- * A leaflet the viewer can open: either one of the browse-only leaflets in src/data/leaflets.json (no
- * products attached) or one of the product-data catalogs of catalog.json (interactive: verified offers and
- * placement boxes). Never mixed: an offer's catalogId always names an interactive one.
+ * A leaflet the viewer can open: one of the six current catalogs of src/data/catalog.json (Home order) or one of
+ * the earlier catalogs of src/data/historical.json (homeOrder null, never current).
  */
 export type ViewerCatalog = {
   id: string;
@@ -65,22 +80,26 @@ export type ViewerCatalog = {
   pageCount: number;
   cover: { src: string; width: number; height: number };
   pages: CatalogPage[];
-  /** True when verified products and placement boxes exist for it (the product-data catalogs). */
+  pageRules: PageRule[];
+  availability: string | null;
+  /** True when verified products and placement boxes exist for it. */
   interactive: boolean;
-  /** Position on Home (1 = first), or null when not shown there (the earlier product-data catalogs). */
+  /** Position on Home (1 = first), or null when not shown there (historical catalogs). */
   homeOrder: number | null;
-};
-
-/** src/data/leaflets.json, written by scripts/catalog/leaflets.py. */
-export type LeafletData = {
-  version: 1;
-  leaflets: (Omit<ViewerCatalog, "interactive" | "homeOrder"> & { homeOrder: number; sourceFile: string; validityEvidence: string })[];
+  /** An earlier catalog kept for saved products and old chats (src/data/historical.json). */
+  historical: boolean;
 };
 
 export type QuantityUnit = "g" | "kg" | "ml" | "l" | "kos";
 
 export type Product = {
-  id: string; // stable, kebab-case, e.g. "nutella-1kg"
+  /** Stable, kebab-case, carries the catalog context, e.g. "nutella-1kg-4426" (historical: "nutella-1kg"). */
+  id: string;
+  /**
+   * Catalog-independent identity slug: the same product in two catalogs shares it. Used to deduplicate search
+   * results and to offer a historical saved item's identical current offer.
+   */
+  identityKey: string;
   name: string; // "Nutella"
   /** Brand or private label line, e.g. "S-BUDGET", "SPAR", "Ljubljanske mlekarne". */
   brand: string | null;
@@ -99,8 +118,8 @@ export type Product = {
     src: string; // "/products/nutella-1kg.webp"
     width: number;
     height: number;
-    /** How the image was obtained, e.g. "embedded PDF image xref 123, page 5". */
-    provenance: string;
+    /** How the image was obtained (audit trail in catalog-sources.json; not shipped to the browser). */
+    provenance?: string;
   };
   /** Editorial theme group of the leaflet (+1 in recommendations). */
   theme: string | null;
@@ -135,6 +154,8 @@ export type Offer = {
   regularPriceCents: number | null;
   /** Discount percentage exactly as printed (e.g. 25), else null. */
   discountPercent: number | null;
+  /** Price per kg / l ONLY when printed in the leaflet, else null. */
+  unitPrice: { cents: number; per: "kg" | "l" } | null;
   conditions: {
     spPlusRequired: boolean;
     couponRequired: boolean;
@@ -145,16 +166,18 @@ export type Offer = {
     status: ValidityStatus;
     from: string | null; // ISO date
     to: string | null; // ISO date
-    /** Printed text that justifies the dates. */
-    evidence: string | null;
+    /** Printed text that justifies the dates (audit trail in catalog-sources.json). */
+    evidence?: string | null;
   };
-  /** Source text excerpt supporting price and pack size. */
-  sourceQuote: string;
+  /** Store / channel restriction (DESPAR Koper only, SPAR Online only, MEGA SPAR store types …). */
+  availability: { restricted: boolean; note: string | null };
+  /** Source text excerpt supporting price and pack size (audit trail in catalog-sources.json). */
+  sourceQuote?: string;
   verification: {
     status: "verified" | "partial";
     checkedOn: string; // ISO date
-    method: string; // e.g. "visual check of rendered page 5 at 200 dpi"
-    notes: string | null;
+    method?: string;
+    notes?: string | null;
   };
 };
 
@@ -196,9 +219,19 @@ export type Recipe = {
   minutes: number | null;
 };
 
+/** src/data/historical.json: earlier catalogs (SPAR 41/26, INTERSPAR 14/26), only for saved items / old chats. */
+export type HistoricalData = {
+  version: 1;
+  note: string;
+  catalogs: Catalog[];
+  products: Product[];
+  offers: Offer[];
+  placements: Placement[];
+};
+
 export type CatalogData = {
-  version: 2;
-  /** SPAR first (primary), then INTERSPAR. */
+  version: 3;
+  /** The six current catalogs, Home order (SPAR 44/26 first). */
   catalogs: Catalog[];
   products: Product[];
   offers: Offer[];

@@ -17,6 +17,7 @@ export const catalogPageSchema = z.object({
 
 export const productSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
+  identityKey: z.string().min(1),
   name: z.string().min(1),
   brand: z.string().nullable(),
   line: z.string().nullable(),
@@ -25,7 +26,7 @@ export const productSchema = z.object({
   quantity: z.object({ amount: z.number().positive(), unit: z.enum(["g", "kg", "ml", "l", "kos"]) }).nullable(),
   categories: z.array(z.string().regex(/^[a-z0-9-]+$/)).min(1),
   aliases: z.array(z.string().min(1)),
-  image: imageRef.extend({ provenance: z.string().min(1) }),
+  image: imageRef.extend({ provenance: z.string().min(1).optional() }),
   theme: z.string().nullable(),
   editorialRank: z.number().int(),
   isNew: z.boolean(),
@@ -41,19 +42,21 @@ export const offerSchema = z.object({
   priceKind: z.enum(["catalog_price", "loyalty_price", "coupon_price"]),
   regularPriceCents: cents.nullable(),
   discountPercent: z.number().int().min(1).max(90).nullable(),
+  unitPrice: z.object({ cents: cents.positive(), per: z.enum(["kg", "l"]) }).nullable(),
   conditions: z.object({ spPlusRequired: z.boolean(), couponRequired: z.boolean(), note: z.string().nullable() }),
   validity: z.object({
     status: z.enum(["explicit", "catalog_default", "unknown"]),
     from: isoDate.nullable(),
     to: isoDate.nullable(),
-    evidence: z.string().nullable(),
+    evidence: z.string().nullable().optional(),
   }),
-  sourceQuote: z.string().min(1),
+  availability: z.object({ restricted: z.boolean(), note: z.string().nullable() }),
+  sourceQuote: z.string().min(1).optional(),
   verification: z.object({
     status: z.enum(["verified", "partial"]),
     checkedOn: isoDate,
-    method: z.string().min(1),
-    notes: z.string().nullable(),
+    method: z.string().min(1).optional(),
+    notes: z.string().nullable().optional(),
   }),
 });
 
@@ -90,12 +93,18 @@ export const recipeSchema = z.object({
 
 export const catalogSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
-  retailer: z.enum(["spar", "interspar"]),
+  retailer: z.enum(["spar", "interspar", "spar-online", "despar"]),
   title: z.string(),
   issueLabel: z.string(),
   publishedDate: isoDate,
   validFrom: isoDate,
   validTo: isoDate,
+  validityNote: z.string().nullable(),
+  pageRules: z.array(
+    z.object({ pdfPages: z.array(z.number().int().positive()).min(1), printedLabels: z.array(z.string().nullable()), from: isoDate, to: isoDate }),
+  ),
+  availability: z.string().nullable(),
+  homeOrder: z.number().int().positive().nullable(),
   sourceFile: z.string(),
   pdfUrl: publicPath,
   pageCount: z.number().int().positive(),
@@ -104,7 +113,7 @@ export const catalogSchema = z.object({
 });
 
 export const catalogDataSchema = z.object({
-  version: z.literal(2),
+  version: z.literal(3),
   catalogs: z.array(catalogSchema).min(1),
   products: z.array(productSchema),
   offers: z.array(offerSchema),
@@ -112,29 +121,14 @@ export const catalogDataSchema = z.object({
   recipes: z.array(recipeSchema),
 });
 
-/** src/data/leaflets.json — the browse-only Home leaflets (scripts/catalog/leaflets.py). */
-export const leafletDataSchema = z.object({
+/** src/data/historical.json — the earlier SPAR 41/26 / INTERSPAR 14/26 data (saved items, old chats only). */
+export const historicalDataSchema = z.object({
   version: z.literal(1),
-  leaflets: z
-    .array(
-      z.object({
-        id: z.string().regex(/^[a-z0-9-]+$/),
-        category: z.enum(["spar", "interspar", "spar-online", "despar"]),
-        title: z.string().min(1),
-        issueLabel: z.string().min(1),
-        validFrom: isoDate,
-        validTo: isoDate,
-        validityNote: z.string().nullable(),
-        validityEvidence: z.string().min(1),
-        sourceFile: z.string().min(1),
-        homeOrder: z.number().int().positive(),
-        pdfUrl: publicPath,
-        pageCount: z.number().int().positive(),
-        cover: imageRef,
-        pages: z.array(catalogPageSchema).min(1),
-      }),
-    )
-    .min(1),
+  note: z.string().min(1),
+  catalogs: z.array(catalogSchema).min(1),
+  products: z.array(productSchema),
+  offers: z.array(offerSchema),
+  placements: z.array(placementSchema),
 });
 
 /** src/data/future-promos.json — DEMO MOCK of upcoming promotions (see FuturePromo in types.ts). */

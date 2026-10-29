@@ -184,13 +184,13 @@ test.describe("home composer", () => {
     const reqs = countChatRequests(page);
     const btn = page.locator("[data-home-composer] button");
     await expect(btn).toHaveAttribute("data-action", "mic");
-    await homeInput(page).fill("Kje je skuta?");
+    await homeInput(page).fill("Kje je zaseka?");
     await expect(btn).toHaveAttribute("data-action", "send");
     await expect(btn).toHaveAttribute("aria-label", "Pošlji");
     await btn.click();
     await expect(page).toHaveURL(/\/$/);
     await expect(userMsgs(page)).toHaveCount(1);
-    await expect(userMsgs(page).first()).toContainText("Kje je skuta?");
+    await expect(userMsgs(page).first()).toContainText("Kje je zaseka?");
     await expect(assistantMsgs(page).last()).not.toContainText("Sparko piše", { timeout: 15_000 });
     expect(reqs.length).toBe(1);
   });
@@ -210,7 +210,7 @@ test.describe("home composer", () => {
   test("a double Enter sends exactly once", async ({ page }) => {
     await freshHome(page);
     const reqs = countChatRequests(page);
-    await homeInput(page).fill("Nutella");
+    await homeInput(page).fill("zaseka");
     await homeInput(page).focus();
     await page.keyboard.press("Enter");
     await page.keyboard.press("Enter");
@@ -219,11 +219,11 @@ test.describe("home composer", () => {
     expect(reqs.length).toBe(1);
   });
 
-  test("a Home question continues the existing conversation (history preserved)", async ({ page }) => {
+  test("a Home question starts a new conversation (previous messages absent, history kept)", async ({ page }) => {
     await page.goto("/");
     await page.evaluate(() => localStorage.clear());
     await page.goto("/");
-    await input(page).fill("šampinjoni");
+    await input(page).fill("zaseka");
     await input(page).press("Enter");
     await expect(assistantMsgs(page).last()).not.toContainText("Sparko piše", { timeout: 15_000 });
     await expect(userMsgs(page)).toHaveCount(1);
@@ -234,9 +234,21 @@ test.describe("home composer", () => {
     await homeInput(page).fill("Koliko stane mleko?");
     await homeInput(page).press("Enter");
     await expect(page).toHaveURL(/\/$/);
-    await expect(userMsgs(page)).toHaveCount(2);
-    await expect(userMsgs(page).first()).toContainText("šampinjoni");
-    await expect(userMsgs(page).last()).toContainText("Koliko stane mleko?");
+    await expect(userMsgs(page)).toHaveCount(1);
+    await expect(userMsgs(page).first()).toContainText("Koliko stane mleko?");
+    await expect(assistantMsgs(page).last()).not.toContainText("Sparko piše", { timeout: 15_000 });
+    expect(reqs.length).toBe(1);
+    expect(await storedConversations(page)).toBe(2);
+  });
+
+  test("rapid repeated submits from Home create exactly one conversation", async ({ page }) => {
+    await freshHome(page);
+    const reqs = countChatRequests(page);
+    await homeInput(page).fill("Koliko stane mleko?");
+    const send = page.locator("[data-home-composer] button[data-action='send']");
+    await Promise.all([send.click({ timeout: 3000 }).catch(() => {}), send.click({ force: true }).catch(() => {}), homeInput(page).press("Enter").catch(() => {})]);
+    await expect(page).toHaveURL(/\/$/);
+    await expect(userMsgs(page)).toHaveCount(1);
     await expect(assistantMsgs(page).last()).not.toContainText("Sparko piše", { timeout: 15_000 });
     expect(reqs.length).toBe(1);
     expect(await storedConversations(page)).toBe(1);

@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { catalogs, formatPeriod, formatPrice, formatShortDate, getOffer, getPrimaryOffer, getProduct, products } from "@/lib/catalog";
+import { catalogs, formatPeriod, formatPrice, formatShortDate, getOffer, getPrimaryOffer, getProduct, offers, products } from "@/lib/catalog";
+import { isOfferCurrent } from "@/lib/promoCalendar";
 import { futurePromos, futurePromosForProduct, upcomingItem, upcomingPeriod } from "@/lib/futurePromos";
 import { isPercentDiscount, rankDiscounts } from "@/lib/assistant/discounts";
 import { detectIntent } from "@/lib/assistant/intents";
-import { resolvePlaceholders } from "@/lib/assistant/placeholders";
+import { catalogShortTitle, resolvePlaceholders } from "@/lib/assistant/placeholders";
 import { buildDeterministicReply } from "@/lib/assistant/respond";
 import { currentDiscountsOf, MAX_UPCOMING, rankUpcoming } from "@/lib/assistant/timing";
 import { sanitizeBlocks } from "@/lib/chat/messages";
@@ -20,7 +21,8 @@ function timelineOf(r: { blocks: MessageBlock[] }): Timeline | undefined {
 }
 
 const PTUJ = products.filter((p) => p.brand === "Perutnina Ptuj");
-const needsPtuj = PTUJ.length === 0 ? "no Perutnina Ptuj products in the catalog data yet" : false;
+const PTUJ_PROMOS = PTUJ.flatMap((p) => futurePromosForProduct(p.id));
+const needsPtuj = PTUJ_PROMOS.length === 0 ? "no Perutnina Ptuj product with a structured future promo in the data" : false;
 
 describe("discount timing: intent detection", () => {
   it.each([
@@ -70,8 +72,8 @@ describe("discount timing: product-scoped answer (Perutnina Ptuj)", () => {
       expect(ptujIds.has(o.productId)).toBe(true);
       expect(isPercentDiscount(o)).toBe(true);
     }
-    expect(tl.upcomingPromoIds.length).toBeGreaterThanOrEqual(3);
-    const expectedPromos = PTUJ.flatMap((p) => futurePromosForProduct(p.id)).map((p) => p.id);
+    expect(tl.upcomingPromoIds.length).toBeGreaterThanOrEqual(1);
+    const expectedPromos = PTUJ_PROMOS.map((p) => p.id);
     expect([...tl.upcomingPromoIds].sort()).toEqual([...expectedPromos].sort());
     // Every promo shows a current price above the upcoming one.
     for (const id of tl.upcomingPromoIds) {
@@ -174,12 +176,16 @@ describe("future placeholders", () => {
     expect(text.ok).toBe(true);
     if (!text.ok) return;
     const cat = catalogs.find((c) => c.id === offer.catalogId)!;
+    // "{{catalogs}}" names the catalogs that have current offers (Home order), the last one after "in".
+    const live = catalogs.filter((c) => offers.some((o) => o.catalogId === c.id && isOfferCurrent(o))).map(catalogShortTitle);
+    expect(live.length).toBeGreaterThan(1);
+    const catalogsText = `${live.slice(0, -1).join(", ")} in ${live[live.length - 1]}`;
     expect(text.text.split("|")).toEqual([
       formatPrice(promo.priceCents),
       formatShortDate(promo.validFrom),
       formatPeriod(upcomingPeriod.from, upcomingPeriod.to),
       formatPeriod(cat.validFrom, cat.validTo),
-      catalogs.map((c) => `${c.retailer === "spar" ? "SPAR" : "INTERSPAR"} ${c.issueLabel}`).join(" in "),
+      catalogsText,
     ]);
   });
 
@@ -204,11 +210,15 @@ describe("sanitizeBlocks keeps valid discount timelines", () => {
 });
 
 describe("bulk-purchase prices are not ranked as discounts", () => {
-  it("Radler (0,81 € only when buying 24 cans) is excluded from the discount ranking", () => {
-    const radler = getPrimaryOffer("radler-cola-limeta-union-0-5l");
-    expect(radler).toBeDefined();
-    expect(radler!.conditions.note).toMatch(/ob nakupu 24 kosov/);
-    expect(isPercentDiscount(radler!)).toBe(false);
-    expect(rankDiscounts({ limit: Infinity }).some((r) => r.offer.id === radler!.id)).toBe(false);
+  it("an offer whose price needs a multi-buy (e.g. only when buying several packs, 3+1) is excluded from the discount ranking", () => {
+    const multi = offers.filter(
+      (o) => o.discountPercent != null && o.discountPercent > 0 && o.priceKind !== "coupon_price" && /ob nakupu \d+ kos|\d\s*\+\s*\d|gratis|vsak (drugi|tretji)/i.test(o.conditions.note ?? ""),
+    );
+    expect(multi.length).toBeGreaterThan(0);
+    const ranked = new Set(rankDiscounts({ limit: Infinity }).map((r) => r.offer.id));
+    for (const o of multi) {
+      expect(isPercentDiscount(o), o.id).toBe(false);
+      expect(ranked.has(o.id), o.id).toBe(false);
+    }
   });
 });

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { leaflets } from "./leaflets-data";
-import { busiestPage, offerOf, pageImage, pageNum, pagesWithProducts, placementsOnPage, primary, productName, productsByPage, secondary } from "./catalog-data";
+import { busiestPage, catalogs, offerOf, pageImage, pageNum, pagesWithProducts, placementsOnPage, primary, productName, productsByPage, secondary } from "./catalog-data";
 
 const N = primary.pageCount;
 /** The busiest SPAR page: all product ids on it, its 0-based index and 1-based number. */
@@ -116,7 +116,7 @@ test("'Moje strani' starts OFF on a fresh open, also with saved items; switching
   // Moj katalog already has items: its leaflet button must NOT switch the filter on.
   await seed(page, [...A_IDS, B_ID], "/moj-katalog");
   await page.getByRole("link", { name: "Pokaži na letaku" }).click();
-  await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${primary.id}&stran=${PA + 1}$`));
+  await expect(page).toHaveURL(new RegExp(`/letak\\?(?:katalog=${primary.id}&)?stran=${PA + 1}$`));
   await expect(toggle).toHaveAttribute("aria-checked", "false");
   await expect(indicator(page)).toHaveText(new RegExp(`^${PA + 1} / ${N}$`));
   await expect(box(page, A_IDS[0])).toHaveAttribute("data-saved", "true");
@@ -457,7 +457,7 @@ test("product → 'Poglej v ... katalogu' opens the right page, emphasises the p
   await page.getByPlaceholder("Vprašaj Sparka o katalogu …").press("Enter");
   const card = page.getByRole("log", { name: "Pogovor s Sparkom" }).locator(`[data-product-card="${FIRST_ID}"]`).first();
   await card.getByRole("button", { name: /^Poglej v .* katalogu/ }).click();
-  await expect(page).toHaveURL(new RegExp(`/letak\\?katalog=${primary.id}&stran=${BUSY_NO}`));
+  await expect(page).toHaveURL(new RegExp(`/letak\\?(?:katalog=${primary.id}&)?stran=${BUSY_NO}`));
   await expect(indicator(page)).toHaveText(pageNum(BUSY_NO, primary));
   const ring = box(page, FIRST_ID).locator("[data-focus-ring]");
   await expect.poll(() => ring.evaluate((e) => e.getAnimations().length)).toBeGreaterThan(0);
@@ -516,10 +516,11 @@ test("catalog switch: page 1 of the other catalog, URL follows, switching back t
   await expect(page).not.toHaveURL(/katalog=/);
   await expect(currentCatalog(page)).toHaveAttribute("data-catalog-id", DEFAULT_LEAFLET.id);
   await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", new RegExp(`/catalog/${DEFAULT_LEAFLET.id}/`));
-  // The earlier SPAR 41/26 stays reachable and now carries its id in the URL.
-  await switchTo(page, primary.id);
-  await expect(page).toHaveURL(new RegExp(`katalog=${primary.id}&stran=1`));
-  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(primary, 0).src);
+  // Another non-default catalog stays reachable and carries its id in the URL.
+  const third = catalogs[2];
+  await switchTo(page, third.id);
+  await expect(page).toHaveURL(new RegExp(`katalog=${third.id}&stran=1`));
+  await expect(stage(page).locator(":scope > img")).toHaveAttribute("src", pageImage(third, 0).src);
 });
 
 test("'Moje strani' is per catalog and survives a catalog switch", async ({ page }) => {
@@ -577,12 +578,13 @@ test("overlays stay aligned with the page image across responsive sizes", async 
 
 // ---------------------------------------------------------------- FIX 7: more interactive products (SPAR cover = reference page)
 
-const COVER_IDS = ["svinjska-rebra-eu-1kg", "radler-cola-limeta-union-0-5l"];
+const [COVER_A, COVER_B, ...COVER_REST] = productsByPage(primary.id).get(0)!;
+const COVER_IDS = [COVER_A, COVER_B];
 
-test("SPAR cover: Svinjska rebra EU and Radler Cola Limeta are tappable regions next to the already mapped products", async ({ page }) => {
+test("SPAR cover: the first two cover products are tappable regions next to the already mapped products", async ({ page }) => {
   await seed(page, [], `/letak?katalog=${primary.id}&stran=1`);
   await expect(indicator(page)).toHaveText(pageNum(1, primary));
-  for (const id of [...COVER_IDS, "nutella-1kg", "sitarjev-hlebec-750g", "belo-grozdje-1kg"]) await expect(box(page, id)).toHaveCount(1);
+  for (const id of [...COVER_IDS, ...COVER_REST.slice(0, 3)]) await expect(box(page, id)).toHaveCount(1);
 });
 
 for (const id of COVER_IDS) {
@@ -594,7 +596,7 @@ for (const id of COVER_IDS) {
     await dialog.getByRole("button", { name: "Dodaj v Moj katalog" }).click();
     await page.keyboard.press("Escape");
     await expect(box(page, id)).toHaveAttribute("data-saved", "true");
-    await expect(box(page, "nutella-1kg")).not.toHaveAttribute("data-saved", "true");
+    await expect(box(page, COVER_REST[0])).not.toHaveAttribute("data-saved", "true");
 
     await page.reload();
     await expect(box(page, id)).toHaveAttribute("data-saved", "true");
@@ -611,12 +613,14 @@ for (const id of COVER_IDS) {
   });
 }
 
-test("INTERSPAR still switches and a newly mapped INTERSPAR product (page 8) is tappable", async ({ page }) => {
+test("INTERSPAR still switches and a product on a later INTERSPAR page is tappable", async ({ page }) => {
+  const latePage = pagesWithProducts(secondary.id).slice(-1)[0];
+  const lateIds = productsByPage(secondary.id).get(latePage)!;
   await seed(page, [], `/letak?katalog=${primary.id}`);
   await switchTo(page, secondary.id);
   await expect(indicator(page)).toHaveText(pageNum(1, secondary));
-  await page.goto(`/letak?katalog=${secondary.id}&stran=8`);
-  await expect(box(page, "pecena-piscancja-prsa-1kg")).toHaveCount(1);
-  await box(page, "tiramisu-to-go-200g").click();
-  await expect(page.getByRole("dialog")).toContainText(productName("tiramisu-to-go-200g"));
+  await page.goto(`/letak?katalog=${secondary.id}&stran=${latePage + 1}`);
+  await expect(box(page, lateIds[0])).toHaveCount(1);
+  await box(page, lateIds[0]).click();
+  await expect(page.getByRole("dialog")).toContainText(productName(lateIds[0]));
 });

@@ -10,13 +10,15 @@
  *   {{regularPrice:<offerId>}} 4,49 €
  *   {{discount:<offerId>}}     25 %
  *   {{condition:<offerId>}}    s kartico SPAR plus · redna cena 4,49 €
- *   {{validity:<offerId>}}     Velja 1. 10. 2026–7. 10. 2026 (po katalogu)
+ *   {{validity:<offerId>}}     Velja 28. 10. 2026–3. 11. 2026 (po katalogu) - the OFFER's own dates
  *   {{page:<productId>}}       5   (1-based PDF page of the first placement)
  *   {{recipeServings:<recipeId>}} / {{pantry:<recipeId>}} (pantry assumptions)
  *   {{recipeTitle:<recipeId>}} / {{recipeTotal:<recipeId>}} / {{recipeTotalCard:<recipeId>}}
- *   {{note:<offerId>}}  printed extra condition · {{issue}}  primary catalog issue label (41/26)
- *   {{catalogs}}               SPAR 41/26 in INTERSPAR 14/26 (every catalog, from data)
- *   {{currentPeriod:<offerId>}} 7. 10. – 13. 10. 2026 (validity of the offer's catalog)
+ *   {{note:<offerId>}}  printed extra condition · {{issue}}  primary catalog issue label (44/26)
+ *   {{catalogs}}               SPAR 44/26, INTERSPAR 15/26 … (the catalogs with current offers, from data)
+ *   {{catalog:<offerId>}}      SPAR 44/26 (source catalog of the offer)
+ *   {{availability:<offerId>}} samo v trgovini DESPAR Koper (printed store restriction; fails when none)
+ *   {{currentPeriod:<offerId>}} 28. 10. – 3. 11. 2026 (the offer's own validity window)
  *   {{futurePrice:<promoId>}}  2,99 € (upcoming demo promo) · {{futureFrom:<promoId>}}  14. 10.
  *   {{futurePeriod}}           14. 10. – 20. 10. 2026 (the upcoming period)
  *   {{budget}} / {{servings}}
@@ -34,11 +36,12 @@ import {
   getProduct,
   getRecipe,
   PRICE_UNIT_LABEL,
-  RETAILER_LABEL,
+  offers,
   recipeTotals,
   validityText,
 } from "@/lib/catalog";
 import { getFuturePromo, upcomingPeriod } from "@/lib/futurePromos";
+import { isOfferCurrent, offerWindow } from "@/lib/promoCalendar";
 import type { Offer, Product, Recipe, SpPlusSetting } from "@/lib/types";
 
 export type PlaceholderContext = {
@@ -66,9 +69,16 @@ export function displayName(p: Product): string {
   return p.name;
 }
 
-/** "SPAR 41/26 in INTERSPAR 14/26": every catalog of the demo, derived from data. */
-export function catalogsLabel(): string {
-  return catalogs.map((c) => `${RETAILER_LABEL[c.retailer]} ${c.issueLabel}`).join(" in ");
+/** "SPAR katalog 44/26" -> "SPAR 44/26" (the label used in prose). */
+export function catalogShortTitle(c: { title: string }): string {
+  return c.title.replace(/\s+katalog\b/i, "").replace(/\s+/g, " ").trim();
+}
+
+/** "SPAR 44/26, INTERSPAR 15/26 in …": the catalogs that have current offers (all six as a fallback), Home order. */
+export function catalogsLabel(now: Date = new Date()): string {
+  const withCurrent = catalogs.filter((c) => offers.some((o) => o.catalogId === c.id && isOfferCurrent(o, now)));
+  const names = (withCurrent.length ? withCurrent : catalogs).map(catalogShortTitle);
+  return names.length > 1 ? `${names.slice(0, -1).join(", ")} in ${names[names.length - 1]}` : names.join("");
 }
 
 export function priceLabel(o: Offer): string {
@@ -148,9 +158,20 @@ export function resolvePlaceholders(template: string, ctx: PlaceholderContext): 
         return formatPeriod(upcomingPeriod.from, upcomingPeriod.to);
       case "currentPeriod": {
         const o = id ? getOffer(id) : undefined;
+        const w = o && offerWindow(o);
+        if (!o || !w || !offerOk(o.id)) return fail(`unknown offer ${id}`);
+        return formatPeriod(w.from, w.to);
+      }
+      case "catalog": {
+        const o = id ? getOffer(id) : undefined;
         const c = o && getCatalog(o.catalogId);
         if (!o || !c || !offerOk(o.id)) return fail(`unknown offer ${id}`);
-        return formatPeriod(c.validFrom, c.validTo);
+        return catalogShortTitle(c);
+      }
+      case "availability": {
+        const o = id ? getOffer(id) : undefined;
+        if (!o || !offerOk(o.id) || !o.availability?.restricted || !o.availability.note) return fail("no availability restriction");
+        return lowerFirst(o.availability.note.replace(/[{}]/g, "").replace(/\.$/, ""));
       }
       case "issue":
         return catalog.issueLabel;

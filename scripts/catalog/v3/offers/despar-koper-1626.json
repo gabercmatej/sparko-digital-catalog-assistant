@@ -1,0 +1,1193 @@
+{
+ "catalogId": "despar-koper-1626",
+ "checkedOn": "2026-10-28",
+ "pages": {
+  "1": {
+   "theme": "V Italijo na izlet, po špežo pa k nam",
+   "offersOnPage": 4,
+   "notes": "Naslovnica; ponudba velja samo v trgovini DESPAR Koper."
+  },
+  "2": {
+   "theme": "Ponudba, cene in okusi kot v Italiji",
+   "offersOnPage": 5,
+   "notes": null
+  },
+  "3": {
+   "theme": "Ribe, pripravljene jedi in italijanske dobrote",
+   "offersOnPage": 6,
+   "notes": null
+  },
+  "4": {
+   "theme": "Con gusto, z užitkom",
+   "offersOnPage": 6,
+   "notes": "Oznaka »Izenačena DESPAR cena« ni natisnjena pri nobenem izdelku (le v opombi o izključitvi dodatnih popustov)."
+  }
+ },
+ "offers": [
+  {
+   "key": "trevisko-porchetta",
+   "page": 1,
+   "anchor": "PORCHETTA",
+   "name": "Treviška porchetta",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso"
+   ],
+   "aliases": [
+    "porchetta",
+    "treviška porchetta",
+    "pečena svinjina",
+    "italijanska porchetta",
+    "narezek"
+   ],
+   "price": 1499,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1890,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Treviška porchetta postrežno 1 kg 18,90 -20% 14,99 S SPAR PLUS KARTICO",
+   "box": [
+    0.5,
+    0.32,
+    0.96,
+    0.625
+   ],
+   "image": {
+    "crop": [
+     0.6,
+     0.335,
+     0.84,
+     0.565
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "de-cecco-testenine",
+   "page": 1,
+   "anchor": "TESTENINE",
+   "name": "Testenine De Cecco",
+   "brand": "De Cecco",
+   "line": null,
+   "descriptor": "peresniki, svedri ali špageti",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "testenine",
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "testenine",
+    "de cecco",
+    "špageti",
+    "peresniki",
+    "svedri",
+    "pasta"
+   ],
+   "price": 79,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 139,
+   "discount": 43,
+   "pc": "PC 1,39",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Testenine De Cecco peresniki, svedri ali špageti 500 g 1,39 PC 1,39 -43% 0,79 S SPAR PLUS KARTICO",
+   "box": [
+    0.05,
+    0.675,
+    0.36,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.07,
+     0.68,
+     0.33,
+     0.875
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "segafredo-kava-v-zrnu-selezione-crema",
+   "page": 1,
+   "anchor": "KAVA V ZRNU",
+   "name": "Kava v zrnu Segafredo Selezione Crema",
+   "brand": "Segafredo",
+   "line": null,
+   "descriptor": "Selezione Crema",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "kava",
+    "pijace"
+   ],
+   "aliases": [
+    "kava",
+    "kava v zrnu",
+    "segafredo",
+    "zrnata kava",
+    "selezione crema",
+    "espresso"
+   ],
+   "price": 2159,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 2699,
+   "discount": 20,
+   "pc": "PC 26,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Kava v zrnu Segafredo Selezione Crema Selezione Crema 1 kg 26,99 PC 26,99 -20% 21,59 S SPAR PLUS KARTICO",
+   "box": [
+    0.37,
+    0.69,
+    0.64,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.415,
+     0.695,
+     0.545,
+     0.89
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pecenice-lastna-priprava",
+   "page": 1,
+   "anchor": "PEČENICE",
+   "name": "Pečenice",
+   "brand": null,
+   "line": null,
+   "descriptor": "pakirano ali postrežno, lastna priprava",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso"
+   ],
+   "aliases": [
+    "pečenice",
+    "pečenica",
+    "klobase",
+    "svinjske pečenice",
+    "lastna priprava",
+    "žar"
+   ],
+   "price": 599,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1099,
+   "discount": 45,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pečenice pakirano ali postrežno, lastna priprava 1 kg 10,99 -45% 5,99 S SPAR PLUS KARTICO",
+   "box": [
+    0.64,
+    0.69,
+    0.96,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.66,
+     0.695,
+     0.94,
+     0.865
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "citterio-milanska-salama",
+   "page": 2,
+   "anchor": "MILANSKA SALAMA",
+   "name": "Milanska salama",
+   "brand": "Citterio",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki"
+   ],
+   "aliases": [
+    "salama",
+    "milanska salama",
+    "citterio",
+    "narezek",
+    "suhomesnato"
+   ],
+   "price": 1990,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Milanska salama postrežno 1 kg 19,90",
+   "box": [
+    0.02,
+    0.395,
+    0.47,
+    0.645
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.395,
+     0.465,
+     0.545
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "randena-gorski-speck",
+   "page": 2,
+   "anchor": "GORSKI SPECK",
+   "name": "Gorski speck",
+   "brand": "Randena",
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "mesni-izdelki",
+    "meso"
+   ],
+   "aliases": [
+    "speck",
+    "gorski speck",
+    "randena",
+    "pancetta",
+    "slanina",
+    "narezek"
+   ],
+   "price": 1485,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2290,
+   "discount": 35,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Gorski speck postrežno 1 kg 22,90 -35% 14,85 S SPAR PLUS KARTICO",
+   "box": [
+    0.48,
+    0.37,
+    0.98,
+    0.645
+   ],
+   "image": {
+    "crop": [
+     0.485,
+     0.375,
+     0.885,
+     0.59
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "coolhouse-kuhane-klapavice",
+   "page": 2,
+   "anchor": "KUHANE KLAPAVICE",
+   "name": "Kuhane klapavice",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "zamrznjeno, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno"
+   ],
+   "aliases": [
+    "klapavice",
+    "kuhane klapavice",
+    "školjke",
+    "coolhouse",
+    "zamrznjene klapavice"
+   ],
+   "price": 639,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 799,
+   "discount": 20,
+   "pc": "PC 6,39",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Kuhane klapavice zamrznjeno, postrežno 1 kg 7,99 PC 6,39 -20% 6,39 S SPAR PLUS KARTICO",
+   "box": [
+    0.02,
+    0.67,
+    0.38,
+    0.965
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.7,
+     0.35,
+     0.83
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "coolhouse-sardele",
+   "page": 2,
+   "anchor": "SARDELE",
+   "name": "Sardele",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "brez glave, zamrznjeno, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno"
+   ],
+   "aliases": [
+    "sardele",
+    "sardela",
+    "ribe",
+    "coolhouse",
+    "zamrznjene sardele",
+    "brez glave"
+   ],
+   "price": 599,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 679,
+   "discount": 11,
+   "pc": "PC 6,79",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Sardele brez glave, zamrznjeno, postrežno 1 kg 6,79 PC 6,79 -11% 5,99 S SPAR PLUS KARTICO",
+   "box": [
+    0.36,
+    0.67,
+    0.74,
+    0.965
+   ],
+   "image": {
+    "crop": [
+     0.4,
+     0.7,
+     0.74,
+     0.855
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "despar-premium-vlozena-paprika",
+   "page": 2,
+   "anchor": "VLOŽENA PAPRIKA",
+   "name": "Vložena paprika",
+   "brand": "DESPAR Premium",
+   "line": null,
+   "descriptor": "sladko kisla",
+   "pack": "160 g",
+   "qty": [
+    160,
+    "g"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi"
+   ],
+   "aliases": [
+    "paprika",
+    "vložena paprika",
+    "sladko kisla paprika",
+    "peperoni",
+    "despar premium",
+    "vloženo"
+   ],
+   "price": 169,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Vložena paprika sladko kisla 160 g 1,69",
+   "box": [
+    0.7,
+    0.68,
+    0.98,
+    0.965
+   ],
+   "image": {
+    "crop": [
+     0.76,
+     0.7,
+     0.94,
+     0.855
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "coolhouse-file-divjega-lososa",
+   "page": 3,
+   "anchor": "FILE DIVJEGA",
+   "name": "File divjega lososa",
+   "brand": "Coolhouse",
+   "line": null,
+   "descriptor": "s kožo, zamrznjeno, postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "ribe",
+    "zamrznjeno"
+   ],
+   "aliases": [
+    "losos",
+    "file lososa",
+    "divji losos",
+    "ribji file",
+    "coolhouse",
+    "zamrznjen losos"
+   ],
+   "price": 3699,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 4199,
+   "discount": 11,
+   "pc": "PC 41,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "File divjega lososa s kožo, zamrznjeno, postrežno 1 kg 41,99 PC 41,99 -11% 36,99 S SPAR PLUS KARTICO",
+   "box": [
+    0.38,
+    0.02,
+    0.94,
+    0.36
+   ],
+   "image": {
+    "crop": [
+     0.41,
+     0.12,
+     0.92,
+     0.35
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Besedilni sloj vsebuje skrito besedilo (FILETI LOSOSA 150 g, -00%) pod vidnim delom strani - ni natisnjeno."
+  },
+  {
+   "key": "pecen-krompir-z-zelenjavo",
+   "page": 3,
+   "anchor": "PEČEN KROMPIR",
+   "name": "Pečen krompir z zelenjavo",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "zelenjava",
+    "prilogi"
+   ],
+   "aliases": [
+    "pečen krompir",
+    "krompir",
+    "zelenjava",
+    "pečena zelenjava",
+    "priloga",
+    "gotova jed"
+   ],
+   "price": 749,
+   "priceUnit": "kg",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pečen krompir z zelenjavo 1 kg 7,49",
+   "box": [
+    0.06,
+    0.365,
+    0.46,
+    0.63
+   ],
+   "image": {
+    "crop": [
+     0.07,
+     0.37,
+     0.445,
+     0.535
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "pecene-piscancje-peruti",
+   "page": 3,
+   "anchor": "PEČENE PIŠČANČJE",
+   "name": "Pečene piščančje peruti",
+   "brand": null,
+   "line": null,
+   "descriptor": null,
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "perutnina",
+    "kosilo"
+   ],
+   "aliases": [
+    "piščančje peruti",
+    "peruti",
+    "pečeni piščanec",
+    "piščanec",
+    "gotova jed",
+    "pečene peruti"
+   ],
+   "price": 1039,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1299,
+   "discount": 20,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Pečene piščančje peruti 1 kg 12,99 -20% 10,39 S SPAR PLUS KARTICO",
+   "box": [
+    0.52,
+    0.39,
+    0.91,
+    0.655
+   ],
+   "image": {
+    "crop": [
+     0.535,
+     0.395,
+     0.89,
+     0.57
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "sir-asiago",
+   "page": 3,
+   "anchor": "SIR ASIAGO",
+   "name": "Sir Asiago",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir"
+   ],
+   "aliases": [
+    "sir",
+    "asiago",
+    "sir asiago",
+    "italijanski sir",
+    "trdi sir"
+   ],
+   "price": 1039,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 1389,
+   "discount": 25,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Sir Asiago postrežno 1 kg 13,89 -25% 10,39 S SPAR PLUS KARTICO",
+   "box": [
+    0.02,
+    0.695,
+    0.34,
+    0.955
+   ],
+   "image": {
+    "crop": [
+     0.03,
+     0.7,
+     0.33,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "despar-premium-taralli-prigrizek",
+   "page": 3,
+   "anchor": "TARALLI PRIGRIZEK",
+   "name": "Taralli prigrizek",
+   "brand": "DESPAR Premium",
+   "line": null,
+   "descriptor": "z ekstra deviškim oljčnim oljem",
+   "pack": "300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "prigrizki",
+    "grickalke"
+   ],
+   "aliases": [
+    "taralli",
+    "prigrizek",
+    "grisini",
+    "oljčno olje",
+    "despar premium",
+    "grickalice"
+   ],
+   "price": 179,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Taralli prigrizek z ekstra deviškim oljčnim oljem 300 g 1,79",
+   "box": [
+    0.36,
+    0.655,
+    0.66,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.375,
+     0.65,
+     0.63,
+     0.86
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "viva-la-mamma-njoki-ala-romana",
+   "page": 3,
+   "anchor": "NJOKI ALA ROMANA",
+   "name": "Njoki ala Romana",
+   "brand": "Viva La Mamma",
+   "line": null,
+   "descriptor": null,
+   "pack": "300 g",
+   "qty": [
+    300,
+    "g"
+   ],
+   "categories": [
+    "testenine",
+    "kosilo"
+   ],
+   "aliases": [
+    "njoki",
+    "gnocchi",
+    "njoki ala romana",
+    "viva la mamma",
+    "bereta",
+    "gotova jed"
+   ],
+   "price": 399,
+   "priceUnit": "pack",
+   "priceKind": "catalog_price",
+   "regular": null,
+   "discount": null,
+   "pc": null,
+   "spPlus": false,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Njoki ala Romana 300 g 3,99",
+   "box": [
+    0.67,
+    0.68,
+    0.98,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.685,
+     0.685,
+     0.965,
+     0.845
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "sir-grana-padano",
+   "page": 4,
+   "anchor": "SIR GRANA PADANO",
+   "name": "Sir Grana Padano",
+   "brand": null,
+   "line": null,
+   "descriptor": "postrežno",
+   "pack": "1 kg",
+   "qty": [
+    1,
+    "kg"
+   ],
+   "categories": [
+    "sir"
+   ],
+   "aliases": [
+    "sir",
+    "grana padano",
+    "parmezan",
+    "trdi sir",
+    "italijanski sir",
+    "ribani sir"
+   ],
+   "price": 1699,
+   "priceUnit": "kg",
+   "priceKind": "loyalty_price",
+   "regular": 2089,
+   "discount": 18,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Sir Grana Padano postrežno 1 kg 20,89 -18% 16,99 S SPAR PLUS KARTICO",
+   "box": [
+    0.09,
+    0.25,
+    0.53,
+    0.5
+   ],
+   "image": {
+    "crop": [
+     0.09,
+     0.25,
+     0.525,
+     0.415
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "spar-vital-kostanj",
+   "page": 4,
+   "anchor": "KOSTANJ",
+   "name": "Kostanj olupljen in kuhan",
+   "brand": "SPAR Vital",
+   "line": null,
+   "descriptor": null,
+   "pack": "250 g",
+   "qty": [
+    250,
+    "g"
+   ],
+   "categories": [
+    "prigrizki",
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "kostanj",
+    "kostanji",
+    "olupljen kostanj",
+    "kuhan kostanj",
+    "spar vital",
+    "jedilni kostanj"
+   ],
+   "price": 309,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 449,
+   "discount": 31,
+   "pc": "PC 4,49",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Kostanj olupljen in kuhan 250 g 4,49 PC 4,49 -31% 3,09 S SPAR PLUS KARTICO",
+   "box": [
+    0.65,
+    0.265,
+    0.93,
+    0.525
+   ],
+   "image": {
+    "crop": [
+     0.65,
+     0.27,
+     0.84,
+     0.44
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": "Zraven je natisnjen okvir »Visoka vsebnost prehranske vlaknine, nizka vsebnost maščob, brez glutena, brez dodanega sladkorja« - ni jasno, da velja za ta izdelek, zato ni zapisan."
+  },
+  {
+   "key": "maruzzella-tuna-v-oljcnem-olju",
+   "page": 4,
+   "anchor": "TUNA V OLJČNEM OLJU",
+   "name": "Tuna v oljčnem olju",
+   "brand": "Maruzzella",
+   "line": null,
+   "descriptor": null,
+   "pack": "2 × 160 g",
+   "qty": [
+    320,
+    "g"
+   ],
+   "categories": [
+    "ribe",
+    "osnovna-zivila"
+   ],
+   "aliases": [
+    "tuna",
+    "tuna v olju",
+    "tuna v oljčnem olju",
+    "maruzzella",
+    "konzerva",
+    "ribe v konzervi"
+   ],
+   "price": 349,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 499,
+   "discount": 30,
+   "pc": "PC 4,99",
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Tuna v oljčnem olju 2 × 160 g 4,99 PC 4,99 -30% 3,49 S SPAR PLUS KARTICO",
+   "box": [
+    0.05,
+    0.525,
+    0.38,
+    0.72
+   ],
+   "image": {
+    "crop": [
+     0.08,
+     0.53,
+     0.365,
+     0.625
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "despar-spinaca",
+   "page": 4,
+   "anchor": "ŠPINAČA",
+   "name": "Špinača",
+   "brand": "DESPAR",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "500 g",
+   "qty": [
+    500,
+    "g"
+   ],
+   "categories": [
+    "zelenjava"
+   ],
+   "aliases": [
+    "špinača",
+    "špinaca",
+    "listnata zelenjava",
+    "pakirana špinača",
+    "despar"
+   ],
+   "price": 199,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 269,
+   "discount": 26,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Špinača pakirano 500 g 2,69 -26% 1,99 S SPAR PLUS KARTICO",
+   "box": [
+    0.42,
+    0.53,
+    0.67,
+    0.835
+   ],
+   "image": {
+    "crop": [
+     0.43,
+     0.535,
+     0.65,
+     0.735
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "spar-rukola",
+   "page": 4,
+   "anchor": "RUKOLA",
+   "name": "Rukola",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "100 g",
+   "qty": [
+    100,
+    "g"
+   ],
+   "categories": [
+    "zelenjava"
+   ],
+   "aliases": [
+    "rukola",
+    "solata",
+    "pakirana rukola",
+    "listnata solata",
+    "spar"
+   ],
+   "price": 89,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 129,
+   "discount": 31,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Rukola pakirano 100 g 1,29 -31% 0,89 S SPAR PLUS KARTICO",
+   "box": [
+    0.69,
+    0.585,
+    0.95,
+    0.81
+   ],
+   "image": {
+    "crop": [
+     0.7,
+     0.59,
+     0.9,
+     0.715
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  },
+  {
+   "key": "spar-berivka",
+   "page": 4,
+   "anchor": "BERIVKA",
+   "name": "Berivka",
+   "brand": "SPAR",
+   "line": null,
+   "descriptor": "pakirano",
+   "pack": "100 g",
+   "qty": [
+    100,
+    "g"
+   ],
+   "categories": [
+    "zelenjava"
+   ],
+   "aliases": [
+    "berivka",
+    "solata",
+    "pakirana berivka",
+    "listnata solata",
+    "spar",
+    "rukola"
+   ],
+   "price": 89,
+   "priceUnit": "pack",
+   "priceKind": "loyalty_price",
+   "regular": 129,
+   "discount": 31,
+   "pc": null,
+   "spPlus": true,
+   "coupon": false,
+   "conditionNote": null,
+   "unitPrice": null,
+   "validity": null,
+   "availability": null,
+   "printed": "Berivka pakirano 100 g 1,29 -31% 0,89 S SPAR PLUS KARTICO",
+   "box": [
+    0.05,
+    0.755,
+    0.4,
+    0.96
+   ],
+   "image": {
+    "crop": [
+     0.07,
+     0.76,
+     0.275,
+     0.89
+    ]
+   },
+   "isNew": false,
+   "textCheck": true,
+   "notes": null
+  }
+ ],
+ "excluded": []
+}
